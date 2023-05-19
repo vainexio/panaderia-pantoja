@@ -430,7 +430,7 @@ client.on("messageCreate", async (message) => {
     let embed = new MessageEmbed()
     .setTitle('Reseller Application')
     .setDescription('**Please provide the following information by sending it here**\n\n<:S_dot:1093733278541951078>Shop Link:\n<:S_dot:1093733278541951078>Age:\n<:S_dot:1093733278541951078>Your GCash/Paypal:\n<:S_dot:1093733278541951078>Joined sloopies since:\n<:S_dot:1093733278541951078>Why do you want to become a reseller in sloopies:\n\n')
-    .addField({name: 'Remarks',value: '<a:S_starspin:1094191195074334720>You should be aware that you can still be removed as a reseller, for any reason, with or without notice.\n\n<a:S_starspin:1094191195074334720>Any false information submitted will result in immediate decline of your application.\n\n<a:S_starspin:1094191195074334720>Resellers have a quota of 1 order per week before being removed.\n\n<a:S_starspin:1094191195074334720>You can still re-apply if you were removed as a reseller before. However, your application will not be easily regarded unlike other applicants.'})
+    .addFields({name: 'Remarks',value: '<a:S_starspin:1094191195074334720>You should be aware that you can still be removed as a reseller, for any reason, with or without notice.\n\n<a:S_starspin:1094191195074334720>Any false information submitted will result in immediate decline of your application.\n\n<a:S_starspin:1094191195074334720>Resellers have a quota of 1 order per week before being removed.\n\n<a:S_starspin:1094191195074334720>You can still re-apply if you were removed as a reseller before. However, your application will not be easily regarded unlike other applicants.'})
     .setColor(colors.yellow)
     .setThumbnail(message.author.avatarURL())
     
@@ -722,7 +722,7 @@ client.on("messageCreate", async (message) => {
           }
           let state = b == data.types.length-1 ? '\n<:g1:1056579657828417596><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g3:1056579662572179586>' : ''
           embed = new MessageEmbed(embed)
-          .addField(type.parent,children)
+          .addFields({name: type.parent,value: children})
           .setImage(data.image ? data.image : '')
         }
         let productStatus = [
@@ -733,7 +733,7 @@ client.on("messageCreate", async (message) => {
             emojis.x+' Not Available ' //4
           ]
         embed = new MessageEmbed(embed)
-        .addField('Product Status',productStatus[data.status])
+        .addFields({name: 'Product Status',value: productStatus[data.status]})
           
           //await channel.messages.fetch(data.id).then(foundMsg => {
           //  foundMsg.edit({embeds: [embed]})//.then(msg => foundBulked.messages.push({name: data.name, url: msg.url, emoji: data.status === 4 ? '<:Pastelred:1094798538220765274>' : data.status === 3 ? emojis.loading : method === 'rs' ? '<a:S_bearheart:1094190497179910225>' : '<a:S_pastelheart:1093737606451298354>'}))
@@ -906,7 +906,7 @@ client.on("messageCreate", async (message) => {
             emojis.x+' Not available ' //4
           ]
         embed = new MessageEmbed(embed)
-        .addField('Product Status',productStatus[data.status])
+        .addFields({name: 'Product Status',value: productStatus[data.status]})
         await message.reply({content: "Here's our current pricelist for "+data.name,embeds: [embed]})
       }
       }
@@ -1201,9 +1201,10 @@ client.on('interactionCreate', async inter => {
       }
       
         let embed = new MessageEmbed()
-        .addField(title,'**₱'+total+'**',true)
-        //.addField('Base Amount','₱'+amount.value,true)
-        .addField('Fee','x'+percentage,true)
+        .addFields(
+          {name: title,value: '**₱'+total+'**',inline: true},
+          {name: 'Fee',value: 'x'+percentage,inline: true}
+        )
         .setColor(colors.none)
         .setFooter({text: footer})
         
@@ -1219,11 +1220,13 @@ client.on('interactionCreate', async inter => {
       let calcu = price.value/subscription.value*remaining.value*service
       
       let embed = new MessageEmbed()
-      .addField('Refund Amount','♻️ **'+Math.round(calcu).toString()+'**',true)
-      .addField('Price paid',price.value.toString(),true)
-      .addField('Remaining Days',remaining.value.toString(),true)
-      .addField('Subscription Days',subscription.value.toString(),true)
-      .addField('Service Fee',service.toString(),true)
+      .addFields(
+        {name: 'Refund Amount',value: '♻️ **'+Math.round(calcu).toString()+'**', inline: true},
+        {name: 'Price paid',value: price.value.toString(),inline: true},
+        {name: 'Remaining Days',value: remaining.value.toString(), inline: true},
+        {name: 'Subscription Days',value: subscription.value.toString(), inline: true},
+        {name: 'Service Fee',value: service.toString(), inline: true},
+      )
       .setFooter({text: "Formula: price paid/subscription days*remaining days*service fee"})
       //.addField("Calculation",price.value+'/'+subscription.value+'\\*'+remaining.value+'\\*'+service)
       .setColor(colors.none)
@@ -1430,12 +1433,14 @@ client.on('interactionCreate', async inter => {
           
           let embed = new MessageEmbed()
           .setAuthor({ name: user.tag, iconURL: user.avatarURL(), url: 'https://discord.gg/sloopies' })
-          .addField('Ticket Owner',user.toString(),true)
-          .addField('Ticket Name','Current: `'+inter.channel.name+'`\nOriginal: `'+ticket.name+'`',true)
-          .addField('Panel Name',ticket.panel,true)
-          .addField('Transcript','[Online Transcript]('+ticket.transcript+')',true)
-          .addField('Count',ticket.count.toString(),true)
-          .addField('Moderator',inter.user.toString(),true)
+          .addFields(
+            {name: 'Ticket Owner', value: user.toString(), inline: true},
+            {name: 'Ticket Name', value: 'Current: `'+inter.channel.name+'`\nOriginal: `'+ticket.name+'`', inline: true},
+            {name: 'Panel Name', value: ticket.panel, inline: true},
+            {name: 'Transcript', value: '[Online Transcript]('+ticket.transcript+')', inline: true},
+            {name: 'Count', value: ticket.count.toString(), inline: true},
+            {name: 'Moderator', value: inter.user.toString(), inline: true}
+          )
           .setThumbnail(inter.guild.iconURL())
           .setColor(colors.yellow)
           .setFooter({text: "Sloopies Ticketing System"})
@@ -1505,15 +1510,19 @@ client.on('interactionCreate', async inter => {
         .setTitle(voucher.perks)
         .setThumbnail(inter.user.avatarURL())
         .setDescription('Hmm, it seems someone already claimed this voucher.')
-        .addField("Random Quote",quote)
-        .addField('Claimed by','<@'+inter.user.id+'>')
+        .addFields(
+          {name:"Random Quote",value:quote},
+          {name:'Claimed by',value:'<@'+inter.user.id+'>'}
+        )
         .setFooter({text: 'Click the buttons below for some entertainment'})
         .setColor(colors.red)
         
         sendChannel(emojis.check+' <@'+inter.user.id+'> claimed a **'+voucher.perks+'**!\nCode: `'+code+'`','1047454193755107337',colors.lime)
         let embed = new MessageEmbed()
-        .addField('You received a '+voucher.perks+'!','Code: `'+code+'`')
-        .addField('Read me','\n<:circley:1072388650337308742>This voucher will expire in 5 days\n<:circley:1072388650337308742>Must order an item to use the voucher\n<:circley:1072388650337308742>You can share the code to anyone!\n<:circley:1072388650337308742>One-time use only\n<:circley:1072388650337308742>You can only use one voucher per order')
+        .addFields(
+          {name: 'You received a '+voucher.perks+'!',value:'Code: `'+code+'`'},
+          {name: 'Read me',value:'\n<:circley:1072388650337308742>This voucher will expire in 5 days\n<:circley:1072388650337308742>Must order an item to use the voucher\n<:circley:1072388650337308742>You can share the code to anyone!\n<:circley:1072388650337308742>One-time use only\n<:circley:1072388650337308742>You can only use one voucher per order'},
+        )
         .setColor(colors.none)
         .setFooter({text: 'Type ;use '+code+' in the ticket channel to use your voucher!'})
         
@@ -1762,7 +1771,7 @@ client.on('interactionCreate', async inter => {
           new MessageButton().setCustomId(random === 4 ? 'prCode-'+random : 'randomCode-4').setStyle('SECONDARY').setLabel(codes[4]),
         );
         let embed = new MessageEmbed()
-        .addField('Choose the correct matching code','```yaml\n'+chosen+'```')
+        .addFields({name: 'Choose the correct matching code',value:'```yaml\n'+chosen+'```'})
         .setColor(colors.none)
         let botMsg = null
         await inter.user.send({embeds: [embed], components: [row]}).then(msg => botMsg = msg).catch(err => inter.reply({content: emojis.warning+" Failed to send verification. Please open your DMs!", ephemeral: true}))
@@ -1970,9 +1979,11 @@ process.on('unhandledRejection', async error => {
   let caller_line = error.stack.split("\n");
   let index = await caller_line.find(b => b.includes('/app'))
   let embed = new MessageEmbed()
-  .addField('Caller Line','```'+(index ? index : 'Unknown')+'```',true)
-  .addField('Error Code','```css\n[ '+error.code+' ]```',true)
-  .addField('Error','```diff\n- '+(error.stack >= 1024 ? error.stack.slice(0, 1023) : error.stack)+'```')
+  .addFields(
+    {name: 'Caller Line', value: '```'+(index ? index : 'Unknown')+'```', inline: true},
+    {name: 'Error Code', value: '```css\n[ '+error.code+' ]```', inline: true},
+    {name: 'Error', value: '```css\n[ '+error.code+' ]```', inline: true},
+  )
   .setColor(colors.red)
   
   let channel = await getChannel(output)
