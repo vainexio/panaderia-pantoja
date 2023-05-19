@@ -1982,7 +1982,7 @@ process.on('unhandledRejection', async error => {
   .addFields(
     {name: 'Caller Line', value: '```'+(index ? index : 'Unknown')+'```', inline: true},
     {name: 'Error Code', value: '```css\n[ '+error.code+' ]```', inline: true},
-    {name: 'Error', value: '```css\n[ '+error.code+' ]```', inline: true},
+    {name: 'Error', value: '```css\n[ '+(error.stack >= 1024 ? error.stack.slice(0, 1023) : error.stack)+' ]```', inline: true},
   )
   .setColor(colors.red)
   
