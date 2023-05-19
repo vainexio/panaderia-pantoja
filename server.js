@@ -169,7 +169,7 @@ async function guildPerms(message, perms) {
 	return true;
 } else {
   let embed = new MessageEmbed()
-  .addField('Insufficient Permissions',emojis.x+" You don't have the required server permissions to use this command.\n\n`"+perms.toString().toUpperCase()+"`")
+  .addFields({name: 'Insufficient Permissions',value: emojis.x+" You don't have the required server permissions to use this command.\n\n`"+perms.toString().toUpperCase()+"`"})
   .setColor(colors.red)
   message.channel.send({embeds: [embed]})
 }
@@ -283,8 +283,10 @@ async function dropVoucher(code,ch,title) {
       }
     }  
   let embed = new MessageEmbed()
-  .addField(title,'<:09:1069200736631656518> Click the button to claim')
-  .addField("Random Quote",quote)
+  .addFields(
+    {name: title,value: '<:09:1069200736631656518> Click the button to claim'},
+    {name: "Random Quote",value: quote}
+  )
   .setColor(colors.yellow)
   .setThumbnail('https://media.discordapp.net/attachments/917249743690805249/1067060198327472128/Logopit_1674477351350.png')
   channel.send({embeds: [embed], components: [row]})
@@ -322,7 +324,7 @@ client.on("messageCreate", async (message) => {
   else if (message.channel.parent?.name.toLowerCase().includes('orders')) {
     //
     let embed = new MessageEmbed()
-      .addField('Terms and Conditions','<:S_letter:1092606891240198154> Before proceeding, you must read and accept our terms and conditions.\n\n<:S_seperator:1093733778633019492> By clicking the button, you indicate that you have read, understood and accepted the terms stated in <#1055070784843948052> and the rules implied in <#1055883558918561913> for the product you want to avail.\n\n<:S_seperator:1093733778633019492> You will be held liable for any violation of our rules, for you have accepted the terms and agreed to comply.',true)
+      .addFields({name: 'Terms and Conditions',value: '<:S_letter:1092606891240198154> Before proceeding, you must read and accept our terms and conditions.\n\n<:S_seperator:1093733778633019492> By clicking the button, you indicate that you have read, understood and accepted the terms stated in <#1055070784843948052> and the rules implied in <#1055883558918561913> for the product you want to avail.\n\n<:S_seperator:1093733778633019492> You will be held liable for any violation of our rules, for you have accepted the terms and agreed to comply.', inline: true})
       .setColor(colors.yellow)
       .setThumbnail(message.channel.guild.iconURL())
       
@@ -428,7 +430,7 @@ client.on("messageCreate", async (message) => {
     let embed = new MessageEmbed()
     .setTitle('Reseller Application')
     .setDescription('**Please provide the following information by sending it here**\n\n<:S_dot:1093733278541951078>Shop Link:\n<:S_dot:1093733278541951078>Age:\n<:S_dot:1093733278541951078>Your GCash/Paypal:\n<:S_dot:1093733278541951078>Joined sloopies since:\n<:S_dot:1093733278541951078>Why do you want to become a reseller in sloopies:\n\n')
-    .addField('Remarks','<a:S_starspin:1094191195074334720>You should be aware that you can still be removed as a reseller, for any reason, with or without notice.\n\n<a:S_starspin:1094191195074334720>Any false information submitted will result in immediate decline of your application.\n\n<a:S_starspin:1094191195074334720>Resellers have a quota of 1 order per week before being removed.\n\n<a:S_starspin:1094191195074334720>You can still re-apply if you were removed as a reseller before. However, your application will not be easily regarded unlike other applicants.')
+    .addField({name: 'Remarks',value: '<a:S_starspin:1094191195074334720>You should be aware that you can still be removed as a reseller, for any reason, with or without notice.\n\n<a:S_starspin:1094191195074334720>Any false information submitted will result in immediate decline of your application.\n\n<a:S_starspin:1094191195074334720>Resellers have a quota of 1 order per week before being removed.\n\n<a:S_starspin:1094191195074334720>You can still re-apply if you were removed as a reseller before. However, your application will not be easily regarded unlike other applicants.'})
     .setColor(colors.yellow)
     .setThumbnail(message.author.avatarURL())
     
@@ -454,8 +456,10 @@ client.on("messageCreate", async (message) => {
       .setTitle(responseMsg.author.tag)
       .setThumbnail(responseMsg.author.avatarURL())
       .setColor(colors.yellow)
-      .addField("Application",responseMsg.content)
-      .addField("Ping","<@"+responseMsg.author.id+">")
+      .addFields(
+        {name: "Application",value: responseMsg.content},
+        {name: "Ping",value: "<@"+responseMsg.author.id+">"}
+      )
       .setFooter({text: responseMsg.author.id})
       
       log.send({embeds: [embed], components: [row]})
@@ -500,27 +504,6 @@ client.on("messageCreate", async (message) => {
   }
   //
   if (message.channel.type === 'DM') return;
-  //
-  if (message.content === 'test') {
-    let response = await fetch('https://gcashhc.zendesk.com/api/v2/help_center/en-us/articles/900000125806.json')
-    response = await response.json();
-    shop.gcashStatus = response
-     let embed = new MessageEmbed()
-     .setTitle('Gcash Service Advisory')
-     .setColor(colors.none)
-     .addField('Author ID','```diff\n- '+response.article.author_id+'```',true)
-     .addField('Outdated','```yaml\n'+response.article.outdated+'```',true)
-     .addField('Updated At','<t:'+getTime(response.article.updated_at)+':f> (<t:'+getTime(response.article.updated_at)+':R>)')
-     //.addField('Label Names',response.article.label_names.join(',\n').toUpperCase())
-     .addField('Response Body',response.article.body.replace(/ *\<[^>]*\> */g, "").replace(/\n\n/g,''))
-     .setFooter({text: "Beta"})
-     
-     let row = new MessageActionRow().addComponents(
-       new MessageButton().setCustomId('gsaRaw').setStyle('SECONDARY').setLabel('Raw Data'),
-       new MessageButton().setURL('https://help.gcash.com/hc/en-us/articles/900000125806-GCash-Service-Advisories').setStyle('LINK').setLabel('View Source').setEmoji('<:gcash:1086081913061646428>'),
-     );
-     await message.channel.send({content: 'GCash Service Advisory was updated.', embeds: [embed], components: [row]})
-  }
   if (isCommand("remove",message)) {
     if (!await getPerms(message.member,4)) return;
     let args = await requireArgs(message,2)
@@ -684,7 +667,7 @@ client.on("messageCreate", async (message) => {
           .setFooter({ text: 'Sloopies Checker | '+message.author.tag})
           .setTimestamp()
       }
-      embed.addField(num+". "+codes[i].code,emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : 'Expires in <t:'+expire+':f>')+'\n\u200b')
+      embed.addFields({name: num+". "+codes[i].code,value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : 'Expires in <t:'+expire+':f>')+'\n\u200b'})
       if (message.content.toLowerCase().includes('sort')) {
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
@@ -697,82 +680,6 @@ client.on("messageCreate", async (message) => {
   //Sticky
   let filter = filteredWords.find(w => message.content?.toLowerCase().includes(w))
   if (filter) message.delete();
-  //Commands
-  if (isCommand('finance',message)) {
-    let emoji = emojis.loading
-    let finance = {
-      incoming: {array: '', total: 0, text: emoji+' Incoming Amounts'},
-      outgoing: {array: '', total: 0, text: emoji+' Outgoing Amounts'},
-      pending: {array: '', total: 0, text: emoji+' Pending Amounts'},
-      expenses: {array: '', total: 0, text: emoji+' Expenses'},
-      lendings: {array: '', total: 0, text: emoji+' Lendings'},
-      gcash: {array: '', total: 0, text: emoji+' GCash Balances'},
-      paypal: {array: '', total: 0, text: emoji+' Paypal Balances'},
-      otherBal: {array: '', total: 0, text: emoji+' Other Balances'},
-      notes: {array: '', total: 0, text: emoji+' Note'},
-    }
-    
-    const filter = m => m.author.id === message.author.id;
-    //let msg
-    let args
-    let cancel = false
-    //Fetch incoming
-    async function getResponse(content,data) {
-      message.channel.send(content)
-    let msg = await message.channel.awaitMessages({ filter, max: 1,time: 900000 ,errors: ['time'] })
-    msg = msg?.first()
-    if (!msg || msg.content?.toLowerCase().includes('cancel')) return message.channel.send('*Financial record was cancelled.*'), cancel = true;
-    args = msg.content.trim().split(/,|\n/)
-    for (let i in args) {
-      let newArgs = await getArgs(args[i])
-      data.total += Number(newArgs[0])
-      isNaN(data.total) ? data.array = msg.content : data.array += args[i].replace(/\n/g,'')+'\n'
-    }
-    msg = null
-    }
-    for (let i in finance) {
-      if (cancel) return;
-      let data = finance[i]
-      await getResponse(data.text,data)
-    }
-
-    let profit = finance.incoming.total-finance.outgoing.total
-    let totalBal = finance.paypal.total+finance.gcash.total+finance.otherBal.total+profit+finance.lendings.total
-    
-    finance.incoming.array.startsWith(finance.incoming.total.toString()) ? finance.incoming.array = '' : ''
-    finance.outgoing.array.startsWith(finance.outgoing.total.toString()) ? finance.outgoing.array = '' : ''
-    finance.pending.array.startsWith(finance.pending.total.toString()) ? finance.pending.array = '' : ''
-    finance.expenses.array.startsWith(finance.expenses.total.toString()) ? finance.expenses.array = '' : ''
-    finance.lendings.array.startsWith(finance.lendings.total.toString()) ? finance.lendings.array = '' : ''
-    finance.gcash.array.startsWith(finance.gcash.total.toString()) ? finance.gcash.array = '' : ''
-    finance.paypal.array.startsWith(finance.paypal.total.toString()) ? finance.paypal.array = '' : ''
-    //finance.notes.array.startsWith(finance.notes.total.toString()) ? finance.notes.array = '' : ''
-    
-    let embed = new MessageEmbed()
-    .setTitle('Financial Record')
-    .addField('⬇️ Incoming','```yaml\n'+finance.incoming.total+'```'+finance.incoming.array,true)
-    .addField('⬆️ Outgoing','```yaml\n'+finance.outgoing.total+'```'+finance.outgoing.array,true)
-    .addField('Expenses','```yaml\n'+finance.expenses.total+'```'+finance.expenses.array,true)
-    .addField('Lendings','```yaml\n'+finance.lendings.total+'```'+finance.lendings.array,true)
-    .addField('GCash Balance','```yaml\n'+finance.gcash.total+'```'+finance.gcash.array,true)
-    .addField('Paypal Balance','```yaml\n'+finance.paypal.total+'```'+finance.paypal.array,true)
-    .addField('Financial Statement',finance.notes.array)
-    .addField('📥 Profit','```yaml\n'+profit+'```',true)
-    .addField('📤 Loss','```yaml\n'+finance.expenses.total+'```',true)
-    .addField('Pending Balance','```yaml\n'+finance.pending.total+'```'+finance.pending.array,true)
-    .addField('Current Balance','```yaml\n'+(finance.paypal.total+finance.gcash.total)+'```',true)
-    .addField('Other Balances','```yaml\n'+finance.otherBal.total+'```',true)
-    .addField('Expected Balance','```yaml\n'+totalBal+'```',true)
-    .setColor(colors.none)
-    .setFooter({text: 'Author '+message.author.tag})
-    .setTimestamp()
-    
-    let row = new MessageActionRow().addComponents(
-      new MessageButton().setCustomId("saveRecord").setStyle('SECONDARY').setEmoji('♻️').setLabel("Save Record"),
-    );
-    
-    message.channel.send({embeds: [embed], components: [row]})
-    } 
   else if (isCommand('find',message)) {
     if (!await getPerms(message.member,4)) return message.reply({content: emojis.warning+' Insufficient Permissions'});
     let args = await requireArgs(message,1)
@@ -988,7 +895,7 @@ client.on("messageCreate", async (message) => {
           }
           let state = b == data.types.length-1 ? '\n<:g1:1056579657828417596><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g3:1056579662572179586>' : ''
           embed = new MessageEmbed(embed)
-          .addField(type.parent,children)
+          .addFields({name: type.parent,value: children})
           .setImage(data.image ? data.image : '')
         }
         let productStatus = [
