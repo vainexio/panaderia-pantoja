@@ -22,7 +22,7 @@ module.exports = {
       data = {
         "prompt": content,
         "n": 1,
-        "size": "1024x1024"
+        "size": "1024x1024"//"1024x1024"
       }
     } else {
       chosenAPI = AI.chatAPI
