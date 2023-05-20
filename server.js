@@ -352,7 +352,7 @@ client.on("messageCreate", async (message) => {
     }
   }
   else if (message.channel.parent?.name.toLowerCase() === 'reports') {
-   if (message.author.id === "557628352828014614") {
+   if (message.author.id === client.user.id && message.content?.toLowerCase().includes('ticket opened')) {
      let vc = await getChannel(shop.channels.reportsVc)
      let member = message.mentions.members.first()
      let state = await hasRole(member,["Accepted TOS"]) ? "You have accepted our terms.\n— Therefore, we shall not be liable for any mistakes or excuses made once you've violated our rules." : "We shall not be liable for any mistakes or excuses made once you've violated our rules."
@@ -778,8 +778,8 @@ client.on("messageCreate", async (message) => {
   else if (isCommand('forceall',message)) {
     if (!await getPerms(message.member,4)) return;
     let cc = 0
-    let f = '〔,〕'.replace(/ /,'').split(/,/)
-    let f2 = '・❥,・'.replace(/ /,'').split(/,/)
+    let f = '°,。'.replace(/ /,'').split(/,/)
+    let f2 = '.,•'.replace(/ /,'').split(/,/)
     console.log(f,f2)
     message.guild.channels.cache.forEach( ch => {
       if (ch.type !== 'GUILD_CATEGORY' && ch.type !== 'GUILD_VOICE') {
