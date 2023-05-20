@@ -478,27 +478,27 @@ client.on("messageCreate", async (message) => {
     let botMsg
     let waitingTime = 1000
     await message.channel.send('** **               <:trucked_runner:1103701285091422288>               ** **:truck:').then(msg => botMsg = msg)
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>             ** **:truck:')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>          ** **:truck:')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>       ** **:truck:')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>    ** **:truck:')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288> ** **:truck:')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>:truck:')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:truck_runner:1103701244331167815>')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **        :truck:<:trucked_runner:1103701285091422288>')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **      :truck:  <:trucked_runner:1103701285091422288>')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **   :truck:     <:trucked_runner:1103701285091422288>')
-    sleep(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** ** :truck:       <:trucked_runner:1103701285091422288>')
     truck = false
   }
@@ -587,7 +587,7 @@ client.on("messageCreate", async (message) => {
           break
         };
         let stocks = await getChannel(shop.channels.stocks)
-        sleep(1000);
+        await sleep(1000);
         await stocks.send("https://discord.gift/"+codes[i].code);
       }
       msg.edit({content: emojis.check+" Stocked **"+codes.length+"** nitro boost(s)", components: []})
@@ -602,7 +602,7 @@ client.on("messageCreate", async (message) => {
       let fetched = false
       let waitingTime = 0
       while (!fetched) {
-        waitingTime > 0 ? sleep(waitingTime) : null
+        waitingTime > 0 ? await sleep(waitingTime) : null
         waitingTime = 0
         let eCode = expCodes.find(e => e.code === codes[i].code)
         let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code)
@@ -1930,7 +1930,7 @@ client.on('interactionCreate', async inter => {
             row.style = types[i] ? types[i] : types[0]
             row.label = args[i] ? args[i] : args[0]
             await inter.message.edit({components: [comp]})
-            sleep(delay)
+            await sleep(delay)
           }
         }
     }
