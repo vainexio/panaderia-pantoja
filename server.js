@@ -9,7 +9,7 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const url = require('url');
 const discordTranscripts = require('discord-html-transcripts');
 //
-const sleep = require('node:timers/promises').setTimeout;
+//const sleep = require('node:timers/promises').setTimeout;
 //Discord
 const Discord = require('discord.js');
 const {WebhookClient, Permissions, Client, Intents, MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu} = Discord; 
@@ -199,7 +199,7 @@ const cmdHandler = require('./functions/commands.js')
 const {checkCommand, isCommand, isMessage, getTemplate} = cmdHandler
 //Others
 const others = require('./functions/others.js')
-const {stringJSON, fetchKey, ghostPing, moderate, getPercentage, getPercentageEmoji, randomTable, scanString, requireArgs, getArgs, makeButton, makeRow} = others
+const {stringJSON, fetchKey, ghostPing, moderate, getPercentage, sleep, getPercentageEmoji, randomTable, scanString, requireArgs, getArgs, makeButton, makeRow} = others
 //Roles Handler
 const roles = require('./functions/roles.js')
 const {getRole, addRole, removeRole, hasRole} = roles
@@ -588,7 +588,7 @@ client.on("messageCreate", async (message) => {
           break
         };
         let stocks = await getChannel(shop.channels.stocks)
-        sleep(1000);
+        await sleep(1000);
         await stocks.send("https://discord.gift/"+codes[i].code);
       }
       msg.edit({content: emojis.check+" Stocked **"+codes.length+"** nitro boost(s)", components: []})
@@ -603,12 +603,13 @@ client.on("messageCreate", async (message) => {
       let fetched = false
       let waitingTime = 0
       while (!fetched) {
-        waitingTime > 0 ? sleep(waitingTime) : null
+        waitingTime > 0 ? await sleep(waitingTime) : null
         waitingTime = 0
         let eCode = expCodes.find(e => e.code === codes[i].code)
         let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code)
         res = eCode ? eCode : await res.json()
         if (res.message && res.retry_after) {
+          console.log(res)
           console.log('retry for '+codes[i].code)
           let ret = Math.ceil(res.retry_after)
           ret = ret.toString()+"000"
