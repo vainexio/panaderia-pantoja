@@ -9,6 +9,7 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const url = require('url');
 const discordTranscripts = require('discord-html-transcripts');
 //
+const sleep = require('node:timers/promises').setTimeout;
 //Discord
 const Discord = require('discord.js');
 const {WebhookClient, Permissions, Client, Intents, MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu} = Discord; 
@@ -198,7 +199,7 @@ const cmdHandler = require('./functions/commands.js')
 const {checkCommand, isCommand, isMessage, getTemplate} = cmdHandler
 //Others
 const others = require('./functions/others.js')
-const {stringJSON, fetchKey, ghostPing, sleep, moderate, getPercentage, getPercentageEmoji, randomTable, scanString, requireArgs, getArgs, makeButton, makeRow} = others
+const {stringJSON, fetchKey, ghostPing, moderate, getPercentage, getPercentageEmoji, randomTable, scanString, requireArgs, getArgs, makeButton, makeRow} = others
 //Roles Handler
 const roles = require('./functions/roles.js')
 const {getRole, addRole, removeRole, hasRole} = roles
@@ -478,27 +479,27 @@ client.on("messageCreate", async (message) => {
     let botMsg
     let waitingTime = 1000
     await message.channel.send('** **               <:trucked_runner:1103701285091422288>               ** **:truck:').then(msg => botMsg = msg)
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>             ** **:truck:')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>          ** **:truck:')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>       ** **:truck:')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>    ** **:truck:')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288> ** **:truck:')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>:truck:')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **               <:truck_runner:1103701244331167815>')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **        :truck:<:trucked_runner:1103701285091422288>')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **      :truck:  <:trucked_runner:1103701285091422288>')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** **   :truck:     <:trucked_runner:1103701285091422288>')
-    await sleep(waitingTime)
+    sleep(waitingTime)
     await botMsg.edit('** ** :truck:       <:trucked_runner:1103701285091422288>')
     truck = false
   }
@@ -587,7 +588,7 @@ client.on("messageCreate", async (message) => {
           break
         };
         let stocks = await getChannel(shop.channels.stocks)
-        await sleep(1000);
+        sleep(1000);
         await stocks.send("https://discord.gift/"+codes[i].code);
       }
       msg.edit({content: emojis.check+" Stocked **"+codes.length+"** nitro boost(s)", components: []})
@@ -602,7 +603,7 @@ client.on("messageCreate", async (message) => {
       let fetched = false
       let waitingTime = 0
       while (!fetched) {
-        waitingTime > 0 ? await sleep(waitingTime) : null
+        waitingTime > 0 ? sleep(waitingTime) : null
         waitingTime = 0
         let eCode = expCodes.find(e => e.code === codes[i].code)
         let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code)
@@ -641,6 +642,7 @@ client.on("messageCreate", async (message) => {
       }
     }
     if (shop.breakChecker) return;
+    //
     codes.sort((a, b) => (b.expire - a.expire));
     let embeds = []
     let embed = new MessageEmbed()
@@ -1930,7 +1932,7 @@ client.on('interactionCreate', async inter => {
             row.style = types[i] ? types[i] : types[0]
             row.label = args[i] ? args[i] : args[0]
             await inter.message.edit({components: [comp]})
-            await sleep(delay)
+            sleep(delay)
           }
         }
     }
