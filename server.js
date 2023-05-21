@@ -110,16 +110,11 @@ client.on("ready", async () => {
     method: 'post',
     body: JSON.stringify(json),
     headers: headers
-  });
-    /*let deleteRes = await fetch(deleteUrl, {
-      method: 'delete',
-      headers: headers
-    })*/
+  })
     response = await response.json();
     console.log(response)
 }
   console.log('Successfully logged in to discord bot.')
-  console.log(client,client.party)
   client.user.setPresence({ status: 'idle', activities: [{ name: 'Sloopies', type: "WATCHING" }] });
  // await mongoose.connect(mongooseToken,{keepAlive: true});
 })
@@ -199,7 +194,7 @@ const cmdHandler = require('./functions/commands.js')
 const {checkCommand, isCommand, isMessage, getTemplate} = cmdHandler
 //Others
 const others = require('./functions/others.js')
-const {stringJSON, fetchKey, ghostPing, moderate, getPercentage, sleep, getPercentageEmoji, randomTable, scanString, requireArgs, getArgs, makeButton, makeRow} = others
+const {stringJSON, fetchKey, ghostPing, moderate, getPercentage, wait, getPercentageEmoji, randomTable, scanString, requireArgs, getArgs, makeButton, makeRow} = others
 //Roles Handler
 const roles = require('./functions/roles.js')
 const {getRole, addRole, removeRole, hasRole} = roles
@@ -479,27 +474,27 @@ client.on("messageCreate", async (message) => {
     let botMsg
     let waitingTime = 1000
     await message.channel.send('** **               <:trucked_runner:1103701285091422288>               ** **:truck:').then(msg => botMsg = msg)
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>             ** **:truck:')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>          ** **:truck:')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>       ** **:truck:')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>    ** **:truck:')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288> ** **:truck:')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>:truck:')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **               <:truck_runner:1103701244331167815>')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **        :truck:<:trucked_runner:1103701285091422288>')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **      :truck:  <:trucked_runner:1103701285091422288>')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** **   :truck:     <:trucked_runner:1103701285091422288>')
-    sleep(waitingTime)
+    await wait(waitingTime)
     await botMsg.edit('** ** :truck:       <:trucked_runner:1103701285091422288>')
     truck = false
   }
@@ -588,7 +583,7 @@ client.on("messageCreate", async (message) => {
           break
         };
         let stocks = await getChannel(shop.channels.stocks)
-        await sleep(1000);
+        await wait(1000);
         await stocks.send("https://discord.gift/"+codes[i].code);
       }
       msg.edit({content: emojis.check+" Stocked **"+codes.length+"** nitro boost(s)", components: []})
@@ -601,9 +596,9 @@ client.on("messageCreate", async (message) => {
         break
       };
       let fetched = false
-      let waitingTime = 0
+      let waitingTime = 1000
       while (!fetched) {
-        waitingTime > 0 ? await sleep(waitingTime) : null
+        await wait(waitingTime)
         waitingTime = 0
         let eCode = expCodes.find(e => e.code === codes[i].code)
         let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code)
@@ -622,6 +617,7 @@ client.on("messageCreate", async (message) => {
           }
         if (!res.retry_after) {
           fetched = true
+          console.log(i+'/'+codes.length)
           msg.edit('Fetching nitro codes ('+(i)+'/'+codes.length+') '+emojis.loading)
           let e = res.expires_at ? moment(res.expires_at).unix() : null
           codes[i].expire = !isNaN(e) ? Number(e) : 'Expired'
@@ -1933,7 +1929,7 @@ client.on('interactionCreate', async inter => {
             row.style = types[i] ? types[i] : types[0]
             row.label = args[i] ? args[i] : args[0]
             await inter.message.edit({components: [comp]})
-            sleep(delay)
+            await wait(delay)
           }
         }
     }
@@ -1941,16 +1937,16 @@ client.on('interactionCreate', async inter => {
       await changeRow('start','DANGER',true)
       inter.deferUpdate()
       await inter.message.edit({components: [comp]})
-      sleep(delay)
+      await wait(delay)
       await changeRow('start','PRIMARY',true)
       await inter.message.edit({components: [comp]})
-      sleep(delay)
+      await wait(delay)
       await changeRow('start','SUCCESS',true)
       await inter.message.edit({components: [comp]})
-      sleep(delay)
+      await wait(delay)
       await changeRow('start','SECONDARY',true)
       inter.message.edit({components: [comp]})
-      sleep(delay)
+      await wait(delay)
       await changeRow('mix','DANGER',true)
       inter.message.edit({components: [comp]})
       await changeRow('start','SECONDARY',true)

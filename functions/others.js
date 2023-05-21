@@ -126,10 +126,8 @@ module.exports = {
       }
     }
   },
-  sleep: async function (miliseconds) {
-    var currentTime = new Date().getTime();
-    while (currentTime + miliseconds >= new Date().getTime() && !shop.breakChecker) {
-    }
+  wait: async function (miliseconds) {
+    return new Promise(resolve => setTimeout(resolve, miliseconds));
   },
   moderate: function(member,perms) {
     if (perms) return;

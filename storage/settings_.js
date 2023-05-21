@@ -50,6 +50,7 @@ let keys = [
 ]
 module.exports = {
   shop: {
+    apiCheckers: [],
     tixSettings: {
       support: '1047454193184682040',
       transcripts: '1054713463739531304',
