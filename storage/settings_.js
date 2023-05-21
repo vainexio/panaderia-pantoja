@@ -336,7 +336,7 @@ module.exports = {
         name: 'E-Wallet Exchange',
         keywords: ['exchange','paypal to gcash'],
         channel: '1072434004873195540',
-        status: 1,
+        status: 4,
         id: '1096319572614860810',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077237348794368/Logopit_1680918656290.png?width=1440&height=360',
         types: [
@@ -405,7 +405,7 @@ module.exports = {
       {
         //Category
         name: 'Server Boosting',
-        keywords: ['server boost','sb','boosting'],
+        keywords: ['sb','boosting','boost'],
         channel: '1054720561277841438',
         rs: '1078708432091226112',
         status: 4,
