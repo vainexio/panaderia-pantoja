@@ -542,6 +542,7 @@ client.on("messageCreate", async (message) => {
   }
   //Nitro checker
   if (message.channel.name?.includes('nitro-checker') && !message.author.bot) {
+    //
     let args = getArgs(message.content)
     if (args.length === 0) return;
     let codes = []
@@ -622,8 +623,8 @@ client.on("messageCreate", async (message) => {
           let e = res.expires_at ? moment(res.expires_at).unix() : null
           codes[i].expire = !isNaN(e) ? Number(e) : 'Expired'
           let expire = res.expires_at ? 'Expires in <t:'+e+':f>' : '`Expired`'
-          codes[i].emoji = res.uses === 0 ? emojis.check : emojis.x
-          codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
+          codes[i].emoji = res.uses === 1 ? emojis.check : emojis.x
+          codes[i].state = res.expires_at && res.uses === 1 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
           codes[i].state === 'Claimable' ? scanData.valid++ : codes[i].state === 'Claimed' ? scanData.claimed++ : scanData.invalid++
           if ((!res.expires_at || res.uses >= 1) && !eCode) {
