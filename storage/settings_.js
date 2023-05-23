@@ -494,7 +494,7 @@ module.exports = {
       {
         //Category
         name: 'Discord Nitro',
-        keywords: ['nitro','nitor','nb'],
+        keywords: ['nitro','nitor','nb','basic','classic'],
         channel: '1054720561277841438',
         rs: '1078708432091226112',
         status: 2,
