@@ -1094,24 +1094,28 @@ client.on('interactionCreate', async inter => {
       if (!foundCat) return inter.reply(emojis.x+' Invalid Category: `nitro`')
       let style = 'SECONDARY'
       let quanStyle = 'SECONDARY'
+      let countStyle = 'SUCCESS'
       foundCat.status = quan > 0 ? 1 : 3
       let nitroEmoji = emojis.on
       stockHolder[0].push(
         new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(nitroEmoji === emojis.off ? 'DANGER' : quanStyle).setEmoji(nitroEmoji).setDisabled(true),
-        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(style).setLabel('Nitro Boost ('+quan+')').setEmoji('<a:nitroboost:1057999297787985960>')
+        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(countStyle).setLabel(quan.toString()).setDisabled(true),
+        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(style).setLabel('Nitro Boost').setEmoji('<a:nitroboost:1057999297787985960>')
       )
   
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {
           let args = await getArgs(msg);
-          let text = args.slice(2).join(" ")
           let emoji2 = args[1]
+          let count = args[args.length-1]
           let emoji = args[0]
+          let text = args.slice(2).join(" ").replace(count,'')
           //if (stockHolder[holderCount].length === 5) holderCount++
           holderCount++
           stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(emoji === emojis.off ? 'DANGER' : quanStyle).setEmoji(emoji).setDisabled(true)),//.setLabel(count)); //count == '0' ? 'DANGER' : 
-          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(style).setLabel('\        '+text).setEmoji(emoji2))
+          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(countStyle).setLabel(count.toString()).setDisabled(true))
+          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(style).setLabel(text).setEmoji(emoji2))
         }
       }
     
