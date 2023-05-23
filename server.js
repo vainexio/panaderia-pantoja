@@ -1094,7 +1094,7 @@ client.on('interactionCreate', async inter => {
       if (!foundCat) return inter.reply(emojis.x+' Invalid Category: `nitro`')
       let style = 'SECONDARY'
       let quanStyle = 'SECONDARY'
-      let countStyle = 'SUCCESS'
+      let countStyle = 'SECONDARY'
       foundCat.status = quan > 0 ? 1 : 3
       let nitroEmoji = emojis.on
       stockHolder[0].push(
