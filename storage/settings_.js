@@ -371,7 +371,7 @@ module.exports = {
               //
               { name: 'Uncovered hosting', price: 300 },
               { name: 'Covered hosting', price: 500 },
-              { name: 'Features:\n+ </drop:1102423261914091530> command\n+ </stocks:1102433613116616734> command\n+ auto queue\n+ nitro links checker\n+ can do different item drops'}
+              { name: 'Features:\n+ </drop:1102423261914091530> command\n+ </stocks:1102433613116616734> command\n+ nitro links checker\n'}
               //
             ],
           },
@@ -507,7 +507,7 @@ module.exports = {
             children: [
               //
               { name: 'Nitro Basic (MTO)', price: 85, rs: 0 },
-              { name: 'Nitro Boost', price: 140, rs: 0 },
+              { name: 'Nitro Boost', price: 150, rs: 0 },
               //
             ],
           },
