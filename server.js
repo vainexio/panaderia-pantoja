@@ -587,7 +587,7 @@ client.on("messageCreate", async (message) => {
         await wait(1000);
         await stocks.send("https://discord.gift/"+codes[i].code);
       }
-      msg.edit({content: emojis.check+" Stocked **"+codes.length+"** nitro boost(s)", components: []})
+      msg.edit({content: emojis.check+" Stocked **"+codes.length+"** links(s)", components: []})
       return;
     }
     
@@ -1096,21 +1096,21 @@ client.on('interactionCreate', async inter => {
       let quanStyle = 'SECONDARY'
       foundCat.status = quan > 0 ? 1 : 3
       stockHolder[0].push(
-        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(style).setLabel('Nitro Boost').setEmoji('<a:nitroboost:1057999297787985960>'),
-        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(quan == '0' ? 'DANGER' : quanStyle).setLabel(quan.toString())
+        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(style).setLabel('Nitro Boost'),
+        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(quanStyle).setEmoji(emojis.on)
       )
   
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {
           let args = await getArgs(msg);
-          let text = args.slice(2).join(" ")
-          let count = args[1]
+          let text = args.slice(1).join(" ")
+          //let count = args[1]
           let emoji = args[0]
           //if (stockHolder[holderCount].length === 5) holderCount++
           holderCount++
-          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(style).setLabel(text+'    ').setEmoji(emoji));
-          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(count == '0' ? 'DANGER' : quanStyle).setLabel(count));
+          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(quanStyle).setEmoji(emoji)),//.setLabel(count)); //count == '0' ? 'DANGER' : 
+          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(style).setLabel(text+'    '))
         }
       }
     
