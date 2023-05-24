@@ -178,7 +178,7 @@ module.exports = {
             children: [
               //
               { name: '1 month', price: 120 },
-              { name: '3 months', price: 300 },
+              { name: '3 months', price: 230 },
               //
             ],
           },

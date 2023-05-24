@@ -1099,7 +1099,7 @@ client.on('interactionCreate', async inter => {
       let nitroEmoji = emojis.on
       stockHolder[0].push(
         new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(nitroEmoji === emojis.off ? 'DANGER' : quanStyle).setEmoji(nitroEmoji).setDisabled(true),
-        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(countStyle).setLabel(quan.toString()).setDisabled(true),
+        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(countStyle).setLabel(quan.toString()).setDisabled(quan > 0 ? false : true),
         new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(style).setLabel('Nitro Boost').setEmoji('<a:nitroboost:1057999297787985960>')
       )
   
@@ -1114,7 +1114,7 @@ client.on('interactionCreate', async inter => {
           //if (stockHolder[holderCount].length === 5) holderCount++
           holderCount++
           stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(emoji === emojis.off ? 'DANGER' : quanStyle).setEmoji(emoji).setDisabled(true)),//.setLabel(count)); //count == '0' ? 'DANGER' : 
-          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(countStyle).setLabel(count.toString()).setDisabled(true))
+          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(countStyle).setLabel(count.toString()).setDisabled(Number(count) > 0 ? false : true))
           stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(style).setLabel(text).setEmoji(emoji2))
         }
       }
