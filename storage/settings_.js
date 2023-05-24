@@ -147,23 +147,7 @@ module.exports = {
               //
               { name: '1 month', price: 30 },
               { name: '4 months', price: 60 },
-              { name: '6 months', price: 80 },
-              //
-            ],
-          },
-          {
-            parent: 'Famhead',
-            children: [
-              //
-              { name: '1 month', price: 60 },
-              //
-            ],
-          },
-          {
-            parent: '\u200b',
-            children: [
-              //
-              { name: '+₱15 if own account', price: 0 },
+              { name: '6 months', price: 99 },
               //
             ],
           },
@@ -194,7 +178,7 @@ module.exports = {
             children: [
               //
               { name: '1 month', price: 120 },
-              { name: '3 months', price: 210 },
+              { name: '3 months', price: 300 },
               //
             ],
           },
@@ -202,8 +186,8 @@ module.exports = {
             parent: 'Solo Account',
             children: [
               //
-              { name: '1 month', price: 395 },
-              { name: '3 months', price: 830 },
+              { name: '1 month', price: 410 },
+              { name: '3 months', price: 1200 },
               //
             ],
           },
@@ -259,41 +243,8 @@ module.exports = {
       },
       {
         //Category
-        name: 'TIDAL',
-        keywords: ['tidal','hifi'],
-        channel: '1054989652416798750',
-        status: 2,
-        id: '',
-        image: 'https://media.discordapp.net/attachments/1093391705753002064/1105784399347318854/Logopit_1683709816535.png?width=1440&height=360',
-        types: [
-          //Types
-          {
-            parent: 'HiFi',
-            children: [
-              //
-              { name: '1 month', price: 35 },
-              { name: '3 months', price: 55 },
-              { name: '6 months', price: 80 },
-              { name: '8 months', price: 90 },
-              { name: '12 months', price: 110 },
-              //
-            ],
-          },
-          {
-            parent: '\u200b',
-            children: [
-              //
-              { name: '+15 if HiFi+', price: 0 },
-              //
-            ],
-          },
-          //
-        ],
-      },
-      {
-        //Category
         name: 'Developer Badge',
-        keywords: ['dev','badge'],
+        keywords: ['dev','badge','db'],
         channel: '1057249812656955514',
         rs: '1078708594188496987',
         status: 1,
