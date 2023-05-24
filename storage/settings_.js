@@ -126,7 +126,7 @@ module.exports = {
       {
         //Category
         name: 'Youtube',
-        keywords: ['yt', 'yt prem','youtube'],
+        keywords: ['yt','youtube'],
         channel: '1054989652416798750',
         status: 2,
         id: '1096319565606174800',
@@ -145,7 +145,7 @@ module.exports = {
             parent: 'Solo',
             children: [
               //
-              { name: '1 month', price: 40 },
+              { name: '1 month', price: 30 },
               { name: '4 months', price: 60 },
               { name: '6 months', price: 80 },
               //
