@@ -433,9 +433,9 @@ module.exports = {
             children: [
               //
               { name: '1 month', price: 25, rs: 0 },
-              { name: '2 months', price: 30, rs: 0 },
-              { name: '3 months', price: 35, rs: 0 },
-              { name: '12 months', price: 45, rs: 0 },
+              { name: '2 months', price: 40, rs: 0 },
+              { name: '3 months', price: 50, rs: 0 },
+              { name: '12 months', price: 120, rs: 0 },
               //
             ],
           },
@@ -595,13 +595,11 @@ module.exports = {
         types: [
           //Types
           {
-            parent: 'Solo',
+            parent: 'Shared',
             children: [
               //
-              { name: '1 month', price: 60 },
-              { name: '2 months', price: 85 },
-              { name: '3 months', price: 95 },
-              { name: '12 months', price: 230 },
+              { name: '1 month', price: 40 },
+              { name: '2 months', price: 55 },
               //
             ],
           },
@@ -613,7 +611,7 @@ module.exports = {
         name: 'Windscribe VPN',
         keywords: ['windscribe','wind'],
         channel: '1094056028938698833',
-        status: 2,
+        status: 4,
         id: '',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1105784399875813496/Logopit_1683709883410.png?width=1440&height=360',
         types: [
@@ -642,14 +640,19 @@ module.exports = {
         types: [
           //Types
           {
+            parent: 'Shared',
+            children: [
+              //
+              { name: '1 month', price: 65 },
+              //
+            ],
+          },
+          //
+          {
             parent: 'Solo',
             children: [
               //
-              { name: '7 days', price: 80 },
-              { name: '14 days', price: 70 },
-              { name: '1 month', price: 85 },
-              { name: '2 months', price: 120 },
-              { name: '3 months', price: 165 },
+              { name: '1 month', price: 95 },
               //
             ],
           },
