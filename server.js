@@ -573,7 +573,7 @@ client.on("messageCreate", async (message) => {
     }
     let row = new MessageActionRow().addComponents(
       new MessageButton().setEmoji("🛑").setCustomId("breakChecker-").setStyle("SECONDARY"),
-      new MessageButton().setEmoji("⌛").setCustomId("checkerStatus-").setStyle("SECONDARY")
+      new MessageButton().setEmoji("⌛").setCustomId("checkerStatus-"+scanData.id).setStyle("SECONDARY")
     );
     await message.channel.send({content: 'Fetching nitro codes ('+codes.length+') '+emojis.loading, components: [row]}).then(botMsg => msg = botMsg)
     
@@ -618,7 +618,7 @@ client.on("messageCreate", async (message) => {
           }
         if (!res.retry_after) {
           fetched = true
-          msg.edit('Fetching nitro codes ('+(i)+'/'+codes.length+') '+emojis.loading)
+          //msg.edit('Fetching nitro codes ('+(i)+'/'+codes.length+') '+emojis.loading)
           let e = res.expires_at ? moment(res.expires_at).unix() : null
           codes[i].expire = !isNaN(e) ? Number(e) : 'Expired'
           let expire = res.expires_at ? 'Expires in <t:'+e+':f>' : '`Expired`'
@@ -1676,8 +1676,19 @@ client.on('interactionCreate', async inter => {
       inter.message.edit({components: []})
     }
     else if (id.startsWith('checkerStatus-')) {
-      let user = id.replace('checkerStatus-','')
-      let 
+      let userId = id.replace('checkerStatus-','')
+      let data = shop.checkers.find(c => c.id == userId)
+      if (data) {
+        let embed = new MessageEmbed()
+        .setColor(colors.none)
+        .addFields({
+          name: 'Checker Status',
+          value: 'Total: **'+data.total+'**\nClaimable: **'+data.valid+'**\nClaimed: **'+data.claimed+'**\nInvalid: **'+data.invalid+'**'
+        })
+        inter.reply({embeds: [embed], ephemeral: true})
+      } else {
+        inter.reply({content: 'No data was found'})
+      }
     }
     else if (id.startsWith('reply-')) {
       let reply = id.replace('reply-','')
