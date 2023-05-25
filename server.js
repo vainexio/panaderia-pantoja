@@ -572,7 +572,7 @@ client.on("messageCreate", async (message) => {
       scanData = shop.checkers.find(c => c.id === message.author.id)
     }
     let row = new MessageActionRow().addComponents(
-      new MessageButton().setEmoji("🛑").setCustomId("breakChecker-").setStyle("SECONDARY"),
+      new MessageButton().setEmoji("🛑").setLabel('Stop').setCustomId("breakChecker-").setStyle("SECONDARY"),
       new MessageButton().setEmoji("⌛").setCustomId("checkerStatus-"+scanData.id).setStyle("SECONDARY")
     );
     await message.channel.send({content: 'Fetching nitro codes ('+codes.length+') '+emojis.loading, components: [row]}).then(botMsg => msg = botMsg)
@@ -1683,7 +1683,7 @@ client.on('interactionCreate', async inter => {
         .setColor(colors.none)
         .addFields({
           name: 'Checker Status',
-          value: 'Total: **'+data.total+'**\nClaimable: **'+data.valid+'**\nClaimed: **'+data.claimed+'**\nInvalid: **'+data.invalid+'**'
+          value: 'Total Checked: **'+data.total+'**\nClaimable: **'+data.valid+'**\nClaimed: **'+data.claimed+'**\nInvalid: **'+data.invalid+'**'
         })
         inter.reply({embeds: [embed], ephemeral: true})
       } else {
