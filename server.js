@@ -541,9 +541,10 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer.json(),'json')
   }
   //Nitro checker
-  if (message.channel.id === shop.channels.checker && !message.author.bot) {
+  if (message.channel.name === 'nitro-checker' && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
+    if (shop.checkers.length > 0) return message.reply(emojis.warning+' Someone is currently scanning links.\nPlease use the checker one at a time to prevent rate limitation.')
     let codes = []
     let text = ''
     let ind = emojis.check+' = Claimable\n'+emojis.x+' = Claimed/Invalid'
@@ -586,8 +587,9 @@ client.on("messageCreate", async (message) => {
         scanData.total++
       }
       if (shop.breakChecker) {
-        msg.edit({content: "Interaction was interrupted\n**"+scanData.total+"/"+codes.length+"** link(s) was put into stocks"})
+        shop.checkers = []
         shop.breakChecker = false
+        msg.edit({content: emojis.warning+" Interaction was interrupted\n**"+scanData.total+"/"+codes.length+"** link(s) was put into stocks"})
       } else msg.edit({content: emojis.check+" Stocked **"+codes.length+"** link(s)", components: []})
       return;
     }
@@ -638,7 +640,8 @@ client.on("messageCreate", async (message) => {
     }
     if (shop.breakChecker) {
       shop.breakChecker = false
-      msg.edit({content: "Interaction was interrupted\n**"+scanData.total+" link(s) was scanned"})
+      shop.checkers = []
+      msg.edit({content: emojis.warning+" Interaction was interrupted\n**"+scanData.total+"** link(s) was scanned"})
       return;
     }
     codes.sort((a, b) => (b.expire - a.expire));
@@ -676,6 +679,7 @@ client.on("messageCreate", async (message) => {
     msg.delete();
     console.log(embeds.length)
     message.channel.send({embeds: embeds.length > 0 ? embeds : [embed]})
+    shop.checkers = []
   }
   //Sticky
   let filter = filteredWords.find(w => message.content?.toLowerCase().includes(w))
@@ -1668,7 +1672,11 @@ client.on('interactionCreate', async inter => {
     else if (id.startsWith('breakChecker-')) {
       let user = id.replace('breakChecker-','')
       shop.breakChecker = true
-      inter.reply({content: emojis.check+" Forced Stop", ephemeral: true})
+      inter.reply({content: emojis.loading+" Stopping... Please wait", ephemeral: true})
+      inter.message.edit({components: []})
+    }
+    else if (id.startsWith('checkerStatus-')) {
+      let user = id.replace('checkerStatus-','')
     }
     else if (id.startsWith('reply-')) {
       let reply = id.replace('reply-','')
