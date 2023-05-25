@@ -1038,7 +1038,7 @@ client.on('interactionCreate', async inter => {
         await drops.send({content: (note ? note.value : '')+links}).then(msg => dropMsg = msg)
         //
         let row = new MessageActionRow().addComponents(
-          new MessageButton().setCustomId("drop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📤').setLabel("Release to "+user.user.tag),
+          new MessageButton().setCustomId("drop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📩').setLabel("Release to "+user.user.tag),
           new MessageButton().setCustomId("showDrop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📋'),
           new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('♻️')
         );
