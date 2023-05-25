@@ -598,7 +598,7 @@ client.on("messageCreate", async (message) => {
     for (let i in codes) {
       if (shop.breakChecker) break;
       let fetched = false
-      let waitingTime = 0
+      let waitingTime = 0//codes.length >= 10 ? 5000 : codes.length >= 5 ? 1000 : 0
       
       while (!fetched) {
         waitingTime > 0 ? await sleep(waitingTime) : null
@@ -607,9 +607,9 @@ client.on("messageCreate", async (message) => {
         let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code)
         res = eCode ? eCode : await res.json()
         if (res.message && res.retry_after) {
-          console.log('retry for '+codes[i].code)
           let ret = Math.ceil(res.retry_after)
           ret = ret.toString()+"000"
+          console.log('Retry for '+codes[i].code+': '+ret)
           waitingTime = Number(ret) < 300000 ? Number(ret) : 60000
         if (res.retry_after >= 600000) {
           fetched = true
