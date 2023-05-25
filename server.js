@@ -194,7 +194,7 @@ const cmdHandler = require('./functions/commands.js')
 const {checkCommand, isCommand, isMessage, getTemplate} = cmdHandler
 //Others
 const others = require('./functions/others.js')
-const {stringJSON, fetchKey, ghostPing, moderate, getPercentage, wait, getPercentageEmoji, randomTable, scanString, requireArgs, getArgs, makeButton, makeRow} = others
+const {stringJSON, fetchKey, ghostPing, moderate, getPercentage, sleep, getPercentageEmoji, randomTable, scanString, requireArgs, getArgs, makeButton, makeRow} = others
 //Roles Handler
 const roles = require('./functions/roles.js')
 const {getRole, addRole, removeRole, hasRole} = roles
@@ -474,27 +474,27 @@ client.on("messageCreate", async (message) => {
     let botMsg
     let waitingTime = 1000
     await message.channel.send('** **               <:trucked_runner:1103701285091422288>               ** **:truck:').then(msg => botMsg = msg)
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>             ** **:truck:')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>          ** **:truck:')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>       ** **:truck:')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>    ** **:truck:')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288> ** **:truck:')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>:truck:')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **               <:truck_runner:1103701244331167815>')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **        :truck:<:trucked_runner:1103701285091422288>')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **      :truck:  <:trucked_runner:1103701285091422288>')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** **   :truck:     <:trucked_runner:1103701285091422288>')
-    await wait(waitingTime)
+    await sleep(waitingTime)
     await botMsg.edit('** ** :truck:       <:trucked_runner:1103701285091422288>')
     truck = false
   }
@@ -541,8 +541,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer.json(),'json')
   }
   //Nitro checker
-  if (message.channel.name?.includes('nitro-checker') && !message.author.bot) {
-    //
+  if (message.channel.id === shop.channels.checker && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
     let codes = []
@@ -566,44 +565,45 @@ client.on("messageCreate", async (message) => {
         valid: 0,
         claimed: 0,
         invalid: 0,
+        total: 0,
       }
       shop.checkers.push(data)
       scanData = shop.checkers.find(c => c.id === message.author.id)
     }
     let row = new MessageActionRow().addComponents(
-      new MessageButton().setLabel("Force Stop").setEmoji("⛔").setCustomId("breakChecker-").setStyle("SECONDARY"),
-      new MessageButton().setLabel("Status").setEmoji("⌛").setCustomId("checkerStatus-").setStyle("SECONDARY")
+      new MessageButton().setEmoji("🛑").setCustomId("breakChecker-").setStyle("SECONDARY"),
+      new MessageButton().setEmoji("⌛").setCustomId("checkerStatus-").setStyle("SECONDARY")
     );
     await message.channel.send({content: 'Fetching nitro codes ('+codes.length+') '+emojis.loading, components: [row]}).then(botMsg => msg = botMsg)
-      //msg.edit('Fetching nitro codes (Pending - Adding to stocks first) '+emojis.loading)
-    //
+    
     if (message.content.toLowerCase().includes("stocks") && !message.content.toLowerCase().includes('sort')) {
       msg.edit("Fetching nitro codes (stocking - "+codes.length+") " + emojis.loading);
       for (let i in codes) {
-        if (shop.breakChecker) {
-          shop.breakChecker = false
-          break
-        };
+        if (shop.breakChecker) break;
         let stocks = await getChannel(shop.channels.stocks)
-        await wait(1000);
+        await sleep(1000);
         await stocks.send("https://discord.gift/"+codes[i].code);
+        scanData.total++
       }
-      msg.edit({content: emojis.check+" Stocked **"+codes.length+"** links(s)", components: []})
+      if (shop.breakChecker) {
+        msg.edit({content: "Interaction was interrupted\n**"+scanData.total+"/"+codes.length+"** link(s) was put into stocks"})
+        shop.breakChecker = false
+      } else msg.edit({content: emojis.check+" Stocked **"+codes.length+"** link(s)", components: []})
       return;
     }
     
     for (let i in codes) {
       if (shop.breakChecker) break;
       let fetched = false
-      let waitingTime = 1000
+      let waitingTime = 0
+      scanData.total++
       while (!fetched) {
-        await wait(waitingTime)
+        waitingTime > 0 ? await sleep(waitingTime) : null
         waitingTime = 0
         let eCode = expCodes.find(e => e.code === codes[i].code)
         let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code)
         res = eCode ? eCode : await res.json()
         if (res.message && res.retry_after) {
-          console.log(res)
           console.log('retry for '+codes[i].code)
           let ret = Math.ceil(res.retry_after)
           ret = ret.toString()+"000"
@@ -616,7 +616,6 @@ client.on("messageCreate", async (message) => {
           }
         if (!res.retry_after) {
           fetched = true
-          console.log(i+'/'+codes.length)
           msg.edit('Fetching nitro codes ('+(i)+'/'+codes.length+') '+emojis.loading)
           let e = res.expires_at ? moment(res.expires_at).unix() : null
           codes[i].expire = !isNaN(e) ? Number(e) : 'Expired'
@@ -639,9 +638,9 @@ client.on("messageCreate", async (message) => {
     }
     if (shop.breakChecker) {
       shop.breakChecker = false
+      msg.edit({content: "Interaction was interrupted\n**"+scanData.total+" link(s) was scanned"})
       return;
     }
-    //
     codes.sort((a, b) => (b.expire - a.expire));
     let embeds = []
     let embed = new MessageEmbed()
@@ -656,7 +655,7 @@ client.on("messageCreate", async (message) => {
       let expire = data.expire
       if (embed.fields.length <= 24) {
       embed = new MessageEmbed(embed)
-        .setFooter({ text: 'Sloopies Checker | '+message.author.tag})
+        .setFooter({ text: 'Checker | '+message.author.tag})
         .setTimestamp()
         
         if (codes.length == num) embeds.push(embed);
@@ -665,10 +664,10 @@ client.on("messageCreate", async (message) => {
         embeds.push(embed)
         embed = new MessageEmbed()
           .setColor(colors.none)
-          .setFooter({ text: 'Sloopies Checker | '+message.author.tag})
+          .setFooter({ text: 'Checker | '+message.author.tag})
           .setTimestamp()
       }
-      embed.addFields({name: num+". "+codes[i].code,value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : 'Expires in <t:'+expire+':f>')+'\n\u200b'})
+      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : 'Expires in <t:'+expire+':f>')+'\n\u200b'})
       if (message.content.toLowerCase().includes('sort')) {
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
@@ -1936,7 +1935,7 @@ client.on('interactionCreate', async inter => {
             row.style = types[i] ? types[i] : types[0]
             row.label = args[i] ? args[i] : args[0]
             await inter.message.edit({components: [comp]})
-            await wait(delay)
+            await sleep(delay)
           }
         }
     }
@@ -1944,16 +1943,16 @@ client.on('interactionCreate', async inter => {
       await changeRow('start','DANGER',true)
       inter.deferUpdate()
       await inter.message.edit({components: [comp]})
-      await wait(delay)
+      await sleep(delay)
       await changeRow('start','PRIMARY',true)
       await inter.message.edit({components: [comp]})
-      await wait(delay)
+      await sleep(delay)
       await changeRow('start','SUCCESS',true)
       await inter.message.edit({components: [comp]})
-      await wait(delay)
+      await sleep(delay)
       await changeRow('start','SECONDARY',true)
       inter.message.edit({components: [comp]})
-      await wait(delay)
+      await sleep(delay)
       await changeRow('mix','DANGER',true)
       inter.message.edit({components: [comp]})
       await changeRow('start','SECONDARY',true)

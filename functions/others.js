@@ -126,7 +126,7 @@ module.exports = {
       }
     }
   },
-  wait: async function (miliseconds) {
+  sleep: async function (miliseconds) {
     return new Promise(resolve => setTimeout(resolve, miliseconds));
   },
   moderate: function(member,perms) {
