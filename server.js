@@ -1677,6 +1677,7 @@ client.on('interactionCreate', async inter => {
     }
     else if (id.startsWith('checkerStatus-')) {
       let user = id.replace('checkerStatus-','')
+      let 
     }
     else if (id.startsWith('reply-')) {
       let reply = id.replace('reply-','')
