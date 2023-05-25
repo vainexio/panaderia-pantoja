@@ -573,7 +573,7 @@ client.on("messageCreate", async (message) => {
     }
     let row = new MessageActionRow().addComponents(
       new MessageButton().setEmoji("🛑").setLabel('Stop').setCustomId("breakChecker-").setStyle("SECONDARY"),
-      new MessageButton().setEmoji("⌛").setCustomId("checkerStatus-"+scanData.id).setStyle("SECONDARY")
+      new MessageButton().setEmoji("⌛").setLabel('Status').setCustomId("checkerStatus-"+scanData.id).setStyle("SECONDARY")
     );
     await message.channel.send({content: 'Fetching nitro codes ('+codes.length+') '+emojis.loading, components: [row]}).then(botMsg => msg = botMsg)
     
