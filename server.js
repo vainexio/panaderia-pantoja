@@ -571,7 +571,8 @@ client.on("messageCreate", async (message) => {
       scanData = shop.checkers.find(c => c.id === message.author.id)
     }
     let row = new MessageActionRow().addComponents(
-      new MessageButton().setLabel("Stop Checking").setEmoji("🛑").setCustomId("breakChecker-").setStyle("SECONDARY")
+      new MessageButton().setLabel("Force Stop").setEmoji("⛔").setCustomId("breakChecker-").setStyle("SECONDARY"),
+      new MessageButton().setLabel("Status").setEmoji("⌛").setCustomId("checkerStatus-").setStyle("SECONDARY")
     );
     await message.channel.send({content: 'Fetching nitro codes ('+codes.length+') '+emojis.loading, components: [row]}).then(botMsg => msg = botMsg)
       //msg.edit('Fetching nitro codes (Pending - Adding to stocks first) '+emojis.loading)
@@ -592,10 +593,7 @@ client.on("messageCreate", async (message) => {
     }
     
     for (let i in codes) {
-      if (shop.breakChecker) {
-        shop.breakChecker = false
-        break
-      };
+      if (shop.breakChecker) break;
       let fetched = false
       let waitingTime = 1000
       while (!fetched) {
@@ -639,7 +637,10 @@ client.on("messageCreate", async (message) => {
         }
       }
     }
-    if (shop.breakChecker) return;
+    if (shop.breakChecker) {
+      shop.breakChecker = false
+      return;
+    }
     //
     codes.sort((a, b) => (b.expire - a.expire));
     let embeds = []
