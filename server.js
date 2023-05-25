@@ -604,12 +604,18 @@ client.on("messageCreate", async (message) => {
         waitingTime > 0 ? await sleep(waitingTime) : null
         waitingTime = 0
         let eCode = expCodes.find(e => e.code === codes[i].code)
-        let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code)
+        let auth = {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bot '+token,
+          }
+        }
+        let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code,auth)
         res = eCode ? eCode : await res.json()
         if (res.message && res.retry_after) {
+          console.log('Retry '+codes[i].code+' — '+res.retry_after)
           let ret = Math.ceil(res.retry_after)
           ret = ret.toString()+"000"
-          console.log('Retry for '+codes[i].code+': '+ret)
           waitingTime = Number(ret) < 300000 ? Number(ret) : 60000
         if (res.retry_after >= 600000) {
           fetched = true
@@ -679,7 +685,6 @@ client.on("messageCreate", async (message) => {
       }
     }
     msg.delete();
-    console.log(embeds.length)
     message.channel.send({embeds: embeds.length > 0 ? embeds : [embed]})
     shop.checkers = []
   }
@@ -690,7 +695,6 @@ client.on("messageCreate", async (message) => {
     if (!await getPerms(message.member,4)) return message.reply({content: emojis.warning+' Insufficient Permissions'});
     let args = await requireArgs(message,1)
     if (!args) return;
-    console.log(args[1])
     
     let drops = await getChannel(shop.channels.drops)
     await fetchKey(drops,args[1],message)
