@@ -591,6 +591,7 @@ client.on("messageCreate", async (message) => {
         shop.breakChecker = false
         msg.edit({content: emojis.warning+" Interaction was interrupted\n**"+scanData.total+"/"+codes.length+"** link(s) was put into stocks"})
       } else msg.edit({content: emojis.check+" Stocked **"+codes.length+"** link(s)", components: []})
+      shop.checkers = []
       return;
     }
     
@@ -598,7 +599,7 @@ client.on("messageCreate", async (message) => {
       if (shop.breakChecker) break;
       let fetched = false
       let waitingTime = 0
-      scanData.total++
+      
       while (!fetched) {
         waitingTime > 0 ? await sleep(waitingTime) : null
         waitingTime = 0
@@ -617,6 +618,7 @@ client.on("messageCreate", async (message) => {
         }
           }
         if (!res.retry_after) {
+          scanData.total++
           fetched = true
           //msg.edit('Fetching nitro codes ('+(i)+'/'+codes.length+') '+emojis.loading)
           let e = res.expires_at ? moment(res.expires_at).unix() : null
