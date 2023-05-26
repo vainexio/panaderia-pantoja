@@ -622,12 +622,10 @@ client.on("messageCreate", async (message) => {
           fetched = true
           scanData.total++
           msg.edit('Fetching nitro codes ('+(i)+'/'+codes.length+') '+emojis.loading)
-          let e = res.expires_at ? moment(new Date()).diff(moment(res.expires_at)) : null// : null
-          console.log(e)
-          let diffDuration = moment.duration(e);
-          console.log(diffDuration.asHours())
-          codes[i].expire = diffDuration.asHours()//!isNaN(e) ? Number(e) : 'Expired'
-          let expire = res.expires_at ? 'Expires in <t:'+e+':f>' : '`Expired`'
+          let e = res.expires_at ? moment(res.expires_at).diff(moment(new Date())) : null// : null
+          let diffDuration = e ? moment.duration(e) : null;
+          codes[i].expire = diffDuration ? Math.floor(diffDuration.asHours()) : null//!isNaN(e) ? Number(e) : 'Expired'
+          //let expire = res.expires_at ? 'Expires in <t:'+e+':f>' : '`Expired`'
           codes[i].emoji = res.uses === 0 ? emojis.check : emojis.x
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
@@ -637,6 +635,7 @@ client.on("messageCreate", async (message) => {
               code: codes[i].code,
               expires_at: res.expires_at,
               uses: res.uses,
+              user: res.user,
             }
             expCodes.push(data)
           }
@@ -676,7 +675,7 @@ client.on("messageCreate", async (message) => {
           .setFooter({ text: 'Checker 2.0 | '+message.author.tag})
           .setTimestamp()
       }
-      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : 'Expires in '+expire+'')+'\n\u200b'})
+      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : 'Expires in **'+expire+' hours**')+'\n\u200b'})
       if (sortStocks) {
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
