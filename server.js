@@ -541,11 +541,11 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer.json(),'json')
   }
   //Nitro checker
-  if (message.channel.name === 'nitro-' && !message.author.bot) {
+  if (message.channel.name === 'nitro-checker' && !message.author.bot) {
     let args = getArgs(message.content)
-    let addStocks = args[0].toLowerCase() === 'stocks' ? true : false
-    let sortStocks = args[1].toLowerCase() === 'sort' && addStocks ? true : false
     if (args.length === 0) return;
+    let addStocks = args[0].toLowerCase() === 'stocks' ? true : false
+    let sortStocks = args[1]?.toLowerCase() === 'sort' && addStocks ? true : false
     if (shop.checkers.length > 0) return message.reply(emojis.warning+' Someone is currently scanning links.\nPlease use the checker one at a time to prevent rate limitation.')
     let codes = []
     let text = ''
@@ -622,8 +622,11 @@ client.on("messageCreate", async (message) => {
           fetched = true
           scanData.total++
           msg.edit('Fetching nitro codes ('+(i)+'/'+codes.length+') '+emojis.loading)
-          let e = res.expires_at ? moment(res.expires_at).unix() : null
-          codes[i].expire = !isNaN(e) ? Number(e) : 'Expired'
+          let e = res.expires_at ? moment(new Date()).diff(moment(res.expires_at)) : null// : null
+          console.log(e)
+          let diffDuration = moment.duration(e);
+          console.log(diffDuration.asHours())
+          codes[i].expire = diffDuration.asHours()//!isNaN(e) ? Number(e) : 'Expired'
           let expire = res.expires_at ? 'Expires in <t:'+e+':f>' : '`Expired`'
           codes[i].emoji = res.uses === 0 ? emojis.check : emojis.x
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
@@ -673,7 +676,7 @@ client.on("messageCreate", async (message) => {
           .setFooter({ text: 'Checker 2.0 | '+message.author.tag})
           .setTimestamp()
       }
-      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : 'Expires in <t:'+expire+':f>')+'\n\u200b'})
+      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : 'Expires in '+expire+'')+'\n\u200b'})
       if (sortStocks) {
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
