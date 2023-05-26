@@ -605,7 +605,11 @@ client.on("messageCreate", async (message) => {
         waitingTime > 0 ? await sleep(waitingTime) : null
         waitingTime = 0
         let eCode = expCodes.find(e => e.code === codes[i].code)
-        let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code)
+        let auth = {
+          method: 'GET',
+          headers: { 'Authorization': 'Bot '+token }
+        }
+        let res = eCode ? eCode : await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+codes[i].code,auth)
         res = eCode ? eCode : await res.json()
         if (res.message && res.retry_after) {
           console.log('retry for '+codes[i].code)
@@ -614,18 +618,17 @@ client.on("messageCreate", async (message) => {
           waitingTime = Number(ret) < 300000 ? Number(ret) : 60000
         if (res.retry_after >= 600000) {
           fetched = true
-          text = '⚠️ The resource is currently being rate limited. Please try again in '+res.retry_after+' seconds'
+          shop.breakChecker = true
+          await message.channel.send('⚠️ The resource is currently being rate limited. Please try again in '+res.retry_after+' seconds')
           break;
         }
           }
         if (!res.retry_after) {
           fetched = true
           scanData.total++
-          msg.edit('Fetching nitro codes ('+(i)+'/'+codes.length+') '+emojis.loading)
-          let e = res.expires_at ? moment(res.expires_at).diff(moment(new Date())) : null// : null
+          let e = res.expires_at ? moment(res.expires_at).diff(moment(new Date())) : null
           let diffDuration = e ? moment.duration(e) : null;
-          codes[i].expire = diffDuration ? Math.floor(diffDuration.asHours()) : null//!isNaN(e) ? Number(e) : 'Expired'
-          //let expire = res.expires_at ? 'Expires in <t:'+e+':f>' : '`Expired`'
+          codes[i].expire = diffDuration ? Math.floor(diffDuration.asHours()) : null
           codes[i].emoji = res.uses === 0 ? emojis.check : emojis.x
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
@@ -675,7 +678,7 @@ client.on("messageCreate", async (message) => {
           .setFooter({ text: 'Checker 2.0 | '+message.author.tag})
           .setTimestamp()
       }
-      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : 'Expires in **'+expire+' hours**')+'\n\u200b'})
+      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : '> Expires in **'+expire+' hours**')+'\n\u200b'})
       if (sortStocks) {
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
