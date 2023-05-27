@@ -540,7 +540,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
   }
-  //Nitro checker
+  //Nitro checker 2.1
   if (message.channel.name === 'nitro-checker' && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -559,7 +559,7 @@ client.on("messageCreate", async (message) => {
     }
     }
     if (codes.length === 0) return;
-    if (codes.length > 50 && message.content.includes) return message.reply('You can only request a maximum of 50 giftcodes per message')
+    if (codes.length > 50 && ((addStocks && sortStocks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 50 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
     
     let scanData = shop.checkers.find(c => c.id === message.author.id)
     if (!scanData) {
