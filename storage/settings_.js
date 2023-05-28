@@ -68,6 +68,7 @@ module.exports = {
           ]),
         ),
     channels: {
+      checker: '1060779928506880040',
       gcash: '1105332833079267460',
       announcements: '1102417073642164274',
       status: '1054766857552396419', //vc
@@ -107,7 +108,6 @@ module.exports = {
               { name: '3 months', price: 50 },
               { name: '4 months', price: 70 },
               { name: '6 months', price: 110 },
-              { name: '8 months', price: 145 },
               { name: '12 months', price: 130 },
               //
             ],
