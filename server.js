@@ -527,7 +527,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
   }
-  let checkerVersion = 'Checker 2.2u'
+  let checkerVersion = 'Checker 2.3u, faster stocking'
   if (message.channel.id === shop.channels.checker && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -566,11 +566,10 @@ client.on("messageCreate", async (message) => {
     await message.channel.send({content: 'Fetching nitro codes ('+codes.length+') '+emojis.loading, components: [row]}).then(botMsg => msg = botMsg)
     
     if (addStocks && !sortStocks) {
+      let stocks = await getChannel(shop.channels.stocks)
       msg.edit("Adding stocks ("+codes.length+") " + emojis.loading);
       for (let i in codes) {
         if (shop.breakChecker) break;
-        let stocks = await getChannel(shop.channels.stocks)
-        await sleep(1000);
         await stocks.send("https://discord.gift/"+codes[i].code);
         scanData.total++
       }
