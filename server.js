@@ -73,47 +73,31 @@ client.on("ready", async () => {
     newDoc.count = 0
     await newDoc.save()
   }
-  if (cmd) {
+  if (slashCmd.register) {
   let discordUrl = "https://discord.com/api/v10/applications/"+client.user.id+"/commands"
-  let deleteUrl = "https://discord.com/api/v10/applications/"+client.user.id+"/commands/"
-  let json = {
-    "name": "refund",
-    "type": 1,
-    "description": "Calculate the amount to refund",
-    "options": [
-      {
-        "name": 'price',
-        "description": 'Price paid',
-        "type": 10,
-        "required": true,
-      },
-      {
-        "name": 'subscription',
-        "description": 'Subscription days',
-        "type": 10,
-        "required": true,
-      },
-      {
-        "name": 'remaining',
-        "description": 'Remaining days',
-        "type": 10,
-        "required": true,
-      },
-      ],
-  }
-  
   let headers = {
     "Authorization": "Bot "+token,
-    'Content-Type': 'application/json'
+    "Content-Type": 'application/json'
   }
-  let response = await fetch(discordUrl, {
-    method: 'post',
-    body: JSON.stringify(json),
-    headers: headers
-  })
+  for (let i in slashes) {
+    let json = slashes[i]
+    let response = await fetch(discordUrl, {
+      method: 'post',
+      body: JSON.stringify(json),
+      headers: headers
+    });
     response = await response.json();
-    console.log(response)
-}
+    //console.log(response)
+  }
+    for (let i in slashCmd.deleteSlashes) {
+      let deleteUrl = "https://discord.com/api/v10/applications/"+client.user.id+"/commands/"+slashCmd.deleteSlashes[i]
+      let deleteRes = await fetch(deleteUrl, {
+        method: 'delete',
+        headers: headers
+      })
+      //console.log(deleteRes)
+    }
+  }
   console.log('Successfully logged in to discord bot.')
   client.user.setPresence({ status: 'idle', activities: [{ name: 'Sloopies', type: "WATCHING" }] });
  // await mongoose.connect(mongooseToken,{keepAlive: true});
@@ -139,6 +123,9 @@ let listener = app.listen(process.env.PORT, function() {
 var output = "901759430457167872";
 const settings = require('./storage/settings_.js')
 const {filteredWords, AI, shop, notices, auth, prefix, colors, status, theme, commands, permissions, emojis} = settings
+//Slash Commands
+const slashCmd = require("./storage/slashCommands.js");
+const { slashes } = slashCmd;
 /*
 ██████╗░███████╗██████╗░███╗░░░███╗░██████╗
 ██╔══██╗██╔════╝██╔══██╗████╗░████║██╔════╝
