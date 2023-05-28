@@ -21,7 +21,7 @@ let emojis = {
   //
   check: '<a:check:969936488739512340>',
   x: '<a:Xmark:969401924736651284>',
-  loading: '<a:loading:968743431528669210>',
+  loading: '<a:loading2:976650648600854538>',
   warning: '<a:S_error:1095504279042805820>',
   online: '<:online_:1004014930959286342>',
   idle: '<:Idle_:1004014897417424938>',
@@ -318,6 +318,16 @@ module.exports = {
           //Types
           {
             parent: 'Nitro stocks dropper',
+            children: [
+              //
+              { name: 'Uncovered hosting', price: 300 },
+              { name: 'Covered hosting', price: 500 },
+              { name: 'Features:\n+ </drop:1102423261914091530> command\n+ </stocks:1102433613116616734> command\n+ nitro links checker\n'}
+              //
+            ],
+          },
+          {
+            parent: 'Nitro links checker',
             children: [
               //
               { name: 'Uncovered hosting', price: 300 },

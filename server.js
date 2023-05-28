@@ -527,7 +527,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
   }
-  //Nitro checker 2.1 (w/ unix)
+  let checkerVersion = 'Checker 2.2u'
   if (message.channel.id === shop.channels.checker && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -536,7 +536,6 @@ client.on("messageCreate", async (message) => {
     if (shop.checkers.length > 0) return message.reply(emojis.warning+' Someone is currently scanning links.\nPlease use the checker one at a time to prevent rate limitation.')
     let codes = []
     let text = ''
-    let ind = emojis.check+' = Claimable\n'+emojis.x+' = Claimed/Invalid'
     let msg = null
     for (let i in args) {
       if (args[i].toLowerCase().includes('discord.gift')) {
@@ -618,7 +617,7 @@ client.on("messageCreate", async (message) => {
           let e2 = res.expires_at ? moment(res.expires_at).unix() : null;
           codes[i].expireUnix = e2 ? "\n<t:"+e2+":f>" : '';
           codes[i].expire = diffDuration ? Math.floor(diffDuration.asHours()) : null
-          codes[i].emoji = res.uses === 0 ? emojis.check : emojis.x
+          codes[i].emoji = res.uses === 0 ? emojis.check : res.expires_at ? emojis.x : emojis.warning
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
           codes[i].state === 'Claimable' ? scanData.valid++ : codes[i].state === 'Claimed' ? scanData.claimed++ : scanData.invalid++
@@ -656,7 +655,7 @@ client.on("messageCreate", async (message) => {
       let expireUnix = data.expireUnix
       if (embed.fields.length <= 24) {
       embed = new MessageEmbed(embed)
-        .setFooter({ text: 'Checker 2.0 | '+message.author.tag})
+        .setFooter({ text: checkerVersion+' | '+message.author.tag})
         .setTimestamp()
         
         if (codes.length == num) embeds.push(embed);
@@ -665,7 +664,7 @@ client.on("messageCreate", async (message) => {
         embeds.push(embed)
         embed = new MessageEmbed()
           .setColor(colors.none)
-          .setFooter({ text: 'Checker 2.0 | '+message.author.tag})
+          .setFooter({ text: checkerVersion+' | '+message.author.tag})
           .setTimestamp()
       }
       embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : '> Expires in **'+expire+' hours**')+expireUnix+'\n\u200b'})
