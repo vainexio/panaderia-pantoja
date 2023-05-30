@@ -862,7 +862,7 @@ client.on("messageCreate", async (message) => {
     let responder = shop.ar.responders.find(res => content === shop.ar.prefix+res.command)
     if (responder) {
       if (responder.autoDelete) message.delete();
-      message.channel.send({content: responder.response ? responder.response : null, files: responder.files ? responder.files : [], components: responder.components ? [responder.components] : []})
+      message.channel.send({content: responder.response ? responder.response : null, embeds: responder.embed ? [response.embed] : [], files: responder.files ? responder.files : [], components: responder.components ? [responder.components] : []})
     }
   //
   let args = await getArgs(message.content)
