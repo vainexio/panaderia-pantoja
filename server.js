@@ -527,7 +527,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
   }
-  let checkerVersion = 'Checker 2.3u, faster stocking'
+  let checkerVersion = 'Checker 2.4uE, faster stocking'
   if (message.channel.id === shop.channels.checker && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -666,7 +666,7 @@ client.on("messageCreate", async (message) => {
           .setFooter({ text: checkerVersion+' | '+message.author.tag})
           .setTimestamp()
       }
-      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+user+'\n '+(!expire ? '`Expired`' : '> Expires in **'+expire+' hours**')+expireUnix+'\n\u200b'})
+      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : '> Expires in **'+expire+' hours**')+expireUnix+'\n\u200b'})
       if (sortStocks) {
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
