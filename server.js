@@ -532,7 +532,7 @@ client.on("messageCreate", async (message) => {
     let args = getArgs(message.content)
     if (args.length === 0) return;
     let addStocks = args[0].toLowerCase() === 'stocks' ? true : false
-    let sortStocks = args[1]?.toLowerCase() === 'sort' && addStocks ? true : false
+    let sortLinks = args[1]?.toLowerCase() === 'sort' && addStocks ? true : args[0]?.toLowerCase() === 'sort' ? true : false
     if (shop.checkers.length > 0) return message.reply(emojis.warning+' Someone is currently scanning links.\nPlease use the checker one at a time to prevent rate limitation.')
     let codes = []
     let text = ''
@@ -545,7 +545,7 @@ client.on("messageCreate", async (message) => {
     }
     }
     if (codes.length === 0) return;
-    if (codes.length > 50 && ((addStocks && sortStocks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 50 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
+    if (codes.length > 50 && ((addStocks && sortLinks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 50 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
     
     let scanData = shop.checkers.find(c => c.id === message.author.id)
     if (!scanData) {
@@ -565,7 +565,7 @@ client.on("messageCreate", async (message) => {
     );
     await message.channel.send({content: 'Fetching nitro codes ('+codes.length+') '+emojis.loading, components: [row]}).then(botMsg => msg = botMsg)
     
-    if (addStocks && !sortStocks) {
+    if (addStocks && !sortLinks) {
       let stocks = await getChannel(shop.channels.stocks)
       msg.edit("Adding stocks ("+codes.length+") " + emojis.loading);
       for (let i in codes) {
@@ -639,7 +639,7 @@ client.on("messageCreate", async (message) => {
       msg.edit({content: emojis.warning+" Interaction was interrupted\n**"+scanData.total+"** link(s) was scanned"})
       return;
     }
-    sortStocks ? codes.sort((a, b) => (b.expire - a.expire)) : null
+    sortLinks ? codes.sort((a, b) => (b.expire - a.expire)) : null
     let embeds = []
     let embed = new MessageEmbed()
     .setColor(colors.none)
@@ -654,8 +654,7 @@ client.on("messageCreate", async (message) => {
       let expireUnix = data.expireUnix
       if (embed.fields.length <= 24) {
       embed = new MessageEmbed(embed)
-        .setFooter({ text: checkerVersion+' | '+message.author.tag})
-        .setTimestamp()
+        .setFooter({ text: 'Version: '+checkerVersion})
         
         if (codes.length == num) embeds.push(embed);
       }
@@ -663,11 +662,10 @@ client.on("messageCreate", async (message) => {
         embeds.push(embed)
         embed = new MessageEmbed()
           .setColor(colors.none)
-          .setFooter({ text: checkerVersion+' | '+message.author.tag})
-          .setTimestamp()
+          .setFooter({ text: 'Version: '+checkerVersion})
       }
-      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : '> Expires in **'+expire+' hours**')+expireUnix+'\n\u200b'})
-      if (sortStocks) {
+      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : '> Expires in `'+expire+' hours`')+expireUnix+'\n\u200b'})
+      if (sortLinks && addStocks) {
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
       }
