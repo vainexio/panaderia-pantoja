@@ -1794,6 +1794,7 @@ client.on('interactionCreate', async inter => {
         let botMsg = null
         await inter.user.send({embeds: [embed], components: [row]}).then(msg => botMsg = msg).catch(err => inter.reply({content: emojis.warning+" Failed to send verification. Please open your DMs!", ephemeral: true}))
         let channels = ''
+        if (!botMsg) return;
         inter.guild.channels.cache.forEach( ch => {
           if (ch.parent?.name === 'PRICELIST' && ch.type !== 'GUILD_TEXT') {
             channels += '\n<:circley:1072388650337308742> <#'+ch.id+'>'
