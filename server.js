@@ -1079,15 +1079,9 @@ client.on('interactionCreate', async inter => {
       let arrays = []
       let messages = await stocks.messages.fetch({limit: 100}).then(async messages => {
         messages.forEach(async (gotMsg) => {
-          quan++
+          if (gotMsg.content.includes('discord.gift')) quan++
         })
       })
-      
-      if (quan > 0) {
-        let foundCat = shop.pricelists.find(c => c.name.toLowerCase().includes('nitro'))
-        if (!foundCat) return inter.reply({content: emojis.warning+' Cannot find category'})
-        foundCat.status = 1
-      }
       
       let messages2 = await stocks2.messages.fetch({ limit: 100 })
       .then(async (messages) => {
@@ -1095,32 +1089,16 @@ client.on('interactionCreate', async inter => {
           arrays.push(gotMsg.content);
         });
       });
-      let foundCat = shop.pricelists.find(c => c.name.toLowerCase().includes('nitro'))
-      if (!foundCat) return inter.reply(emojis.x+' Invalid Category: `nitro`')
-      let style = 'SECONDARY'
-      let quanStyle = 'SECONDARY'
-      let countStyle = 'SECONDARY'
-      foundCat.status = quan > 0 ? 1 : 3
-      let nitroEmoji = emojis.on
-      stockHolder[0].push(
-        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(nitroEmoji === emojis.off ? 'DANGER' : quanStyle).setEmoji(nitroEmoji).setDisabled(true),
-        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(countStyle).setLabel(quan.toString()).setDisabled(quan > 0 ? false : true),
-        new MessageButton().setCustomId('none-'+getRandom(1,10000)).setStyle(style).setLabel('Nitro Boost').setEmoji('<a:nitroboost:1057999297787985960>')
-      )
-  
+      
+      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro boost ('+quan+')').setEmoji('<a:nitroboost:1057999297787985960>'))
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {
           let args = await getArgs(msg);
-          let emoji2 = args[1]
-          let count = args[args.length-1]
-          let emoji = args[0]
-          let text = args.slice(2).join(" ").replace(count,'')
-          //if (stockHolder[holderCount].length === 5) holderCount++
-          holderCount++
-          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(emoji === emojis.off ? 'DANGER' : quanStyle).setEmoji(emoji).setDisabled(true)),//.setLabel(count)); //count == '0' ? 'DANGER' : 
-          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(countStyle).setLabel(count.toString()).setDisabled(Number(count) > 0 ? false : true))
-          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle(style).setLabel(text).setEmoji(emoji2))
+          let text = args[0].includes(':') ? args.slice(1).join(" ") : msg
+          let emoji = args[0].includes(':') ? args[0] : null
+          if (stockHolder[holderCount].length === 5) holderCount++
+          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle("SECONDARY").setLabel(text).setEmoji(args[0].includes(':') ? args[0] : null));
         }
       }
     
