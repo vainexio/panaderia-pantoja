@@ -527,7 +527,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
   }
-  let checkerVersion = 'Checker 2.4uE,  stocking'
+  let checkerVersion = 'Checker version 2.5miS'
   if (message.channel.id === shop.channels.checker && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -541,7 +541,7 @@ client.on("messageCreate", async (message) => {
       if (args[i].toLowerCase().includes('discord.gift')) {
       let code = args[i].replace(/https:|discord.gift|\/|/g,'').replace(/ /g,'')
       let found = codes.find(c => c.code === code)
-      !found ? codes.push({code: code, expire: null, emoji: null, user: null, state: null}) : null
+      !found ? codes.push({code: code.replace(/\|/g,''), expire: null, emoji: null, user: null, state: null}) : null
     }
     }
     if (codes.length === 0) return;
@@ -618,6 +618,7 @@ client.on("messageCreate", async (message) => {
           let diffDuration = e ? moment.duration(e) : null;
           let e2 = res.expires_at ? moment(res.expires_at).unix() : null;
           codes[i].expireUnix = e2 ? "\n<t:"+e2+":f>" : '';
+          codes[i].rawExpire = e2
           codes[i].expire = diffDuration ? Math.floor(diffDuration.asHours()) : null
           codes[i].emoji = res.uses === 0 ? emojis.check : res.expires_at ? emojis.x : emojis.warning
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
@@ -642,7 +643,7 @@ client.on("messageCreate", async (message) => {
       msg.edit({content: emojis.warning+" Interaction was interrupted\n**"+scanData.total+"** link(s) was scanned"})
       return;
     }
-    sortLinks ? codes.sort((a, b) => (b.expire - a.expire)) : null
+    sortLinks ? codes.sort((a, b) => (b.rawExpire - a.rawExpire)) : null
     let embeds = []
     let embed = new MessageEmbed()
     .setColor(colors.none)
@@ -658,7 +659,6 @@ client.on("messageCreate", async (message) => {
       if (embed.fields.length <= 24) {
       embed = new MessageEmbed(embed)
         .setFooter({ text: 'Version: '+checkerVersion})
-        
         if (codes.length == num) embeds.push(embed);
       }
       else {
@@ -667,7 +667,7 @@ client.on("messageCreate", async (message) => {
           .setColor(colors.none)
           .setFooter({ text: 'Version: '+checkerVersion})
       }
-      embed.addFields({name: num+". "+codes[i].code, value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : '> Expires in `'+expire+' hours`')+expireUnix+'\n\u200b'})
+      embed.addFields({name: num+". || https://discord.gift/"+codes[i].code+" ||", value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : 'Expires in `'+expire+' hours`')+expireUnix+'\n\u200b'})
       if (sortLinks && addStocks) {
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
