@@ -624,6 +624,7 @@ client.on("messageCreate", async (message) => {
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
           codes[i].state === 'Claimable' ? scanData.valid++ : codes[i].state === 'Claimed' ? scanData.claimed++ : scanData.invalid++
+          codes[i].type = res.store_listing?.sku?.name
           if ((!res.expires_at || res.uses >= 1) && !eCode) {
             let data = {
               code: codes[i].code,
@@ -652,6 +653,7 @@ client.on("messageCreate", async (message) => {
       num++
       let data = codes[i]
       let emoji = data.emoji ? data.emoji : emojis.warning
+      let type = data.type
       let state = data.state ? data.state : 'Unchecked'
       let user = data.user ? data.user : 'Unknown User'
       let expire = data.expire
@@ -669,7 +671,7 @@ client.on("messageCreate", async (message) => {
       }
       embed.addFields({
         name: num+". || https://discord.gift/"+codes[i].code+" ||", 
-        value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : 'Expires in `'+expire+' hours`')+expireUnix+'\n\u200b'
+        value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : 'Expires in `'+expire+' hours`')+expireUnix+'\n\u200b',
       })
       if (sortLinks && addStocks) {
         let stocks = await getChannel(shop.channels.stocks)
