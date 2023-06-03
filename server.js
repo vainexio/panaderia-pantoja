@@ -545,7 +545,7 @@ client.on("messageCreate", async (message) => {
     }
     }
     if (codes.length === 0) return;
-    if (codes.length > 50 && ((addStocks && sortLinks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 50 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
+    if (codes.length > 75 && ((addStocks && sortLinks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 75 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
     
     let scanData = shop.checkers.find(c => c.id === message.author.id)
     if (!scanData) {
