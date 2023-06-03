@@ -527,7 +527,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
   }
-  let checkerVersion = 'Checker 2.4uE, faster stocking'
+  let checkerVersion = 'Checker 2.4uE,  stocking'
   if (message.channel.id === shop.channels.checker && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -577,7 +577,10 @@ client.on("messageCreate", async (message) => {
         shop.checkers = []
         shop.breakChecker = false
         msg.edit({content: emojis.warning+" Interaction was interrupted\n**"+scanData.total+"/"+codes.length+"** link(s) was put into stocks"})
-      } else msg.edit({content: emojis.check+" Stocked **"+codes.length+"** link(s)", components: []})
+      } else {
+        msg.delete();
+        await message.channel.send({content: message.author.toString()+" Stocked **"+codes.length+"** link(s)", components: []})
+      }
       shop.checkers = []
       return;
     }
