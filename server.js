@@ -667,7 +667,10 @@ client.on("messageCreate", async (message) => {
           .setColor(colors.none)
           .setFooter({ text: checkerVersion})
       }
-      embed.addFields({name: num+". || https://discord.gift/"+codes[i].code+" ||", value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : 'Expires in `'+expire+' hours`')+expireUnix+'\n\u200b'})
+      embed.addFields({
+        name: num+". || https://discord.gift/"+codes[i].code+" ||", 
+        value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : 'Expires in `'+expire+' hours`')+expireUnix+'\n\u200b'
+      })
       if (sortLinks && addStocks) {
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
