@@ -527,7 +527,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
   }
-  let checkerVersion = 'Checker version 2.5miS'
+  let checkerVersion = 'Checker version 2.6miS'
   if (message.channel.id === shop.channels.checker && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -539,9 +539,9 @@ client.on("messageCreate", async (message) => {
     let msg = null
     for (let i in args) {
       if (args[i].toLowerCase().includes('discord.gift')) {
-      let code = args[i].replace(/https:|discord.gift|\/|/g,'').replace(/ /g,'')
+      let code = args[i].replace(/https:|discord.gift|\/|/g,'').replace(/ /g,'').replace(/\|/g,'')
       let found = codes.find(c => c.code === code)
-      !found ? codes.push({code: code.replace(/\|/g,''), expire: null, emoji: null, user: null, state: null}) : null
+      !found ? codes.push({code: code, expire: null, emoji: null, user: null, state: null}) : null
     }
     }
     if (codes.length === 0) return;
