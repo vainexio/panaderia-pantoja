@@ -460,7 +460,7 @@ client.on("messageCreate", async (message) => {
     truck = true
     let botMsg
     let waitingTime = 1000
-    await message.channel.send('** **               <:trucked_runner:1103701285091422288>               ** **:truck:').then(msg => botMsg = msg)
+    await message.channel.send('** **               <:trucked_runner:1103701285091422288>                ** **:truck:').then(msg => botMsg = msg)
     await sleep(waitingTime)
     await botMsg.edit('** **               <:trucked_runner:1103701285091422288>             ** **:truck:')
     await sleep(waitingTime)
