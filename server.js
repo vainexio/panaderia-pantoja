@@ -1090,7 +1090,7 @@ client.on('interactionCreate', async inter => {
         });
       });
       
-      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro boost ('+quan+')').setEmoji('<a:nitroboost:1057999297787985960>'))
+      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro boost ('+quan+')').setEmoji('<a:S_boost:1095504629481095188>'))
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {
