@@ -658,14 +658,14 @@ client.on("messageCreate", async (message) => {
       let expireUnix = data.expireUnix
       if (embed.fields.length <= 24) {
       embed = new MessageEmbed(embed)
-        .setFooter({ text: 'Version: '+checkerVersion})
+        .setFooter({ text: checkerVersion})
         if (codes.length == num) embeds.push(embed);
       }
       else {
         embeds.push(embed)
         embed = new MessageEmbed()
           .setColor(colors.none)
-          .setFooter({ text: 'Version: '+checkerVersion})
+          .setFooter({ text: checkerVersion})
       }
       embed.addFields({name: num+". || https://discord.gift/"+codes[i].code+" ||", value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : 'Expires in `'+expire+' hours`')+expireUnix+'\n\u200b'})
       if (sortLinks && addStocks) {
