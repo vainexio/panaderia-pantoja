@@ -1259,10 +1259,10 @@ client.on('interactionCreate', async inter => {
         doc = await tixModel.findOne({id: inter.user.id})
         
       } 
-      else if (doc && doc.tickets.length >= 5) {
+      /*else if (doc && doc.tickets.length >= 5) {
         await inter.reply({content: `You have exceeded the maximum amount of tickets! (${doc.tickets.length})`, ephemeral: true})
         return;
-      }
+      }*/
       let shard = foundData.count >= 1000 ? foundData.count : foundData.count >= 100 ? '0'+foundData.count : foundData.count >= 10 ? '00'+foundData.count : foundData.count >= 0 ? '000'+foundData.count : null
       if (type === 'order') {
         data = {
