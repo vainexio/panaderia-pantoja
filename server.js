@@ -232,6 +232,7 @@ async function useVoucher(code) {
         let id = args[0]
         let perks = args.slice(1).join(" ").replace(' - ','');
         if (id === code) {
+          //
           gotMsg.delete()
           await setVouchers()
           return true;
@@ -533,7 +534,7 @@ client.on("messageCreate", async (message) => {
     if (args.length === 0) return;
     let addStocks = args[0].toLowerCase() === 'stocks' ? true : false
     let sortLinks = args[1]?.toLowerCase() === 'sort' && addStocks ? true : args[0]?.toLowerCase() === 'sort' ? true : false
-    if (shop.checkers.length > 0) return message.reply(emojis.warning+' Someone is currently scanning links.\nPlease use the checker one at a time to prevent rate limitation.')
+    //if (shop.checkers.length > 0) return message.reply(emojis.warning+' Someone is currently scanning links.\nPlease use the checker one at a time to prevent rate limitation.')
     let codes = []
     let text = ''
     let msg = null
@@ -670,7 +671,7 @@ client.on("messageCreate", async (message) => {
           .setFooter({ text: checkerVersion})
       }
       embed.addFields({
-        name: num+". || https://discord.gift/"+codes[i].code+" ||", 
+        name: num+". ||https://discord.gift/"+codes[i].code+"||", 
         value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : 'Expires in `'+expire+' hours`')+expireUnix+'\n\u200b',
         inline: true,
       })
