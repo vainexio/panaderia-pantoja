@@ -672,6 +672,7 @@ client.on("messageCreate", async (message) => {
       embed.addFields({
         name: num+". || https://discord.gift/"+codes[i].code+" ||", 
         value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : 'Expires in `'+expire+' hours`')+expireUnix+'\n\u200b',
+        inline: true,
       })
       if (sortLinks && addStocks) {
         let stocks = await getChannel(shop.channels.stocks)
