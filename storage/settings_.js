@@ -4,7 +4,7 @@ const {Client, Intents, MessageEmbed, MessageActionRow, MessageButton, MessageSe
 let colors = {
   red: "#ea3737",
   blue: "#1200ff",
-  green: "#00ff04",
+  green: "#00c554",
   yellow: "#fff4a1",
   orange: "#ff6300",
   purple: "#b200ff",
@@ -46,6 +46,7 @@ let keys = [
   'sb',
   'badge',
   'db',
+  'vp',
   'canva',
 ]
 module.exports = {
