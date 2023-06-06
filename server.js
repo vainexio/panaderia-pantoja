@@ -1305,9 +1305,9 @@ client.on('interactionCreate', async inter => {
           ticketName: inter.user.username.replace(/ /g,'')+'-'+shard
         }
       }
-      
+      await inter.reply({content: " Creating ticket.."+emojis.loading, ephemeral: true})
       let channel = await makeTicket(data)
-      await inter.reply({content: "<a:S_arrowright:1095503803761033276> Ticket created "+channel.toString(), ephemeral: true})
+      await inter.followUp({content: "<a:S_arrowright:1095503803761033276> Ticket created "+channel.toString(), ephemeral: true})
     }
     //
     else if (id.includes('Ticket-')) {

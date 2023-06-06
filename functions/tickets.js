@@ -63,7 +63,11 @@ module.exports = {
       );
       let BotMsg = channel.send({ content: "<@"+data.user.id+"> - <@&"+data.support+"> Ticket opened *!*", embeds: [embed] , components: [row]})
       
-      }).catch(console.error);
+      })
+      .catch(async err => {
+      let log = await getChannel('1047454193910284300')
+      log.send('<@477729368622497803> Error creating tix for <@'+data.user.id+'>\n```diff\n- '+err+'```')
+    });
     
     return ch;
 }
