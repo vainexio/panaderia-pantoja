@@ -1260,7 +1260,6 @@ client.on('interactionCreate', async inter => {
         newDoc.tickets = []
         await newDoc.save()
         doc = await tixModel.findOne({id: inter.user.id})
-        
       } 
       /*else if (doc && doc.tickets.length >= 5) {
         await inter.reply({content: `You have exceeded the maximum amount of tickets! (${doc.tickets.length})`, ephemeral: true})
