@@ -2088,7 +2088,7 @@ const interval = setInterval(async function() {
         if (!ready) {
         setTimeout(function() {
           ready = true;
-        },60000)
+        },50000)
         }
       }
   
