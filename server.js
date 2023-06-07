@@ -1623,7 +1623,6 @@ client.on('interactionCreate', async inter => {
         msgReturn = true
         await stocks.send(content)
       }
-      inter.update({components: []})
       msgReturn ? inter.message.reply({content: emojis.check+' Returned the whole message to stocks.'}) : inter.message.reply({content: emojis.check+' Returned '+returned+' links to stocks.'})
     }
     else if (id.startsWith('showDrop-')) {
