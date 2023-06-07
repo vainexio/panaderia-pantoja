@@ -1044,7 +1044,7 @@ client.on('interactionCreate', async inter => {
         let row = new MessageActionRow().addComponents(
           new MessageButton().setCustomId("drop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📩').setLabel("Drop"),
           new MessageButton().setCustomId("showDrop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📋'),
-          new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('♻️')
+          new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('🔻')
         );
         inter.reply({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
@@ -1599,6 +1599,9 @@ client.on('interactionCreate', async inter => {
     else if (id.startsWith('returnLinks-')) {
       if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission', ephemeral: true});
       let msgId = id.replace('returnLinks-','')
+      
+      await inter.reply({content: 'Returning links. Please wait..\n'+emojis.warning+' Please do not drop/add any stocks while the links are being returned. ', ephemeral: true})
+      await inter.message.edit({components: []})
       let drops = await getChannel(shop.channels.drops)
       let dropMsg = await drops.messages.fetch(msgId)
       
