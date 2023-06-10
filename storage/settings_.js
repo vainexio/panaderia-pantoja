@@ -92,111 +92,6 @@ module.exports = {
     pricelists: [
       {
         //Category
-        name: 'Spotify',
-        keywords: ['spoti','spotify'],
-        channel: '1054989652416798750',
-        status: 2,
-        id: '1096319564662448198',
-        image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077186379624478/Logopit_1680918508558.png?width=1440&height=360',
-        types: [
-          //Types
-          {
-            parent: 'Solo',
-            children: [
-              //
-              { name: '1 month', price: 30 },
-              { name: '2 months', price: 40 },
-              { name: '3 months', price: 50 },
-              { name: '4 months', price: 70 },
-              { name: '6 months', price: 110 },
-              { name: '12 months', price: 130 },
-              //
-            ],
-          },
-          {
-            parent: '\u200b',
-            children: [
-              //
-              { name: '+₱15 if own account', price: 0 },
-              //
-            ],
-          },
-          //
-        ],
-      },
-      {
-        //Category
-        name: 'Youtube',
-        keywords: ['yt','youtube'],
-        channel: '1054989652416798750',
-        status: 2,
-        id: '1096319565606174800',
-        image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235713028126/Logopit_1680918525501.png?width=1440&height=360',
-        types: [
-          //Types
-          {
-            parent: 'Via Invite',
-            children: [
-              //
-              { name: '1 month', price: 15 },
-              //
-            ],
-          },
-          {
-            parent: 'Solo',
-            children: [
-              //
-              { name: '1 month', price: 30 },
-              { name: '4 months', price: 60 },
-              { name: '6 months', price: 99 },
-              //
-            ],
-          },
-          //
-        ],
-      },
-      {
-        //Category
-        name: 'Netflix',
-        keywords: ['nf','netflix','netplix'],
-        channel: '1054989652416798750',
-        status: 2,
-        id: '1096319566902218813',
-        image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235939512320/Logopit_1680918539369.png?width=1440&height=360',
-        types: [
-          //Types
-          {
-            parent: 'Shared Profile',
-            children: [
-              //
-              { name: '1 month', price: 90 },
-              { name: '3 months', price: 180 },
-              //
-            ],
-          },
-          {
-            parent: 'Solo Profile',
-            children: [
-              //
-              { name: '1 month', price: 120 },
-              { name: '3 months', price: 230 },
-              //
-            ],
-          },
-          {
-            parent: 'Solo Account',
-            children: [
-              //
-              { name: '1 month', price: 410 },
-              { name: '3 months', price: 1200 },
-              //
-            ],
-          },
-          //
-        ],
-      },
-      {
-        //Category
         name: 'Crunchyroll',
         keywords: ['crunchy','crunchyroll'],
         channel: '1054989652416798750',
@@ -469,7 +364,7 @@ module.exports = {
               //
               { name: 'Nitro Basic (MTO)', price: 85, rs: 0 },
               { name: 'Nitro Classic (MTO)', price: 100, rs: 0 },
-              { name: 'Nitro Boost', price: 135, rs: 0 },
+              { name: 'Nitro Boost', price: 130, rs: 0 },
               //
             ],
           },
@@ -563,6 +458,111 @@ module.exports = {
             children: [
               //
               { name: 'Covered tax', price: 0 },
+              //
+            ],
+          },
+          //
+        ],
+      },
+      {
+        //Category
+        name: 'Spotify',
+        keywords: ['spoti','spotify'],
+        channel: '1054989652416798750',
+        status: 2,
+        id: '1096319564662448198',
+        image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077186379624478/Logopit_1680918508558.png?width=1440&height=360',
+        types: [
+          //Types
+          {
+            parent: 'Solo',
+            children: [
+              //
+              { name: '1 month', price: 30 },
+              { name: '2 months', price: 40 },
+              { name: '3 months', price: 50 },
+              { name: '4 months', price: 70 },
+              { name: '6 months', price: 110 },
+              { name: '12 months', price: 130 },
+              //
+            ],
+          },
+          {
+            parent: '\u200b',
+            children: [
+              //
+              { name: '+₱15 if own account', price: 0 },
+              //
+            ],
+          },
+          //
+        ],
+      },
+      {
+        //Category
+        name: 'Youtube',
+        keywords: ['yt','youtube'],
+        channel: '1054989652416798750',
+        status: 2,
+        id: '1096319565606174800',
+        image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235713028126/Logopit_1680918525501.png?width=1440&height=360',
+        types: [
+          //Types
+          {
+            parent: 'Via Invite',
+            children: [
+              //
+              { name: '1 month', price: 15 },
+              //
+            ],
+          },
+          {
+            parent: 'Solo',
+            children: [
+              //
+              { name: '1 month', price: 30 },
+              { name: '4 months', price: 60 },
+              { name: '6 months', price: 99 },
+              //
+            ],
+          },
+          //
+        ],
+      },
+      {
+        //Category
+        name: 'Netflix',
+        keywords: ['nf','netflix','netplix'],
+        channel: '1054989652416798750',
+        status: 2,
+        id: '1096319566902218813',
+        image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235939512320/Logopit_1680918539369.png?width=1440&height=360',
+        types: [
+          //Types
+          {
+            parent: 'Shared Profile',
+            children: [
+              //
+              { name: '1 month', price: 90 },
+              { name: '3 months', price: 180 },
+              //
+            ],
+          },
+          {
+            parent: 'Solo Profile',
+            children: [
+              //
+              { name: '1 month', price: 120 },
+              { name: '3 months', price: 230 },
+              //
+            ],
+          },
+          {
+            parent: 'Solo Account',
+            children: [
+              //
+              { name: '1 month', price: 410 },
+              { name: '3 months', price: 1200 },
               //
             ],
           },
