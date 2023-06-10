@@ -1229,13 +1229,20 @@ client.on('interactionCreate', async inter => {
     else if (cname === 'orderstatus') {
       let options = inter.options._hoistedOptions
       let status = options.find(a => a.name === 'new_status')
+      let got = false
+      let time = getTime(new Date().getTime())
+      inter.reply({content: emojis.loading+' Updating order status', ephemeral: true})
       let messages = await inter.channel.messages.fetch({limit: 100}).then(async messages => {
         messages.forEach(async (gotMsg) => {
-          if (gotMsg.content.toLowerCase().startsWith('[') && gotMsg.author.id === client.user.id) {
-            gotMsg.edit(gotMsg.content)
+          if (gotMsg.content.toLowerCase().startsWith('# [') && gotMsg.author.id === client.user.id) {
+            gotMsg.edit(gotMsg.content+'\n> \n> \n> \n> \n'+status.value+'\n'+'<t:'+time+':R>')
+            got = true
           }
         })
       })
+      if (!got) {
+        inter.channel.send('# [ ORDER STATUS ]\n'+status.value+'\n'+'<t:'+time+':R>')
+      }
     }
   }
   

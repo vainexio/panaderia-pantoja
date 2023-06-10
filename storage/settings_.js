@@ -860,7 +860,7 @@ module.exports = {
         comp: null,
       },
       {
-        id: '1054731483656499290',
+        id: '', //1054731483656499290
         message: 'You can request for a follow up to receive updates regarding your order.',
         condition: message => keys.find(k => message.channel.name.includes(k) && !message.channel.name.includes('done')),
         comp: new MessageActionRow()
