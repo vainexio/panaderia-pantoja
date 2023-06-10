@@ -57,10 +57,34 @@ module.exports = {
       "description": "Update order status",
       "options": [
         {
-          "name": 'new_status',
-          "description": 'New order status',
+          "name": 'preset_status',
+          "description": 'Preset order status',
           "type": 3,
-          "required": true,
+          "choices": [
+            {
+              name: 'order noted',
+              value: '<a:check:1054020736454492220> Order noted'
+            },
+            {
+              name: 'submitted to supplier',
+              value: '🚛 Order was submitted to our supplier',
+            },
+            {
+              name: 'currently being processed',
+              value: '<a:loading2:976650648600854538> Your order is currently being processed',
+            },
+            {
+              name: 'order completed',
+              value: '<a:check:1054020736454492220> Your order was completed',
+            },
+          ],
+          "required": false,
+        },
+        {
+          "name": 'custom_status',
+          "description": 'Custom order status',
+          "type": 3,
+          "required": false,
         },
       ]
     }

@@ -1228,7 +1228,8 @@ client.on('interactionCreate', async inter => {
     //Refund
     else if (cname === 'orderstatus') {
       let options = inter.options._hoistedOptions
-      let status = options.find(a => a.name === 'new_status')
+      let preset = options.find(a => a.name === 'preset_status')
+      let status = options.find(a => a.name === 'custom_status')
       let got = false
       let time = getTime(new Date().getTime())
       let content = null
@@ -1236,14 +1237,14 @@ client.on('interactionCreate', async inter => {
       let messages = await inter.channel.messages.fetch({limit: 100}).then(async messages => {
         messages.forEach(async (gotMsg) => {
           if (gotMsg.content.toLowerCase().startsWith('# [') && gotMsg.author.id === client.user.id) {
-            content = gotMsg.content+'\n> \n> \n> \n> \n'+status.value+'\n'+'<t:'+time+':R>'
+            content = gotMsg.content+'\n> \n> \n> \n> \n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n'+'<t:'+time+':R>'
             got = true
             gotMsg.delete();
           }
         })
       })
       if (!got) {
-        inter.channel.send('# [ ORDER STATUS ]\n'+status.value+'\n'+'<t:'+time+':R>')
+        inter.channel.send('# [ ORDER STATUS ]\n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n'+'<t:'+time+':R>')
       } else {
         inter.channel.send(content)
       }
