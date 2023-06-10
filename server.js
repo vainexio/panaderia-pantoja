@@ -1237,7 +1237,7 @@ client.on('interactionCreate', async inter => {
       let messages = await inter.channel.messages.fetch({limit: 100}).then(async messages => {
         messages.forEach(async (gotMsg) => {
           if (gotMsg.content.toLowerCase().startsWith('# [') && gotMsg.author.id === client.user.id) {
-            content = gotMsg.content+'\n> \n> \n> \n> \n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n'+'<t:'+time+':R>'
+            content = gotMsg.content+'\n> \n> \n> \n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n'+'<t:'+time+':R>'
             got = true
             gotMsg.delete();
           }
