@@ -50,6 +50,19 @@ module.exports = {
       "name": "stocks",
       "type": 1,
       "description": "Shows a list of available stocks",
+    },
+    {
+      "name": "orderstatus",
+      "type": 1,
+      "description": "Update order status",
+      "options": [
+        {
+          "name": 'new_status',
+          "description": 'New order status',
+          "type": 3,
+          "required": true,
+        },
+      ]
     }
   ],
 };

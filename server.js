@@ -1224,6 +1224,19 @@ client.on('interactionCreate', async inter => {
       
       inter.reply({embeds: [embed]});
     }
+    //Order status
+    //Refund
+    else if (cname === 'orderstatus') {
+      let options = inter.options._hoistedOptions
+      let status = options.find(a => a.name === 'new_status')
+      let messages = await inter.channel.messages.fetch({limit: 100}).then(async messages => {
+        messages.forEach(async (gotMsg) => {
+          if (gotMsg.content.toLowerCase().startsWith('[') && gotMsg.author.id === client.user.id) {
+            gotMsg.edit(gotMsg.content)
+          }
+        })
+      })
+    }
   }
   
   //BUTTONS
