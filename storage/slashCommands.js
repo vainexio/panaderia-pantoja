@@ -33,16 +33,28 @@ module.exports = {
           "required": true,
         },
         {
+          "name": 'price',
+          "description": 'Price paid',
+          "type": 4,
+          "required": true,
+        },
+        {
           "name": 'item',
-          "description": 'Item Name',
+          "description": 'Item name',
           "type": 3,
           "required": false,
         },
         {
-        "name": 'keyword',
-        "description": 'Drop a specific item in stock that contains the keyword',
-        "type": 3,
-        "required": false,
+          "name": 'keyword',
+          "description": 'Drop a specific item in stock that contains the keyword',
+          "type": 3,
+          "required": false,
+        },
+        {
+          "name": 'note',
+          "description": 'Extra notes',
+          "type": 3,
+          "required": false,
         },
       ]
     },
