@@ -29,6 +29,10 @@ let emojis = {
   offline: '<:offline_:1004015005282340916>',
   on: '<:on:1107664866484953178>',
   off: '<:off:1107664839372964010>',
+  
+  nboost: '<a:nitroboost:1057999297787985960>',
+  nbasic: '<a:nitroclassic:1078248284881174528>',
+  nclassic: '<:nitroclassic:1054725614319439962>',
 }
 let keys = [
   'basic',

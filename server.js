@@ -546,7 +546,7 @@ client.on("messageCreate", async (message) => {
     }
     }
     if (codes.length === 0) return;
-    if (codes.length > 75 && ((addStocks && sortLinks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 75 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
+    if (codes.length > 50 && ((addStocks && sortLinks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 50 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
     
     let scanData = shop.checkers.find(c => c.id === message.author.id)
     if (!scanData) {
@@ -625,7 +625,9 @@ client.on("messageCreate", async (message) => {
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
           codes[i].state === 'Claimable' ? scanData.valid++ : codes[i].state === 'Claimed' ? scanData.claimed++ : scanData.invalid++
-          codes[i].type = res.store_listing?.sku?.name
+          let type = res.store_listing?.sku?.name
+          console.log(type)
+          codes[i].typeEmoji = type === 'Nitro' ? emojis.nboost : type === 'Nitro Basic' ? emojis.nbasic : type === 'Nitro Classic' ? emojis.nclassic : '❓' 
           if ((!res.expires_at || res.uses >= 1) && !eCode) {
             let data = {
               code: codes[i].code,
@@ -672,7 +674,7 @@ client.on("messageCreate", async (message) => {
       }
       embed.addFields({
         name: num+". ||https://discord.gift/"+codes[i].code+"||", 
-        value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : 'Expires in `'+expire+' hours`')+expireUnix+'\n\u200b',
+        value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : codes[i].typeEmoji+' Expires in `'+expire+' hours`')+expireUnix+'\n\u200b',
         inline: true,
       })
       ////
@@ -683,6 +685,13 @@ client.on("messageCreate", async (message) => {
     }
     msg.delete();
     console.log(embeds.length)
+    if (embeds.length > 0 ) {
+      for (let i in embeds) {
+        
+      }
+    } else {
+      message.channel.send({embeds: [embed]})
+    }
     message.channel.send({embeds: embeds.length > 0 ? embeds : [embed]})
     shop.checkers = []
   }
