@@ -199,6 +199,7 @@ const {makeTicket} = tickets
 //ON CLIENT MESSAGE
 let errors = 0
 let expCodes = []
+let nitroCodes = []
 async function setVouchers() {
   let channel = await getChannel(shop.channels.vouchers)
   shop.vouchers = []
@@ -546,7 +547,7 @@ client.on("messageCreate", async (message) => {
     }
     }
     if (codes.length === 0) return;
-    if (codes.length > 50 && ((addStocks && sortLinks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 50 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
+    //if (codes.length > 50 && ((addStocks && sortLinks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 50 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
     
     let scanData = shop.checkers.find(c => c.id === message.author.id)
     if (!scanData) {
@@ -626,7 +627,9 @@ client.on("messageCreate", async (message) => {
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
           codes[i].state === 'Claimable' ? scanData.valid++ : codes[i].state === 'Claimed' ? scanData.claimed++ : scanData.invalid++
           let type = res.store_listing?.sku?.name
-          console.log(type)
+          let foundCode = nitroCodes.find(c => c.code === res.code)
+          if (!foundCode) nitroCodes.push({code: res.code, type: type})
+          foundCode ? 
           codes[i].typeEmoji = type === 'Nitro' ? emojis.nboost : type === 'Nitro Basic' ? emojis.nbasic : type === 'Nitro Classic' ? emojis.nclassic : '❓' 
           if ((!res.expires_at || res.uses >= 1) && !eCode) {
             let data = {
@@ -685,14 +688,16 @@ client.on("messageCreate", async (message) => {
     }
     msg.delete();
     console.log(embeds.length)
+    let page = 0
     if (embeds.length > 0 ) {
       for (let i in embeds) {
-        
+        page++
+        await message.channel.send({content: 'Page '+page+'/'+embeds.length, embeds: [embeds[i]]})
       }
-    } else {
+    } 
+    else {
       message.channel.send({embeds: [embed]})
     }
-    message.channel.send({embeds: embeds.length > 0 ? embeds : [embed]})
     shop.checkers = []
   }
   //Sticky
