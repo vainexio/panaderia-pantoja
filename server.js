@@ -529,7 +529,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
   }
-  let checkerVersion = 'Checker version 2.6miS'
+  let checkerVersion = 'Checker version 2.7uip'
   if (message.channel.id === shop.channels.checker && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -547,7 +547,6 @@ client.on("messageCreate", async (message) => {
     }
     }
     if (codes.length === 0) return;
-    //if (codes.length > 50 && ((addStocks && sortLinks) || !addStocks)) return message.reply(emojis.warning+' You can only request a maximum of 50 giftcodes per message.\nYour message contains **'+codes.length+'** giftcodes.')
     
     let scanData = shop.checkers.find(c => c.id === message.author.id)
     if (!scanData) {
@@ -629,7 +628,7 @@ client.on("messageCreate", async (message) => {
           let type = res.store_listing?.sku?.name
           let foundCode = nitroCodes.find(c => c.code === res.code)
           if (!foundCode) nitroCodes.push({code: res.code, type: type})
-          foundCode ? 
+          foundCode ? type = foundCode.type : null
           codes[i].typeEmoji = type === 'Nitro' ? emojis.nboost : type === 'Nitro Basic' ? emojis.nbasic : type === 'Nitro Classic' ? emojis.nclassic : '❓' 
           if ((!res.expires_at || res.uses >= 1) && !eCode) {
             let data = {
