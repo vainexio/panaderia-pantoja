@@ -489,7 +489,7 @@ client.on("messageCreate", async (message) => {
   }
   //
   if (message.channel.type === 'DM') return;
-  if (isCommand("remove",message)) {
+  if (isCommand("term",message)) {
     if (!await getPerms(message.member,4)) return;
     let args = await requireArgs(message,2)
     if (!args) return;
@@ -502,7 +502,7 @@ client.on("messageCreate", async (message) => {
         await msg.channel.messages.fetch({limit: 100}).then(async (messages) => {
           await messages.forEach(async gotMsg => {
             let content = gotMsg.content
-            if (gotMsg.author.id === client.user.id && (gotMsg.content.toLowerCase().includes(args[2]) || args[2].toLowerCase() === 'all')) {
+            if (gotMsg.author.id === client.user.id && (gotMsg.content.toLowerCase().includes(args[2].toLowerCase()) || args[2].toLowerCase() === 'all')) {
               gotMsg.delete()
               deleted++
             }
