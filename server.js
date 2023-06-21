@@ -1878,7 +1878,9 @@ client.on('interactionCreate', async inter => {
       notice.send('<@'+inter.user.id+'> '+emojis.x)
     }
     else if (id.startsWith('orderFormat')) {
-      //let found = comp.components.find(c => c.customId === 'orderFormat')
+      let found = shop.orderForm.find(c => c === inter.user.id)
+      if (found) inter.reply({content: emojis.warning+' You already have an existing order form!', ephemeral: true})
+      found.push(inter.user.id)
       let comp = inter.message.components[0]
         for (let i in comp.components) {
           let row = comp.components[i]
@@ -1904,6 +1906,7 @@ client.on('interactionCreate', async inter => {
       async function getResponse(data) {
         await inter.channel.send(data.question)
         let msg = await inter.channel.awaitMessages({ filter, max: 1,time: 900000 ,errors: ['time'] })
+        if (!msg) found.splice(shop.orderForm.indexOf(inter.user.id),1)
         msg = msg?.first()
         data.answer = msg.content
       }
@@ -1922,7 +1925,7 @@ client.on('interactionCreate', async inter => {
       .setFooter({text: 'Order Confirmation'})
       
       inter.channel.send({content: "<:S_separator:1093733778633019492> Is this your order?", embeds: [embed], components: [row]})
-      
+      found.splice(shop.orderForm.indexOf(inter.user.id),1)
     }
     else if (id.startsWith('confirmOrder')) {
       inter.message.edit({components: []})
