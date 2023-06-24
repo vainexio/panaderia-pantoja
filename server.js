@@ -1061,7 +1061,7 @@ client.on('interactionCreate', async inter => {
         );
         inter.reply({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
-        inter.channel.setName(quan.value+'。'+item ? item.value : 'nitro boost')
+        inter.channel.setName(quan.value+'。'+(item ? item.value : 'nitro boost'))
         let orders = await getChannel(shop.channels.orders)
         let template = await getChannel(shop.channels.templates)
         let msg = await template.messages.fetch("1093800287002693702")
