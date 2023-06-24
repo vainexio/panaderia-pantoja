@@ -1061,6 +1061,7 @@ client.on('interactionCreate', async inter => {
         );
         inter.reply({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
+        inter.channel.setName(quan.value+'。'+product.value)
         let orders = await getChannel(shop.channels.orders)
         let template = await getChannel(shop.channels.templates)
         let msg = await template.messages.fetch("1093800287002693702")
@@ -1160,7 +1161,7 @@ client.on('interactionCreate', async inter => {
         let member = await getMember(user.user.id,inter.guild)
         await addRole(member,['pending','buyer'],inter.guild)
         await orders.send({content: content, components: [row]}).then(msg => msgUrl = msg.url)
-        
+        inter.channel.setName(quan.value+'。'+product.value)
         let linkRow = new MessageActionRow().addComponents(
           new MessageButton().setURL(msgUrl).setStyle('LINK').setEmoji('<a:S_tick:1095508349161840660>').setLabel("Go to queue"),
         );
