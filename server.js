@@ -530,7 +530,7 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer.json(),'json')
   }
   let checkerVersion = 'Checker version 2.7uip'
-  if (message.channel.id === shop.channels.checker && !message.author.bot) {
+  if (message.channel.name.includes('nitro-checker') && !message.author.bot) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
     let addStocks = args[0].toLowerCase() === 'stocks' ? true : false
