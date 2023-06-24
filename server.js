@@ -1061,7 +1061,7 @@ client.on('interactionCreate', async inter => {
         );
         inter.reply({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
-        inter.channel.setName(quan.value+'。'+product.value)
+        inter.channel.setName(quan.value+'。'+item ? item.value : 'nitro boost')
         let orders = await getChannel(shop.channels.orders)
         let template = await getChannel(shop.channels.templates)
         let msg = await template.messages.fetch("1093800287002693702")
@@ -2108,29 +2108,33 @@ const interval = setInterval(async function() {
           let msg = await template.messages.fetch("1079716277528039468")
         let vc = await getChannel(shop.channels.status)
         if (vc.name === 'shop : CLOSED') return;
-        vc.setName('shop : CLOSED')
-        annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/72/7b/24/727b247bc2d09404b67a7ed275b8d85d.gif']})
+          vc.setName('shop : CLOSED')
+          await annc.bulkDelete(10)
+          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/72/7b/24/727b247bc2d09404b67a7ed275b8d85d.gif']})
         } 
         else if (today.getHours() === 8 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1079715999097552956")
         let vc = await getChannel(shop.channels.status)
         if (vc.name === 'shop : OPEN') return;
-        vc.setName('shop : OPEN')
-        annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/1e/ed/c4/1eedc43a10e28ce98b9bd0ad2384c905.gif']})
+          vc.setName('shop : OPEN')
+          await annc.bulkDelete(10)
+          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/1e/ed/c4/1eedc43a10e28ce98b9bd0ad2384c905.gif']})
       }  
         else if (today.getHours() === 11 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1079712404084117524")
           let vc = await getChannel(shop.channels.reportsVc)
           if (vc.name === 'reports : OPEN') return;
           vc.setName('reports : OPEN')
-          annc.send({content: msg.content, files: ['https://media.tenor.com/H6H2hhidRhIAAAAC/chick-pio.gif']})
+          await annc.bulkDelete(10)
+          await annc.send({content: msg.content, files: ['https://media.tenor.com/H6H2hhidRhIAAAAC/chick-pio.gif']})
         }
         else if (today.getHours() === 20 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1079715633123557496")
           let vc = await getChannel(shop.channels.reportsVc)
           if (vc.name === 'reports : CLOSED') return;
           vc.setName('reports : CLOSED')
-          annc.send({content: msg.content, files: ['https://media.tenor.com/7mmiOB9yyRUAAAAC/chick-pio.gif']})
+          await annc.bulkDelete(10)
+          await annc.send({content: msg.content, files: ['https://media.tenor.com/7mmiOB9yyRUAAAAC/chick-pio.gif']})
         }
       }
   

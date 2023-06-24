@@ -84,7 +84,7 @@ module.exports = {
       otherStocks: '1080087813032263690',
       orders: '1054731027240726528',
       templates: '1079712339122720768',
-      shopStatus: '1102416143152578681',
+      shopStatus: '1121979133346451506',
       vouchers: '1066945318060556378',
       financeLogs: '1100456798932185138',
       feedbacks: '1094975726127685726',
@@ -930,7 +930,7 @@ module.exports = {
         ),
       },
       {
-        id: '1102416143152578681',
+        id: '1121979133346451506',
         message: 'Click the button to gain the **Shop Status** role and get notified when the shop opens or closes!',
         comp: new MessageActionRow()
         .addComponents(
