@@ -30,6 +30,7 @@ module.exports = {
         console.log('not found')
         AI.users.push({id: user.id, messages: [msgData]})
       }
+      console.log(found?.messages)
     }
     messages.push(msgData)
     let chosenAPI = null
@@ -42,6 +43,7 @@ module.exports = {
       }
     } else {
       chosenAPI = AI.chatAPI
+      console.log('Model used: '+AI.models[AI.modelCount],AI.modelCount)
       data = {
         "model": AI.models[AI.modelCount],//,
         "messages": messages,

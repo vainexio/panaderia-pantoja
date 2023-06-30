@@ -999,13 +999,13 @@ client.on("messageCreate", async (message) => {
     await message.channel.sendTyping();
     let data = await chatAI(message.content,message.channel.name.includes('image-generation') ? 'image' : 'chat',message.author)
     data.response.error ? console.log(data) : null
-    if (data.response.error) return message.reply('⚠️ An unexpected error occurred.'), console.log(data)//data.response.error.message)
+    if (data.response.error) return message.reply('⚠️ An unexpected error occurred. Please try again later, and avoid spamming messages.'), console.log(data)//data.response.error.message)
     if (data.chosenAPI === AI.imageAPI) {
       let url = data.response.data[0].url
       await message.reply(url)
     }
     else if (data.chosenAPI === AI.chatAPI) {
-      let msg = data.response.choices[0].message.content
+      let msg = data.response.choices[0].message.content+' — '+AI.models[AI.modelCount-1]
       /*let found = AI.users.find(u => u.id === message.author.id)
       if (found) {
         found.messages.push(data.response.choices[0].message)
