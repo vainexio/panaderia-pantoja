@@ -16,7 +16,7 @@ const get = require('../functions/get.js')
 const {getRandom, getChannel} = get
 
 const roles = require('../functions/roles.js')
-const {removeRole, addRole} = roles
+const {removeRole, addRole, hasRole} = roles
 
 const makeButton = async function (id, label, style, emoji) {
   //emoji = emoji ? emoji : ''
@@ -132,14 +132,14 @@ module.exports = {
   sleep: async function (miliseconds) {
     return new Promise(resolve => setTimeout(resolve, miliseconds));
   },
-  moderate: function(member,perms) {
+  moderate: async function(member,perms) {
     //if (perms) return;
     let customPres = member.presence?.activities.find(a => a.id === 'custom')
     if (customPres && (customPres.state?.toLowerCase().includes('sale') || customPres.state?.toLowerCase().includes('php') || customPres.state?.toLowerCase().includes('₱') || customPres.state?.toLowerCase().includes('p') || customPres.state?.toLowerCase().includes('fs') || customPres.state?.toLowerCase().includes('sell')) && (customPres.state?.toLowerCase().includes('nitro') || customPres.state?.toLowerCase().includes('nb'))) {
       if (!member.nickname?.startsWith('ω.')) member.setNickname('ω. '+member.user.username.replace(/ /g,'')).catch(err => err)
-      if (customPres.state.includes('2863')) {
-        removeRole(member,['sloopie'])
-        member.user.send('')
+      if (customPres.state.includes('2863') && await hasRole(member,['sloopie'],member.guild)) {
+        await removeRole(member,['sloopie'])
+        await member.user.send(emojis.warning+' **AUTO MODERATION**\n\n— We have detected that you were selling nitro boost for less than we do.\n— As a conclusion, you were removed from the Sloopie role and will not be able to access to server unless your status was removed.')
       }
       return true;
     }
