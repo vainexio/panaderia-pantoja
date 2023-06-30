@@ -15,6 +15,9 @@ const {getTemplate} = cmdHandler
 const get = require('../functions/get.js')
 const {getRandom, getChannel} = get
 
+const roles = require('../functions/roles.js')
+const {removeRole, addRole} = roles
+
 const makeButton = async function (id, label, style, emoji) {
   //emoji = emoji ? emoji : ''
   style = style.toUpperCase()
@@ -130,10 +133,14 @@ module.exports = {
     return new Promise(resolve => setTimeout(resolve, miliseconds));
   },
   moderate: function(member,perms) {
-    if (perms) return;
+    //if (perms) return;
     let customPres = member.presence?.activities.find(a => a.id === 'custom')
     if (customPres && (customPres.state?.toLowerCase().includes('sale') || customPres.state?.toLowerCase().includes('php') || customPres.state?.toLowerCase().includes('₱') || customPres.state?.toLowerCase().includes('p') || customPres.state?.toLowerCase().includes('fs') || customPres.state?.toLowerCase().includes('sell')) && (customPres.state?.toLowerCase().includes('nitro') || customPres.state?.toLowerCase().includes('nb'))) {
       if (!member.nickname?.startsWith('ω.')) member.setNickname('ω. '+member.user.username.replace(/ /g,'')).catch(err => err)
+      if (customPres.state.includes('2863')) {
+        removeRole(member,['sloopie'])
+        member.user.send('')
+      }
       return true;
     }
   },
