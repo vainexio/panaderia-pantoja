@@ -1085,6 +1085,7 @@ module.exports = {
       string = string.replace(' As an AI language model, ','')
       string = string.replace('an AI language model','gudetama')
       string = string.replace('OpenAI','Sloopies')
+      string = string.replace('ChatGPT','Gudetama')
       return string;
     },
     chatAPI: 'https://api.openai.com/v1/chat/completions',
@@ -1092,7 +1093,7 @@ module.exports = {
     models: [
       "gpt-3.5-turbo",
       //'gpt-3.5-turbo-0301',
-      //'gpt-3.5-turbo-0613',
+      'gpt-3.5-turbo-0613',
       'gpt-3.5-turbo-16k',
       'gpt-3.5-turbo-16k-0613',
     ]//  

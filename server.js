@@ -999,17 +999,21 @@ client.on("messageCreate", async (message) => {
     await message.channel.sendTyping();
     let data = await chatAI(message.content,message.channel.name.includes('image-generation') ? 'image' : 'chat',message.author)
     data.response.error ? console.log(data) : null
-    if (data.response.error) return message.reply('⚠️ An unexpected error occurred. Please try again later, and avoid spamming messages.'), console.log(data)//data.response.error.message)
+    if (data.response.error) return message.reply('⚠️ An unexpected error occurred. `'+data.response.error.message+'`'), console.log(data)//data.response.error.message)
     if (data.chosenAPI === AI.imageAPI) {
       let url = data.response.data[0].url
       await message.reply(url)
     }
     else if (data.chosenAPI === AI.chatAPI) {
-      let msg = data.response.choices[0].message.content+' — '+AI.models[AI.modelCount-1]
-      /*let found = AI.users.find(u => u.id === message.author.id)
+      let msg = data.response.choices[0].message.content
+      let found = AI.users.find(u => u.id === message.author.id)
       if (found) {
         found.messages.push(data.response.choices[0].message)
-      }*/
+        if (data.response.usage.total_tokens >= 3500) {
+          found.messages = []
+          message.reply('Notice: Bot has forgotten all of your recent conversations due to maxed token capacity.')
+        }
+      }
       let filtered = AI.filter(msg)
       //console.log(filtered)
       if (filtered.length > 1999) return message.reply("⚠️ The message generated was longer than 2000 characters. Unable to send due to discord's limitations.")
