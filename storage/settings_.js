@@ -1078,6 +1078,7 @@ module.exports = {
   prefix: ';',
   filteredWords: [],
   AI: {
+    users: [],
     filter: function(string) {
       string = string.replace('As an AI language model, ','')
       string = string.replace(' As an AI language model, ','')

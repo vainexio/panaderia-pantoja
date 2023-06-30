@@ -997,7 +997,7 @@ client.on("messageCreate", async (message) => {
   //AI ChatBot
   if (message.channel.name.includes('gudetama') || chance || message.channel.name.includes('image-generation')) {
     await message.channel.sendTyping();
-    let data = await chatAI(message.content,message.channel.name.includes('image-generation') ? 'image' : 'chat')
+    let data = await chatAI(message.content,message.channel.name.includes('image-generation') ? 'image' : 'chat',message.author)
     if (data.response.error) return message.reply('⚠️ An unexpected error occurred.'), console.log(data.response.error.message)
     if (data.chosenAPI === AI.imageAPI) {
       let url = data.response.data[0].url
