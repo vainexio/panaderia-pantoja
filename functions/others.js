@@ -18,6 +18,9 @@ const {getRandom, getChannel} = get
 const roles = require('../functions/roles.js')
 const {removeRole, addRole, hasRole} = roles
 
+const others = require('../functions/others.js')
+const {getArgs} = others
+
 const makeButton = async function (id, label, style, emoji) {
   //emoji = emoji ? emoji : ''
   style = style.toUpperCase()
@@ -134,10 +137,23 @@ module.exports = {
   },
   moderate: async function(member,perms) {
     //if (perms) return;
+    if (member.id !== '477729368622497803') return;
     let customPres = member.presence?.activities.find(a => a.id === 'custom')
     if (customPres && (customPres.state?.toLowerCase().includes('sale') || customPres.state?.toLowerCase().includes('php') || customPres.state?.toLowerCase().includes('₱') || customPres.state?.toLowerCase().includes('p') || customPres.state?.toLowerCase().includes('fs') || customPres.state?.toLowerCase().includes('sell')) && (customPres.state?.toLowerCase().includes('nitro') || customPres.state?.toLowerCase().includes('nb'))) {
       if (!member.nickname?.startsWith('ω.')) member.setNickname('ω. '+member.user.username.replace(/ /g,'')).catch(err => err)
-      if (customPres.state.includes('2863') && await hasRole(member,['sloopie'],member.guild)) {
+      let cc = customPres.state.toLowerCase()
+      let args = cc.trim().split(/\n| /)
+      let moderate = false
+      for (let i in args) {
+        let arg = args[i].replace('₱','').slice(args[i].indexOf('-',args[i].length-1-args[i].indexOf('-')))
+        console.log(arg)
+        let num = Number(arg)
+        if (!isNaN(num) && num <= 124) {
+          moderate = true
+        }
+      }
+      
+      if (moderate && await hasRole(member,['sloopie'],member.guild)) {
         await removeRole(member,['sloopie'])
         await member.user.send(emojis.warning+' **AUTO MODERATION**\n\n— We have detected that you were selling nitro boost for less than our lowest price.\n\n— As a conclusion, you were removed from the Sloopie role and will not be able to access to server unless your status was removed.\n\n— Once your status have been removed, you can head to <#1047454193197252643> to get your roles back.\n\n— If you think that this is a mistake, please do not hesitate to contact the owner.')
       }
