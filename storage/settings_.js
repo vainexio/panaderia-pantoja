@@ -1078,6 +1078,7 @@ module.exports = {
   prefix: ';',
   filteredWords: [],
   AI: {
+    modelCount: 0,
     users: [],
     filter: function(string) {
       string = string.replace('As an AI language model, ','')
@@ -1088,7 +1089,11 @@ module.exports = {
     },
     chatAPI: 'https://api.openai.com/v1/chat/completions',
     imageAPI: 'https://api.openai.com/v1/images/generations',
-    model: "gpt-3.5-turbo"//  
+    models: [
+      "gpt-3.5-turbo",
+      'gpt-3.5-turbo-0301',
+      'gpt-3.5-turbo-0613',
+    ]//  
   },
   colors: colors,
   theme: colors.none,

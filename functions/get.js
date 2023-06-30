@@ -43,7 +43,7 @@ module.exports = {
     } else {
       chosenAPI = AI.chatAPI
       data = {
-        "model": AI.model,//,
+        "model": AI.models[AI.modelCount],//,
         "messages": messages,
       }
     }
@@ -55,7 +55,8 @@ module.exports = {
       },
       body: JSON.stringify(data)
       }
-    
+    AI.modelCount++
+    if (AI.modelCount >= AI.models.length) AI.modelCount = 0
     let response = await fetch(chosenAPI,auth)
     response = await response.json()
     return {response, chosenAPI: chosenAPI};
