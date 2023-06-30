@@ -146,10 +146,11 @@ module.exports = {
       let moderate = false
       for (let i in args) {
         let arg = args[i].replace('₱','')
+        let isPHP = args[i].includes('₱') && !args[i].includes('$')
         //if (arg.includes('-')) arg = arg.slice(arg.indexOf('-'),1)//args[i].length-1-args[i].indexOf('-'))
         console.log(arg)
         let num = Number(arg)
-        if (!isNaN(num) && num <= 124) {
+        if (!isNaN(num) && num <= 124 && isPHP) {
           console.log('moderate')
           moderate = true
         }
