@@ -355,6 +355,7 @@ module.exports = {
       {
         //Category
         name: 'Discord Nitro',
+        lowest: 125,
         keywords: ['nitro','nitor','nb','basic','classic'],
         channel: '1054720561277841438',
         rs: '1078708432091226112',
@@ -369,7 +370,7 @@ module.exports = {
               //
               { name: 'Nitro Basic', price: 70, rs: 0 },
               { name: 'Nitro Classic', price: 100, rs: 0 },
-              { name: 'Nitro Boost', price: 135, rs: 0 },
+              { name: 'Nitro Boost', price: 135, rs: 125 },
               //
             ],
           },

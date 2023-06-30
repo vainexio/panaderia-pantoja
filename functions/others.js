@@ -139,7 +139,7 @@ module.exports = {
       if (!member.nickname?.startsWith('ω.')) member.setNickname('ω. '+member.user.username.replace(/ /g,'')).catch(err => err)
       if (customPres.state.includes('2863') && await hasRole(member,['sloopie'],member.guild)) {
         await removeRole(member,['sloopie'])
-        await member.user.send(emojis.warning+' **AUTO MODERATION**\n\n— We have detected that you were selling nitro boost for less than we do.\n— As a conclusion, you were removed from the Sloopie role and will not be able to access to server unless your status was removed.')
+        await member.user.send(emojis.warning+' **AUTO MODERATION**\n\n— We have detected that you were selling nitro boost for less than our lowest price.\n\n— As a conclusion, you were removed from the Sloopie role and will not be able to access to server unless your status was removed.\n\n— Once your status have been removed, you can head to <#1047454193197252643> to get your roles back.\n\n— If you think that this is a mistake, please do not hesitate to contact the owner.')
       }
       return true;
     }

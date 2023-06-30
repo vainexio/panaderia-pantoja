@@ -2022,6 +2022,7 @@ client.on('interactionCreate', async inter => {
     }
 });
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
+  await moderate(newMember,await getPerms(newMember,3))
     if(newMember.nickname && oldMember.nickname !== newMember.nickname) {
       let found = shop.customRoles.find(r => r.user === newMember.id)
       if (found) {
@@ -2036,7 +2037,7 @@ client.on('presenceUpdate', async (pres) => {
   let mem = await getMember(pres.userId,guild)
   if (!mem) return;
   let perms = await getPerms(mem, 3)
-  let moderated = moderate(mem,perms);
+  let moderated = await moderate(mem,perms);
 })
 process.on('unhandledRejection', async error => {
   ++errors
