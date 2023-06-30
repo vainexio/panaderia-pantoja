@@ -999,18 +999,17 @@ client.on("messageCreate", async (message) => {
     await message.channel.sendTyping();
     let data = await chatAI(message.content,message.channel.name.includes('image-generation') ? 'image' : 'chat',message.author)
     data.response.error ? console.log(data) : null
-    data.response.error ? (message.react(emojis.loading), await sleep(20000)) : null//return message.reply('⚠️ An unexpected error occurred.'), console.log(data)//data.response.error.message)
-    data.response.error ? data = await chatAI(message.content,message.channel.name.includes('image-generation') ? 'image' : 'chat',message.author) : null
+    if (data.response.error) return message.reply('⚠️ An unexpected error occurred.'), console.log(data)//data.response.error.message)
     if (data.chosenAPI === AI.imageAPI) {
       let url = data.response.data[0].url
       await message.reply(url)
     }
     else if (data.chosenAPI === AI.chatAPI) {
       let msg = data.response.choices[0].message.content
-      let found = AI.users.find(u => u.id === message.author.id)
+      /*let found = AI.users.find(u => u.id === message.author.id)
       if (found) {
         found.messages.push(data.response.choices[0].message)
-      }
+      }*/
       let filtered = AI.filter(msg)
       //console.log(filtered)
       if (filtered.length > 1999) return message.reply("⚠️ The message generated was longer than 2000 characters. Unable to send due to discord's limitations.")
