@@ -18,21 +18,19 @@ module.exports = {
     let data = {}
     let messages = [];
     let msgData = {"role": "user", "content": content}
-    messages.push(msgData)
     if (user) {
       let found = AI.users.find(u => u.id === user.id)
       if (found) {
-        console.log(found,found.messages)
         for (let i in found.messages) {
           let msg = found.messages[i]
           messages.push(msg)
         }
-        found.messages.push(msgData)
       } else {
         console.log('not found')
         AI.users.push({id: user.id, messages: [msgData]})
       }
     }
+    found.messages.push(msgData)
     let chosenAPI = null
     if (content.toLowerCase().includes('show me') || type === 'image') {
       chosenAPI = AI.imageAPI
@@ -42,7 +40,6 @@ module.exports = {
         "size": "1024x1024"//"1024x1024"
       }
     } else {
-      console.log(messages)
       chosenAPI = AI.chatAPI
       data = {
         "model": AI.model,//,

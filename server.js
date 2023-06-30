@@ -1004,6 +1004,7 @@ client.on("messageCreate", async (message) => {
       await message.reply(url)
     }
     else if (data.chosenAPI === AI.chatAPI) {
+      console.log(data.response.choices)
       let msg = data.response.choices[0].message.content
       let filtered = AI.filter(msg)
       //console.log(filtered)
