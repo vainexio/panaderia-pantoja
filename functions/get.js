@@ -25,12 +25,13 @@ module.exports = {
           let msg = found.messages[i]
           messages.push(msg)
         }
+        found.messages.push(msgData)
       } else {
         console.log('not found')
         AI.users.push({id: user.id, messages: [msgData]})
       }
     }
-    found.messages.push(msgData)
+    messages.push(msgData)
     let chosenAPI = null
     if (content.toLowerCase().includes('show me') || type === 'image') {
       chosenAPI = AI.imageAPI
