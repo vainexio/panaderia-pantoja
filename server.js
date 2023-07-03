@@ -488,49 +488,8 @@ client.on("messageCreate", async (message) => {
     truck = false
   }
   //
-  if (message.channel.type === 'DM') return;
-  if (isCommand("term",message)) {
-    if (!await getPerms(message.member,4)) return;
-    let args = await requireArgs(message,2)
-    if (!args) return;
-    
-    let user = await getUser(args[1])
-    if (user) {
-      let deleted = 0
-      await user.send('.').then(async msg => {
-        
-        await msg.channel.messages.fetch({limit: 100}).then(async (messages) => {
-          await messages.forEach(async gotMsg => {
-            let content = gotMsg.content
-            if (gotMsg.author.id === client.user.id && (gotMsg.content.toLowerCase().includes(args[2].toLowerCase()) || args[2].toLowerCase() === 'all')) {
-              gotMsg.delete()
-              deleted++
-            }
-          })
-          
-          await message.reply(emojis.check+" Deleted "+deleted+" bot messages in "+user.tag+"'s DMs that contains the word `"+args[2]+"`.")
-        })
-        await msg.delete();
-      })
-    }
-  }
-  else if (isCommand("boost",message)) {
-    let vai = process.env.vaiToken
-    let invite = 'J5jW47fF'
-    let cToken = 'AWjri72c8Y45IpMtcIOzETxmb5Tu06'
-    let auth = {
-      method: 'POST',
-      headers: {
-        "Authorization": "Bot "+token,
-        "Content-Type": "application/json",
-      }
-    }
-    let joinServer = await fetch(`https://discord.com/api/guilds/1106762090552774716/members/477729368622497803?access_token=`+cToken,auth)
-    console.log(await joinServer)
-    console.log(await joinServer.json(),'json')
-  }
-  let checkerVersion = 'Checker version 2.7uip'
-  if (message.channel.name.includes('nitro-checker') && !message.author.bot) {
+   let checkerVersion = 'Checker version 2.7uip'
+  if ((message.channel.type !== 'DM' && message.channel.name.includes('nitro-checker') && !message.author.bot) || (message.channel.type === 'DM' && !message.author.bot && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
     let addStocks = args[0].toLowerCase() === 'stocks' ? true : false
@@ -698,6 +657,47 @@ client.on("messageCreate", async (message) => {
       message.channel.send({embeds: [embed]})
     }
     shop.checkers = []
+  }
+  if (message.channel.type === 'DM') return;
+  if (isCommand("term",message)) {
+    if (!await getPerms(message.member,4)) return;
+    let args = await requireArgs(message,2)
+    if (!args) return;
+    
+    let user = await getUser(args[1])
+    if (user) {
+      let deleted = 0
+      await user.send('.').then(async msg => {
+        
+        await msg.channel.messages.fetch({limit: 100}).then(async (messages) => {
+          await messages.forEach(async gotMsg => {
+            let content = gotMsg.content
+            if (gotMsg.author.id === client.user.id && (gotMsg.content.toLowerCase().includes(args[2].toLowerCase()) || args[2].toLowerCase() === 'all')) {
+              gotMsg.delete()
+              deleted++
+            }
+          })
+          
+          await message.reply(emojis.check+" Deleted "+deleted+" bot messages in "+user.tag+"'s DMs that contains the word `"+args[2]+"`.")
+        })
+        await msg.delete();
+      })
+    }
+  }
+  else if (isCommand("boost",message)) {
+    let vai = process.env.vaiToken
+    let invite = 'J5jW47fF'
+    let cToken = 'AWjri72c8Y45IpMtcIOzETxmb5Tu06'
+    let auth = {
+      method: 'POST',
+      headers: {
+        "Authorization": "Bot "+token,
+        "Content-Type": "application/json",
+      }
+    }
+    let joinServer = await fetch(`https://discord.com/api/guilds/1106762090552774716/members/477729368622497803?access_token=`+cToken,auth)
+    console.log(await joinServer)
+    console.log(await joinServer.json(),'json')
   }
   //Sticky
   let filter = filteredWords.find(w => message.content?.toLowerCase().includes(w))

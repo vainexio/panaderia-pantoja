@@ -55,6 +55,10 @@ let keys = [
 ]
 module.exports = {
   shop: {
+    checkerWhitelist: [
+      '801532638284218378',
+      '477729368622497803',
+    ],
     apiCheckers: [],
     orderForm: [],
     tixSettings: {
