@@ -489,7 +489,8 @@ client.on("messageCreate", async (message) => {
   }
   //
    let checkerVersion = 'Checker version 2.7uip'
-  if ((message.channel.name.includes('nitro-checker') && !message.author.bot) || (message.channel.type === 'DM' && !message.author.bot && shop.checkerWhitelist.find(u => u === message.author.id))) {
+   if (message.author.bot) return;
+  if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
     let addStocks = args[0].toLowerCase() === 'stocks' ? true : false
