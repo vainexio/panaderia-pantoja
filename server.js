@@ -1389,7 +1389,7 @@ client.on('interactionCreate', async inter => {
           );
           comp = [row]
         }
-        inter.message.edit({components: []})
+        //inter.message.edit({components: []})
         if (method === 'delete') {
           inter.reply({content: text})
           setTimeout(async function(){
@@ -1458,7 +1458,9 @@ client.on('interactionCreate', async inter => {
         
         let user = await getUser(userId)
         let ticket = await doc.tickets.find(tix => tix.id === inter.channel.id)
-        if (!ticket) return inter.message.reply({content: emojis.warning+' Invalid ticket data.'})
+        if (!ticket) {
+          ticket = {}
+        } inter.message.reply({content: emojis.warning+' Invalid ticket data.'})
         let attachment = await discordTranscripts.createTranscript(inter.channel);
         
         await log.send({ content: 'Loading', files: [attachment] }).then(async msg => {
