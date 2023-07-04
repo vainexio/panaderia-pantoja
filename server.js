@@ -1460,7 +1460,8 @@ client.on('interactionCreate', async inter => {
         let ticket = await doc.tickets.find(tix => tix.id === inter.channel.id)
         if (!ticket) {
           ticket = {}
-        } inter.message.reply({content: emojis.warning+' Invalid ticket data.'})
+          inter.message.reply({content: emojis.warning+' Invalid ticket data.'})
+        }
         let attachment = await discordTranscripts.createTranscript(inter.channel);
         
         await log.send({ content: 'Loading', files: [attachment] }).then(async msg => {
@@ -1479,9 +1480,9 @@ client.on('interactionCreate', async inter => {
           .addFields(
             {name: 'Ticket Owner', value: user.toString(), inline: true},
             {name: 'Ticket Name', value: 'Current: `'+inter.channel.name+'`\nOriginal: `'+ticket.name+'`', inline: true},
-            {name: 'Panel Name', value: ticket.panel, inline: true},
+            {name: 'Panel Name', value: ticket.panel ? ticket.panel : inter.channel.parent, inline: true},
             {name: 'Transcript', value: '[Online Transcript]('+ticket.transcript+')', inline: true},
-            {name: 'Count', value: ticket.count.toString(), inline: true},
+            {name: 'Count', value: ticket.count ? ticket.count.toString() : 'Unknown', inline: true},
             {name: 'Moderator', value: inter.user.toString(), inline: true}
           )
           .setThumbnail(inter.guild.iconURL())
