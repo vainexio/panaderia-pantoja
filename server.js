@@ -1908,7 +1908,7 @@ client.on('interactionCreate', async inter => {
       let count = 0
       let thread = [
         {
-          question: '> <:S_letter:1092606891240198154> Which product do you want to avail?',
+          question: '> <:S_letter:1092606891240198154> Which product do you want to avail? (include subscription — d,m,y)',
           answer: '',
         },
         {
