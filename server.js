@@ -1480,7 +1480,7 @@ client.on('interactionCreate', async inter => {
           .addFields(
             {name: 'Ticket Owner', value: user.toString(), inline: true},
             {name: 'Ticket Name', value: 'Current: `'+inter.channel.name+'`\nOriginal: `'+ticket.name+'`', inline: true},
-            {name: 'Panel Name', value: ticket.panel ? ticket.panel : inter.channel.parent, inline: true},
+            {name: 'Panel Name', value: ticket.panel ? ticket.panel : 'Unknown', inline: true},
             {name: 'Transcript', value: '[Online Transcript]('+ticket.transcript+')', inline: true},
             {name: 'Count', value: ticket.count ? ticket.count.toString() : 'Unknown', inline: true},
             {name: 'Moderator', value: inter.user.toString(), inline: true}
