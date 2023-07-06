@@ -488,7 +488,7 @@ client.on("messageCreate", async (message) => {
     truck = false
   }
   //
-   let checkerVersion = 'Checker version 2.7uip'
+   let checkerVersion = 'Checker version 2.8ic'
    if (message.author.bot) return;
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
@@ -2155,3 +2155,20 @@ const interval = setInterval(async function() {
       }
   
   },5000)
+
+setInterval(async function() {
+  let stocks = await getChannel(shop.channels.stocks)
+  let messages = await stocks.messages.fetch({limit: 100}).then(async messages => {
+    messages.forEach(async (gotMsg) => {
+      if (gotMsg.content.includes('discord.gift')) {
+        let auth = {
+          method: 'GET',
+          headers: { 'Authorization': 'Bot '+token }
+        }
+        let response = await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+gotMsg.content,auth)
+        response = await response.json();
+        
+      }
+    })
+  })
+  },60000)
