@@ -1077,6 +1077,10 @@ module.exports = {
     {
       id: '1060780494909870230',
       level: 5
+    },
+    {
+      id: '1109338607170367548', //backup server admin
+      level: 5,
     }
   ],
   botlog: '901759430457167872',
