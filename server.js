@@ -488,7 +488,7 @@ client.on("messageCreate", async (message) => {
     truck = false
   }
   //
-   let checkerVersion = 'Checker version 2.8ic'
+   let checkerVersion = 'Checker version 2.8sc'
    if (message.author.bot) return;
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
@@ -610,13 +610,15 @@ client.on("messageCreate", async (message) => {
       if (embed.fields.length <= 24) {
       embed = new MessageEmbed(embed)
         .setFooter({ text: checkerVersion})
-        if (codes.length-1 == num) embeds.push(embed);
+        if (codes.length === num) embeds.push(embed);
+        //
       }
       else {
         embeds.push(embed)
         embed = new MessageEmbed()
           .setColor(colors.none)
           .setFooter({ text: checkerVersion})
+        if (codes.length === num) embeds.push(embed);
       }
       embed.addFields({
         name: num+". ||https://discord.gift/"+codes[i].code+"||", 
@@ -1117,7 +1119,7 @@ client.on('interactionCreate', async inter => {
         });
       });
       
-      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro boost ('+quan+')').setEmoji('<a:S_boost:1095504629481095188>'))
+      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro boost ('+(quan >= 100 ? '100+' : quan)+')').setEmoji('<a:S_boost:1095504629481095188>'))
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {
