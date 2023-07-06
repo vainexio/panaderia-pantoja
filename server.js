@@ -596,7 +596,7 @@ client.on("messageCreate", async (message) => {
     let num = 0
     let stat = {
       put: { count: 0, string: ''},
-      notput: { count: 0,}
+      notput: { count: 0, string: ''}
     }
     for (let i in codes) {
       num++
@@ -610,7 +610,7 @@ client.on("messageCreate", async (message) => {
       if (embed.fields.length <= 24) {
       embed = new MessageEmbed(embed)
         .setFooter({ text: checkerVersion})
-        if (codes.length == num) embeds.push(embed);
+        if (codes.length-1 == num) embeds.push(embed);
       }
       else {
         embeds.push(embed)
@@ -625,10 +625,14 @@ client.on("messageCreate", async (message) => {
       })
       ////
       if (addStocks && codes[i].state === 'Claimable') {
-        put++
+        stat.put.count++
+        stat.put.string += "\nhttps://discord.gift/"+codes[i].code
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
-      } else notPut += "\nhttps://discord.gift/"+codes[i].code
+      } else {
+        stat.notput.count++
+        stat.notput.string += "\nhttps://discord.gift/"+codes[i].code
+      }
     }
     msg.delete();
     console.log(embeds.length)
@@ -642,11 +646,15 @@ client.on("messageCreate", async (message) => {
     else {
       message.channel.send({embeds: [embed]})
     }
-    let newEmbed = new MessageEmbed();
-    newEmbed.addFields(
-      { name: 'Stocked Links', value: put++ },
-      { name: 'Not Stocked', value: notPut },
-    )
+    if (addStocks) {
+      let newEmbed = new MessageEmbed();
+      newEmbed.addFields(
+        { name: 'Stocked Links', value: stat.put.count > 20 ? stat.put.count.toString() : stat.put.count >= 1 ? stat.put.string : 'None' },
+        { name: 'Not Stocked', value: stat.notput.count > 20 ? stat.notput.count.toString() : stat.notput.count >= 1 ? stat.notput.string : 'None' },
+      )
+      newEmbed.setColor(stat.notput.count > 0 ? colors.red : colors.lime)
+      message.channel.send({embeds: [newEmbed]})
+    }
     shop.checkers = []
   }
   if (message.channel.type === 'DM') return;
