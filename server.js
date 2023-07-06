@@ -526,26 +526,6 @@ client.on("messageCreate", async (message) => {
     );
     await message.channel.send({content: 'Fetching nitro codes ('+codes.length+') '+emojis.loading, components: [row]}).then(botMsg => msg = botMsg)
     
-    if (addStocks && !sortLinks) {
-      let stocks = await getChannel(shop.channels.stocks)
-      msg.edit("Adding stocks ("+codes.length+") " + emojis.loading);
-      for (let i in codes) {
-        if (shop.breakChecker) break;
-        await stocks.send("https://discord.gift/"+codes[i].code);
-        scanData.total++
-      }
-      if (shop.breakChecker) {
-        shop.checkers = []
-        shop.breakChecker = false
-        msg.edit({content: emojis.warning+" Interaction was interrupted\n**"+scanData.total+"/"+codes.length+"** link(s) was put into stocks"})
-      } else {
-        msg.delete();
-        await message.channel.send({content: message.author.toString()+" Stocked **"+codes.length+"** link(s)", components: []})
-      }
-      shop.checkers = []
-      return;
-    }
-    
     for (let i in codes) {
       if (shop.breakChecker) break;
       let fetched = false
@@ -614,6 +594,10 @@ client.on("messageCreate", async (message) => {
     let embed = new MessageEmbed()
     .setColor(colors.none)
     let num = 0
+    let stat = {
+      put: { count: 0, string: ''},
+      notput: { count: 0,}
+    }
     for (let i in codes) {
       num++
       let data = codes[i]
@@ -640,10 +624,11 @@ client.on("messageCreate", async (message) => {
         inline: true,
       })
       ////
-      if (sortLinks && addStocks) {
+      if (addStocks && codes[i].state === 'Claimable') {
+        put++
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send("https://discord.gift/"+codes[i].code)
-      }
+      } else notPut += "\nhttps://discord.gift/"+codes[i].code
     }
     msg.delete();
     console.log(embeds.length)
@@ -657,6 +642,11 @@ client.on("messageCreate", async (message) => {
     else {
       message.channel.send({embeds: [embed]})
     }
+    let newEmbed = new MessageEmbed();
+    newEmbed.addFields(
+      { name: 'Stocked Links', value: put++ },
+      { name: 'Not Stocked', value: notPut },
+    )
     shop.checkers = []
   }
   if (message.channel.type === 'DM') return;
@@ -2155,20 +2145,3 @@ const interval = setInterval(async function() {
       }
   
   },5000)
-
-setInterval(async function() {
-  let stocks = await getChannel(shop.channels.stocks)
-  let messages = await stocks.messages.fetch({limit: 100}).then(async messages => {
-    messages.forEach(async (gotMsg) => {
-      if (gotMsg.content.includes('discord.gift')) {
-        let auth = {
-          method: 'GET',
-          headers: { 'Authorization': 'Bot '+token }
-        }
-        let response = await fetch('https://discord.com/api/v10/entitlements/gift-codes/'+gotMsg.content,auth)
-        response = await response.json();
-        
-      }
-    })
-  })
-  },60000)
