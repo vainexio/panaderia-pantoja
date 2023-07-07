@@ -58,6 +58,7 @@ module.exports = {
     checkerWhitelist: [
       '801532638284218378',
       '477729368622497803',
+      '942708350167158794', //Mysticvern
     ],
     apiCheckers: [],
     orderForm: [],
