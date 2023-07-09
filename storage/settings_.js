@@ -375,7 +375,7 @@ module.exports = {
               //
               { name: 'Nitro Basic', price: 70, rs: 0 },
               { name: 'Nitro Classic', price: 100, rs: 0 },
-              { name: 'Nitro Boost', price: 135, rs: 125 },
+              { name: 'Nitro Boost', price: 120, rs: 125 },
               //
             ],
           },
