@@ -728,7 +728,7 @@ client.on("messageCreate", async (message) => {
         
         if (channel) {
         let foundBulked = bulked.find(b => b.channel === channel.id)
-        !foundBulked ? await channel.bulkDelete(10) : null
+        !foundBulked ? await channel.messages.fetch({ limit: 50}).then(messages => { messages.forEach(async (gotMsg) => { gotMsg.delete() })}) : null
         if (!foundBulked) {
           bulked.push({channel: channel.id, messages: []})
           foundBulked = bulked.find(b => b.channel === channel.id)
