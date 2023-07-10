@@ -488,7 +488,7 @@ client.on("messageCreate", async (message) => {
     truck = false
   }
   //
-   let checkerVersion = 'Checker version 2.8sc'
+   let checkerVersion = 'Checker version 2.9hID'
    if (message.author.bot) return;
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
@@ -628,9 +628,9 @@ client.on("messageCreate", async (message) => {
       ////
       if (addStocks && codes[i].state === 'Claimable') {
         stat.put.count++
-        stat.put.string += "\nhttps://discord.gift/"+codes[i].code
+        stat.put.string += "\n"+codes[i].code //https://discord.gift/
         let stocks = await getChannel(shop.channels.stocks)
-        await stocks.send("https://discord.gift/"+codes[i].code)
+        await stocks.send(codes[i].code) //"https://discord.gift/"+
       } else {
         stat.notput.count++
         stat.notput.string += "\nhttps://discord.gift/"+codes[i].code
