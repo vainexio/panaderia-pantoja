@@ -1108,7 +1108,7 @@ client.on('interactionCreate', async inter => {
       let arrays = []
       let messages = await stocks.messages.fetch({limit: 100}).then(async messages => {
         messages.forEach(async (gotMsg) => {
-          if (gotMsg.content.includes('discord.gift')) quan++
+          quan++ //if (gotMsg.content.includes('discord.gift')) 
         })
       })
       
