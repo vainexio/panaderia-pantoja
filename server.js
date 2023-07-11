@@ -488,7 +488,7 @@ client.on("messageCreate", async (message) => {
     truck = false
   }
   //
-   let checkerVersion = 'Checker version 2.9hID'
+   let checkerVersion = 'Checker version 2.9adhID'
    if (message.author.bot) return;
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
@@ -630,7 +630,7 @@ client.on("messageCreate", async (message) => {
         stat.put.count++
         stat.put.string += "\n"+codes[i].code //https://discord.gift/
         let stocks = await getChannel(shop.channels.stocks)
-        await stocks.send(codes[i].code) //"https://discord.gift/"+
+        await stocks.send('discord.gift/'+codes[i].code) //"https:///"+
       } else {
         stat.notput.count++
         stat.notput.string += "\nhttps://discord.gift/"+codes[i].code
@@ -658,6 +658,7 @@ client.on("messageCreate", async (message) => {
       message.channel.send({embeds: [newEmbed]})
     }
     shop.checkers = []
+    message.delete();
   }
   if (message.channel.type === 'DM') return;
   if (isCommand("term",message)) {
@@ -1102,24 +1103,42 @@ client.on('interactionCreate', async inter => {
       let stocks = await getChannel(shop.channels.stocks)
       let stocks2 = await getChannel(shop.channels.otherStocks);
       let quan = 0;
-      
+      let strong = ''
       let stockHolder = [[],[],[],[],[],[],[],[],[],[]];
       let holderCount = 0
       let arrays = []
-      let messages = await stocks.messages.fetch({limit: 100}).then(async messages => {
-        messages.forEach(async (gotMsg) => {
-          quan++ //if (gotMsg.content.includes('discord.gift')) 
-        })
-      })
       
-      let messages2 = await stocks2.messages.fetch({ limit: 100 })
+      let last_id;
+      let mentionsCount = 0
+      let limit = 500
+      let msgSize = 0
+      let totalMsg = 0
+      
+      while (true) {
+      const options = { limit: 100 };
+      if (last_id) {
+        options.before = last_id;
+      }
+      
+      let messages = await stocks.messages.fetch(options).then(async messages => {
+      
+      last_id = messages.last()?.id;
+      totalMsg += messages.size
+      msgSize = messages.size
+        await messages.forEach(async (gotMsg) => {
+          quan++
+        })
+      });
+      //Return
+      if (msgSize != 100) {
+        let messages2 = await stocks2.messages.fetch({ limit: 100 })
       .then(async (messages) => {
         messages.forEach(async (gotMsg) => {
           arrays.push(gotMsg.content);
         });
       });
-      
-      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro boost ('+(quan >= 100 ? '100+' : quan)+')').setEmoji('<a:S_boost:1095504629481095188>'))
+      console.log(quan,'this')
+      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro Boost ('+quan+')').setEmoji('<a:nitroboost:1057999297787985960>'))
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {
@@ -1139,7 +1158,11 @@ client.on('interactionCreate', async inter => {
           comps.push(row)
         }
       }
-      inter.reply({components: comps})
+        console.log(strong)
+      await inter.reply({components: comps})
+        break;
+      }
+    }
     }
     //Queue
     else if (cname === 'order') {
@@ -1668,7 +1691,7 @@ client.on('interactionCreate', async inter => {
       dropMsg.edit({content: 'Returned\n'+content, components: []})
       
       for (let i = args.length - 1; i >= 0; i--) {
-        if (args[i].includes('https://discord.gift/')) {
+        if (args[i].includes('discord.gift/')) {
           await stocks.send(args[i])
           returned++
         }
@@ -1695,7 +1718,7 @@ client.on('interactionCreate', async inter => {
       let count = 0
       let string = ''
       for (let i in args) {
-        if (args[i].includes('https://discord.gift/')) {
+        if (args[i].includes('discord.gift/')) {
           count++;
           string += count+'. '+args[i]+'\n'
         }
