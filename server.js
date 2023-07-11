@@ -621,19 +621,19 @@ client.on("messageCreate", async (message) => {
         if (codes.length === num) embeds.push(embed);
       }
       embed.addFields({
-        name: num+". ||https://discord.gift/"+codes[i].code+"||", 
+        name: num+". ||discord.gift/"+codes[i].code+"||", 
         value: emoji+' **'+state+'**\n'+(!expire ? '`Expired`' : codes[i].typeEmoji+' Expires in `'+expire+' hours`')+expireUnix+'\n'+user+'\u200b',
         inline: true,
       })
       ////
       if (addStocks && codes[i].state === 'Claimable') {
         stat.put.count++
-        stat.put.string += "\n"+codes[i].code //https://discord.gift/
+        stat.put.string += "\ndiscord.gift/"+codes[i].code //https://discord.gift/
         let stocks = await getChannel(shop.channels.stocks)
         await stocks.send('discord.gift/'+codes[i].code) //"https:///"+
       } else {
         stat.notput.count++
-        stat.notput.string += "\nhttps://discord.gift/"+codes[i].code
+        stat.notput.string += "\ndiscord.gift/"+codes[i].code
       }
     }
     msg.delete();
@@ -1517,7 +1517,7 @@ client.on('interactionCreate', async inter => {
           );
           await msg.edit({content: null, embeds: [embed], components: [row]})
           await inter.channel.send({content: emojis.check+' Transcript saved *!*'})
-          user.send({content: 'Your ticket transcript was generated.', embeds: [embed], components: [row]}).catch(err => console.log(err))
+          //user.send({content: 'Your ticket transcript was generated.', embeds: [embed], components: [row]}).catch(err => console.log(err))
         });
       }
     }
