@@ -328,7 +328,7 @@ client.on("messageCreate", async (message) => {
       message.channel.send({content: "<@"+member.id+">", embeds: [embed], components: [row]})
     } else if (await hasRole(member,['1077462108381388873'],message.guild)) {
       let row = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Click me').setEmoji('<a:S_arrowright:1095503803761033276>'),
+        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:S_arrowright:1095503803761033276>'),
       );
       message.channel.send({components: [row]})
       //message.channel.setName(message.channel.name.replace('ticket',member.user.username.replace(/ /g,'')))
@@ -1312,7 +1312,7 @@ client.on('interactionCreate', async inter => {
         );
       inter.update({content: 'Terms Accepted : <@'+inter.user.id+'>', components: [row]})
       let row2 = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Click me').setEmoji('<a:S_arrowright:1095503803761033276>'),
+        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:S_arrowright:1095503803761033276>'),
       );
       inter.channel.send({components: [row2]})
       //inter.channel.setName(inter.channel.name.replace('ticket',inter.user.username.replace(/ /g,'')))
@@ -1349,7 +1349,7 @@ client.on('interactionCreate', async inter => {
           name: 'Order Ticket',
           category: '1054731483656499290',
           support: '1047454193184682040',
-          context: 'Type `.form` to get the order format or use the **click me** button!',
+          context: 'Type `.form` to get the order format or use the **Order Form** button!',
           ticketName: inter.user.username.replace(/ /g,'')+'-'+shard
         }
       }

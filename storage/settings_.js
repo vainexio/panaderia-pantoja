@@ -690,7 +690,7 @@ module.exports = {
           command: 'form',
           response: null,
           components: new MessageActionRow().addComponents(
-            new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Click me').setEmoji('<a:S_arrowright:1095503803761033276>'),
+            new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:S_arrowright:1095503803761033276>'),
           ),
           autoDelete: true,
         },
