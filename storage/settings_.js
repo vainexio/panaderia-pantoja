@@ -194,7 +194,7 @@ module.exports = {
         name: 'E-Wallet Exchange',
         keywords: ['exchange','paypal to gcash'],
         channel: '1072434004873195540',
-        status: 4,
+        status: 1,
         id: '1096319572614860810',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077237348794368/Logopit_1680918656290.png?width=1440&height=360',
         types: [
