@@ -299,11 +299,17 @@ client.on("messageCreate", async (message) => {
       username: zarche.username,
       avatarURL: zarche.avatarURL()
     })
-    let ji = await getUser('699388207539945532')
+    let ji = await getUser('797149484966346752')
     webhook.send({
-      content: 'welcome to sloopies, im a jicken',
+      content: 'welcome to sloopies, im a rc',
       username: ji.username,
       avatarURL: ji.avatarURL()
+    })
+    let twine = await getUser('911181742445047808')
+    webhook.send({
+      content: 'Welcome to spoopies <:frogblush:1054020324393500742>',
+      username: twine.username,
+      avatarURL: twine.avatarURL()
     })
   } 
   else if (message.channel.parent?.name.toLowerCase().includes('orders')) {
