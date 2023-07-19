@@ -147,10 +147,8 @@ module.exports = {
       for (let i in args) {
         let arg = args[i].replace('₱','')
         let isPHP = args[i].includes('₱') && !args[i].includes('$')
-        //if (arg.includes('-')) arg = arg.slice(arg.indexOf('-'),1)//args[i].length-1-args[i].indexOf('-'))
-        console.log(arg)
         let num = Number(arg)
-        if (!isNaN(num) && num <= 124 && isPHP) {
+        if (!isNaN(num) && num < 120 && isPHP) {
           console.log('moderate')
           moderate = true
         }
@@ -160,7 +158,7 @@ module.exports = {
         await removeRole(member,['sloopie'])
         let logs = await getChannel('1047454193755107337')
         await logs.send(member.user.toString()+' was moderated = '+cc)
-        await member.user.send(emojis.warning+' **AUTO MODERATION**\n\n- We have detected that you were selling nitro boost for less than our lowest price.\n\n- As a conclusion, you were removed from the Sloopie role and will not be able to access to server unless your status was removed.\n\n- Once your status have been removed, you can head to <#1047454193197252643> to get your roles back.\n\n- If you think that this is a mistake, please do not hesitate to contact the owner.')
+        await member.user.send(emojis.warning+' **AUTO MODERATION**\n\n- We have detected that you were selling nitro boost for less than our lowest price.\n- As a conclusion, you were removed from the Sloopie role and will not be able to access to server unless your status was removed.\n- Once your status have been removed, you can head to <#1047454193197252643> to get your roles back.\n- If you think that this is a mistake, please do not hesitate to contact the owner.')
       }
       return true;
     }
