@@ -374,8 +374,7 @@ module.exports = {
             parent: 'Monthly Subscription',
             children: [
               //
-              { name: 'Nitro Basic', price: 70, rs: 0 },
-              { name: 'Nitro Classic', price: 100, rs: 0 },
+              { name: 'Nitro Basic', price: 60, rs: 0 },
               { name: 'Nitro Boost', price: 120, rs: 125 },
               //
             ],
@@ -385,7 +384,7 @@ module.exports = {
             children: [
               //
               { name: 'Nitro Basic (Not avail)', price: 0 },
-              { name: 'Nitro Boost (Not avail)', price: 0},
+              { name: 'Nitro Boost', price: 1000},
               //
             ],
           },
