@@ -9,7 +9,6 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const url = require('url');
 const discordTranscripts = require('discord-html-transcripts');
 //
-//const sleep = require('node:timers/promises').setTimeout;
 //Discord
 const Discord = require('discord.js');
 const {WebhookClient, Permissions, Client, Intents, MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu} = Discord; 
