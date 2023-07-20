@@ -1757,7 +1757,12 @@ client.on('interactionCreate', async inter => {
     }
     else if (id.startsWith('reply-')) {
       let reply = id.replace('reply-','')
-      inter.reply({content: reply, ephemeral: true})
+      
+      let embed = new MessageEmbed()
+      .setDescription('# '+reply)
+      .setColor(colors.none)
+      .setFooter({text: 'Hold to copy (mobile only)'})
+      inter.reply({embeds: [embed], ephemeral: true})
     }
     else if (id.startsWith('approve-')) {
       let userId = id.replace('approve-','')
