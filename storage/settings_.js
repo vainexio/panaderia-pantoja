@@ -51,6 +51,7 @@ let keys = [
   'badge',
   'db',
   'vp',
+  'valorant',
   'canva',
 ]
 module.exports = {
@@ -457,10 +458,11 @@ module.exports = {
             parent: 'Via Gamepass',
             children: [
               //
-              { name: '250  Robux', price: 0, rs: 0 },
-              { name: '500 Robux', price: 0, rs: 0 },
-              { name: '700 Robux', price: 0, rs: 0 },
-              { name: '1000 Robux', price: 320, rs: 0 },
+              { name: '100  Robux', price: 80, rs: 0 },
+              { name: '200  Robux', price: 100, rs: 0 },
+              { name: '500 Robux', price: 230, rs: 0 },
+              { name: '700 Robux', price: 250, rs: 0 },
+              { name: '1000 Robux', price: 310, rs: 0 },
               //
             ],
           },
