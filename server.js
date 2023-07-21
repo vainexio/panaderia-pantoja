@@ -506,7 +506,7 @@ client.on("messageCreate", async (message) => {
     let msg = null
     for (let i in args) {
       if (args[i].toLowerCase().includes('discord.gift')) {
-      let code = args[i].replace(/https:|discord.gift|\/|/g,'').replace(/ /g,'').replace(/\|/g,'')
+      let code = args[i].replace(/https:|discord.gift|\/|/g,'').replace(/ /g,'').replace(/\\n|'|\|/g,'')
       let found = codes.find(c => c.code === code)
       !found ? codes.push({code: code, expire: null, emoji: null, user: null, state: null}) : null
     }
