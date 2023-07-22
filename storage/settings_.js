@@ -482,7 +482,7 @@ module.exports = {
         name: 'Spotify',
         keywords: ['spoti','spotify'],
         channel: '1054989652416798750',
-        status: 2,
+        status: 4,
         id: '1096319564662448198',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077186379624478/Logopit_1680918508558.png?width=1440&height=360',
         types: [
