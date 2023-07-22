@@ -1769,15 +1769,15 @@ client.on('interactionCreate', async inter => {
       .setFooter({text: 'Hold to copy (mobile only)'})
       
       let row = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('togglePhone-'+reply).setStyle('DANGER').setLabel('IOS Mode').setEmoji('<:apple:1016400281631740014>'),
+        new MessageButton().setCustomId('togglePhone-'+reply).setStyle('DANGER').setLabel('Switch to IOS').setEmoji('<:apple:1016400281631740014>'),
       );
       inter.reply({embeds: [embed], components: [row], ephemeral: true})
     }
     else if (id.startsWith('togglePhone-')) {
       let content = id.replace('togglePhone-','')
-      if (inter.message.content) {
+      if (inter.message.content.length > 0) {
         let row = new MessageActionRow().addComponents(
-          new MessageButton().setCustomId('togglePhone-'+content).setStyle('DANGER').setLabel('IOS Mode').setEmoji('<:apple:1016400281631740014>'),
+          new MessageButton().setCustomId('togglePhone-'+content).setStyle('DANGER').setLabel('Switch to IOS').setEmoji('<:apple:1016400281631740014>'),
         );
         
         let embed = new MessageEmbed()
@@ -1785,12 +1785,12 @@ client.on('interactionCreate', async inter => {
         .setColor(colors.none)
         .setFooter({text: 'Hold to copy'})
         
-        inter.update({content: null, embeds: [embed]})
+        inter.update({content: null, embeds: [embed] ,components: [row]})
       } else {
         let row = new MessageActionRow().addComponents(
-          new MessageButton().setCustomId('togglePhone-'+content).setStyle('SUCCESS').setLabel('Android Mode').setEmoji('<:android:1016400278934786158>'),
+          new MessageButton().setCustomId('togglePhone-'+content).setStyle('SUCCESS').setLabel('Switch to Android').setEmoji('<:android:1016400278934786158>'),
         );
-        inter.update({content: content})
+        inter.update({content: content, embeds: [], components: [row]})
       }
       }
     else if (id.startsWith('approve-')) {
