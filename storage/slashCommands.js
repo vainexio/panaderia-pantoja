@@ -45,6 +45,22 @@ module.exports = {
           "required": false,
         },
         {
+          "name": 'mop',
+          "description": 'Mode of Payment',
+          "type": 3,
+          "choices": [
+            {
+              name: 'gcash',
+              value: 'gcash'
+            },
+            {
+              name: 'paypal',
+              value: 'paypal'
+            },
+          ],
+          "required": false,
+        },
+        {
           "name": 'keyword',
           "description": 'Drop a specific item in stock that contains the keyword',
           "type": 3,
