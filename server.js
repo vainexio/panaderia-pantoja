@@ -1758,12 +1758,41 @@ client.on('interactionCreate', async inter => {
     else if (id.startsWith('reply-')) {
       let reply = id.replace('reply-','')
       
+      inter.reply({content: reply, ephemeral: true})
+    }
+    else if (id.startsWith('replyCopy-')) {
+      let reply = id.replace('replyCopy-','')
+      
       let embed = new MessageEmbed()
       .setDescription('# '+reply)
       .setColor(colors.none)
       .setFooter({text: 'Hold to copy (mobile only)'})
-      inter.reply({embeds: [embed], ephemeral: true})
+      
+      let row = new MessageActionRow().addComponents(
+        new MessageButton().setCustomId('togglePhone-'+reply).setStyle('DANGER').setLabel('IOS Mode').setEmoji('<:apple:1016400281631740014>'),
+      );
+      inter.reply({embeds: [embed], components: [row], ephemeral: true})
     }
+    else if (id.startsWith('togglePhone-')) {
+      let content = id.replace('togglePhone-','')
+      if (inter.message.content) {
+        let row = new MessageActionRow().addComponents(
+          new MessageButton().setCustomId('togglePhone-'+content).setStyle('DANGER').setLabel('IOS Mode').setEmoji('<:apple:1016400281631740014>'),
+        );
+        
+        let embed = new MessageEmbed()
+        .setDescription('# '+content)
+        .setColor(colors.none)
+        .setFooter({text: 'Hold to copy'})
+        
+        inter.update({content: null, embeds: [embed]})
+      } else {
+        let row = new MessageActionRow().addComponents(
+          new MessageButton().setCustomId('togglePhone-'+content).setStyle('SUCCESS').setLabel('Android Mode').setEmoji('<:android:1016400278934786158>'),
+        );
+        inter.update({content: content})
+      }
+      }
     else if (id.startsWith('approve-')) {
       let userId = id.replace('approve-','')
       let user = await getUser(userId);
