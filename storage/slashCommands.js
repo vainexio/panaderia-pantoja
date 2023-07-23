@@ -61,12 +61,6 @@ module.exports = {
           "required": false,
         },
         {
-          "name": 'keyword',
-          "description": 'Drop a specific item in stock that contains the keyword',
-          "type": 3,
-          "required": false,
-        },
-        {
           "name": 'note',
           "description": 'Extra notes',
           "type": 3,
