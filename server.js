@@ -1320,7 +1320,7 @@ client.on('interactionCreate', async inter => {
         new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:S_arrowright:1095503803761033276>'),
       );
       inter.channel.send({components: [row2]})
-      //inter.channel.setName(inter.channel.name.replace('ticket',inter.user.username.replace(/ /g,'')))
+      inter.channel.setName(inter.channel.name.replace('ticket',inter.user.username.replace(/ /g,'')))
     }
     //tickets
     else if (id.startsWith('createTicket-')) {
@@ -1355,7 +1355,7 @@ client.on('interactionCreate', async inter => {
           category: '1054731483656499290',
           support: '1047454193184682040',
           context: 'Type `.form` to get the order format or use the **Order Form** button!',
-          ticketName: inter.user.username.replace(/ /g,'')+'-'+shard
+          ticketName: 'ticket-'+shard
         }
       }
       else if (type === 'support') {
@@ -1368,7 +1368,7 @@ client.on('interactionCreate', async inter => {
           category: '1068070403446149120',
           support: '1047454193184682040',
           context: 'Please tell us your concerns or inquiries in advance.',
-          ticketName: inter.user.username.replace(/ /g,'')+'-'+shard
+          ticketName: 'ticket-'+shard //inter.user.username.replace(/ /g,'')+
         }
       }
       else if (type === 'report') {
@@ -1381,7 +1381,7 @@ client.on('interactionCreate', async inter => {
           category: '1068070430457470976',
           support: '1047454193184682040',
           context: 'Use the respective autoresponders to view the report format of the item you wish to report.\n`.rboost`\n`.rnitro`\n`.rbadge`\n`.rpremium`',
-          ticketName: inter.user.username.replace(/ /g,'')+'-'+shard
+          ticketName: 'ticket-'+shard
         }
       }
       await inter.reply({content: " Creating ticket.."+emojis.loading, ephemeral: true})
