@@ -196,7 +196,7 @@ module.exports = {
         name: 'E-Wallet Exchange',
         keywords: ['exchange','paypal to gcash'],
         channel: '1072434004873195540',
-        status: 1,
+        status: 4,
         id: '1096319572614860810',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077237348794368/Logopit_1680918656290.png?width=1440&height=360',
         types: [
@@ -366,7 +366,7 @@ module.exports = {
         keywords: ['nitro','nitor','nb','basic','classic'],
         channel: '1054720561277841438',
         rs: '1078708432091226112',
-        status: 2,
+        status: 1,
         id: '1096319579787116544',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077186127970414/Logopit_1680918484757.png?width=1440&height=360',
         types: [
@@ -375,7 +375,7 @@ module.exports = {
             parent: 'Monthly Subscription',
             children: [
               //
-              { name: 'Nitro Basic', price: 60, rs: 0 },
+              { name: 'Nitro Basic (MTO)', price: 60, rs: 0 },
               { name: 'Nitro Boost', price: 120, rs: 125 },
               //
             ],
@@ -385,7 +385,7 @@ module.exports = {
             children: [
               //
               { name: 'Nitro Basic (Not avail)', price: 0 },
-              { name: 'Nitro Boost', price: 1000},
+              { name: 'Nitro Boost (MTO)', price: 1000},
               //
             ],
           },
