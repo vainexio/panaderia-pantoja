@@ -13,13 +13,17 @@ const cmdHandler = require('../functions/commands.js')
 const {getTemplate} = cmdHandler
 
 const get = require('../functions/get.js')
-const {getRandom, getChannel, getMember} = get
+const {getRandom, getChannel, getMember, getGuild} = get
+
+const roles = require('../functions/roles.js')
+const {getRole, addRole, removeRole, hasRole} = roles
 
 module.exports = {
   makeTicket: async function (data) {
     //var author = message.author;
-    let member = await getMember(data.user.id,data.guild.id)
-    if (member) data.ticketName.replace
+    let guild = await getGuild(data.guild.id)
+    let member = await getMember(data.user.id,guild)
+    if (await hasRole(member,['1094909481806205009'])) data.ticketName = data.ticketName.replace('ticket',data.user.username.replace(/ /g,''))
     let ch = null
     await data.guild.channels.create(data.ticketName, {
       type: "text", 

@@ -1961,6 +1961,7 @@ client.on('interactionCreate', async inter => {
         inter.reply({content: emojis.warning+' You already have an existing order form!', ephemeral: true})
         return;
       }
+      if (!await hasRole(inter.member,['1094909481806205009'])) return inter.reply({content: emojis.warning+' Please accept the terms before requesting the order form!', ephemeral: true});
       shop.orderForm.push(inter.user.id)
       let comp = inter.message.components[0]
         for (let i in comp.components) {
