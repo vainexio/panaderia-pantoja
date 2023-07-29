@@ -1766,7 +1766,7 @@ client.on('interactionCreate', async inter => {
       let embed = new MessageEmbed()
       .setDescription('# '+reply)
       .setColor(colors.none)
-      .setFooter({text: 'Hold to copy (mobile only)'})
+      .setFooter({text: 'Hold to copy'})
       
       let row = new MessageActionRow().addComponents(
         new MessageButton().setCustomId('togglePhone-'+reply).setStyle('DANGER').setLabel('Switch to IOS').setEmoji('<:apple:1016400281631740014>'),
