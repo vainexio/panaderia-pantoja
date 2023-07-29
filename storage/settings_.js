@@ -746,7 +746,7 @@ module.exports = {
           autoDelete: true,
         },
         {
-          command: 'gcash3',
+          command: 'gcash',
           response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n— Send screenshot of receipt here',
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09662084534').setStyle('SECONDARY').setEmoji('📱<a:s_notes:1096412847522717696>').setLabel("Copy Paste")),
           autoDelete: true,
@@ -758,7 +758,7 @@ module.exports = {
           autoDelete: true,
         },
         {
-          command: 'gcash',
+          command: 'gcash3',
           response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0945 986 8489**\n—**RA^^L I.**\n\n— Send screenshot of receipt here',
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09459868489').setStyle('SECONDARY').setEmoji('📱').setLabel("Copy Paste")),
           autoDelete: true,
