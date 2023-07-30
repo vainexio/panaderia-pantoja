@@ -62,6 +62,7 @@ module.exports = {
       '942708350167158794', //Mysticvern
       '681104262599671847', //zae
       '1134302377952956508', //ekn
+      '1067861698402340934', //hora
     ],
     apiCheckers: [],
     orderForm: [],
