@@ -1180,6 +1180,7 @@ client.on('interactionCreate', async inter => {
       let mop = options.find(a => a.name === 'mop')
       let price = options.find(a => a.name === 'price')
       //
+      inter.reply({content: 'Adding to queue.. '+emojis.loading, ephemeral: true})
       try {
         let orders = await getChannel(shop.channels.orders)
         let template = await getChannel(shop.channels.templates)
@@ -1206,7 +1207,7 @@ client.on('interactionCreate', async inter => {
           new MessageButton().setURL(msgUrl).setStyle('LINK').setEmoji('<a:S_tick:1095508349161840660>').setLabel("Go to queue"),
         );
         
-        inter.reply({content: 'Queue was added to '+orders.toString(), components: [linkRow]})
+        inter.followUp({content: 'Queue was added to '+orders.toString(), components: [linkRow]})
       } catch (err) {
         inter.reply({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
       }
