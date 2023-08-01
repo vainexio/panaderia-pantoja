@@ -696,12 +696,13 @@ client.on("messageCreate", async (message) => {
     let args = await requireArgs(message,1)
     if (!args) return;
     let found = shop.refIds.find(id => id === args[1])
+    let yes = false
     for (let i in shop.refIds) {
       let id = shop.refIds[i]
       if (args[1] === id) {
         shop.refIds.splice(i,1)
         message.reply(emojis.check+' Valid Reference ID:')
-        
+        yes = true
         let channel = await getChannel(shop.channels.smsReader)
         await channel.messages.fetch({limit: 100}).then(async (messages) => {
           await messages.forEach(async gotMsg => {
@@ -712,6 +713,9 @@ client.on("messageCreate", async (message) => {
         })
         })
       }
+    }
+    if (!yes) {
+      message.reply(emojis.x+' Invalid Reference ID')
     }
   }
   else if (isCommand("boost",message)) {
@@ -2263,7 +2267,7 @@ app.get('/sms', async function (req, res) {
     body: body,
     sender: bodyArgs.slice(firstIndex+1,lastIndex).join(' '),
     amount: bodyArgs[4],
-    balance: bodyArgs.slice(balIndex+3,balIndex+4).join(' '),
+    balance: bodyArgs.slice(balIndex+3,balIndex+4).join(''), //.replace(/[1-9]/g, '#')
     refCode: bodyArgs[bodyArgs.length-1].replace('.','')
   }
   let channel = await getChannel('1135767243477753917')
@@ -2305,5 +2309,5 @@ app.get('/sms', async function (req, res) {
   .setFooter({text: data.time})
   .setColor(colors.none)
   
-  channel.send({content: data.refCode, embeds: [embed]})
+  channel.send({content: '@everyone '+data.refCode, embeds: [embed]})
 });
