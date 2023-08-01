@@ -2266,7 +2266,7 @@ app.get('/sms', async function (req, res) {
   }
   let channel = await getChannel('1135767243477753917')
   if (data.from.toLowerCase() !== 'gcash') {
-    res.status(404).send({success: 'Not a transaction'})
+    res.status(200).send({success: 'Not a transaction'})
     let embed = new MessageEmbed()
     .addFields( { name: 'Message Received', value: msg } )
     .setColor(colors.none)
@@ -2274,6 +2274,7 @@ app.get('/sms', async function (req, res) {
     await channel.send({content: '@everyone', embeds: [embed]})
     return;
   }
+  res.status(200).send({success: 'Transaction Received'})
   console.log('data',data)
   shop.refIds.push(data.refCode)
   //Send log
