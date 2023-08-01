@@ -2273,7 +2273,11 @@ app.get('/sms', async function (req, res) {
   let channel = await getChannel('1135767243477753917')
   if (data.from.toLowerCase() !== 'gcash') {
     res.status(404).send({success: 'Not a transaction'})
-    channel.send(msg)
+    let embed = new MessageEmbed()
+    .addFields( { name: 'Message Received', value: msg } )
+    .setColor(colors.none)
+    
+    await channel.send({content: '@everyone', embeds: [embed]})
     return;
   }
   console.log('data',data)
@@ -2282,7 +2286,7 @@ app.get('/sms', async function (req, res) {
   let embed = new MessageEmbed()
   .addFields(
     {
-      name: 'SMS Reader #1',
+      name: 'Transaction Received',
       value: 'From: '+data.from
     },
     {
