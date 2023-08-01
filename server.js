@@ -2224,9 +2224,8 @@ const interval = setInterval(async function() {
 app.get('/sms', async function (req, res) {
   let msg = req.query.msg
   if (!msg) res.status(404).send({error: 'Invalid Message'})
-  res.status(200).send({success: 'Message Received'})
+  res.status(404).send({success: 'Message Received'})
   
-  let channel = await getChannel('1135767243477753917')
   let args = await getArgs(msg)
   
   let time = args.slice(args.length-3).join(' ')
@@ -2235,7 +2234,7 @@ app.get('/sms', async function (req, res) {
   let firstIndex = bodyArgs.indexOf('from')
   let lastIndex = bodyArgs.indexOf('w/')
   let balIndex = bodyArgs.indexOf('balance')
-  console.log(time,body,bodyArgs)
+  
   let data = {
     from: args[1],
     time: time,
@@ -2245,5 +2244,38 @@ app.get('/sms', async function (req, res) {
     balance: bodyArgs.slice(balIndex+3,balIndex+4).join(' '),
     refCode: bodyArgs[bodyArgs.length-1].replace('.','')
   }
-  console.log('data',data,args,'msg = '+msg)
+  console.log('data',data)
+  //Send log
+  let channel = await getChannel('1135767243477753917')
+  let embed = new MessageEmbed()
+  .addFields(
+    {
+      name: 'SMS Reader #1',
+      value: 'From: '+data.from
+    },
+    {
+      name: 'Amount Sent',
+      value: '```diff\n+ ₱ '+data.amount+'```',
+      inline: true,
+    },
+    {
+      name: 'Total Balance',
+      value: '```yaml\n₱ '+data.balance+'```',
+      inline: true
+    },
+    {
+      name: 'Reference ID',
+      value: '```yaml\n'+data.refCode+'```',
+      inline: true,
+    },
+    {
+      name: 'Sender',
+      value: data.sender,
+      inline: true,
+    },
+  )
+  .setFooter({text: data.time})
+  .setColor(colors.none)
+  
+  channel.send({embeds: [embed]})
 });
