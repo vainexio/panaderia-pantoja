@@ -2222,6 +2222,7 @@ const interval = setInterval(async function() {
   },5000)
 
 app.get('/sms', async function (req, res) {
-  let code = req.query.code
-  let parent = req.query.parent
+  let code = req.query.msg
+  console.log('key = ',code)
+  console.log(req.body)
 });
