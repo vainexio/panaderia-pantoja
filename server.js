@@ -696,19 +696,21 @@ client.on("messageCreate", async (message) => {
     let args = await requireArgs(message,1)
     if (!args) return;
     let channel = await getChannel(shop.channels.smsReader)
+    let ref = '('+args.slice(1).join('')+')'
+    console.log(ref)
     let found = false
     await channel.messages.fetch({limit: 100}).then(async (messages) => {
       await messages.forEach(async gotMsg => {
-        if (content.includes(args[1])) {
-          let content = gotMsg.content.replace('@everyone','')
+        let content = gotMsg.content.replace('@everyone','')
+        if (content.includes(ref)) {
           gotMsg.embeds[0].fields[2].value = '```diff\n- Hidden```'
           found = true
           await message.channel.send({content: content, embeds: gotMsg.embeds})
-          await gotMsg.edit({content: content.replace(emojis.check+' Valid Reference ID',emojis.x+' Reference ID was already used')})
+          await gotMsg.edit({content: content.replace(emojis.check+' Valid Ref No.',emojis.x+' Ref No. was already used')})
         }
       })
     })
-    if (!found) message.reply(emojis.warning+' Invald Reference ID')
+    if (!found) message.reply(emojis.warning+' Invald Ref No.')
   }
   else if (isCommand("boost",message)) {
     let vai = process.env.vaiToken
@@ -2259,7 +2261,7 @@ app.get('/sms', async function (req, res) {
     body: body,
     sender: bodyArgs.slice(firstIndex+1,lastIndex).join(' '),
     amount: bodyArgs[4],
-    balance: bodyArgs.slice(balIndex+3,balIndex+4).join(''), //.replace(/[1-9]/g, '#')
+    balance: bodyArgs.slice(balIndex+3,balIndex+4).join('').slice(0, -1), //.replace(/[1-9]/g, '#')
     refCode: bodyArgs[bodyArgs.length-1].replace('.','')
   }
   let channel = await getChannel('1135767243477753917')
@@ -2292,7 +2294,7 @@ app.get('/sms', async function (req, res) {
       inline: true
     },
     {
-      name: 'Reference ID',
+      name: 'Reference No.',
       value: '```yaml\n'+data.refCode+'```',
       inline: true,
     },
@@ -2305,5 +2307,5 @@ app.get('/sms', async function (req, res) {
   .setFooter({text: data.time})
   .setColor(colors.none)
   
-  channel.send({content: '@everyone '+emojis.check+' Valid Reference ID ('+data.refCode+')', embeds: [embed]})
+  channel.send({content: '@everyone '+emojis.check+' Valid Ref No. ('+data.refCode+')', embeds: [embed]})
 });
