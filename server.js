@@ -699,7 +699,7 @@ client.on("messageCreate", async (message) => {
     let found = false
     await channel.messages.fetch({limit: 100}).then(async (messages) => {
       await messages.forEach(async gotMsg => {
-        let content = gotMsg.content
+        let content = gotMsg.content.replace('@everyone','')
         if (content.includes(args[1])) {
           found = true
           await message.channel.send({content: gotMsg.content, embeds: gotMsg.embeds})
@@ -2304,5 +2304,5 @@ app.get('/sms', async function (req, res) {
   .setFooter({text: data.time})
   .setColor(colors.none)
   
-  channel.send({content: emojis.check+' Valid Reference ID ('+data.refCode+')', embeds: [embed]})
+  channel.send({content: '@everyone '+emojis.check+' Valid Reference ID ('+data.refCode+')', embeds: [embed]})
 });
