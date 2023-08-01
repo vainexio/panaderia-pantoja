@@ -2222,7 +2222,17 @@ const interval = setInterval(async function() {
   },5000)
 
 app.get('/sms', async function (req, res) {
-  let code = req.query.msg
-  console.log('key = ',code)
-  console.log(req.body)
+  let msg = req.query.msg
+  if (!msg) res.status(404).send({error: 'Invalid Message'})
+  res.status(200).send({success: 'Message Received'})
+  
+  let channel = await getChannel('1135767243477753917')
+  let args = await getArgs(msg)
+  
+  let data = {
+    from: args[1],
+    time: args.slice(args.length-3).join(' '),
+    body: args.slice(2).join(' ')
+  }
+  console.log(data,args,'msg = '+msg)
 });
