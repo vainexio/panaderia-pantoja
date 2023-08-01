@@ -695,28 +695,19 @@ client.on("messageCreate", async (message) => {
     if (!await getPerms(message.member,4)) return;
     let args = await requireArgs(message,1)
     if (!args) return;
-    let found = shop.refIds.find(id => id === args[1])
-    let yes = false
-    for (let i in shop.refIds) {
-      let id = shop.refIds[i]
-      if (args[1] === id) {
-        shop.refIds.splice(i,1)
-        message.reply(emojis.check+' Valid Reference ID:')
-        yes = true
-        let channel = await getChannel(shop.channels.smsReader)
-        await channel.messages.fetch({limit: 100}).then(async (messages) => {
-          await messages.forEach(async gotMsg => {
-            let content = gotMsg.content
-            if (content.includes(args[1])) {
-              await message.channel.send({embeds: gotMsg.embeds})
-            }
-        })
-        })
-      }
-    }
-    if (!yes) {
-      message.reply(emojis.x+' Invalid Reference ID')
-    }
+    let channel = await getChannel(shop.channels.smsReader)
+    let found = false
+    await channel.messages.fetch({limit: 100}).then(async (messages) => {
+      await messages.forEach(async gotMsg => {
+        let content = gotMsg.content
+        if (content.includes(args[1])) {
+          found = true
+          await message.channel.send({content: gotMsg.content, embeds: gotMsg.embeds})
+          await gotMsg.edit({content: content.replace(emojis.check+' Valid Reference ID',emojis.x+' Reference ID was already used')})
+        }
+      })
+    })
+    if (!found) message.reply(emojis.warning+' Invald Reference ID')
   }
   else if (isCommand("boost",message)) {
     let vai = process.env.vaiToken
@@ -2313,5 +2304,5 @@ app.get('/sms', async function (req, res) {
   .setFooter({text: data.time})
   .setColor(colors.none)
   
-  channel.send({content: '@everyone '+data.refCode, embeds: [embed]})
+  channel.send({content: emojis.check+' Valid Reference ID ('+data.refCode+')', embeds: [embed]})
 });

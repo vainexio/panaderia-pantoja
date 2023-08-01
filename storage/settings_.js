@@ -56,7 +56,7 @@ let keys = [
 ]
 module.exports = {
   shop: {
-    refIds: ['8011217281725'],
+    refIds: ['8011217281725','2011218131580','9011218190007'],
     checkerWhitelist: [
       '801532638284218378',
       '477729368622497803',
@@ -751,7 +751,7 @@ module.exports = {
         },
         {
           command: 'gcash',
-          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n— Send the *Z*Reference ID** here',
+          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n— Send the **Reference ID** here',
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09662084534').setStyle('SECONDARY').setEmoji('📱<a:s_notes:1096412847522717696>').setLabel("Copy Paste")),
           autoDelete: true,
         },
