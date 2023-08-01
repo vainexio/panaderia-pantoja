@@ -2229,10 +2229,21 @@ app.get('/sms', async function (req, res) {
   let channel = await getChannel('1135767243477753917')
   let args = await getArgs(msg)
   
+  let time = args.slice(args.length-3).join(' ')
+  let body = args.slice(2).join(' ').replace(time,'')
+  let bodyArgs = await getArgs(body)
+  let firstIndex = bodyArgs.indexOf('from')
+  let lastIndex = bodyArgs.indexOf('w/')
+  let balIndex = bodyArgs.indexOf('balance')
+  console.log(time,body,bodyArgs)
   let data = {
     from: args[1],
-    time: args.slice(args.length-3).join(' '),
-    body: args.slice(2).join(' ')
+    time: time,
+    body: body,
+    sender: bodyArgs.slice(firstIndex+1,lastIndex).join(' '),
+    amount: bodyArgs[4],
+    balance: bodyArgs.slice(balIndex+3,balIndex+4).join(' '),
+    refCode: bodyArgs[bodyArgs.length-1].replace('.','')
   }
-  console.log(data,args,'msg = '+msg)
+  console.log('data',data,args,'msg = '+msg)
 });
