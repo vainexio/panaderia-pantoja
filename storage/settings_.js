@@ -56,6 +56,7 @@ let keys = [
 ]
 module.exports = {
   shop: {
+    refIds: [],
     checkerWhitelist: [
       '801532638284218378',
       '477729368622497803',

@@ -691,6 +691,19 @@ client.on("messageCreate", async (message) => {
       })
     }
   }
+  else if (isCommand("refid",message)) {
+    if (!await getPerms(message.member,4)) return;
+    let args = await requireArgs(message,1)
+    if (!args) return;
+    let found = shop.refIds.find(id => id === args[1])
+    for (let i in shop.refIds) {
+      let id = shop.refIds[i]
+      if (args[1] === id) {
+        shop.refIds.splice(i,1)
+        message.reply(emojis.check+' Valid Reference ID:')
+      }
+    }
+  }
   else if (isCommand("boost",message)) {
     let vai = process.env.vaiToken
     let invite = 'J5jW47fF'
@@ -2224,7 +2237,6 @@ const interval = setInterval(async function() {
 app.get('/sms', async function (req, res) {
   let msg = req.query.msg
   if (!msg) res.status(404).send({error: 'Invalid Message'})
-  res.status(404).send({success: 'Message Received'})
   
   let args = await getArgs(msg)
   
@@ -2244,9 +2256,15 @@ app.get('/sms', async function (req, res) {
     balance: bodyArgs.slice(balIndex+3,balIndex+4).join(' '),
     refCode: bodyArgs[bodyArgs.length-1].replace('.','')
   }
-  console.log('data',data)
-  //Send log
   let channel = await getChannel('1135767243477753917')
+  if (data.from.toLowerCase() !== 'gcash') {
+    res.status(404).send({success: 'Not a transaction'})
+    channel.send(msg)
+    return;
+  }
+  console.log('data',data)
+  shop.refIds.push(data.refCode)
+  //Send log
   let embed = new MessageEmbed()
   .addFields(
     {
@@ -2270,7 +2288,7 @@ app.get('/sms', async function (req, res) {
     },
     {
       name: 'Sender',
-      value: data.sender,
+      value: '```ini\n[ '+data.sender+' ]```',
       inline: true,
     },
   )
