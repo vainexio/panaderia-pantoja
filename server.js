@@ -2308,5 +2308,5 @@ app.get('/sms', async function (req, res) {
   .setFooter({text: data.time})
   .setColor(colors.none)
   
-  channel.send({content: '@everyone '+emojis.check+' Valid Ref No. ('+data.refCode+')', embeds: [embed]})
+  await channel.send({content: '@everyone '+emojis.check+' Valid Ref No. ('+data.refCode+')', embeds: [embed]})
 });
