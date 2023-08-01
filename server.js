@@ -691,7 +691,7 @@ client.on("messageCreate", async (message) => {
       })
     }
   }
-  else if (isCommand("refid",message)) {
+  else if (isCommand("find",message)) {
     if (!await getPerms(message.member,4)) return;
     let args = await requireArgs(message,1)
     if (!args) return;
@@ -699,10 +699,11 @@ client.on("messageCreate", async (message) => {
     let found = false
     await channel.messages.fetch({limit: 100}).then(async (messages) => {
       await messages.forEach(async gotMsg => {
-        let content = gotMsg.content.replace('@everyone','')
         if (content.includes(args[1])) {
+          let content = gotMsg.content.replace('@everyone','')
+          gotMsg.embeds[0].fields[2].value = '```diff\n- Hidden```'
           found = true
-          await message.channel.send({content: gotMsg.content, embeds: gotMsg.embeds})
+          await message.channel.send({content: content, embeds: gotMsg.embeds})
           await gotMsg.edit({content: content.replace(emojis.check+' Valid Reference ID',emojis.x+' Reference ID was already used')})
         }
       })
@@ -727,7 +728,7 @@ client.on("messageCreate", async (message) => {
   //Sticky
   let filter = filteredWords.find(w => message.content?.toLowerCase().includes(w))
   if (filter) message.delete();
-  else if (isCommand('find',message)) {
+  else if (isCommand('findkey',message)) {
     if (!await getPerms(message.member,4)) return message.reply({content: emojis.warning+' Insufficient Permissions'});
     let args = await requireArgs(message,1)
     if (!args) return;
@@ -2297,7 +2298,7 @@ app.get('/sms', async function (req, res) {
     },
     {
       name: 'Sender',
-      value: '```ini\n[ '+data.sender+' ]```',
+      value: '||```ini\n[ '+data.sender+' ]```||',
       inline: true,
     },
   )
