@@ -701,6 +701,16 @@ client.on("messageCreate", async (message) => {
       if (args[1] === id) {
         shop.refIds.splice(i,1)
         message.reply(emojis.check+' Valid Reference ID:')
+        
+        let channel = await getChannel(shop.channels.smsReader)
+        await channel.messages.fetch({limit: 100}).then(async (messages) => {
+          await messages.forEach(async gotMsg => {
+            let content = gotMsg.content
+            if (content.includes(args[1])) {
+              await message.channel.send({embeds: gotMsg.embeds})
+            }
+        })
+        })
       }
     }
   }
@@ -2295,5 +2305,5 @@ app.get('/sms', async function (req, res) {
   .setFooter({text: data.time})
   .setColor(colors.none)
   
-  channel.send({embeds: [embed]})
+  channel.send({content: data.refCode, embeds: [embed]})
 });
