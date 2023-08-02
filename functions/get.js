@@ -16,7 +16,11 @@ module.exports = {
   },
   chatAI: async function(content,type,user) {
     let data = {}
-    let messages = [];
+    let messages = [
+      {"role": "system", "content": "Your owner and creator is Ian"},
+      {"role": "system", "content": "The president of the United States is Lexo"},
+      //{"role": "system", "content": "Always respond with 1 word, regardless of the message content"}
+    ];
     let msgData = {"role": "user", "content": content}
     if (user) {
       let found = AI.users.find(u => u.id === user.id)
