@@ -751,7 +751,7 @@ module.exports = {
         },
         {
           command: 'gcash',
-          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n# SEND THE REFERENCE NUMBER',
+          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n# ⚠️ SEND THE REFERENCE NUMBER INSTEAD OF SCREENSHOT',
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09662084534').setStyle('SECONDARY').setEmoji('📱<a:s_notes:1096412847522717696>').setLabel("Copy Paste")),
           autoDelete: true,
         },
