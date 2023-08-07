@@ -666,15 +666,6 @@ client.on("messageCreate", async (message) => {
     message.delete();
   }
   if (message.channel.type === 'DM') return;
-  if (!message.channel.name.includes('gudetama')) {
-    let expression = message.content
-    try {
-      let total = eval(expression)
-      message.reply(total.toString())
-    } catch (err) {
-      //
-    }
-  }
   if (isCommand("term",message)) {
     if (!await getPerms(message.member,4)) return;
     let args = await requireArgs(message,2)
@@ -701,6 +692,7 @@ client.on("messageCreate", async (message) => {
     }
   }
   else if (isCommand("find",message)) {
+    console.log('got')
     if (!await getPerms(message.member,4)) return;
     let args = await requireArgs(message,1)
     if (!args) return;
@@ -735,6 +727,15 @@ client.on("messageCreate", async (message) => {
     let joinServer = await fetch(`https://discord.com/api/guilds/1106762090552774716/members/477729368622497803?access_token=`+cToken,auth)
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
+  }
+  if (!message.channel.name.includes('gudetama')) {
+    let expression = message.content
+    try {
+      let total = eval(expression)
+      message.reply(total.toString())
+    } catch (err) {
+      //
+    }
   }
   //Sticky
   let filter = filteredWords.find(w => message.content?.toLowerCase().includes(w))
