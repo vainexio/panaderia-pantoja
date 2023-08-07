@@ -311,17 +311,6 @@ client.on("messageCreate", async (message) => {
       avatarURL: twine.avatarURL()
     })
   }
-  if (!message.channel.name.includes('gudetama')) {
-    let args = await requireArgs(message,1)
-    if (!args) return;
-    let expression = message.content
-    try {
-      let total = eval(expression)
-      message.reply(total.toString())
-    } catch (err) {
-      //
-    }
-  }
   else if (message.channel.parent?.name.toLowerCase().includes('orders')) {
     //
     let embed = new MessageEmbed()
@@ -397,6 +386,15 @@ client.on("messageCreate", async (message) => {
   }
 }
   if (message.author.bot) return;
+  if (!message.channel.name.includes('gudetama')) {
+    let expression = message.content
+    try {
+      let total = eval(expression)
+      message.reply(total.toString())
+    } catch (err) {
+      //
+    }
+  }
   if (isCommand('feedback',message)) {
     if (message.channel.type !== 'DM') return message.reply(emojis.x+' This function can only be used in Dms.')
     
