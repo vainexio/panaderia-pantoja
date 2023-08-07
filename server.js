@@ -386,15 +386,6 @@ client.on("messageCreate", async (message) => {
   }
 }
   if (message.author.bot) return;
-  if (!message.channel.name.includes('gudetama')) {
-    let expression = message.content
-    try {
-      let total = eval(expression)
-      message.reply(total.toString())
-    } catch (err) {
-      //
-    }
-  }
   if (isCommand('feedback',message)) {
     if (message.channel.type !== 'DM') return message.reply(emojis.x+' This function can only be used in Dms.')
     
@@ -675,6 +666,15 @@ client.on("messageCreate", async (message) => {
     message.delete();
   }
   if (message.channel.type === 'DM') return;
+  if (!message.channel.name.includes('gudetama')) {
+    let expression = message.content
+    try {
+      let total = eval(expression)
+      message.reply(total.toString())
+    } catch (err) {
+      //
+    }
+  }
   if (isCommand("term",message)) {
     if (!await getPerms(message.member,4)) return;
     let args = await requireArgs(message,2)
