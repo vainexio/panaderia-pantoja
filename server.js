@@ -310,7 +310,18 @@ client.on("messageCreate", async (message) => {
       username: twine.username,
       avatarURL: twine.avatarURL()
     })
-  } 
+  }
+  if (!message.channel.name.includes('gudetama')) {
+    let args = await requireArgs(message,1)
+    if (!args) return;
+    let expression = message.content
+    try {
+      let total = eval(expression)
+      message.reply(total.toString())
+    } catch (err) {
+      //
+    }
+  }
   else if (message.channel.parent?.name.toLowerCase().includes('orders')) {
     //
     let embed = new MessageEmbed()
