@@ -71,9 +71,9 @@ module.exports = {
     apiCheckers: [],
     orderForm: [],
     tixSettings: {
-      support: '1047454193184682040',
-      transcripts: '1054713463739531304',
-      closed: '1055288190669443072',
+      support: '1109020434978054234',
+      transcripts: '1109020437096181832',
+      closed: '1109020437524008981',
     },
     
     gcashStatus: null,
@@ -87,26 +87,25 @@ module.exports = {
           ]),
         ),
     channels: {
-      smsReader: '1135767243477753917',
-      checker: '1060779928506880040',
-      gcash: '1105332833079267460',
-      announcements: '1102417073642164274',
-      status: '1054766857552396419', //vc
-      reportsVc: '1079713500731015209', //c
-      vouch: '1054724474659946606',
-      stocks: '1054929031881035789',
-      otherStocks: '1080087813032263690',
-      orders: '1054731027240726528',
-      templates: '1079712339122720768',
-      shopStatus: '1121979133346451506',
-      vouchers: '1066945318060556378',
-      financeLogs: '1100456798932185138',
-      feedbacks: '1094975726127685726',
-      logs: '1060786672201105419',
-      dmTemplate: '1075782410509226095',
-      alerts: '1047454193755107337',
-      apps: '1085504963955916810',
-      drops: '1129348861756973127',
+      smsReader: '1138620527423012974',
+      checker: '1138620514659749928',
+      announcements: '1109020434978054230',
+      status: '', //vc
+      reportsVc: '', //c
+      vouch: '',
+      stocks: '',
+      otherStocks: '',
+      orders: '',
+      templates: '',
+      shopStatus: '',
+      vouchers: '',
+      financeLogs: '',
+      feedbacks: '',
+      logs: '',
+      dmTemplate: '',
+      alerts: '',
+      apps: '',
+      drops: '',
     },
     pricelists: [
       /*{

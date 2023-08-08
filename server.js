@@ -807,7 +807,7 @@ client.on("messageCreate", async (message) => {
       let stockHolder = [[],[],[],[],[],[],[],[],[],[]];
       let holderCount = 0
       let channel = await getChannel(bulked[i].channel)
-      stockHolder[0].push(new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1047454193159503904/1054711675045036033/1095603406632144936').setStyle('LINK').setEmoji('<:09:1069200736631656518>'))
+      stockHolder[0].push(new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK').setEmoji('<:09:1069200736631656518>'))
       for (let b in bulked[i].messages) {
       let msg = bulked[i].messages[b];
         let name = msg.name
@@ -1630,7 +1630,7 @@ client.on('interactionCreate', async inter => {
         .setColor(colors.none)
         .setFooter({text: 'Type ;use '+code+' in the ticket channel to use your voucher!'})
         
-        let row2 = await makeRow('https://discord.com/channels/1047454193159503904/1054711675045036033/1095603406632144936','Order Here','LINK','<:09:1069200736631656518>')
+        let row2 = await makeRow('https://discord.com/channels/1109020434449575936/1109020435754000423','Order Here','LINK','<:09:1069200736631656518>')
     
         let error = false
         if (claimer === inter.user.id) {
@@ -1695,7 +1695,7 @@ client.on('interactionCreate', async inter => {
       let code = makeCode(10)
       let copy = new MessageActionRow().addComponents(
           new MessageButton().setCustomId('copyLinks').setStyle('SECONDARY').setLabel('Copy Links'),
-        new MessageButton().setLabel('Vouch Here').setURL('https://discord.com/channels/1047454193159503904/1054724474659946606').setStyle('LINK').setEmoji('<:S_letter:1092606891240198154>')
+        new MessageButton().setLabel('Vouch Here').setURL('https://discord.com/channels/1109020434449575936/1109020436026634260').setStyle('LINK')//.setEmoji('<:S_letter:1092606891240198154>')
         );
       await member.send({content: msg.content+"\n\nRef code: `"+code+"`\n||"+dropMsg.content+" ||", components: [copy]}).catch((err) => {
         error = true
@@ -1949,7 +1949,7 @@ client.on('interactionCreate', async inter => {
     }
     else if (id.startsWith('prCode-')) {
       let index = id.replace('prCode-','')
-      let guild = await getGuild('1047454193159503904')
+      let guild = await getGuild('1109020434449575936')
       if (!guild) return;
       let member = await getMember(inter.user.id,guild)
       if (member) {
@@ -1960,7 +1960,7 @@ client.on('interactionCreate', async inter => {
           if (i == index) row.style = 'SUCCESS'
         }
         inter.message.edit({components: [comp]})
-        await addRole(member,['1094084379137032252'],guild)
+        await addRole(member,['1109020434470555677'],guild)
         let channels = ''
         guild.channels.cache.forEach( ch => {
           if (ch.parent?.name === 'PRICELIST' && ch.type !== 'GUILD_TEXT') {
@@ -2132,7 +2132,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
  });
 client.on('presenceUpdate', async (pres) => {
   if (!pres) return;
-  let guild = await getGuild('1047454193159503904')
+  let guild = await getGuild('1109020434449575936')
   let mem = await getMember(pres.userId,guild)
   if (!mem) return;
   let perms = await getPerms(mem, 3)
@@ -2180,7 +2180,7 @@ const interval = setInterval(async function() {
   
   if (!randomTime) {
     randomTime = getRandom(1,13)+":"+getRandom(today.getMinutes(),60)
-    sendChannel("Random: "+randomTime,"1047454193755107337",colors.red)
+    sendChannel("Random: "+randomTime,"1109020437096181831",colors.red)
   }
       //Get info
       if (ready) {
@@ -2203,7 +2203,7 @@ const interval = setInterval(async function() {
         }
         let vr = await getChannel(shop.channels.vouchers)
         vr.send(voucher.code+' - '+voucher.perks)
-        await dropVoucher(voucher.code,'1047454193595732055',voucher.perks+' drop')
+        await dropVoucher(voucher.code,'1109020436026634265',voucher.perks+' drop')
       }
         else if (time === randomTime) {
           let voucher = {
@@ -2214,7 +2214,7 @@ const interval = setInterval(async function() {
           
           let vr = await getChannel(shop.channels.vouchers)
         vr.send(voucher.code+' - '+voucher.perks)
-        await dropVoucher(voucher.code,'1047454193595732055',voucher.perks+' drop')
+        await dropVoucher(voucher.code,'1109020436026634265',voucher.perks+' drop')
         }
         else if (today.getHours() === 23 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1079716277528039468")
