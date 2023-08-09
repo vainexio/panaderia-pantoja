@@ -1031,7 +1031,7 @@ client.on("messageCreate", async (message) => {
     //chance = random
     //console.log(chance)
   }
-  if ((message.mentions.has('1057167023492300881') || message.content?.toLowerCase().includes('gude')) && message.channel.parent?.id !== '1054731483656499290' && message.channel.parent?.id !== '1068070430457470976'  && message.channel.parent?.id !== '1047454193197252645') chance = true
+  if ((message.mentions.has('1057167023492300881') || message.content?.toLowerCase().includes('gude')) && message.channel.parent?.id !== '1109020434978054228' && message.channel.parent?.id !== '1109020435200356488'  && message.channel.parent?.id !== '1109020435523326025') chance = true
   //AI ChatBot
   if (message.channel.name.includes('gudetama') || chance || message.channel.name.includes('image-generation')) {
     await message.channel.sendTyping();
@@ -1343,7 +1343,7 @@ client.on('interactionCreate', async inter => {
     console.log(id)
     if (id === 'terms') {
       let member = inter.member;
-      await addRole(member,['1077462108381388873','1094909481806205009'],inter.message.guild)
+      await addRole(member,['1109020434520887321'],inter.message.guild)
       let row = new MessageActionRow().addComponents(
           new MessageButton().setCustomId('claimed').setStyle('SECONDARY').setLabel('Terms Accepted').setDisabled(true).setEmoji(emojis.check),
         );
@@ -1993,7 +1993,7 @@ client.on('interactionCreate', async inter => {
         inter.reply({content: emojis.warning+' You already have an existing order form!', ephemeral: true})
         return;
       }
-      if (!await hasRole(inter.member,['1094909481806205009'])) return inter.reply({content: emojis.warning+' Please accept the terms before requesting the order form!', ephemeral: true});
+      if (!await hasRole(inter.member,['1109020434520887321'])) return inter.reply({content: emojis.warning+' Please accept the terms before requesting the order form!', ephemeral: true});
       shop.orderForm.push(inter.user.id)
       let comp = inter.message.components[0]
         for (let i in comp.components) {
@@ -2274,7 +2274,7 @@ app.get('/sms', async function (req, res) {
     balance: bodyArgs.slice(balIndex+3,balIndex+4).join('').slice(0, -1), //.replace(/[1-9]/g, '#')
     refCode: bodyArgs[bodyArgs.length-1].replace('.','')
   }
-  let channel = await getChannel('1135767243477753917')
+  let channel = await getChannel(shop.channels.smsReader)
   if (data.from.toLowerCase() !== 'gcash') {
     res.status(200).send({success: 'Not a transaction'})
     let embed = new MessageEmbed()
