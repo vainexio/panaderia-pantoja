@@ -152,6 +152,7 @@ module.exports = {
       }
       
       if (moderate && await hasRole(member,['sloopie'],member.guild)) {
+        
         //await removeRole(member,['sloopie'])
         //let logs = await getChannel('1109020437096181831')
         //await logs.send(member.user.toString()+' was moderated = '+cc)
