@@ -18,9 +18,6 @@ const {getRandom, getChannel} = get
 const roles = require('../functions/roles.js')
 const {removeRole, addRole, hasRole} = roles
 
-const others = require('../functions/others.js')
-const {getArgs} = others
-
 const makeButton = async function (id, label, style, emoji) {
   //emoji = emoji ? emoji : ''
   style = style.toUpperCase()
