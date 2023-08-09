@@ -98,7 +98,7 @@ client.on("ready", async () => {
     }
   }
   console.log('Successfully logged in to discord bot.')
-  client.user.setPresence({ status: 'idle', activities: [{ name: 'https://discord.gg/ggnusAR5zb', type: "WATCHING" }] });
+  client.user.setPresence({ status: 'idle', activities: [{ name: '.gg/spoopies', type: "WATCHING" }] });
  // await mongoose.connect(mongooseToken,{keepAlive: true});
 })
 
