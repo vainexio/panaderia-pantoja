@@ -785,7 +785,7 @@ module.exports = {
     customRoles: [
       {
         user: '482603796371865603', //mimi
-        role: '1070267838922752060',
+        role: '1109020434554433549',
       },
     ],
     randomVouchers: {
