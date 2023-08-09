@@ -87,7 +87,7 @@ module.exports = {
           ]),
         ),
     channels: {
-      smsReader: '1138620527423012974',
+      smsReader: '1138638222902165565',
       checker: '1138638208633159773',
       announcements: '1109020434978054230',
       status: '1109020434810294345', //vc

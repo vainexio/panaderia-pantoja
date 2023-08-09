@@ -1113,7 +1113,7 @@ client.on('interactionCreate', async inter => {
         inter.channel.name !== chName ? inter.channel.setName(chName) : null
         let orders = await getChannel(shop.channels.orders)
         let template = await getChannel(shop.channels.templates)
-        let msg = await template.messages.fetch("1093800287002693702")
+        let msg = await template.messages.fetch("1138661169171812393")
         let content = msg.content
         content = content
           .replace('{user}','<@'+user.user.id+'>')
@@ -1690,7 +1690,7 @@ client.on('interactionCreate', async inter => {
       if (!member) return inter.reply(emojis.x+" Invalid User")
       let template = await getChannel(shop.channels.dmTemplate)
       
-      let msg = await template.messages.fetch("1075782458970214480")
+      let msg = await template.messages.fetch("1138690365151531168")
       let error = false;
       let code = makeCode(10)
       let copy = new MessageActionRow().addComponents(
