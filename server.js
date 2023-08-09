@@ -1384,8 +1384,8 @@ client.on('interactionCreate', async inter => {
           user: inter.user,
           count: foundData.count,
           name: 'Order Ticket',
-          category: '1054731483656499290',
-          support: '1047454193184682040',
+          category: '1109020435523326025',
+          support: '1109020434554433548',
           context: 'Type `.form` to get the order format or use the **Order Form** button!',
           ticketName: 'ticket-'+shard
         }
@@ -1397,8 +1397,8 @@ client.on('interactionCreate', async inter => {
           user: inter.user,
           count: foundData.count,
           name: 'Support Ticket',
-          category: '1068070403446149120',
-          support: '1047454193184682040',
+          category: '1109020434978054234',
+          support: '1109020434554433548',
           context: 'Please tell us your concerns or inquiries in advance.',
           ticketName: 'ticket-'+shard //inter.user.username.replace(/ /g,'')+
         }
@@ -1410,15 +1410,15 @@ client.on('interactionCreate', async inter => {
           user: inter.user,
           count: foundData.count,
           name: 'Report Ticket',
-          category: '1068070430457470976',
-          support: '1047454193184682040',
+          category: '1109020435200356488',
+          support: '1109020434554433548',
           context: 'Use the respective autoresponders to view the report format of the item you wish to report.\n`.rboost`\n`.rnitro`\n`.rbadge`\n`.rpremium`',
           ticketName: 'ticket-'+shard
         }
       }
       await inter.reply({content: " Creating ticket.."+emojis.loading, ephemeral: true})
       let channel = await makeTicket(data)
-      await inter.followUp({content: "<a:S_arrowright:1095503803761033276> Ticket created "+channel.toString(), ephemeral: true})
+      await inter.followUp({content: emojis.check+" Ticket created "+channel.toString(), ephemeral: true})
     }
     //
     else if (id.includes('Ticket-')) {
@@ -1430,14 +1430,14 @@ client.on('interactionCreate', async inter => {
       let doc = await tixModel.findOne({id: user.id})
       if (doc) {
         let comp
-        let text = '<:S_dot:1093733278541951078>Status: `'+method.toUpperCase()+'`\n<:S_dot:1093733278541951078>Author: '+inter.user.toString()
+        let text = 'Status: `'+method.toUpperCase()+'`\nAuthor: '+inter.user.toString()
         if (method === 'delete') {
           text = 'This channel will be deleted in a few seconds.'
           comp = null
         }
         else if (method === 'closed') {
           let row = new MessageActionRow().addComponents(
-            new MessageButton().setCustomId('transcript-'+user.id).setStyle('SECONDARY').setLabel('Transcript').setEmoji('<:S_letter:1092606891240198154>'),
+            new MessageButton().setCustomId('transcript-'+user.id).setStyle('SECONDARY').setLabel('Transcript').setEmoji('💾'),
             new MessageButton().setCustomId('openTicket-'+user.id).setStyle('SECONDARY').setLabel('Open').setEmoji('🔓'),
             new MessageButton().setCustomId('deleteTicket-'+user.id).setStyle('SECONDARY').setLabel('Delete').setEmoji('⛔'),
           );
@@ -1902,7 +1902,7 @@ client.on('interactionCreate', async inter => {
     }
     else if (id.startsWith('prVerify')) {
       let member = inter.member
-      if (await hasRole(member,['1094084379137032252'],inter.guild)) {
+      if (await hasRole(member,['1109020434470555677'],inter.guild)) {
         inter.deferUpdate();
         return
       } else {

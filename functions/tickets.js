@@ -23,7 +23,7 @@ module.exports = {
     //var author = message.author;
     let guild = await getGuild(data.guild.id)
     let member = await getMember(data.user.id,guild)
-    if (await hasRole(member,['1094909481806205009'])) data.ticketName = data.ticketName.replace('ticket',data.user.username.replace(/ /g,''))
+    if (await hasRole(member,['1109020434520887321'])) data.ticketName = data.ticketName.replace('ticket',data.user.username.replace(/ /g,''))
     let ch = null
     await data.guild.channels.create(data.ticketName, {
       type: "text", 
@@ -71,8 +71,8 @@ module.exports = {
       
       })
       .catch(async err => {
-      let log = await getChannel('1047454193910284300')
-      log.send('<@477729368622497803> Error creating tix for <@'+data.user.id+'>\n```diff\n- '+err+'```')
+      let log = await getChannel('1109020437096181831')
+      log.send('Error creating tix for <@'+data.user.id+'>\n```diff\n- '+err+'```')
     });
     
     return ch;

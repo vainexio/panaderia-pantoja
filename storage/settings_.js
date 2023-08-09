@@ -817,11 +817,11 @@ module.exports = {
         message: '__**Vouch here!**__\n\n• Send any message of acknowledgement\n• Send screenshot of your purchase\n\n**Void warranty if:**\n• no vouch/improper vouch\n• no screenshot/proof of login\n• did not vouch within 12 hours\n• reference code is not visible',
       },
       {
-        id: '0',
-        message: '',
+        id: '1109020436278300810',
+        message: 'Click the button below to access our pricelists.',
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK')//.setEmoji('<:09:1069200736631656518>')
+          new MessageButton().setLabel('Access').setCustomId('prVerify').setStyle('SUCCESS')//.setEmoji('<:09:1069200736631656518>')
         ),
       },
       {
@@ -870,7 +870,7 @@ module.exports = {
         comp: new MessageActionRow()
         .addComponents(
           //new MessageButton().setLabel('Follow Up').setStyle('SECONDARY').setEmoji('<a:S_arrowright:1095503803761033276>').setCustomId('followup'),
-          new MessageButton().setLabel('Mark as Done').setStyle('SECONDARY').setEmoji('<a:S_lapot:1088655136785711184>').setCustomId('done'),
+          new MessageButton().setLabel('Mark as Done').setStyle('SECONDARY').setCustomId('done')//.setEmoji('<a:S_lapot:1088655136785711184>'),
         ),
       },
       {
