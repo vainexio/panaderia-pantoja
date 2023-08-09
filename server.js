@@ -1215,7 +1215,7 @@ client.on('interactionCreate', async inter => {
       try {
         let orders = await getChannel(shop.channels.orders)
         let template = await getChannel(shop.channels.templates)
-        let msg = await template.messages.fetch("1093800287002693702")
+        let msg = await template.messages.fetch("1138661169171812393")
         let status = 'NOTED'
         let content = msg.content
         content = content
@@ -1224,7 +1224,7 @@ client.on('interactionCreate', async inter => {
           .replace('{quan}',quan.value.toString())
           .replace('{product}',product.value)
           .replace('{mop}',mop ? mop.value : 'gcash')
-          .replace('{ticket}',inter.channel.name)
+          .replace('{ticket}',inter.channel.toString()+' ('+inter.channel.name+')')
           .replace('{status}',status)
           .replace('{stamp}','<t:'+getTime(new Date().getTime())+':R>')
         
