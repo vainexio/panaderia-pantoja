@@ -929,7 +929,7 @@ module.exports = {
         ),
       },
       {
-        id: '1109020434978054226',
+        id: '1109020434978054231',
         message: 'Click the button to gain the **Shop Status** role and get notified when the shop opens or closes!',
         comp: new MessageActionRow()
         .addComponents(
