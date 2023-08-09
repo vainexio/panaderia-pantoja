@@ -153,8 +153,8 @@ module.exports = {
       
       if (moderate && await hasRole(member,['sloopie'],member.guild)) {
         //await removeRole(member,['sloopie'])
-        let logs = await getChannel('1109020437096181831')
-        await logs.send(member.user.toString()+' was moderated = '+cc)
+        //let logs = await getChannel('1109020437096181831')
+        //await logs.send(member.user.toString()+' was moderated = '+cc)
         //await member.user.send(emojis.warning+' **AUTO MODERATION**\n\n- We have detected that you were selling nitro boost for less than our lowest price.\n- As a conclusion, you were removed from the Sloopie role and will not be able to access to server unless your status was removed.\n- Once your status have been removed, you can head to <#1047454193197252643> to get your roles back.\n- If you think that this is a mistake, please do not hesitate to contact the owner.')
       }
       return true;
