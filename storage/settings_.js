@@ -804,6 +804,10 @@ module.exports = {
         message: "<a:S_bearheart:1094190497179910225> Type `;feedback` on <@1057167023492300881>'s DMs to submit a feedback."
       },
       {
+        id: '1109020436278300806',
+        message: 'Type </stocks:1102433613116616734> to show the list of available stocks',
+      },
+      {
         id: '1138621480440188940',
         message: '<:S_letter:1092606891240198154> **Stocks dropper showcase**',
         files: ['https://cdn.discordapp.com/attachments/1101501538293252136/1102772107424833536/2023-05-02_09-39-15.mp4']

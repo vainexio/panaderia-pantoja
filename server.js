@@ -314,7 +314,7 @@ client.on("messageCreate", async (message) => {
   else if (message.channel.parent?.name.toLowerCase().includes('orders')) {
     //
     let embed = new MessageEmbed()
-      .addFields({name: 'Terms and Conditions',value: '<:S_letter:1092606891240198154> Before proceeding, you must read and accept our terms and conditions.\n\n<:S_seperator:1093733778633019492> By clicking the button, you indicate that you have read, understood and accepted the terms stated in <#1055070784843948052> and the rules implied in <#1055883558918561913> for the product you want to avail.\n\n<:S_seperator:1093733778633019492> You will be held liable for any violation of our rules, for you have accepted the terms and agreed to comply.', inline: true})
+      .addFields({name: 'Terms and Conditions',value: '<:S_letter:1092606891240198154> Before proceeding, you must read and accept our terms and conditions.\n\n<:S_seperator:1093733778633019492> By clicking the button, you indicate that you have read, understood and accepted the terms stated in <#1109020435754000421> and the rules implied in <#1109020435754000422> for the product you want to avail.\n\n<:S_seperator:1093733778633019492> You will be held liable for any violation of our rules, for you have accepted the terms and agreed to comply.', inline: true})
       .setColor(colors.yellow)
       .setThumbnail(message.channel.guild.iconURL())
       
@@ -974,7 +974,7 @@ client.on("messageCreate", async (message) => {
       if (custom) return;
       //
     if (!await hasRole(message.member,['pr access'],message.guild)) {
-      message.reply("Please head to <#1094079711753281596> and click the **Access** button to be able to view our pricelist channels!")
+      message.reply("Please head to <#1109020436278300810> and click the **Access** button to be able to view our pricelist channels!")
     } 
     else {
       let channels = ''
