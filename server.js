@@ -1000,7 +1000,7 @@ client.on("messageCreate", async (message) => {
     else if (isMessage(".badge",message)) {
       message.delete()
       let embed = new MessageEmbed()
-      .setDescription('**Steps of claiming dev badge**\n- Add <@477729368622497803>\n- Activate Discord 2FA (Required)\n- Join https://discord.gg/M9VdthZDJ7\n- Check your email for an invite, click **Accept Invite**\n- Head to https://discord.com/developers/active-developer to claim the badge\n- Make sure to take a **SCREENSHOT** for proof/vouching!')
+      .setDescription('**Steps of claiming dev badge**\n- Add <@477729368622497803>\n- Activate Discord 2FA (Required)\n- Secure payment\n- Join https://discord.gg/93mXzRbxNx\n- Check your email for an invite, click **Accept Invite**\n- Head to https://discord.com/developers/active-developer to claim the badge\n- Make sure to take a **SCREENSHOT** for proof/vouching!')
       .setColor(colors.green)
       .setThumbnail('https://preview.redd.it/say-hello-to-the-new-active-developer-badge-v0-tswry4vw56z91.png?auto=webp&s=40bd51e3e008ed4737a64fbaa1f3e629352848be')
       .setFooter({text: 'Item is not refundable once invited'})
@@ -1120,7 +1120,7 @@ client.on('interactionCreate', async inter => {
           .replace('{price}',price.value.toString())
           .replace('{quan}',quan.value.toString()).replace('{product}',(item ? item.value : 'nitro boost'))
           .replace('{mop}',mop ? mop.value : 'gcash')
-          .replace('{ticket}',inter.channel.name)
+          .replace('{ticket}',inter.channel.toString()+' ('+inter.channel.name+')')
           .replace('{status}','**COMPLETED**')
           .replace('{stamp}','<t:'+getTime(new Date().getTime())+':R>')
         
