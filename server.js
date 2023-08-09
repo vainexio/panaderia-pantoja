@@ -98,7 +98,7 @@ client.on("ready", async () => {
     }
   }
   console.log('Successfully logged in to discord bot.')
-  client.user.setPresence({ status: 'idle', activities: [{ name: 'Sloopies', type: "WATCHING" }] });
+  client.user.setPresence({ status: 'idle', activities: [{ name: 'https://discord.gg/ggnusAR5zb', type: "WATCHING" }] });
  // await mongoose.connect(mongooseToken,{keepAlive: true});
 })
 
@@ -1695,7 +1695,7 @@ client.on('interactionCreate', async inter => {
       let code = makeCode(10)
       let copy = new MessageActionRow().addComponents(
           new MessageButton().setCustomId('copyLinks').setStyle('SECONDARY').setLabel('Copy Links'),
-        new MessageButton().setLabel('Vouch Here').setURL('https://discord.com/channels/1109020434449575936/1109020436026634260').setStyle('LINK')//.setEmoji('<:S_letter:1092606891240198154>')
+        new MessageButton().setLabel('Vouch Here').setURL('https://discord.com/channels/1109020434449575936/1109020436026634260').setStyle('LINK').setEmoji('<:S_letter:1092606891240198154>')
         );
       await member.send({content: msg.content+"\n\nRef code: `"+code+"`\n||"+dropMsg.content+" ||", components: [copy]}).catch((err) => {
         error = true

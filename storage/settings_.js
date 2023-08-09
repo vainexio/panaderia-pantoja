@@ -821,7 +821,7 @@ module.exports = {
         message: 'Click the button below to access our pricelists.',
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Access').setCustomId('prVerify').setStyle('SUCCESS')//.setEmoji('<:09:1069200736631656518>')
+          new MessageButton().setLabel('Access').setCustomId('prVerify').setStyle('SECONDARY').setEmoji('<:09:1069200736631656518>')
         ),
       },
       {
@@ -829,9 +829,9 @@ module.exports = {
         message: 'Click the button below to create a ticket!\n\nOrder — Availing products\nSupport — General concerns and inquiries\nReport — Reporting revoked products',
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Create Order').setCustomId('createTicket-order').setStyle('SECONDARY'),//.setEmoji('<a:S_bearheart:1094190497179910225>'),
-          new MessageButton().setLabel('Support Ticket').setCustomId('createTicket-support').setStyle('SECONDARY'),//.setEmoji('<a:S_pastelheart:1093737606451298354> '),
-          new MessageButton().setLabel('Submit Report').setCustomId('createTicket-report').setStyle('SECONDARY')//.setEmoji('<:S_exclamation:1093734009005158450>')
+          new MessageButton().setLabel('Create Order').setCustomId('createTicket-order').setStyle('SECONDARY').setEmoji('<a:S_bearheart:1094190497179910225>'),
+          new MessageButton().setLabel('Support Ticket').setCustomId('createTicket-support').setStyle('SECONDARY').setEmoji('<a:S_pastelheart:1093737606451298354> '),
+          new MessageButton().setLabel('Submit Report').setCustomId('createTicket-report').setStyle('SECONDARY').setEmoji('<:S_exclamation:1093734009005158450>')
         ),
       },
       {
