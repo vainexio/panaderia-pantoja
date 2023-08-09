@@ -2171,7 +2171,7 @@ let streamers = [
   ]
 
 
-const interval = setInterval(async function() {
+/*const interval = setInterval(async function() {
       //Get time//
   let date = new Date().toLocaleString("en-US", { timeZone: 'Asia/Shanghai' });
   let today = new Date(date);
@@ -2250,7 +2250,7 @@ const interval = setInterval(async function() {
         }
       }
   
-  },5000)
+  },5000)*/
 
 app.get('/sms', async function (req, res) {
   let msg = req.query.msg

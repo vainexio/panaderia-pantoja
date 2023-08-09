@@ -90,22 +90,19 @@ module.exports = {
       smsReader: '1138620527423012974',
       checker: '1138620514659749928',
       announcements: '1109020434978054230',
-      status: '', //vc
-      reportsVc: '', //c
-      vouch: '',
-      stocks: '',
-      otherStocks: '',
-      orders: '',
-      templates: '',
-      shopStatus: '',
-      vouchers: '',
-      financeLogs: '',
-      feedbacks: '',
-      logs: '',
-      dmTemplate: '',
-      alerts: '',
-      apps: '',
-      drops: '',
+      status: '1109020434810294345', //vc
+      reportsVc: '1109020434810294346', //vc
+      vouch: '1109020436026634260',
+      stocks: '1138620458850320504',
+      otherStocks: '1138620469856190464',
+      orders: '1109020435754000423',
+      templates: '1109020434810294344',
+      shopStatus: '1109020434978054231',
+      vouchers: '1109020434810294343',
+      logs: '1109020437096181831',
+      dmTemplate: '1138620481747034222',
+      alerts: '1109020437096181830',
+      drops: '1138620489628123278',
     },
     pricelists: [
       /*{
@@ -201,7 +198,7 @@ module.exports = {
         //Category
         name: 'E-Wallet Exchange',
         keywords: ['exchange','paypal to gcash'],
-        channel: '1072434004873195540',
+        channel: '1138621401381740554',
         status: 4,
         id: '1096319572614860810',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077237348794368/Logopit_1680918656290.png?width=1440&height=360',
@@ -224,7 +221,7 @@ module.exports = {
         //Category
         name: 'Bot Commission',
         keywords: ['bot comms','comms','stocks dropper','dropper'],
-        channel: '1081107027054571550',
+        channel: '1138621480440188940',
         status: 2,
         id: '1096319574284193842',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077237592076389/Logopit_1680918672598.png?width=1440&height=360',
@@ -345,9 +342,9 @@ module.exports = {
         //Category
         name: 'Canva',
         keywords: ['canva'],
-        channel: '1054989652416798750',
+        channel: '1109020436764827699',
         status: 2,
-        id: '1096319578482671646',
+        id: '1109020436764827699',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1104012111346151494/Logopit_1683287379481.png?width=1440&height=360',
         types: [
           //Types
@@ -370,7 +367,7 @@ module.exports = {
         name: 'Discord Nitro',
         lowest: 100,
         keywords: ['nitro','nitor','nb','basic','classic'],
-        channel: '1054720561277841438',
+        channel: '1109020436278300812',
         rs: '1078708432091226112',
         status: 1,
         id: '1096319579787116544',
@@ -402,7 +399,7 @@ module.exports = {
         //Category
         name: 'Steam',
         keywords: ['swc','steam'],
-        channel: '1054989628765122571',
+        channel: '1109020436764827700',
         status: 4,
         id: '1096319581393535036',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077185125535844/Logopit_1680918431372.png?width=1440&height=360',
@@ -428,7 +425,7 @@ module.exports = {
         //Category
         name: 'Genshin Impact',
         keywords: ['genesis crystals','genshin','welkin'],
-        channel: '1054989628765122571',
+        channel: '1109020436764827700',
         status: 2,
         id: '1096319582240788490',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077185406550136/Logopit_1680918406428.png?width=1440&height=360',
@@ -453,7 +450,7 @@ module.exports = {
         //Category
         name: 'Robux',
         keywords: ['roblox','robux','rbx'],
-        channel: '1054989628765122571',
+        channel: '1109020436764827700',
         rs: '1078710810806853704',
         status: 2,
         id: '1096319583121584208',
@@ -487,7 +484,7 @@ module.exports = {
         //Category
         name: 'Spotify',
         keywords: ['spoti','spotify'],
-        channel: '1054989652416798750',
+        channel: '1109020436764827699',
         status: 4,
         id: '1096319564662448198',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077186379624478/Logopit_1680918508558.png?width=1440&height=360',
@@ -521,7 +518,7 @@ module.exports = {
         //Category
         name: 'Youtube',
         keywords: ['yt','youtube'],
-        channel: '1054989652416798750',
+        channel: '1109020436764827699',
         status: 2,
         id: '1096319565606174800',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235713028126/Logopit_1680918525501.png?width=1440&height=360',
@@ -552,7 +549,7 @@ module.exports = {
         //Category
         name: 'Netflix',
         keywords: ['nf','netflix','netplix'],
-        channel: '1054989652416798750',
+        channel: '1109020436764827699',
         status: 2,
         id: '1096319566902218813',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235939512320/Logopit_1680918539369.png?width=1440&height=360',
@@ -592,7 +589,7 @@ module.exports = {
         //Category
         name: 'Valorant',
         keywords: ['vp','valorant','balo'],
-        channel: '1054989628765122571',
+        channel: '1109020436764827700',
         status: 2,
         id: '1096319584514080859',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077185666592768/Logopit_1680918349259.png?width=1440&height=360',
@@ -618,7 +615,7 @@ module.exports = {
         //Category
         name: 'Vyper VPN',
         keywords: ['vyper'],
-        channel: '1094056028938698833',
+        channel: '1138621712221610034',
         status: 2,
         id: '1096319586640609280',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077236648345710/Logopit_1680918601382.png?width=1440&height=360',
@@ -640,7 +637,7 @@ module.exports = {
         //Category
         name: 'Windscribe VPN',
         keywords: ['windscribe','wind'],
-        channel: '1094056028938698833',
+        channel: '1138621712221610034',
         status: 4,
         id: '',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1105784399875813496/Logopit_1683709883410.png?width=1440&height=360',
@@ -663,7 +660,7 @@ module.exports = {
         //Category
         name: 'Express VPN',
         keywords: ['express'],
-        channel: '1094056028938698833',
+        channel: '1138621712221610034',
         status: 2,
         id: '',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1105784399636733982/Logopit_1683709898945.png?width=1440&height=360',
@@ -753,7 +750,7 @@ module.exports = {
         {
           command: 'gcash',
           response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n# ⚠️ SEND THE REFERENCE NUMBER INSTEAD OF SCREENSHOT',
-          components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09662084534').setStyle('SECONDARY').setEmoji('📱<a:s_notes:1096412847522717696>').setLabel("Copy Paste")),
+          components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09662084534').setStyle('SECONDARY').setEmoji('📱').setLabel("Copy Paste")),
           autoDelete: true,
         },
         {
@@ -807,46 +804,34 @@ module.exports = {
         message: "<a:S_bearheart:1094190497179910225> Type `;feedback` on <@1057167023492300881>'s DMs to submit a feedback."
       },
       {
-        id: '1081107027054571550',
+        id: '1138621480440188940',
         message: '<:S_letter:1092606891240198154> **Stocks dropper showcase**',
         files: ['https://cdn.discordapp.com/attachments/1101501538293252136/1102772107424833536/2023-05-02_09-39-15.mp4']
       },
       {
-        id: '1047454193595732049',
-        message: '<a:nitroboost:1057999297787985960> **Server Booster Perks**\n<:S_dot:1093733278541951078> ₱5 discount on certain products\n<:S_dot:1093733278541951078> Image/Gif perms in <#1047454193595732055> \n<:S_dot:1093733278541951078> **Sloopier** role\n<:S_dot:1093733278541951078> **Sloopiest** role (2x boost)\n<:S_dot:1093733278541951078> 2x giveaway entries',
+        id: '1109020434978054233',
+        message: '<a:nitroboost:1057999297787985960> **Server Booster Perks**\n- ₱5 discount on certain products\n- Image/Gif perms in <#1047454193595732055> \n- **Sloopier** role\n- **Sloopiest** role (2x boost)\n- 2x giveaway entries',
       },
       {
-        id: '1054724474659946606',
-        message: '<a:catpet:1054020868650578081> __**Vouch here!**__\n\n• Send any message of acknowledgement\n• Send screenshot of your purchase\n\n<:mark:1056579773989650543> **Void warranty if:**\n• no vouch/improper vouch\n• no screenshot/proof of login\n• did not vouch within 12 hours\n• reference code is not visible',
-      },
-      {
-        id: '0',
-        message: '<:gude1:1056579657828417596> — Noted\n<:gude2:1056579660353372160> — Processing\n<:gude3:1056579662572179586> — Completed',
-      },
-      {
-        id: '1055030500508569620',
-        message: '<:gude1:1056579657828417596> — Noted\n<:gude2:1056579660353372160> — Ready to claim\n<:gude3:1056579662572179586> — Claimed',
-      },
-      {
-        id: '1101833714704601168',
-        message: '<:gude1:1056579657828417596> — Noted\n<:gude2:1056579660353372160> — Fixing\n<:gude3:1056579662572179586> — Fixed',
+        id: '1109020436026634260',
+        message: '__**Vouch here!**__\n\n• Send any message of acknowledgement\n• Send screenshot of your purchase\n\n**Void warranty if:**\n• no vouch/improper vouch\n• no screenshot/proof of login\n• did not vouch within 12 hours\n• reference code is not visible',
       },
       {
         id: '0',
         message: '',
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1047454193159503904/1054711675045036033/1095603406632144936').setStyle('LINK').setEmoji('<:09:1069200736631656518>')
+          new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK')//.setEmoji('<:09:1069200736631656518>')
         ),
       },
       {
-        id: '1054711675045036033',
+        id: '1109020435754000423',
         message: 'Click the button below to create a ticket!\n\nOrder — Availing products\nSupport — General concerns and inquiries\nReport — Reporting revoked products',
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Create Order').setCustomId('createTicket-order').setStyle('SECONDARY').setEmoji('<a:S_bearheart:1094190497179910225>'),
-          new MessageButton().setLabel('Support Ticket').setCustomId('createTicket-support').setStyle('SECONDARY').setEmoji('<a:S_pastelheart:1093737606451298354> '),
-          new MessageButton().setLabel('Submit Report').setCustomId('createTicket-report').setStyle('SECONDARY').setEmoji('<:S_exclamation:1093734009005158450>')
+          new MessageButton().setLabel('Create Order').setCustomId('createTicket-order').setStyle('SECONDARY'),//.setEmoji('<a:S_bearheart:1094190497179910225>'),
+          new MessageButton().setLabel('Support Ticket').setCustomId('createTicket-support').setStyle('SECONDARY'),//.setEmoji('<a:S_pastelheart:1093737606451298354> '),
+          new MessageButton().setLabel('Submit Report').setCustomId('createTicket-report').setStyle('SECONDARY')//.setEmoji('<:S_exclamation:1093734009005158450>')
         ),
       },
       {
@@ -863,7 +848,7 @@ module.exports = {
         order: true,
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1047454193159503904/1054711675045036033/1095603406632144936').setStyle('LINK').setEmoji('<:09:1069200736631656518>')
+          new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK')//.setEmoji('<:09:1069200736631656518>')
         )
       },
       {
@@ -879,7 +864,7 @@ module.exports = {
         comp: null,
       },
       {
-        id: '1054731483656499290', //
+        id: '1109020435523326025', //
         message: '',
         condition: message => keys.find(k => message.channel.name.includes(k) && !message.channel.name.includes('done')),
         comp: new MessageActionRow()
@@ -889,7 +874,7 @@ module.exports = {
         ),
       },
       {
-        id: '1047454193197252644',
+        id: '1109020434978054226',
         message: '*Pick your age*',
         comp: new MessageActionRow()
         .addComponents(
@@ -900,7 +885,7 @@ module.exports = {
         ),
       },
       {
-        id: '1047454193197252644',
+        id: '1109020434978054226',
         message: '*Pick which games you play*',
         comp: new MessageActionRow()
         .addComponents(
@@ -912,7 +897,7 @@ module.exports = {
         ),
       },
       {
-        id: '1047454193197252644',
+        id: '1109020434978054226',
         message: '*Pick which games you play (2)*',
         comp: new MessageActionRow()
         .addComponents(
@@ -924,7 +909,7 @@ module.exports = {
         ),
       },
       {
-        id: '1047454193197252644',
+        id: '1109020434978054226',
         message: '*Pick your pronouns*',
         comp: new MessageActionRow()
         .addComponents(
@@ -934,7 +919,7 @@ module.exports = {
         ),
       },
       {
-        id: '1047454193197252644',
+        id: '1109020434978054226',
         message: '*Pick which notifications you want to get*',
         comp: new MessageActionRow()
         .addComponents(
@@ -944,7 +929,7 @@ module.exports = {
         ),
       },
       {
-        id: '1121979133346451506',
+        id: '1109020434978054226',
         message: 'Click the button to gain the **Shop Status** role and get notified when the shop opens or closes!',
         comp: new MessageActionRow()
         .addComponents(
@@ -952,15 +937,7 @@ module.exports = {
         ),
       },
       {
-        id: '1105332833079267460',
-        message: 'Click the button to gain the **GCash Status** role and get notified when the gcash service advisory releases an update!',
-        comp: new MessageActionRow()
-        .addComponents(
-          new MessageButton().setLabel('GCash Status').setStyle('SECONDARY').setEmoji('🔔').setCustomId('roles-GCash_Status')
-          ),
-      },
-      {
-        id: '1047454193197252644',
+        id: '1109020434978054226',
         message: '*Pick your language*',
         comp: new MessageActionRow()
         .addComponents(
@@ -1068,23 +1045,19 @@ module.exports = {
   ],
   permissions: [
     {
-      id: "920903240617451581", //collateral
+      id: "1066284097879670824", //my user
       level: 5,
     },
     {
-      id: "1047454193184682040", //collateral
+      id: "1109020434554433548", //collateral
       level: 3,
     },
     {
-      id: "1047454193184682040", //sloopie mod
-      level: 4,
-    },
-    {
-      id: "1047454193197252639",
+      id: "1109020434554433552", //owner role
       level: 5,
     },
     {
-      id: '1060780494909870230',
+      id: '',
       level: 5
     },
     {
