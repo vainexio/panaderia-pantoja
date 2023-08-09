@@ -23,7 +23,7 @@ module.exports = {
     //var author = message.author;
     let guild = await getGuild(data.guild.id)
     let member = await getMember(data.user.id,guild)
-    if (await hasRole(member,['1109020434520887321'])) data.ticketName = data.ticketName.replace('ticket',data.user.username.replace(/ /g,''))
+    if (await hasRole(member,['1109020434520887322'])) data.ticketName = data.ticketName.replace('ticket',data.user.username.replace(/ /g,''))
     let ch = null
     await data.guild.channels.create(data.ticketName, {
       type: "text", 

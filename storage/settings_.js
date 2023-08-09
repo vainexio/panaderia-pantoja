@@ -71,7 +71,7 @@ module.exports = {
     apiCheckers: [],
     orderForm: [],
     tixSettings: {
-      support: '1109020434978054234',
+      support: '1109020434554433548',
       transcripts: '1109020437096181832',
       closed: '1109020437524008981',
     },
