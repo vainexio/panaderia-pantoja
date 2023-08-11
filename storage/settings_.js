@@ -157,7 +157,7 @@ module.exports = {
         //Category
         name: 'Developer Badge',
         keywords: ['dev','badge','db'],
-        channel: '1057249812656955514',
+        channel: '1109020436764827698',
         rs: '1078708594188496987',
         status: 1,
         id: '1109020436764827698',
