@@ -247,6 +247,15 @@ module.exports = {
             ],
           },
           {
+            parent: 'Backup Bot Slot',
+            children: [
+              //
+              { name: 'Lifetime Slot', price: 200 },
+              { name: 'Features:\n+ Provided Bot\n+ Via Discord OAuth2\n+ Can join all verified users in an instant\n+ Can use in \n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
+              //
+            ],
+          },
+          {
             parent: 'Custom Commission',
             children: [
               //
