@@ -232,9 +232,8 @@ module.exports = {
             parent: 'Nitro stocks dropper',
             children: [
               //
-              { name: 'Uncovered hosting', price: 300 },
               { name: 'Covered hosting', price: 500 },
-              { name: 'Features:\n+ </drop:1102423261914091530> command\n+ </stocks:1102433613116616734> command\n+ nitro links checker (not constantly updated)\n\u200b'}
+              { name: 'Features:\n+ </drop:1102423261914091530> command\n+ </stocks:1102433613116616734> command\n+ nitro checker (50 links/sec)\n\u200b'}
               //
             ],
           },
@@ -379,8 +378,8 @@ module.exports = {
             parent: 'Monthly Subscription',
             children: [
               //
-              { name: 'Nitro Basic (MTO)', price: 60, rs: 0 },
-              { name: 'Nitro Boost', price: 100, rs: 125 },
+              { name: 'Nitro Basic (MTO)', price: 40, rs: 0 },
+              { name: 'Nitro Boost', price: 110, rs: 125 },
               //
             ],
           },
