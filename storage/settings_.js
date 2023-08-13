@@ -229,7 +229,7 @@ module.exports = {
         types: [
           //Types
           {
-            parent: 'Nitro stocks dropper',
+            parent: 'Nitro Stocks Dropper',
             children: [
               //
               { name: 'Covered hosting', price: 500 },
@@ -238,7 +238,7 @@ module.exports = {
             ],
           },
           {
-            parent: 'Nitro checker',
+            parent: 'Nitro Checker',
             children: [
               //
               { name: 'Monthly', price: 30 },
@@ -251,7 +251,7 @@ module.exports = {
             children: [
               //
               { name: 'Lifetime Slot', price: 200 },
-              { name: 'Features:\n+ Provided Bot\n+ Via Discord OAuth2\n+ Can join all verified users in an instant\n+ Can use in \n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
+              { name: 'Features:\n+ Provided Bot\n+ Via Discord OAuth2\n+ Can join all verified users in an instant\n+ Can use in all sorts of servers\n\u200b'}
               //
             ],
           },
@@ -259,16 +259,7 @@ module.exports = {
             parent: 'Custom Commission',
             children: [
               //
-              { name: 'Allows you to choose freely from anything you want your bot function. The price may range depending on the proposed functionality.', price: 0 },
-              //
-            ],
-          },
-          {
-            parent: 'Covered Hosting',
-            children: [
-              //
-              { name: 'All discord bots require paid hosting services (if not manually hosted) to stay up and working.', price: 0 },
-              { name: 'Covered hosting keeps your bot alive 24/7.', price: 0 },
+              { name: 'We accept custom commissions! The price may range depending on the proposed functionality.', price: 0 },
               //
             ],
           },
@@ -810,7 +801,7 @@ module.exports = {
       },
       {
         id: '1138621480440188940',
-        message: '<:S_letter:1092606891240198154> **Stocks dropper showcase**',
+        message: '<:S_letter:1092606891240198154> **Stocks dropper showcase** (outdated showcase)',
         files: ['https://cdn.discordapp.com/attachments/1101501538293252136/1102772107424833536/2023-05-02_09-39-15.mp4']
       },
       {
