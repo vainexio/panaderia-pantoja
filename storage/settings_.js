@@ -238,11 +238,11 @@ module.exports = {
             ],
           },
           {
-            parent: 'Nitro links checker',
+            parent: 'Nitro checker',
             children: [
               //
               { name: 'Monthly', price: 30 },
-              { name: 'Features:\n+ Can scan 50 links per second\n+ Shows difference between valid, calimed and invalid links\n+ Shows accurate expiration (date & time) of links\n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
+              { name: 'Features:\n+ Provided Bot\n+ Can scan 50 links per second\n+ Shows difference between valid, calimed and invalid links\n+ Shows accurate expiration (date & time) of links\n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
               //
             ],
           },
@@ -251,14 +251,6 @@ module.exports = {
             children: [
               //
               { name: 'Allows you to choose freely from anything you want your bot function. The price may range depending on the proposed functionality.', price: 0 },
-              //
-            ],
-          },
-          {
-            parent: 'Uncovered Hosting',
-            children: [
-              //
-              { name: 'This indicates that your bot will not be online, unless you are too. You will have to keep your device turned on, alongside the project website of the bot.', price: 0 },
               //
             ],
           },
