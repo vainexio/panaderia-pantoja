@@ -1109,7 +1109,7 @@ client.on('interactionCreate', async inter => {
         );
         inter.reply({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
-        let chName = 'done。'+quan.value+'。'+(item ? item.value : 'nitro boost')
+        let chName = quan.value+'。'+(item ? item.value : 'nitro boost')
         inter.channel.name !== chName ? inter.channel.setName(chName) : null
         let orders = await getChannel(shop.channels.orders)
         let template = await getChannel(shop.channels.templates)
@@ -1708,6 +1708,7 @@ client.on('interactionCreate', async inter => {
         );
         inter.update({components: [row]})
         dropMsg.edit({content: code+"\n"+dropMsg.content, components: [row]})
+        !inter.channel.name.includes('done。') ? await inter.channel.setName('done。'+inter.channel.name) : null
       })
     }
     else if (id.startsWith('returnLinks-')) {
