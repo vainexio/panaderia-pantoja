@@ -839,8 +839,8 @@ module.exports = {
         ),
       },
       {
-        id: '1102417073642164274',
-        message: '',
+        id: '1109020434978054230',
+        message: '** **',
         order: true,
         comp: new MessageActionRow()
         .addComponents(
