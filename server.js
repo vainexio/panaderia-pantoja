@@ -663,7 +663,7 @@ client.on("messageCreate", async (message) => {
       message.channel.send({embeds: [newEmbed]})
     }
     shop.checkers = []
-    message.delete();
+    !message.channel.type === 'DM' ? message.delete() : null
   }
   if (message.channel.type === 'DM') return;
   if (isCommand("term",message)) {
