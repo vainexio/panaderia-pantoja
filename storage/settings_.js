@@ -800,13 +800,13 @@ module.exports = {
         message: 'Type </stocks:1102433613116616734> to show the list of available stocks',
       },
       {
-        id: '1138621480440188940',
+        id: '0',
         message: '<:S_letter:1092606891240198154> **Stocks dropper showcase** (outdated showcase)',
         files: ['https://cdn.discordapp.com/attachments/1101501538293252136/1102772107424833536/2023-05-02_09-39-15.mp4']
       },
       {
         id: '1109020434978054233',
-        message: '<a:nitroboost:1057999297787985960> **Server Booster Perks**\n- ₱5 discount on certain products\n- Image/Gif perms in <#1047454193595732055> \n- **Sloopier** role\n- **Sloopiest** role (2x boost)\n- 2x giveaway entries',
+        message: '<a:nitroboost:1057999297787985960> **Server Booster Perks**\n- ₱5 global voucher\n- Image/Gif perms in <#1047454193595732055> \n- **Sloopier** role\n- **Sloopiest** role (2x boost)\n- 2x giveaway entries',
       },
       {
         id: '1109020436026634260',
