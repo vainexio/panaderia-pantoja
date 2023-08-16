@@ -241,7 +241,7 @@ module.exports = {
             parent: 'Nitro Checker',
             children: [
               //
-              { name: 'Monthly', price: 30 },
+              { name: 'Monthly', price: 50 },
               { name: 'Features:\n+ Provided Bot\n+ Can scan 50 links per second\n+ Shows difference between valid, calimed and invalid links\n+ Shows accurate expiration (date & time) of links\n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
               //
             ],
