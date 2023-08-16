@@ -2276,7 +2276,7 @@ app.get('/sms', async function (req, res) {
     refCode: bodyArgs[bodyArgs.length-1].replace('.','')
   }
   let channel = await getChannel(shop.channels.smsReader)
-  if (data.from.toLowerCase() !== 'gcash') {
+  if (data.from.toLowerCase() !== 'gcash' && !data.body.startsWith('You have received')) {
     res.status(200).send({success: 'Not a transaction'})
     let embed = new MessageEmbed()
     .addFields( { name: 'Message Received', value: msg } )
