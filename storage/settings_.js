@@ -371,7 +371,7 @@ module.exports = {
             children: [
               //
               { name: 'Nitro Basic (MTO)', price: 40, rs: 0 },
-              { name: 'Nitro Boost', price: 115, rs: 125 },
+              { name: 'Nitro Boost', price: 110, rs: 125 },
               //
             ],
           },
@@ -441,7 +441,7 @@ module.exports = {
       {
         //Category
         name: 'Robux',
-        keywords: ['roblox','robux','rbx'],
+        keywords: ['roblox','robux','rbx','bobux'],
         channel: '1109020436764827700',
         rs: '1078710810806853704',
         status: 2,
