@@ -1078,6 +1078,8 @@ client.on('interactionCreate', async inter => {
       let item = options.find(a => a.name === 'item')
       let mop = options.find(a => a.name === 'mop')
       let note = options.find(a => a.name === 'note')
+      
+      await inter.reply({content: emojis.loading, ephemeral: true})
       //Send prompt
       try {
         //Get stocks
@@ -1086,16 +1088,16 @@ client.on('interactionCreate', async inter => {
         let index = ""
         let msgs = []
         let messages = await stocks.messages.fetch({limit: quan.value}).then(async messages => {
-          messages.forEach(async (gotMsg) => {
+          await messages.forEach(async (gotMsg) => {
             index++
             links += "\n"+index+". "+gotMsg.content
             msgs.push(gotMsg)
-            await gotMsg.delete();
+            //await gotMsg.delete();
           })
         })
         //Returns
-        if (links === "") return inter.reply({content: emojis.x+" No stocks left.", ephemeral: true})
-        if (quan.value > index) return inter.reply({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
+        if (links === "") return inter.followUp({content: emojis.x+" No stocks left.", ephemeral: true})
+        if (quan.value > index) return inter.followUp({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
         await addRole(await getMember(user.user.id,inter.guild),["Buyer","Pending"],inter.guild)
         //Send prompt
         let drops = await getChannel(shop.channels.drops)
@@ -1107,7 +1109,7 @@ client.on('interactionCreate', async inter => {
           new MessageButton().setCustomId("showDrop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📋'),
           new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('🔻')
         );
-        inter.reply({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
+        inter.followUp({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
         let chName = quan.value+'。'+(item ? item.value : 'nitro boost')
         inter.channel.name !== chName ? inter.channel.setName(chName) : null
@@ -1130,7 +1132,7 @@ client.on('interactionCreate', async inter => {
         //
       } catch (err) {
         console.log(err)
-        inter.reply({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
+        inter.followUp({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
       }
     }
     //Stocks
