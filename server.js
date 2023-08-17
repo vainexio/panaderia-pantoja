@@ -1073,10 +1073,6 @@ client.on('interactionCreate', async inter => {
     if (cname === 'drop') {
       if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission'});
       let options = inter.options._hoistedOptions
-      if (!dropCmd) {
-        dropCmd = true
-        setTimeout(function() { dropCmd = false }, 6000)
-      } else return inter.reply({content: emojis.warning+" You're doing this too fast, please try again in a few seconds."})
       //
       let user = options.find(a => a.name === 'user')
       let quan = options.find(a => a.name === 'quantity')
@@ -1103,7 +1099,8 @@ client.on('interactionCreate', async inter => {
         //Returns
         if (links === "") return inter.reply({content: emojis.x+" No stocks left.", ephemeral: true})
         if (quan.value > index) return inter.reply({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
-        stocks.bulkDelete(quan.value)
+        
+        stocks.bulkDelete(msgs).then(msg => console.log(msg.size))
         await addRole(await getMember(user.user.id,inter.guild),["Buyer","Pending"],inter.guild)
         //Send prompt
         let drops = await getChannel(shop.channels.drops)
