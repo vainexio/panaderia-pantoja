@@ -1064,6 +1064,8 @@ let ondutyChannel = '977736253908848711'
 let vrDebounce = false
 let claimer = null
 let animation = false
+
+let dropCmd = false
 client.on('interactionCreate', async inter => {
   if (inter.isCommand()) {
     let cname = inter.commandName
@@ -1071,6 +1073,10 @@ client.on('interactionCreate', async inter => {
     if (cname === 'drop') {
       if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission'});
       let options = inter.options._hoistedOptions
+      if (!dropCmd) {
+        dropCmd = true
+        setTimeout(function() { dropCmd = false }, 6000)
+      } else return inter.reply({content: emojis.warning+" You're doing this too fast, please try again in a few seconds."})
       //
       let user = options.find(a => a.name === 'user')
       let quan = options.find(a => a.name === 'quantity')
@@ -1079,7 +1085,6 @@ client.on('interactionCreate', async inter => {
       let mop = options.find(a => a.name === 'mop')
       let note = options.find(a => a.name === 'note')
       
-      await inter.reply({content: emojis.loading, ephemeral: true})
       //Send prompt
       try {
         //Get stocks
@@ -1096,8 +1101,9 @@ client.on('interactionCreate', async inter => {
           })
         })
         //Returns
-        if (links === "") return inter.followUp({content: emojis.x+" No stocks left.", ephemeral: true})
-        if (quan.value > index) return inter.followUp({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
+        if (links === "") return inter.reply({content: emojis.x+" No stocks left.", ephemeral: true})
+        if (quan.value > index) return inter.reply({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
+        stocks.bulkDelete(quan.value)
         await addRole(await getMember(user.user.id,inter.guild),["Buyer","Pending"],inter.guild)
         //Send prompt
         let drops = await getChannel(shop.channels.drops)
@@ -1109,7 +1115,7 @@ client.on('interactionCreate', async inter => {
           new MessageButton().setCustomId("showDrop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📋'),
           new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('🔻')
         );
-        inter.followUp({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
+        inter.reply({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
         let chName = quan.value+'。'+(item ? item.value : 'nitro boost')
         inter.channel.name !== chName ? inter.channel.setName(chName) : null
