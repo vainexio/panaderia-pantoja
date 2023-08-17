@@ -1065,7 +1065,7 @@ let vrDebounce = false
 let claimer = null
 let animation = false
 
-let yay = false
+let yay = true
 let cStocks = 0
 let tStocks = 0
 client.on('interactionCreate', async inter => {
@@ -1076,6 +1076,7 @@ client.on('interactionCreate', async inter => {
       if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission'});
       let options = inter.options._hoistedOptions
       if (!yay) return inter.reply({content: emojis.warning+" The bot is currently busy deleting stocks ("+cStocks+"/"+tStocks+")", ephemeral: true})
+      await inter.reply({content: 'Fetching stocks.. '+emojis.loading, ephemeral: true})
       //
       let user = options.find(a => a.name === 'user')
       let quan = options.find(a => a.name === 'quantity')
@@ -1096,16 +1097,25 @@ client.on('interactionCreate', async inter => {
             index++
             links += "\n"+index+". "+gotMsg.content
             msgs.push(gotMsg)
-            await gotMsg.delete().then(msg => {
-              ++cStocks
-              
-            });
           })
         })
         //Returns
-        if (links === "") return inter.reply({content: emojis.x+" No stocks left.", ephemeral: true})
-        if (quan.value > index) return inter.reply({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
-        
+        if (links === "") return inter.followUp({content: emojis.x+" No stocks left.", ephemeral: true})
+        if (quan.value > index) return inter.followUp({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
+        yay = false
+        tStocks = quan.value
+        //delete messages
+        console.log('Deleting '+msgs.length+' messages')
+        for (let i in msgs) {
+          await msgs[i].delete().then(msg => {
+            ++cStocks
+            console.log(cStocks)
+            if (cStocks == tStocks) {
+              cStocks = 0
+              yay = true
+            }
+          });
+        }
         await addRole(await getMember(user.user.id,inter.guild),["Buyer","Pending"],inter.guild)
         //Send prompt
         let drops = await getChannel(shop.channels.drops)
@@ -1117,7 +1127,7 @@ client.on('interactionCreate', async inter => {
           new MessageButton().setCustomId("showDrop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📋'),
           new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('🔻')
         );
-        inter.reply({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
+        inter.followUp({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
         let chName = quan.value+'。'+(item ? item.value : 'nitro boost')
         inter.channel.name !== chName ? inter.channel.setName(chName) : null
