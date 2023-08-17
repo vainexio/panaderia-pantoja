@@ -1090,13 +1090,13 @@ client.on('interactionCreate', async inter => {
             index++
             links += "\n"+index+". "+gotMsg.content
             msgs.push(gotMsg)
+            await gotMsg.delete();
           })
         })
         //Returns
         if (links === "") return inter.reply({content: emojis.x+" No stocks left.", ephemeral: true})
         if (quan.value > index) return inter.reply({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
         await addRole(await getMember(user.user.id,inter.guild),["Buyer","Pending"],inter.guild)
-        stocks.bulkDelete(quan.value)
         //Send prompt
         let drops = await getChannel(shop.channels.drops)
         let dropMsg
@@ -1129,6 +1129,7 @@ client.on('interactionCreate', async inter => {
         orders.send({content: content, components: [row2]})
         //
       } catch (err) {
+        console.log(err)
         inter.reply({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
       }
     }
