@@ -735,13 +735,13 @@ module.exports = {
         },
         {
           command: 'gcash4',
-          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0906 412 6440**\n— **LE•••N K•• F.**\n\n— Send screenshot of receipt here',
+          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0906 412 6440**\n— **LE•••N K•• F.**\n\n',
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09064126440').setStyle('SECONDARY').setEmoji('📱').setLabel("Copy Paste")),
           autoDelete: true,
         },
         {
           command: 'gcash',
-          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n# ⚠️ SEND THE REFERENCE NUMBER INSTEAD OF SCREENSHOT',
+          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n— Send screenshot of receipt here', //# ⚠️ SEND THE REFERENCE NUMBER INSTEAD OF SCREENSHOT
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09662084534').setStyle('SECONDARY').setEmoji('📱').setLabel("Copy Paste")),
           autoDelete: true,
         },
