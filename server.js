@@ -1065,7 +1065,9 @@ let vrDebounce = false
 let claimer = null
 let animation = false
 
-let dropCmd = false
+let yay = false
+let cStocks = 0
+let tStocks = 0
 client.on('interactionCreate', async inter => {
   if (inter.isCommand()) {
     let cname = inter.commandName
@@ -1073,6 +1075,7 @@ client.on('interactionCreate', async inter => {
     if (cname === 'drop') {
       if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission'});
       let options = inter.options._hoistedOptions
+      if (!yay) return inter.reply({content: emojis.warning+" The bot is currently busy deleting stocks ("+cStocks+"/"+tStocks+")", ephemeral: true})
       //
       let user = options.find(a => a.name === 'user')
       let quan = options.find(a => a.name === 'quantity')
@@ -1093,14 +1096,16 @@ client.on('interactionCreate', async inter => {
             index++
             links += "\n"+index+". "+gotMsg.content
             msgs.push(gotMsg)
-            //await gotMsg.delete();
+            await gotMsg.delete().then(msg => {
+              ++cStocks
+              
+            });
           })
         })
         //Returns
         if (links === "") return inter.reply({content: emojis.x+" No stocks left.", ephemeral: true})
         if (quan.value > index) return inter.reply({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
         
-        stocks.bulkDelete(msgs).then(msg => console.log(msg.size))
         await addRole(await getMember(user.user.id,inter.guild),["Buyer","Pending"],inter.guild)
         //Send prompt
         let drops = await getChannel(shop.channels.drops)
