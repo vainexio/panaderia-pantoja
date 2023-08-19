@@ -1642,7 +1642,7 @@ client.on('interactionCreate', async inter => {
         .setFooter({text: 'Click the buttons below for some entertainment'})
         .setColor(colors.red)
         
-        sendChannel(emojis.check+' <@'+inter.user.id+'> claimed a **'+voucher.perks+'**!\nCode: `'+code+'`','1047454193755107337',colors.lime)
+        sendChannel(emojis.check+' <@'+inter.user.id+'> claimed a **'+voucher.perks+'**!\nCode: `'+code+'`','1109020437096181830',colors.lime)
         let embed = new MessageEmbed()
         .addFields(
           {name: 'You received a '+voucher.perks+'!',value:'Code: `'+code+'`'},
