@@ -250,7 +250,7 @@ module.exports = {
             parent: 'Backup Bot Slot',
             children: [
               //
-              { name: 'Lifetime Slot', price: 200 },
+              { name: 'Lifetime Slot', price: 250 },
               { name: 'Features:\n+ Provided Bot\n+ Via Discord OAuth2\n+ Can join all verified users in an instant\n+ Can use in all sorts of servers\n\u200b'}
               //
             ],
