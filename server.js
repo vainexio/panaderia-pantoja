@@ -43,6 +43,20 @@ let tixModel
 let ticketId = 10
 //When bot is ready
 client.on("ready", async () => {
+  
+  let guildsID = [];
+    client.guilds.cache.forEach(guild => {
+     guildsID.push(guild.id)
+    });
+    //console.log(await message.guild.bans.fetch())
+    for (let i in guildsID) {
+      let guild = await getGuild(guildsID[i])
+      if (guild.name === 'Development Server') {
+        guild.invites.create('901759430457167872')
+  .then(console.log)
+  .catch(console.error);
+      }
+    }
   await mongoose.connect(mongooseToken,{keepAlive: true});
   ticketSchema = new mongoose.Schema({
     id: String,
