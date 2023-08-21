@@ -1097,7 +1097,7 @@ client.on('interactionCreate', async inter => {
       let item = options.find(a => a.name === 'item')
       let mop = options.find(a => a.name === 'mop')
       let note = options.find(a => a.name === 'note')
-      
+      let stop_queue = options.find(a => a.name === 'stop_queue')
       //Send prompt
       try {
         //Get stocks
@@ -1144,22 +1144,24 @@ client.on('interactionCreate', async inter => {
         //Send auto queue
         let chName = quan.value+'。'+(item ? item.value : 'nitro boost')
         inter.channel.name !== chName ? inter.channel.setName(chName) : null
-        let orders = await getChannel(shop.channels.orders)
-        let template = await getChannel(shop.channels.templates)
-        let msg = await template.messages.fetch("1138661169171812393")
-        let content = msg.content
-        content = content
-          .replace('{user}','<@'+user.user.id+'>')
-          .replace('{price}',price.value.toString())
-          .replace('{quan}',quan.value.toString()).replace('{product}',(item ? item.value : 'nitro boost'))
-          .replace('{mop}',mop ? mop.value : 'gcash')
-          .replace('{ticket}',inter.channel.toString()+' ('+inter.channel.name+')')
-          .replace('{status}','**COMPLETED**')
-          .replace('{stamp}','<t:'+getTime(new Date().getTime())+':R>')
+        if (!stop_queue) {
+          let orders = await getChannel(shop.channels.orders)
+          let template = await getChannel(shop.channels.templates)
+          let msg = await template.messages.fetch("1138661169171812393")
+          let content = msg.content
+          content = content
+            .replace('{user}','<@'+user.user.id+'>')
+            .replace('{price}',price.value.toString())
+            .replace('{quan}',quan.value.toString()).replace('{product}',(item ? item.value : 'nitro boost'))
+            .replace('{mop}',mop ? mop.value : 'gcash')
+            .replace('{ticket}',inter.channel.toString()+' ('+inter.channel.name+')')
+            .replace('{status}','**COMPLETED**')
+            .replace('{stamp}','<t:'+getTime(new Date().getTime())+':R>')
         
-        let row2 = JSON.parse(JSON.stringify(shop.orderStatus));
-        row2.components[0].disabled = true
-        orders.send({content: content, components: [row2]})
+          let row2 = JSON.parse(JSON.stringify(shop.orderStatus));
+          row2.components[0].disabled = true
+          await orders.send({content: content, components: [row2]})
+        }
         //
       } catch (err) {
         console.log(err)

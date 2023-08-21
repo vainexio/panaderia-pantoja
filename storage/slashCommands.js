@@ -12,7 +12,7 @@ NUMBER - 10
 ATTACHMENT - 11
 */
 module.exports = {
-  register: false,
+  register: true,
   deleteSlashes: [],
   slashes: [
     {
@@ -45,6 +45,18 @@ module.exports = {
           "required": false,
         },
         {
+          "name": 'note',
+          "description": 'Extra notes',
+          "type": 3,
+          "required": false,
+        },
+        {
+          "name": 'stop_queue',
+          "description": 'Prevents bot from sending queue',
+          "type": 5,
+          "required": false,
+        },
+        {
           "name": 'mop',
           "description": 'Mode of Payment',
           "type": 3,
@@ -58,12 +70,6 @@ module.exports = {
               value: 'paypal'
             },
           ],
-          "required": false,
-        },
-        {
-          "name": 'note',
-          "description": 'Extra notes',
-          "type": 3,
           "required": false,
         },
       ]
@@ -109,6 +115,53 @@ module.exports = {
           "required": false,
         },
       ]
-    }
+    },
+    {
+      "name": "order",
+      "type": 1,
+      "description": "Sends an order queue",
+      "options": [
+        {
+          "name": 'user',
+          "description": 'Recipient',
+          "type": 6,
+          "required": true,
+        },
+        {
+          "name": 'product',
+          "description": 'Product name',
+          "type": 3,
+          "required": false,
+        },
+        {
+          "name": 'quantity',
+          "description": 'Amount ordered',
+          "type": 10,
+          "required": true,
+        },
+        {
+          "name": 'mop',
+          "description": 'Mode of Payment',
+          "type": 3,
+          "choices": [
+            {
+              name: 'GCash',
+              value: 'gcash'
+            },
+            {
+              name: 'Paypal',
+              value: 'paypal'
+            },
+          ],
+          "required": true,
+        },
+        {
+          "name": 'price',
+          "description": 'Price paid',
+          "type": 4,
+          "required": true,
+        },
+      ]
+    },
   ],
 };
