@@ -371,7 +371,7 @@ module.exports = {
             children: [
               //
               { name: 'Nitro Basic (MTO)', price: 40, rs: 0 },
-              { name: 'Nitro Boost', price: 110, rs: 125 },
+              { name: 'Nitro Boost', price: 125, rs: 125 },
               //
             ],
           },
