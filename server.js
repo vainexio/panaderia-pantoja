@@ -225,7 +225,7 @@ async function setVouchers() {
         let fromNow = moment(gotMsg.createdAt).fromNow()
         //
         if (fromNow == '5 days ago') {
-          sendChannel('Expired Voucher: '+gotMsg.content,'1047454193755107337',colors.none)
+          sendChannel('Expired Voucher: '+gotMsg.content,'1109020437096181830',colors.none)
           gotMsg.delete();
         } 
         else {
