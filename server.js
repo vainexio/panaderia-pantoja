@@ -714,20 +714,22 @@ client.on("messageCreate", async (message) => {
     console.log(num)
     let found = false
     let old = 0;
+    let foundEmbed = null;
     await channel.messages.fetch({limit: 100}).then(async (messages) => {
       await messages.forEach(async gotMsg => {
         let content = gotMsg.content.replace('@everyone','')
-        if (content.includes(num) && content.includes('Recent Transaction')) {
+        if (content.includes(num) && content.includes('New Transaction') && !found) {
           //gotMsg.embeds[0].fields[2].value = '```diff\n- Hidden```'
           found = true
           await message.channel.send({content: content, embeds: gotMsg.embeds})
-          await gotMsg.edit({content: content.replace(emojis.check+' Recent Transaction ',emojis.x+' Old Transaction')})
+          await gotMsg.edit({content: content.replace(emojis.check+' New Transaction ',emojis.x+' Old Transaction ')})
         } else if (content.includes(num) && content.includes('Old Transaction')) {
           old++
+          !foundEmbed ? foundEmbed = gotMsg.embeds : null
         }
       })
     })
-    if (!found) message.reply(emojis.warning+' You have no recent transaction with this number.'+(old > 0 ? '\nHowever, I found **'+old+'** old transactions with this number that was already validated'))
+    if (!found) message.reply({content: emojis.warning+' You have not yet received a new transaction with this number'+(old > 0 ? '\nFound **'+old+'** old transaction(s)\nMost recent transaction (see embed below)' : ''), embeds: foundEmbed})
   }
   else if (isCommand("boost",message)) {
     let vai = process.env.vaiToken
@@ -2323,7 +2325,7 @@ app.get('/sms', async function (req, res) {
     .addFields(
       {
         name: 'Money Received',
-        value: 'Full: '+req.query.text
+        value: req.query.title
       },
       {
         name: 'Amount Sent',
@@ -2339,6 +2341,6 @@ app.get('/sms', async function (req, res) {
     .setFooter({text: req.query.pkg})
     .setColor(colors.none)
   
-    await channel.send({content: '@everyone '+emojis.check+' Recent Transaction ('+data.senderNumber+')', embeds: [embed]})
+    await channel.send({content: '@everyone '+emojis.check+' New Transaction ('+data.senderNumber+')', embeds: [embed]})
   }
 });
