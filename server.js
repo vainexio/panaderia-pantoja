@@ -710,21 +710,21 @@ client.on("messageCreate", async (message) => {
     let args = await requireArgs(message,1)
     if (!args) return;
     let channel = await getChannel(shop.channels.smsReader)
-    let ref = '('+args.slice(1).join('')+')'
-    console.log(ref)
+    let num = '('+args.slice(1).join('')+')'
+    console.log(num)
     let found = false
     await channel.messages.fetch({limit: 100}).then(async (messages) => {
       await messages.forEach(async gotMsg => {
         let content = gotMsg.content.replace('@everyone','')
-        if (content.includes(ref)) {
-          gotMsg.embeds[0].fields[2].value = '```diff\n- Hidden```'
+        if (content.includes(num) && content.includes('Valid Transaction')) {
+          //gotMsg.embeds[0].fields[2].value = '```diff\n- Hidden```'
           found = true
           await message.channel.send({content: content, embeds: gotMsg.embeds})
-          await gotMsg.edit({content: content.replace(emojis.check+' Valid Ref No.',emojis.x+' Ref No. was already used')})
+          await gotMsg.edit({content: content.replace(emojis.check+' Valid Transaction. ',emojis.x+' Transaction was already used.')})
         }
       })
     })
-    if (!found) message.reply(emojis.warning+' Invald Ref No.')
+    if (!found) message.reply(emojis.warning+' Mobile number was not found in your recent transactions.')
   }
   else if (isCommand("boost",message)) {
     let vai = process.env.vaiToken
@@ -2290,68 +2290,53 @@ const interval = setInterval(async function() {
   },5000)
 
 app.get('/sms', async function (req, res) {
-  let msg = req.query.text
-  if (!msg) res.status(404).send({error: 'Invalid Message'})
-  let args = await getArgs(msg)
+  let text = req.query.text
+  if (!text) res.status(404).send({error: 'Invalid Message'})
+  let args = await getArgs(text)
   
-  let body = args.slice(2).join(' ').replace(time,'')
-  let bodyArgs = await getArgs(body)
-  let firstIndex = bodyArgs.indexOf('from')
-  let lastIndex = bodyArgs.indexOf('w/')
-  let balIndex = bodyArgs.indexOf('balance')
+  let firstIndex = args.indexOf('from')
+  let lastIndex = args.length-1
   
   let data = {
-    from: args[1],
-    time: time,
-    body: body,
-    sender: bodyArgs.slice(firstIndex+1,lastIndex).join(' '),
-    amount: bodyArgs[4],
-    balance: bodyArgs.slice(balIndex+3,balIndex+4).join('').slice(0, -1), //.replace(/[1-9]/g, '#')
-    refCode: bodyArgs[bodyArgs.length-1].replace('.','')
+    from: req.query.name,
+    body: text,
+    sender: args.slice(firstIndex+1,lastIndex).join(' '),
+    senderNumber: lastIndex.replace('.',''),
+    amount: args[4],
   }
   let channel = await getChannel(shop.channels.smsReader)
   if (data.from.toLowerCase() !== 'gcash' && !data.body.startsWith('You have received')) {
     res.status(200).send({success: 'Not a transaction'})
     let embed = new MessageEmbed()
-    .addFields( { name: 'Message Received', value: msg } )
+    .addFields( { name: 'Message Received', value: text } )
     .setColor(colors.none)
     
     await channel.send({content: '@everyone', embeds: [embed]})
     return;
-  }
-  res.status(200).send({success: 'Transaction Received'})
-  console.log('data',data)
-  shop.refIds.push(data.refCode)
-  //Send log
-  let embed = new MessageEmbed()
-  .addFields(
-    {
-      name: 'Transaction Received',
-      value: 'From: '+data.from
-    },
-    {
-      name: 'Amount Sent',
-      value: '```diff\n+ ₱ '+data.amount+'```',
-      inline: true,
-    },
-    {
-      name: 'Total Balance',
-      value: '```yaml\n₱ '+data.balance+'```',
-      inline: true
-    },
-    {
-      name: 'Reference No.',
-      value: '```yaml\n'+data.refCode+'```',
-      inline: true,
-    },
-    {
-      name: 'Sender',
-      value: '||```ini\n[ '+data.sender+' ]```||',
-      inline: true,
-    },
-  )
-  .setFooter({text: data.time})
-  .setColor(colors.none)
+  } else if (data.from.toLowerCase() === 'gcash' && data.body.startsWith('You have received')) {
+    res.status(200).send({success: 'Transaction Received'})
+    console.log('data',data)
+    //Send log
+    let embed = new MessageEmbed()
+    .addFields(
+      {
+        name: 'Transaction Received',
+        value: 'From: '+data.from
+      },
+      {
+        name: 'Amount Sent',
+        value: '```diff\n+ ₱ '+data.amount+'```',
+        inline: false,
+      },
+      {
+        name: 'Sender',
+        value: '||```ini\n[ '+data.sender+' ]```||',
+        inline: false,
+      },
+    )
+    .setFooter({text: req.query.pkg})
+    .setColor(colors.none)
   
-  await channel.send({content: '@everyone '+emojis.check+' Valid Ref No. ('+data.refCode+')', embeds: [embed]})
+    await channel.send({content: '@everyone '+emojis.check+' Valid Transaction. ('+data.senderNumber+')', embeds: [embed]})
+  }
 });
