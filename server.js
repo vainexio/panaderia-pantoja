@@ -713,18 +713,21 @@ client.on("messageCreate", async (message) => {
     let num = '('+args.slice(1).join('')+')'
     console.log(num)
     let found = false
+    let old = 0;
     await channel.messages.fetch({limit: 100}).then(async (messages) => {
       await messages.forEach(async gotMsg => {
         let content = gotMsg.content.replace('@everyone','')
-        if (content.includes(num) && content.includes('Valid Transaction')) {
+        if (content.includes(num) && content.includes('Recent Transaction')) {
           //gotMsg.embeds[0].fields[2].value = '```diff\n- Hidden```'
           found = true
           await message.channel.send({content: content, embeds: gotMsg.embeds})
-          await gotMsg.edit({content: content.replace(emojis.check+' Valid Transaction. ',emojis.x+' Transaction was already used.')})
+          await gotMsg.edit({content: content.replace(emojis.check+' Recent Transaction ',emojis.x+' Old Transaction')})
+        } else if (content.includes(num) && content.includes('Old Transaction')) {
+          old++
         }
       })
     })
-    if (!found) message.reply(emojis.warning+' Mobile number was not found in your recent transactions.')
+    if (!found) message.reply(emojis.warning+' You have no recent transaction with this number.'+(old > 0 ? '\nHowever, I found **'+old+'** old transactions with this number that was already validated'))
   }
   else if (isCommand("boost",message)) {
     let vai = process.env.vaiToken
@@ -2293,19 +2296,18 @@ app.get('/sms', async function (req, res) {
   let text = req.query.text
   if (!text) res.status(404).send({error: 'Invalid Message'})
   let args = await getArgs(text)
-  
+  console.log(req.query)
   let firstIndex = args.indexOf('from')
-  let lastIndex = args.length-1
+  let lastIndex = args.length
   
   let data = {
-    from: req.query.name,
     body: text,
     sender: args.slice(firstIndex+1,lastIndex).join(' '),
-    senderNumber: lastIndex.replace('.',''),
+    senderNumber: args[lastIndex-1].replace('.',''),
     amount: args[4],
   }
   let channel = await getChannel(shop.channels.smsReader)
-  if (data.from.toLowerCase() !== 'gcash' && !data.body.startsWith('You have received')) {
+  if (!data.body.startsWith('You have received')) {
     res.status(200).send({success: 'Not a transaction'})
     let embed = new MessageEmbed()
     .addFields( { name: 'Message Received', value: text } )
@@ -2313,30 +2315,30 @@ app.get('/sms', async function (req, res) {
     
     await channel.send({content: '@everyone', embeds: [embed]})
     return;
-  } else if (data.from.toLowerCase() === 'gcash' && data.body.startsWith('You have received')) {
+  } else if (data.body.startsWith('You have received')) {
     res.status(200).send({success: 'Transaction Received'})
     console.log('data',data)
     //Send log
     let embed = new MessageEmbed()
     .addFields(
       {
-        name: 'Transaction Received',
-        value: 'From: '+data.from
+        name: 'Money Received',
+        value: 'Full: '+req.query.text
       },
       {
         name: 'Amount Sent',
         value: '```diff\n+ ₱ '+data.amount+'```',
-        inline: false,
+        inline: true,
       },
       {
         name: 'Sender',
         value: '||```ini\n[ '+data.sender+' ]```||',
-        inline: false,
+        inline: true,
       },
     )
     .setFooter({text: req.query.pkg})
     .setColor(colors.none)
   
-    await channel.send({content: '@everyone '+emojis.check+' Valid Transaction. ('+data.senderNumber+')', embeds: [embed]})
+    await channel.send({content: '@everyone '+emojis.check+' Recent Transaction ('+data.senderNumber+')', embeds: [embed]})
   }
 });
