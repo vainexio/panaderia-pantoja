@@ -2290,12 +2290,10 @@ const interval = setInterval(async function() {
   },5000)
 
 app.get('/sms', async function (req, res) {
-  let msg = req.query.msg
+  let msg = req.query.text
   if (!msg) res.status(404).send({error: 'Invalid Message'})
-  
   let args = await getArgs(msg)
   
-  let time = args.slice(args.length-3).join(' ')
   let body = args.slice(2).join(' ').replace(time,'')
   let bodyArgs = await getArgs(body)
   let firstIndex = bodyArgs.indexOf('from')
