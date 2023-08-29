@@ -1050,7 +1050,7 @@ client.on("messageCreate", async (message) => {
     //chance = random
     //console.log(chance)
   }
-  //if ((message.mentions.has(client.user.id) || message.content?.toLowerCase().includes('gude')) && message.channel.parent?.id !== '1109020434978054228' && message.channel.parent?.id !== '1109020435200356488'  && message.channel.parent?.id !== '1109020435523326025') chance = true
+  if ((message.mentions.has(client.user.id) || message.content?.toLowerCase().includes('gude')) && message.channel.parent?.id !== '1109020434978054228' && message.channel.parent?.id !== '1109020435200356488'  && message.channel.parent?.id !== '0') chance = true
   //AI ChatBot
   if (message.channel.name.includes('gudetama') || chance || message.channel.name.includes('image-generation')) {
     await message.channel.sendTyping();
