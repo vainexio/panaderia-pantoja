@@ -35,6 +35,7 @@ let emojis = {
   nclassic: '<:nitroclassic:1054725614319439962>',
 }
 let keys = [
+  
   'basic',
   'netflix',
   'nf',
