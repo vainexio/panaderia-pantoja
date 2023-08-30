@@ -268,7 +268,7 @@ async function dropVoucher(code,ch,title) {
   let quote = "Oop, I can't think of a quote right now."
   let context = ['cats','life','dogs',,'love','stupidity','anything']
   let chosenContext = context[getRandom(0,context.length)]
-  let data = await chatAI("write a random inspirational quote about "+chosenContext)
+  let data = { response: { error: true } }//await chatAI("write a random inspirational quote about "+chosenContext)
     if (data.response.error) console.log('⚠️ An unexpected error occurred `'+data.response.error.message+'`')
     else if (data.chosenAPI === AI.chatAPI) {
       let msg = data.response.choices[0].message.content
@@ -1640,7 +1640,7 @@ client.on('interactionCreate', async inter => {
         let quote = "Oop, I can't think of a quote right now."
         let context = ['cats','life','dogs','love','stupidity','anything']
         let chosenContext = context[getRandom(0,context.length)]
-        let data = await chatAI("write a random inspirational quote about "+chosenContext)
+        let data = { response: { error: true } } //await chatAI("write a random inspirational quote about "+chosenContext)
         if (data.response.error) console.log('⚠️ An unexpected error occurred `'+data.response.error.message+'`')
         else if (data.chosenAPI === AI.chatAPI) {
           let msg = data.response.choices[0].message.content
@@ -2184,7 +2184,7 @@ client.on('presenceUpdate', async (pres) => {
 process.on('unhandledRejection', async error => {
   ++errors
   console.log(error);
-  let caller_line = error.stack.split("\n");
+  let caller_line = error.stack?.split("\n");
   let index = await caller_line.find(b => b.includes('/app'))
   let embed = new MessageEmbed()
   .addFields(
