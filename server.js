@@ -1041,7 +1041,7 @@ client.on("messageCreate", async (message) => {
     let args = await getArgs(message.content)
     let moderated = moderate(message.member);
     if (message.content.toLowerCase() === 'hi') message.channel.send("hello! \:)")
-    if (message.content.toLowerCase().includes('onhand')) message.reply("Hello, there! Please check our most recent <#1102417073642164274> to know about the availability of our products!")
+    if (message.content.toLowerCase().includes('onhand')) message.reply("Hello, there! Please check our most recent <#1109020434978054230> to know about the availability of our products!")
     }
   let chance = false
   if (message.channel.id === '1047454193595732055') {

@@ -57,13 +57,8 @@ let keys = [
 ]
 module.exports = {
   shop: {
-    refIds: ['8011217281725','2011218131580','9011218190007'],
+    refIds: [],
     checkerWhitelist: [
-      '477729368622497803',
-      '1138546948320788591', //zae
-      '1134302377952956508', //ekn
-      '1141881270612283392', //hora
-      '1036487171185582111', //vix
       '942708350167158794', //Sep 5, 2023
       '1139516213152718928', //Sep 6, 2023
       '681104262599671847', //Sep 7. 2023
@@ -372,8 +367,8 @@ module.exports = {
             children: [
               //
               { name: 'Nitro Basic (MTO)', price: 40, rs: 0 },
-              { name: 'Nitro Boost <@&1109020434520887323>', price: 180, rs: 125 },
-              { name: 'Nitro Boost <@&1138634227169112165> (server booster)', price: 170, rs: 125 },
+              { name: 'Nitro Boost <@&1109020434520887323>', price: 140, rs: 140 },
+              { name: 'Nitro Boost <@&1138634227169112165> (server booster)', price: 135, rs: 125 },
               //
             ],
           },
