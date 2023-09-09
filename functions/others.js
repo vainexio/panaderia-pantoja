@@ -200,10 +200,10 @@ module.exports = {
   scanString: function (string,key) {
   string = string.toLowerCase()
   key = key.toLowerCase()
-if (string.includes(key)) {
-  return true;
-}
-},
+    if (string.includes(key)) {
+      return true;
+    }
+  },
   //ARGS
   requireArgs: async function (message,count) {
   var args = message.content.trim().split(/\n| /);
