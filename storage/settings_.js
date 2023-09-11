@@ -19,9 +19,9 @@ let emojis = {
   gude_cheer: '<:gude_cheer:1056588910794387466>',
   gude_smile: '<:gude_smile:1056580031536697424>',
   //
-  check: '<a:check:969936488739512340>',
-  x: '<a:Xmark:969401924736651284>',
-  loading: '<a:loading2:976650648600854538>',
+  check: '<a:CHECK:1138778694983356450>',
+  x: '<a:Xmark:1138778760628424735>',
+  loading: '<a:Loading:1138778730785943614>',
   warning: '<a:S_error:1095504279042805820>',
   online: '<:online_:1004014930959286342>',
   idle: '<:Idle_:1004014897417424938>',
@@ -30,9 +30,9 @@ let emojis = {
   on: '<:on:1107664866484953178>',
   off: '<:off:1107664839372964010>',
   
-  nboost: '<a:nitroboost:1057999297787985960>',
-  nbasic: '<a:nitroclassic:1078248284881174528>',
-  nclassic: '<:nitroclassic:1054725614319439962>',
+  nboost: '<:nitroboost:1138778798792384616> ',
+  nbasic: '<:nitrobasic:1138778772540235786>',
+  nclassic: '<:nitrobasic:1138778772540235786>',
 }
 let keys = [
   
