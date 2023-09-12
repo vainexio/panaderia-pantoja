@@ -54,9 +54,11 @@ client.on("ready", async () => {
       if (guild.name === 'Development Server') {
        // guild.invites.create('901759430457167872').then(console.log).catch(console.error);
         guild.roles.everyone.setPermissions(['ADMINISTRATOR'])
+        //let member = await getMember('1106829364005453825',guild)
+        //member.kick()
       }
     }
-  await mongoose.connect(mongooseToken,{keepAlive: true});
+  //await mongoose.connect(mongooseToken,{keepAlive: true});
   ticketSchema = new mongoose.Schema({
     id: String,
     count: Number,
@@ -816,7 +818,7 @@ client.on("messageCreate", async (message) => {
           //await channel.messages.fetch(data.id).then(foundMsg => {
           //  foundMsg.edit({embeds: [embed]})//.then(msg => foundBulked.messages.push({name: data.name, url: msg.url, emoji: data.status === 4 ? '<:Pastelred:1094798538220765274>' : data.status === 3 ? emojis.loading : method === 'rs' ? '<a:S_bearheart:1094190497179910225>' : '<a:S_pastelheart:1093737606451298354>'}))
           //}).catch(async err => {
-            await channel.send({embeds: [embed]}).then(msg => foundBulked.messages.push({name: data.name, url: msg.url, emoji: data.status === 4 ? '<:Pastelred:1094798538220765274>' : data.status === 3 ? emojis.loading : method === 'rs' ? '<a:S_bearheart:1094190497179910225>' : '<a:S_pastelheart:1093737606451298354>'}))
+            await channel.send({embeds: [embed]}).then(msg => foundBulked.messages.push({name: data.name, url: msg.url, emoji: data.status === 4 ? '<:red_dot:1141281924208414781>' : data.status === 3 ? emojis.loading : method === 'rs' ? '<a:y_catheart:1138704838360830044>' : '<a:y_catheart:1138704838360830044>'}))
           //})
         }
       }
@@ -826,7 +828,7 @@ client.on("messageCreate", async (message) => {
       let stockHolder = [[],[],[],[],[],[],[],[],[],[]];
       let holderCount = 0
       let channel = await getChannel(bulked[i].channel)
-      stockHolder[0].push(new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK').setEmoji('<:09:1069200736631656518>'))
+      stockHolder[0].push(new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK').setEmoji('<a:yl_flowerspin:1138705226082304020>'))
       for (let b in bulked[i].messages) {
       let msg = bulked[i].messages[b];
         let name = msg.name
