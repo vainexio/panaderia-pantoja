@@ -736,31 +736,31 @@ module.exports = {
         },
         {
           command: 'gcash4',
-          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0906 412 6440**\n— **LE•••N K•• F.**\n\n',
+          response: '<a:yl_flowerspin:1138705226082304020> GCASH\n— **0906 412 6440**\n— **LE•••N K•• F.**\n\n',
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09064126440').setStyle('SECONDARY').setEmoji('📱').setLabel("Copy Paste")),
           autoDelete: true,
         },
         {
           command: 'gcash',
-          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n— Send screenshot of receipt here', //# ⚠️ SEND THE REFERENCE NUMBER INSTEAD OF SCREENSHOT
+          response: '<a:yl_flowerspin:1138705226082304020> GCASH\n— **0966 208 4534**\n— **EL•A I.**\n\n— Send screenshot of receipt here', //# ⚠️ SEND THE REFERENCE NUMBER INSTEAD OF SCREENSHOT
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09662084534').setStyle('SECONDARY').setEmoji('📱').setLabel("Copy Paste")),
           autoDelete: true,
         },
         {
           command: 'gcash2',
-          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0945 326 3549**\n— **I^^ PA••O I.**\n\n— Send screenshot of receipt here',
+          response: '<a:yl_flowerspin:1138705226082304020> GCASH\n— **0945 326 3549**\n— **I^^ PA••O I.**\n\n— Send screenshot of receipt here',
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09453263549').setStyle('SECONDARY').setEmoji('📱').setLabel("Copy Paste")),
           autoDelete: true,
         },
         {
           command: 'gcash3',
-          response: '<a:MoneyFlash:1054781743355396186> GCASH\n— **0945 986 8489**\n—**RA^^L I.**\n\n— Send screenshot of receipt here',
+          response: '<a:yl_flowerspin:1138705226082304020> GCASH\n— **0945 986 8489**\n—**RA^^L I.**\n\n— Send screenshot of receipt here',
           components: new MessageActionRow().addComponents(new MessageButton().setCustomId('replyCopy-09459868489').setStyle('SECONDARY').setEmoji('📱').setLabel("Copy Paste")),
           autoDelete: true,
         },
         {
           command: 'paypal',
-          response: '<a:MoneyFlash:1054781743355396186> Paypal (w/ fee)\n— Link: https://paypal.me/marcoplaton\n— Email: narcshin3@gmail.com\n— Please make sure to set the payment type to **friends and family**!\n\n— Send screenshot of receipt here',
+          response: '<a:yl_flowerspin:1138705226082304020> Paypal (w/ fee)\n— Link: https://paypal.me/marcoplaton\n— Email: narcshin3@gmail.com\n— Please make sure to set the payment type to **friends and family**!\n\n— Send screenshot of receipt here',
           autoDelete: true,
         },
         {
