@@ -1279,7 +1279,7 @@ client.on('interactionCreate', async inter => {
         await orders.send({content: content, components: [row]}).then(msg => msgUrl = msg.url)
         inter.channel.setName(quan.value+'。'+product.value)
         let linkRow = new MessageActionRow().addComponents(
-          new MessageButton().setURL(msgUrl).setStyle('LINK').setEmoji('<a:S_tick:1095508349161840660>').setLabel("Go to queue"),
+          new MessageButton().setURL(msgUrl).setStyle('LINK').setEmoji('<:S_letter:1138714993425125556>').setLabel("Go to queue"),
         );
         
         inter.followUp({content: 'Queue was added to '+orders.toString(), components: [linkRow]})
