@@ -58,7 +58,7 @@ client.on("ready", async () => {
         //member.kick()
       }
     }
-  //await mongoose.connect(mongooseToken,{keepAlive: true});
+  await mongoose.connect(mongooseToken,{keepAlive: true});
   ticketSchema = new mongoose.Schema({
     id: String,
     count: Number,
