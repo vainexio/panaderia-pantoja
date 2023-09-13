@@ -1148,7 +1148,7 @@ client.on('interactionCreate', async inter => {
           new MessageButton().setCustomId("showDrop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📋'),
           new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('🔻')
         );
-        inter.followUp({content: "<:S_exclamation:1093734009005158450> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1093733278541951078> Make sure to open your DMs.\n<:S_dot:1093733278541951078> The message may appear as **direct or request** message.", components: [row]})
+        inter.followUp({content: "<:yl_exclamation:1138705048562581575> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1138714811908235444> Make sure to open your DMs.\n<:S_dot:1138714811908235444> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
         let chName = quan.value+'。'+(item ? item.value : 'nitro boost')
         inter.channel.name !== chName ? inter.channel.setName(chName) : null
@@ -1739,7 +1739,7 @@ client.on('interactionCreate', async inter => {
       let code = makeCode(10)
       let copy = new MessageActionRow().addComponents(
           new MessageButton().setCustomId('copyLinks').setStyle('SECONDARY').setLabel('Copy Links'),
-        new MessageButton().setLabel('Vouch Here').setURL('https://discord.com/channels/1109020434449575936/1109020436026634260').setStyle('LINK').setEmoji('<:S_letter:1092606891240198154>')
+        new MessageButton().setLabel('Vouch Here').setURL('https://discord.com/channels/1109020434449575936/1109020436026634260').setStyle('LINK').setEmoji('<:S_letter:1138714993425125556>')
         );
       await member.send({content: msg.content+"\n\nRef code: `"+code+"`\n||"+dropMsg.content+" ||", components: [copy]}).catch((err) => {
         error = true
