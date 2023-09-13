@@ -348,7 +348,7 @@ client.on("messageCreate", async (message) => {
       message.channel.send({content: "<@"+member.id+">", embeds: [embed], components: [row]})
     } else if (await hasRole(member,['1077462108381388873'],message.guild)) {
       let row = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:S_arrowright:1095503803761033276>'),
+        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:yt_chickclap:1138707159287345263>'),
       );
       message.channel.send({components: [row]})
       //message.channel.setName(message.channel.name.replace('ticket',member.user.username.replace(/ /g,'')))
@@ -1393,7 +1393,7 @@ client.on('interactionCreate', async inter => {
         );
       inter.update({content: 'Terms Accepted : <@'+inter.user.id+'>', components: [row]})
       let row2 = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:S_arrowright:1095503803761033276>'),
+        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:yt_chickclap:1138707159287345263>'),
       );
       inter.channel.send({components: [row2]})
       inter.channel.setName(inter.channel.name.replace('ticket',inter.user.username.replace(/ /g,'')))
@@ -2297,7 +2297,7 @@ const interval = setInterval(async function() {
   
   },5000)
 
-app.get('/sms', async function (req, res) {
+/*app.get('/sms', async function (req, res) {
   let text = req.query.text
   if (!text) res.status(404).send({error: 'Invalid Message'})
   let args = await getArgs(text)
@@ -2347,4 +2347,4 @@ app.get('/sms', async function (req, res) {
   
     await channel.send({content: '@everyone '+emojis.check+' New Transaction ('+data.senderNumber+')', embeds: [embed]})
   }
-});
+});*/
