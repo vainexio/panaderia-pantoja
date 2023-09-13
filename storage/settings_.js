@@ -341,14 +341,12 @@ module.exports = {
               //
               { name: '1 month', price: 25, rs: 0 },
               { name: '2 months', price: 30, rs: 0 },
-              { name: '3 months', price: 45, rs: 0 },
-              { name: '6 months', price: 55, rs: 0 },
-              { name: '12 months', price: 80, rs: 0 },
+              { name: '3 months', price: 35, rs: 0 },
               //
             ],
           },
           {
-            parent: 'Canva Pro - Provided',
+            parent: 'Provided Account',
             children: [
               //
               { name: '1 month', price: 35, rs: 0 },
@@ -356,6 +354,15 @@ module.exports = {
               { name: '3 months', price: 45, rs: 0 },
               { name: '6 months', price: 55, rs: 0 },
               { name: '12 months', price: 80, rs: 0 },
+              //
+            ],
+          },
+          {
+            parent: 'Notes',
+            children: [
+              //
+              { name: '1 month is a straight subscription', price: 0 },
+              { name: '+10 if own email (for 1 month only)', price: 0},
               //
             ],
           },
