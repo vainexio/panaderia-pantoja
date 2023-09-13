@@ -336,13 +336,26 @@ module.exports = {
         types: [
           //Types
           {
-            parent: 'Canva Pro',
+            parent: 'Via Invite',
             children: [
               //
               { name: '1 month', price: 25, rs: 0 },
+              { name: '2 months', price: 30, rs: 0 },
+              { name: '3 months', price: 45, rs: 0 },
+              { name: '6 months', price: 55, rs: 0 },
+              { name: '12 months', price: 80, rs: 0 },
+              //
+            ],
+          },
+          {
+            parent: 'Canva Pro - Provided',
+            children: [
+              //
+              { name: '1 month', price: 35, rs: 0 },
               { name: '2 months', price: 40, rs: 0 },
-              { name: '3 months', price: 50, rs: 0 },
-              { name: '12 months', price: 120, rs: 0 },
+              { name: '3 months', price: 45, rs: 0 },
+              { name: '6 months', price: 55, rs: 0 },
+              { name: '12 months', price: 80, rs: 0 },
               //
             ],
           },
