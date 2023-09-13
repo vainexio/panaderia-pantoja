@@ -1001,7 +1001,7 @@ client.on("messageCreate", async (message) => {
       let channels = ''
       message.guild.channels.cache.forEach( ch => {
         if (ch.parent?.name === 'PRICELIST' && ch.type !== 'GUILD_TEXT') {
-          channels += '\n<:circley:1072388650337308742> <#'+ch.id+'>'
+          channels += '\n- <#'+ch.id+'>'
         }
       })
       message.reply("Hello, there! You can check our products' pricelists through these channels:\n"+channels) 
@@ -1594,7 +1594,7 @@ client.on('interactionCreate', async inter => {
           .setFooter({text: "Sloopies Ticketing System"})
           
           let row = new MessageActionRow().addComponents(
-            new MessageButton().setURL(ticket.transcript).setStyle('LINK').setLabel('View Transcript').setEmoji('<:S_separator:1093733778633019492>'),
+            new MessageButton().setURL(ticket.transcript).setStyle('LINK').setLabel('View Transcript').setEmoji('<:y_seperator:1138707390657740870>'),
           );
           await msg.edit({content: null, embeds: [embed], components: [row]})
           await inter.channel.send({content: emojis.check+' Transcript saved *!*'})
@@ -1669,12 +1669,12 @@ client.on('interactionCreate', async inter => {
         let embed = new MessageEmbed()
         .addFields(
           {name: 'You received a '+voucher.perks+'!',value:'Code: `'+code+'`'},
-          {name: 'Read me',value:'\n<:circley:1072388650337308742>This voucher will expire in 5 days\n<:circley:1072388650337308742>Must order an item to use the voucher\n<:circley:1072388650337308742>You can share the code to anyone!\n<:circley:1072388650337308742>One-time use only\n<:circley:1072388650337308742>You can only use one voucher per order'},
+          {name: 'Read me',value:'\n- This voucher will expire in 5 days\n- Must order an item to use the voucher\n- You can share the code to anyone!\n- One-time use only\n- You can only use one voucher per order'},
         )
         .setColor(colors.none)
         .setFooter({text: 'Type ;use '+code+' in the ticket channel to use your voucher!'})
         
-        let row2 = await makeRow('https://discord.com/channels/1109020434449575936/1109020435754000423','Order Here','LINK','<:09:1069200736631656518>')
+        let row2 = await makeRow('https://discord.com/channels/1109020434449575936/1109020435754000423','Order Here','LINK','<:bullet:1138710447835578388>')
     
         let error = false
         if (claimer === inter.user.id) {
@@ -1980,7 +1980,7 @@ client.on('interactionCreate', async inter => {
         if (!botMsg) return;
         inter.guild.channels.cache.forEach( ch => {
           if (ch.parent?.name === 'PRICELIST' && ch.type !== 'GUILD_TEXT') {
-            channels += '\n<:circley:1072388650337308742> <#'+ch.id+'>'
+            channels += '\n<:bullet:1138710447835578388> <#'+ch.id+'>'
           }
         })
         let linker = new MessageActionRow()
@@ -2009,7 +2009,7 @@ client.on('interactionCreate', async inter => {
         let channels = ''
         guild.channels.cache.forEach( ch => {
           if (ch.parent?.name === 'PRICELIST' && ch.type !== 'GUILD_TEXT') {
-            channels += '\n<:circley:1072388650337308742> <#'+ch.id+'>'
+            channels += '\n<:bullet:1138710447835578388> <#'+ch.id+'>'
           }
         })
         inter.reply({content: emojis.check+' <:S_seperator:1093733778633019492> You now have access to our pricelists! You can view them through these channels: \n'+channels, ephemeral: true})
