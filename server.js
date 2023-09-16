@@ -2049,15 +2049,15 @@ client.on('interactionCreate', async inter => {
       let count = 0
       let thread = [
         {
-          question: '> <a:bearsh_peek:918991074016497664> Which product do you want to avail? (include subscription length)',
+          question: '> <a:RWBearClap:1138805632984686712> Which product do you want to avail? (include subscription length)',
           answer: '',
         },
         {
-          question: '> <a:bearsh_peek:918991074016497664> How many of this item do you wish buy?',
+          question: '> <a:RWBearClap:1138805632984686712> How many of this item do you wish buy?',
           answer: '',
         },
         {
-          question: "> <a:bearsh_peek:918991074016497664> What's your selected mode of payment?",
+          question: "> <a:RWBearClap:1138805632984686712> What's your selected mode of payment?",
           answer: '',
         },
       ]
