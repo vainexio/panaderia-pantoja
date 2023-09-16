@@ -2083,12 +2083,12 @@ client.on('interactionCreate', async inter => {
       .setColor(colors.yellow)
       .setFooter({text: 'Order Confirmation'})
       
-      inter.channel.send({content: "<:S_separator:1093733778633019492> Is this your order?", embeds: [embed], components: [row]})
+      inter.channel.send({content: "<a:yl_exclamationan:1138705076395978802> Is this your order?", embeds: [embed], components: [row]})
       shop.orderForm.splice(shop.orderForm.indexOf(inter.user.id),1)
     }
     else if (id.startsWith('confirmOrder')) {
       inter.message.edit({components: []})
-      inter.reply({content: "Thank you for confirming your order! <:S_bearlove:1072353337699225640>\nOur staff will be with you shortly."})
+      inter.reply({content: "Thank you for confirming your order! <a:yt_chickclap:1138707159287345263>\nOur staff will be with you shortly."})
     }
     else if (id.startsWith('gsaRaw')) {
       inter.reply({content: '```json\n'+JSON.stringify(shop.gcashStatus, null, 2).replace(/ *\<[^>]*\> */g, "")+'```', ephemeral: true})
