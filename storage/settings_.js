@@ -826,7 +826,7 @@ module.exports = {
         message: '<a:nitroboost:1057999297787985960> **Server Booster Perks**\n- ₱5 global voucher\n- Image/Gif perms in <#1047454193595732055> \n- **Sloopier** role\n- **Sloopiest** role (2x boost)\n- 2x giveaway entries',
       },
       {
-        id: '', //1109020436026634260
+        id: '1109020436026634260', //1109020436026634260
         message: '__**Vouch here!**__\n\n• Send any message of acknowledgement\n• Send screenshot of your purchase\n\n**Void warranty if:**\n• no vouch/improper vouch\n• no screenshot/proof of login\n• did not vouch within 12 hours\n• reference code is not visible',
       },
       {
@@ -861,7 +861,7 @@ module.exports = {
         order: true,
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK')//.setEmoji('<:09:1069200736631656518>')
+          new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK').setEmoji('<a:y_catheart:1138704838360830044>')
         )
       },
       {

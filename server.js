@@ -936,7 +936,7 @@ client.on("messageCreate", async (message) => {
   if (message.channel.id === shop.channels.vouch) {
     if (message.attachments.size === 0) return message.reply('⚠️ Invalid form of vouch! Please attach an image file that shows the product you ordered!')
     else {
-      await message.react('<a:S_bearheart:1094190497179910225>')
+      await message.react('<a:checkmark_yellow:1151123927691694110>')
       await removeRole(message.member,['pending'])
     }
   }
