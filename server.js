@@ -1055,6 +1055,7 @@ client.on("messageCreate", async (message) => {
   if ((message.mentions.has(client.user.id) || message.content?.toLowerCase().includes('gude')) && message.channel.parent?.id !== '1109020434978054228' && message.channel.parent?.id !== '1109020435200356488'  && message.channel.parent?.id !== '0') chance = true
   //AI ChatBot
   if (message.channel.name.includes('gudetama') || chance || message.channel.name.includes('image-generation')) {
+    return;
     await message.channel.sendTyping();
     let data = await chatAI(message.content,message.channel.name.includes('image-generation') ? 'image' : 'chat',message.author)
     data.response.error ? console.log(data) : null
