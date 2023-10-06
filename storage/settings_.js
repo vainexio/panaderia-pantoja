@@ -377,7 +377,7 @@ module.exports = {
         keywords: ['nitro','nitor','nb','basic','classic'],
         channel: '1109020436278300812',
         rs: '1078708432091226112',
-        status: 3,
+        status: 1,
         id: '1096319579787116544',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077186127970414/Logopit_1680918484757.png?width=1440&height=360',
         types: [
@@ -387,8 +387,8 @@ module.exports = {
             children: [
               //
               { name: 'Nitro Basic (MTO)', price: 40, rs: 0 },
-              { name: 'Nitro Boost <@&1109020434520887323>', price: 165, rs: 140 },
-              { name: 'Nitro Boost <@&1138634227169112165> (server booster)', price: 160, rs: 125 },
+              { name: 'Nitro Boost <@&1109020434520887323>', price: 170, rs: 140 },
+              { name: 'Nitro Boost <@&1138634227169112165> (server booster)', price: 165, rs: 125 },
               //
             ],
           },
