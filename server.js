@@ -1986,7 +1986,7 @@ client.on('interactionCreate', async inter => {
         })
         let linker = new MessageActionRow()
         .addComponents(
-          new MessageButton().setURL(botMsg.url).setStyle('LINK').setLabel('Proceed'),
+          new MessageButton().setURL(botMsg.url).setStyle('LINK').setLabel('Check DMs'),
         );
         inter.reply({content: emojis.loading+' Verification prompt was sent in your DMs!', components: [linker], ephemeral: true})
         let notice = await getChannel(shop.channels.alerts)
@@ -2013,7 +2013,7 @@ client.on('interactionCreate', async inter => {
             channels += '\n<:bullet:1138710447835578388> <#'+ch.id+'>'
           }
         })
-        inter.reply({content: emojis.check+' <:S_seperator:1093733778633019492> You now have access to our pricelists! You can view them through these channels: \n'+channels, ephemeral: true})
+        inter.reply({content: emojis.check+' You now have access to our pricelists! You can view them through these channels: \n'+channels, ephemeral: true})
         let notice = await getChannel(shop.channels.alerts)
         notice.send('<@'+inter.user.id+'> '+emojis.check)
       } else {

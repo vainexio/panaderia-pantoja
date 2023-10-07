@@ -834,7 +834,7 @@ module.exports = {
         message: 'Click the button below to access our pricelists.',
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Access').setCustomId('prVerify').setStyle('SECONDARY').setEmoji('<:09:1069200736631656518>')
+          new MessageButton().setLabel('Access').setCustomId('prVerify').setStyle('SECONDARY').setEmoji('<a:yl_exclamationan:1138705076395978802>')
         ),
       },
       {
