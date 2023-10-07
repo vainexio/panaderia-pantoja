@@ -842,9 +842,9 @@ module.exports = {
         message: 'Click the button below to create a ticket!\n\nOrder — Availing products\nSupport — General concerns and inquiries\nReport — Reporting revoked products',
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Create Order').setCustomId('createTicket-order').setStyle('SECONDARY').setEmoji('<a:S_bearheart:1094190497179910225>'),
+          new MessageButton().setLabel('Create Order').setCustomId('createTicket-order').setStyle('SECONDARY').setEmoji('<a:y_catheart:1138704838360830044>'),
           new MessageButton().setLabel('Support Ticket').setCustomId('createTicket-support').setStyle('SECONDARY').setEmoji('<:hb_notify:1138706399656943707>'),
-          new MessageButton().setLabel('Submit Report').setCustomId('createTicket-report').setStyle('SECONDARY').setEmoji('<:S_exclamation:1093734009005158450>')
+          new MessageButton().setLabel('Submit Report').setCustomId('createTicket-report').setStyle('SECONDARY').setEmoji('<:yl_exclamation:1138705048562581575>')
         ),
       },
       {
