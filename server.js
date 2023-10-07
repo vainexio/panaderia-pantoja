@@ -346,9 +346,9 @@ client.on("messageCreate", async (message) => {
     if (!await hasRole(member,['1109020434520887321'],message.channel.guild)) {
       
       message.channel.send({content: "<@"+member.id+">", embeds: [embed], components: [row]})
-    } else if (await hasRole(member,['1077462108381388873'],message.guild)) {
+    } else if (await hasRole(member,['1109020434520887321'],message.guild)) {
       let row = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:yt_chickclap:1138707159287345263>'),
+        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form'),//.setEmoji(), //'<a:yt_chickclap:1138707159287345263>'
       );
       message.channel.send({components: [row]})
       //message.channel.setName(message.channel.name.replace('ticket',member.user.username.replace(/ /g,'')))
