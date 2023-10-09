@@ -858,8 +858,8 @@ client.on("messageCreate", async (message) => {
   else if (isCommand('forceall',message)) {
     if (!await getPerms(message.member,4)) return;
     let cc = 0
-    let f = '°,。'.replace(/ /,'').split(/,/)
-    let f2 = '・,・'.replace(/ /,'').split(/,/)
+    let f= '◤,◥—'.replace(/ /,'').split(/,/)
+    let f2 = '《,》'.replace(/ /,'').split(/,/)
     console.log(f,f2)
     message.guild.channels.cache.forEach( ch => {
       if (ch.type !== 'GUILD_CATEGORY' && ch.type !== 'GUILD_VOICE') {
