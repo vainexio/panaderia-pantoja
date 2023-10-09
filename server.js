@@ -1218,7 +1218,7 @@ client.on('interactionCreate', async inter => {
         });
       });
       console.log(quan,'this')
-      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('DANGER').setLabel('Nitro Boost ('+quan+')').setEmoji(emojis.nboost))
+      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro Boost ('+quan+')').setEmoji('💀')) //emojis.nboost
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {
@@ -1226,7 +1226,7 @@ client.on('interactionCreate', async inter => {
           let text = args[0].includes(':') ? args.slice(1).join(" ") : msg
           let emoji = args[0].includes(':') ? args[0] : null
           if (stockHolder[holderCount].length === 5) holderCount++
-          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle("DANGER").setLabel(text).setEmoji(args[0].includes(':') ? args[0] : null));
+          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle("SECONDARY").setLabel(text).setEmoji(args[0].includes(':') ? args[0] : null));
         }
       }
     
