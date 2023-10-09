@@ -797,7 +797,7 @@ client.on("messageCreate", async (message) => {
           for (let c in type.children) {
             let child = type.children[c]
             let pr = method === 'rs' ? child.rs ? child.rs : child.price : child.price
-            let emoji = method === 'rs' ? '<:red_dot:1141281924208414781>' : '🎃'
+            let emoji = method === 'rs' ? '<:red_dot:1141281924208414781>' : '<a:fiya:1160911560525496411>'
             children += '> '+emoji+' '+child.name+(pr > 0 ? ' — ₱'+pr : '')+'\n'
           }
           let state = b == data.types.length-1 ? '\n<:g1:1056579657828417596><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g3:1056579662572179586>' : ''
@@ -1218,7 +1218,7 @@ client.on('interactionCreate', async inter => {
         });
       });
       console.log(quan,'this')
-      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro Boost ('+quan+')').setEmoji(emojis.nboost))
+      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('DANGER').setLabel('Nitro Boost ('+quan+')').setEmoji(emojis.nboost))
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {
@@ -1226,7 +1226,7 @@ client.on('interactionCreate', async inter => {
           let text = args[0].includes(':') ? args.slice(1).join(" ") : msg
           let emoji = args[0].includes(':') ? args[0] : null
           if (stockHolder[holderCount].length === 5) holderCount++
-          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle("SECONDARY").setLabel(text).setEmoji(args[0].includes(':') ? args[0] : null));
+          stockHolder[holderCount].push(new MessageButton().setCustomId("none"+getRandom(1,10000)).setStyle("DANGER").setLabel(text).setEmoji(args[0].includes(':') ? args[0] : null));
         }
       }
     
