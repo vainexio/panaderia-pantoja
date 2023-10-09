@@ -797,7 +797,7 @@ client.on("messageCreate", async (message) => {
           for (let c in type.children) {
             let child = type.children[c]
             let pr = method === 'rs' ? child.rs ? child.rs : child.price : child.price
-            let emoji = method === 'rs' ? '<:red_dot:1141281924208414781>' : '<:y_seperator:1138707390657740870>'
+            let emoji = method === 'rs' ? '<:red_dot:1141281924208414781>' : '<:S_letter:1138714993425125556>'
             children += '> '+emoji+' '+child.name+(pr > 0 ? ' — ₱'+pr : '')+'\n'
           }
           let state = b == data.types.length-1 ? '\n<:g1:1056579657828417596><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g3:1056579662572179586>' : ''
@@ -813,7 +813,7 @@ client.on("messageCreate", async (message) => {
             emojis.x+' Not Available ' //4
           ]
         embed = new MessageEmbed(embed)
-        .addFields({name: 'Product Status',value: productStatus[data.status]})
+        .addFields({name: 'Product Status',value: productStatus[data.status]+''})
           
           //await channel.messages.fetch(data.id).then(foundMsg => {
           //  foundMsg.edit({embeds: [embed]})//.then(msg => foundBulked.messages.push({name: data.name, url: msg.url, emoji: data.status === 4 ? '<:Pastelred:1094798538220765274>' : data.status === 3 ? emojis.loading : method === 'rs' ? '<a:S_bearheart:1094190497179910225>' : '<a:S_pastelheart:1093737606451298354>'}))
