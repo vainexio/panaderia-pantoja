@@ -69,6 +69,7 @@ module.exports = {
     if (AI.modelCount >= AI.models.length) AI.modelCount = 0
     let response = await fetch(chosenAPI,auth)
     response = await response.json()
+    console.log(response)
     return {response, chosenAPI: chosenAPI};
   },
   getNth: function (value) {
