@@ -1021,7 +1021,7 @@ client.on("messageCreate", async (message) => {
     else if (isMessage(".badge",message)) {
       message.delete()
       let embed = new MessageEmbed()
-      .setDescription('**Steps of claiming dev badge**\n- Add <@477729368622497803>\n- Activate Discord 2FA (Required)\n- Secure payment\n- Join https://discord.gg/93mXzRbxNx\n- Check your email for an invite, click **Accept Invite**\n- Head to https://discord.com/developers/active-developer to claim the badge\n- Make sure to take a **SCREENSHOT** for proof/vouching!')
+      .setDescription('**Steps of claiming dev badge**\n- Add <@1066284097879670824>\n- Activate Discord 2FA (Required)\n- Secure payment\n- Join https://discord.gg/93mXzRbxNx\n- Check your email for an invite, click **Accept Invite**\n- Head to https://discord.com/developers/active-developer to claim the badge\n- Make sure to take a **SCREENSHOT** for proof/vouching!')
       .setColor(colors.green)
       .setThumbnail('https://preview.redd.it/say-hello-to-the-new-active-developer-badge-v0-tswry4vw56z91.png?auto=webp&s=40bd51e3e008ed4737a64fbaa1f3e629352848be')
       .setFooter({text: 'Item is not refundable once invited'})
