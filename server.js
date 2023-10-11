@@ -1574,7 +1574,7 @@ client.on('interactionCreate', async inter => {
           if (msg.attachments.size > 0) {
             let index = 0
             for (let i in attachments) {
-              ticket.transcript = 'https://codebeautify.org/htmlviewer?url='+attachments[i].url
+              ticket.transcript = 'https://codebeautify.org/htmlviewer?url='+attachments[i].url.slice(0, -1)
               await doc.save();
             }
           }
