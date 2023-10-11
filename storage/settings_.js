@@ -823,8 +823,8 @@ module.exports = {
         files: ['https://cdn.discordapp.com/attachments/1101501538293252136/1102772107424833536/2023-05-02_09-39-15.mp4']
       },
       {
-        id: '', //1109020434978054233
-        message: '<a:nitroboost:1057999297787985960> **Server Booster Perks**\n- ₱5 global voucher\n- Image/Gif perms in <#1047454193595732055> \n- **Sloopier** role\n- **Sloopiest** role (2x boost)\n- 2x giveaway entries',
+        id: '1109020434978054233', //1109020434978054233
+        message: emojis.nboost+' **Server Booster Perks**\n- ₱5 discount on certain products\n- Image/Gif perms in <#1047454193595732055> \n- **Sloopier** role\n- **Sloopiest** role (2x boost)\n- 2x giveaway entries\n\nps. The ₱5 discount is not applicable if you boosted AFTER creating a ticket.',
       },
       {
         id: '1109020436026634260', //1109020436026634260

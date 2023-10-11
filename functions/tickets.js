@@ -67,7 +67,7 @@ module.exports = {
         new MessageButton().setCustomId('closedTicket-'+data.user.id).setStyle('SECONDARY').setLabel('Close').setEmoji('🔒'),
         //new MessageButton().setCustomId('transcript-ticket').setStyle('SECONDARY').setLabel('Save Transcript').setEmoji('<:S_letter:1092606891240198154>'),
       );
-      let BotMsg = channel.send({ content: "<@"+data.user.id+"> - <@&"+data.support+"> Ticket opened ("+data.name+") *!*", embeds: [embed] , components: [row]})
+      let BotMsg = channel.send({ content: "<@"+data.user.id+"> - <@&"+data.support+"> Ticket opened ("+data.name+") *!*"+'\n\nNote: The booster perks are only applicable per order form. If you boosted only AFTER you confirmed your order, your booster perks will not ba applied for being late.', embeds: [embed] , components: [row]})
       
       })
       .catch(async err => {
