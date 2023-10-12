@@ -513,8 +513,8 @@ client.on("messageCreate", async (message) => {
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
-    let addStocks = args[0].toLowerCase() === 'stocks' ? true : false
-    let sortLinks = args[1]?.toLowerCase() === 'sort' && addStocks ? true : args[0]?.toLowerCase() === 'sort' ? true : false
+    let addStocks = args[0].toLowerCase() === 'stocks' && message.channel.type !== 'DM'  ? true : false
+    let sortLinks = args[1]?.toLowerCase() === 'sort' && addStocks && message.channel.type !== 'DM'  ? true : args[0]?.toLowerCase() === 'sort' ? true : false
     //if (shop.checkers.length > 0) return message.reply(emojis.warning+' Someone is currently scanning links.\nPlease use the checker one at a time to prevent rate limitation.')
     let codes = []
     let text = ''
