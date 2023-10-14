@@ -177,7 +177,7 @@ module.exports = {
             parent: 'Permanent',
             children: [
               //
-              { name: 'Permanent', price: 80, rs: 70 },
+              { name: 'Permanent', price: 40, rs: 70 },
               { name: 'Lifetime warranty until patched', price: 0 },
               //
             ],
@@ -230,7 +230,7 @@ module.exports = {
             parent: 'Nitro Stocks Dropper',
             children: [
               //
-              { name: 'Covered hosting', price: 500 },
+              { name: 'Covered hosting', price: 300 },
               { name: 'Features:\n+ </drop:1102423261914091530> command\n+ </stocks:1102433613116616734> command\n+ nitro checker (50 links/sec)\n\u200b'}
               //
             ],
@@ -239,7 +239,7 @@ module.exports = {
             parent: 'Nitro Checker',
             children: [
               //
-              { name: 'Monthly', price: 40 },
+              { name: 'Monthly', price: 30 },
               { name: 'Features:\n+ Provided Bot\n+ Can scan 50 links per second\n+ Shows difference between valid, calimed and invalid links\n+ Shows accurate expiration (date & time) of links\n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
               //
             ],
@@ -248,7 +248,7 @@ module.exports = {
             parent: 'Backup Bot Slot',
             children: [
               //
-              { name: 'Lifetime Slot', price: 100 },
+              { name: 'Lifetime Slot', price: 90 },
               { name: 'Features:\n+ Provided Bot\n+ Via Discord OAuth2\n+ Can join all verified users in an instant\n+ Can use in all sorts of servers\n\u200b'}
               //
             ],
