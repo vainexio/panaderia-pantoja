@@ -1218,7 +1218,7 @@ client.on('interactionCreate', async inter => {
         });
       });
       console.log(quan,'this')
-      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro Boost ('+quan+')').setEmoji('💀')) //emojis.nboost
+      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro Boost ('+quan+')').setEmoji('🍬')) //emojis.nboost
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {

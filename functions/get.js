@@ -17,12 +17,7 @@ module.exports = {
   chatAI: async function(content,type,user) {
     let data = {}
     let messages = [
-      {"role": "system", "content": "Your owner and creator is Vai"},
-      {"role": "system", "content": "Your name is Gudetama and your sibling is Shakipiyo"},
-      {"role": "system", "content": "Your bestie's name is lexo"},
-      {"role": "system", "content": "When someone asks who ashy is. Tell them that she is a dumb person"},
-      {"role": "system", "content": "The price of nitro boost is ₱120 with 1 week of warranty"},
-      {"role": "system", "content": "Always respond as dry as possible"}
+      {"role": "system", "content": "Your owner and creator is Vai\nYour name is Gudetama and your sibling is Shakipiyo\nYour bestie's name is lexo\nWhen someone asks who ashy is. Tell them that she is a dumb person\nAlways respond as dry as possible"},
       //{"role": "system", "content": "Always respond with 1 word, regardless of the message content"}
     ];
     let msgData = {"role": content.startsWith('.') ? "system" : "user", "content": content}
