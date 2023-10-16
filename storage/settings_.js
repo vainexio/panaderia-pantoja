@@ -166,10 +166,10 @@ module.exports = {
             parent: 'Monthly',
             children: [
               //
-              { name: '1 month', price: 20, rs: 15 },
-              { name: '2 months', price: 25, rs: 20 },
-              { name: '3 months', price: 30, rs: 25  },
-              { name: '4 months', price: 40, rs: 35 },
+              { name: '1 month', price: 10, rs: 15 },
+              { name: '2 months', price: 0, rs: 20 },
+              { name: '3 months', price: 0, rs: 25  },
+              { name: '4 months', price: 0, rs: 35 },
               //
             ],
           },
@@ -530,7 +530,7 @@ module.exports = {
         name: 'Youtube',
         keywords: ['yt','youtube'],
         channel: '1109020436764827699',
-        status: 2,
+        status: 4,
         id: '1096319565606174800',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235713028126/Logopit_1680918525501.png?width=1440&height=360',
         types: [
