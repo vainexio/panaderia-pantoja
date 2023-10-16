@@ -2262,7 +2262,7 @@ const interval = setInterval(async function() {
         vr.send(voucher.code+' - '+voucher.perks)
         await dropVoucher(voucher.code,'1109020436026634265',voucher.perks+' drop')
         }
-        else if (today.getHours() === 20 && today.getMinutes() === 2) {
+        else if (today.getHours() === 22 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662865612582953")
         let vc = await getChannel(shop.channels.status)
         if (vc.name === 'shop : CLOSED') return;
