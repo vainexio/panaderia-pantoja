@@ -1598,7 +1598,7 @@ client.on('interactionCreate', async inter => {
           );
           await msg.edit({content: null, embeds: [embed], components: [row]})
           await inter.channel.send({content: emojis.check+' Transcript saved *!*'})
-          //user.send({content: 'Your ticket transcript was generated.', embeds: [embed], components: [row]}).catch(err => console.log(err))
+          user.send({content: 'Your ticket transcript was generated.', embeds: [embed], components: [row]}).catch(err => console.log(err))
         });
       }
     }
