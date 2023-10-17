@@ -113,7 +113,7 @@ client.on("ready", async () => {
     }
   }
   console.log('Successfully logged in to discord bot.')
-  client.user.setPresence({ status: 'idle', activities: [{ name: '.gg/spoopies', type: "WATCHING" }] });
+  client.user.setPresence({ status: 'idle', activities: [{ name: '.gg/sloopies', type: "WATCHING" }] });
  // await mongoose.connect(mongooseToken,{keepAlive: true});
 })
 
@@ -348,7 +348,7 @@ client.on("messageCreate", async (message) => {
       message.channel.send({content: "<@"+member.id+">", embeds: [embed], components: [row]})
     } else if (await hasRole(member,['1109020434520887321'],message.guild)) {
       let row = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:yt_chickclap:1138707159287345263>'),
+        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<:hb_rule_book:1138712613769990254>'),
       );
       message.channel.send({components: [row]})
       //message.channel.setName(message.channel.name.replace('ticket',member.user.username.replace(/ /g,'')))
@@ -1393,7 +1393,7 @@ client.on('interactionCreate', async inter => {
         );
       inter.update({content: 'Terms Accepted : <@'+inter.user.id+'>', components: [row]})
       let row2 = new MessageActionRow().addComponents(
-        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<a:yt_chickclap:1138707159287345263>'),
+        new MessageButton().setCustomId('orderFormat').setStyle('SECONDARY').setLabel('Order Form').setEmoji('<:hb_rule_book:1138712613769990254>'),
       );
       inter.channel.send({components: [row2]})
       inter.channel.setName(inter.channel.name.replace('ticket',inter.user.username.replace(/ /g,'')))
