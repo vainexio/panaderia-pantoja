@@ -66,6 +66,7 @@ module.exports = {
       '1115890019362676858', //Nov 12, 2023
       "1135495084754866217", //Nov 17, 2023
       "478883133412868106", //Nov 17, 2023
+      '452467191523049472', //Nov 18, 2023
     ],
     apiCheckers: [],
     orderForm: [],
@@ -230,7 +231,7 @@ module.exports = {
             parent: 'Nitro Stocks Dropper',
             children: [
               //
-              { name: 'Covered hosting', price: 300 },
+              { name: 'Covered hosting', price: 500 },
               { name: 'Features:\n+ </drop:1102423261914091530> command\n+ </stocks:1102433613116616734> command\n+ nitro checker (50 links/sec)\n\u200b'}
               //
             ],
@@ -239,7 +240,7 @@ module.exports = {
             parent: 'Nitro Checker',
             children: [
               //
-              { name: 'Monthly', price: 30 },
+              { name: 'Monthly', price: 50 },
               { name: 'Features:\n+ Provided Bot\n+ Can scan 50 links per second\n+ Shows difference between valid, calimed and invalid links\n+ Shows accurate expiration (date & time) of links\n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
               //
             ],
