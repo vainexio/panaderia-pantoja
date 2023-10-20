@@ -264,7 +264,7 @@ async function dropVoucher(code,ch,title) {
   let channel = await getChannel(ch)
   let voucher = await getVoucher(code)
   let row = new MessageActionRow().addComponents(
-    new MessageButton().setCustomId('voucher-'+voucher.code).setStyle('SECONDARY').setLabel('Claim Voucher').setEmoji('<:08:1069200741807435866>'),
+    new MessageButton().setCustomId('voucher-'+voucher.code).setStyle('SECONDARY').setLabel('Claim Voucher').setEmoji('<a:yl_exclamationan:1138705076395978802>'),
   );
   //
   let quote = "Oop, I can't think of a quote right now."
@@ -2298,7 +2298,7 @@ const interval = setInterval(async function() {
   
   },5000)
 
-/*app.get('/sms', async function (req, res) {
+app.get('/sms', async function (req, res) {
   let text = req.query.text
   if (!text) res.status(404).send({error: 'Invalid Message'})
   let args = await getArgs(text)
@@ -2348,4 +2348,4 @@ const interval = setInterval(async function() {
   
     await channel.send({content: '@everyone '+emojis.check+' New Transaction ('+data.senderNumber+')', embeds: [embed]})
   }
-});*/
+});
