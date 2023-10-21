@@ -283,7 +283,7 @@ async function dropVoucher(code,ch,title) {
     }  
   let embed = new MessageEmbed()
   .addFields(
-    {name: title,value: '<:09:1069200736631656518> Click the button to claim'},
+    {name: title,value: 'Click the button to claim'},
     {name: "Random Quote",value: quote}
   )
   .setColor(colors.yellow)
