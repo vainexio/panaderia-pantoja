@@ -1659,10 +1659,9 @@ client.on('interactionCreate', async inter => {
         .setThumbnail(inter.user.avatarURL())
         .setDescription('Hmm, it seems someone already claimed this voucher.')
         .addFields(
-          {name:"Random Quote",value:quote},
           {name:'Claimed by',value:'<@'+inter.user.id+'>'}
         )
-        .setFooter({text: 'Click the buttons below for some entertainment'})
+        //.setFooter({text: 'Click the buttons below for some entertainment'})
         .setColor(colors.red)
         
         sendChannel(emojis.check+' <@'+inter.user.id+'> claimed a **'+voucher.perks+'**!\nCode: `'+code+'`','1109020437096181830',colors.lime)
@@ -1685,7 +1684,7 @@ client.on('interactionCreate', async inter => {
           .then((msg) => {
             if (error) return;
             inter.reply({content: "Voucher code was sent in your DMs!", ephemeral: true})
-            inter.message.edit({embeds: [newEmbed], components: [row]});
+            inter.message.edit({embeds: [newEmbed], components: []}); //components: [row]
           })
         } else {
           inter.reply({content: "It seems like someone was milliseconds faster than you.", ephemeral: true})
