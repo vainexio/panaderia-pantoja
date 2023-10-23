@@ -222,8 +222,8 @@ module.exports = {
       },
       {
         //Category
-        name: 'Bot Commission',
-        keywords: ['bot comms','comms','stocks dropper','dropper'],
+        name: 'Nitro Stocks Dropper',
+        keywords: ['nsd','stocks dropper','dropper'],
         channel: '1138621480440188940',
         status: 2,
         id: '1096319574284193842',
@@ -239,6 +239,18 @@ module.exports = {
               //
             ],
           },
+        ],
+      },
+      {
+        //Category
+        name: 'Nitro Links Checker',
+        keywords: ['nitro checker','checker'],
+        channel: '1138621480440188940',
+        status: 2,
+        id: '1096319574284193842',
+        image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077237592076389/Logopit_1680918672598.png?width=1440&height=360',
+        types: [
+          //Types
           {
             parent: 'Nitro Checker',
             children: [
@@ -248,6 +260,18 @@ module.exports = {
               //
             ],
           },
+        ],
+      },
+      {
+        //Category
+        name: 'Server Backup Bot',
+        keywords: ['backup','server backup'],
+        channel: '1138621480440188940',
+        status: 2,
+        id: '1096319574284193842',
+        image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077237592076389/Logopit_1680918672598.png?width=1440&height=360',
+        types: [
+          //Types
           {
             parent: 'Server Backup Bot',
             children: [
@@ -257,11 +281,23 @@ module.exports = {
               //
             ],
           },
+        ],
+      },
+      {
+        //Category
+        name: 'Custom Comms',
+        keywords: ['backup','server backup'],
+        channel: '1138621480440188940',
+        status: 2,
+        id: '1096319574284193842',
+        image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077237592076389/Logopit_1680918672598.png?width=1440&height=360',
+        types: [
+          //Types
           {
             parent: 'Custom Commission',
             children: [
               //
-              { name: 'We accept custom commissions! The price may range depending on the proposed functionality.', price: 0 },
+              { name: 'We accept custom commissions! The **PRICE** may range depending on the proposed functionality.', price: 0 },
               //
             ],
           },
