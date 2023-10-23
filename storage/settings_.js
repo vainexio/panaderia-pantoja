@@ -243,15 +243,15 @@ module.exports = {
             children: [
               //
               { name: 'Monthly', price: 50 },
-              { name: 'Features:\n+ Provided Bot\n+ Can scan 50 links per second\n+ Shows difference between valid, calimed and invalid links\n+ Shows accurate expiration (date & time) of links\n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
+              { name: 'Features:\n+ Provided Bot (gudetama)\n+ Can scan 50 links per second\n+ Shows difference between valid, calimed and invalid links\n+ Shows accurate expiration (date & time) of links\n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
               //
             ],
           },
           {
-            parent: 'Backup Bot Slot',
+            parent: 'Server Backup Bot',
             children: [
               //
-              { name: 'Lifetime Slot', price: 90 },
+              { name: 'Lifetime Slot', price: 140 },
               { name: 'Features:\n+ Provided Bot\n+ Via Discord OAuth2\n+ Can join all verified users in an instant\n+ Can use in all sorts of servers\n\u200b'}
               //
             ],
