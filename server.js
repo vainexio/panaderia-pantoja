@@ -2300,7 +2300,6 @@ const interval = setInterval(async function() {
 app.get('/sms', async function (req, res) {
   let text = req.query.text
   console.log(req.query)
-  console.log('body',req.body)
   if (!text) return res.status(404).send({error: 'Invalid Message'})
   let args = await getArgs(text)
   console.log(req.query)
@@ -2311,7 +2310,7 @@ app.get('/sms', async function (req, res) {
     body: text,
     sender: args.slice(firstIndex+1,lastIndex).join(' '),
     senderNumber: args[lastIndex-1].replace('.',''),
-    amount: args[4],
+    amount: Number(args[4]),
   }
   let channel = await getChannel(shop.channels.smsReader)
   if (!data.body.startsWith('You have received')) {
@@ -2346,7 +2345,13 @@ app.get('/sms', async function (req, res) {
     .setFooter({text: req.query.pkg})
     .setColor(colors.none)
     
-  
-    await channel.send({content: '@everyone '+emojis.check+' New Transaction ('+data.senderNumber+')', embeds: [embed]})
+    let transaction = shop.expected.find(t => t.amount == data.amount)
+    if (transaction) {
+      for (let i in shop.expected) {
+        let transac = shop.expected[i]
+      }
+    } else {
+      await channel.send({content: '@everyone '+emojis.check+' New Transaction ('+data.senderNumber+')', embeds: [embed]})
+    }
   }
 });

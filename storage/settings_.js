@@ -57,6 +57,7 @@ let keys = [
 ]
 module.exports = {
   shop: {
+    expected: [],
     refIds: [],
     checkerWhitelist: [
       '1066284097879670824', //vai
