@@ -945,8 +945,9 @@ client.on("messageCreate", async (message) => {
     }
     toRemove.sort((a,b) => b-a)
     for (let i in toRemove) {
-      months.splice(toRemove[i],1)
-}
+      shop.expected.splice(toRemove[i],1)
+    }
+    message.react(emojis.check)
   }
   //
   if (message.channel.id === shop.channels.vouch) {
