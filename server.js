@@ -2366,9 +2366,10 @@ app.get('/sms', async function (req, res) {
     for (let i in shop.expected) {
       let transac = shop.expected[i]
       if (transac.amount == data.amount) {
-        shop.expected.splice(i,1)
+        console.log(transac)
         let cd = await getChannel(transac.channel)
         await cd.send({embeds: [embed]})
+        shop.expected.splice(i,1)
         return;
       }
     }
