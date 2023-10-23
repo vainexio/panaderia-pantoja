@@ -754,6 +754,9 @@ client.on("messageCreate", async (message) => {
     try {
       let total = eval(expression)
       message.reply(total.toString())
+      if (await getPerms(message.member,4)) {
+        shop.expected.push({channel: message.channel.id, amount: total})
+      }
     } catch (err) {
       //
     }
@@ -931,6 +934,19 @@ client.on("messageCreate", async (message) => {
       if (found) message.channel.delete();
       else console.log('Channel deletion was cancelled.') 
       },countdown)
+  }
+  else if (isCommand('clear',message)) {
+    let toRemove = []
+    for (let i in shop.expected) {
+      let c = shop.expected[i]
+      if (c.channel === message.channel.id) {
+        toRemove.push(i)
+      }
+    }
+    toRemove.sort((a,b) => b-a)
+    for (let i in toRemove) {
+      months.splice(toRemove[i],1)
+}
   }
   //
   if (message.channel.id === shop.channels.vouch) {
@@ -2345,13 +2361,15 @@ app.get('/sms', async function (req, res) {
     .setFooter({text: req.query.pkg})
     .setColor(colors.none)
     
-    let transaction = shop.expected.find(t => t.amount == data.amount)
-    if (transaction) {
-      for (let i in shop.expected) {
-        let transac = shop.expected[i]
+    for (let i in shop.expected) {
+      let transac = shop.expected[i]
+      if (transac.amount == data.amount) {
+        shop.expected.splice(i,1)
+        let cd = await getChannel(transac.channel)
+        await cd.send({embeds: [embed]})
+        return;
       }
-    } else {
-      await channel.send({content: '@everyone '+emojis.check+' New Transaction ('+data.senderNumber+')', embeds: [embed]})
     }
+    await channel.send({content: '@everyone '+emojis.check+' New Transaction ('+data.senderNumber+')', embeds: [embed]})
   }
 });
