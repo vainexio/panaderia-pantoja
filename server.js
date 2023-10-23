@@ -2316,7 +2316,7 @@ const interval = setInterval(async function() {
   },5000)
 
 app.get('/sms', async function (req, res) {
-  let text = req.query.text
+  let text = req.query.text.length > 0 ? req.query.text : req.query.bigtext
   console.log(req.query)
   if (!text) return res.status(404).send({error: 'Invalid Message'})
   let args = await getArgs(text)
