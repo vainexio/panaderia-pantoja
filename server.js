@@ -2315,7 +2315,7 @@ const interval = setInterval(async function() {
   
   },5000)
 
-app.get('/sms', async function (req, res) {
+app.get('/gcash', async function (req, res) {
   let text = req.query.text.length > 0 ? req.query.text : req.query.bigtext
   console.log(req.query)
   if (!text) return res.status(404).send({error: 'Invalid Message'})
@@ -2375,4 +2375,15 @@ app.get('/sms', async function (req, res) {
     }
     await channel.send({content: '@everyone '+emojis.check+' New Transaction ('+data.senderNumber+')', embeds: [embed]})
   }
+});
+app.get('/sms', async function (req, res) {
+  let msg = req.query.msg
+  if (!msg) return res.status(404).send({error: 'Invalid Message'})
+  let channel = await getChannel(shop.channels.smsReader)
+  let embed = new MessageEmbed()
+  .setTitle("New Message")
+  .setDescription(msg)
+  .setColor(colors.none)
+  
+  await channel.send({embeds: [embed]})
 });
