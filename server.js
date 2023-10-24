@@ -2367,6 +2367,7 @@ app.get('/gcash', async function (req, res) {
       if (transac.amount == data.amount) {
         console.log(transac)
         let cd = await getChannel(transac.channel)
+        if (!cd) return shop.expected.splice(i,1)
         await cd.send({content: emojis.check+" Payment Received", embeds: [embed]})
         shop.expected.splice(i,1)
         return;
@@ -2374,6 +2375,7 @@ app.get('/gcash', async function (req, res) {
     }
     await channel.send({content: '@everyone '+emojis.check+' New Transaction ('+data.senderNumber+')', embeds: [embed]})
   }
+  
 });
 app.get('/sms', async function (req, res) {
   let msg = req.query.msg
