@@ -2320,7 +2320,6 @@ app.get('/gcash', async function (req, res) {
   console.log(req.query)
   if (!text) return res.status(404).send({error: 'Invalid Message'})
   let args = await getArgs(text)
-  console.log(req.query)
   let firstIndex = args.indexOf('from')
   let lastIndex = args.length
   
