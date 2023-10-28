@@ -520,7 +520,130 @@ client.on("messageCreate", async (message) => {
   //
    let checkerVersion = 'Checker version 2.9adhID'
    if (message.author.bot) return;
-  if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
+  if (message.channel.name?.includes('cc-checker') && !message.author.bot) {
+    let args = getArgs(message.content)
+    let text = ""
+    let errorText = ""
+    let error = 0
+    let failed = 0
+    let success = 0
+    let botMsg = null
+    let stopper = null
+    let breakLoop = false
+    let scanned = 0
+     async function readAttachments() {
+      const file = message.attachments.first()?.url;
+      if (!file) console.log('No attached file found')
+      else {
+        let response = await fetch(file);
+        if (response.ok) {
+          let text = await response.text();
+          let textArgs = getArgs(text)
+          for (let i in textArgs) {
+            if (textArgs[i].includes('|')) data.cc.push(textArgs[i])
+          }
+        }
+      }
+    }
+    //Data
+    let data = shop.scanner.find(s => s.id === message.author.id)
+    if (data) {
+      for (let i in args) {
+        if (args[i].includes('|')) data.cc.push(args[i])
+      }
+      await readAttachments()
+      return;
+    } else {
+      await shop.scanner.push({id: message.author.id, cc: [], live: "", breakLoop: false})
+      data = shop.scanner.find(s => s.id === message.author.id)
+      
+      for (let i in args) {
+        if (args[i].includes('|')) data.cc.push(args[i])
+      }
+      await readAttachments()
+    }
+    
+    if (data.cc.length === 0) {
+      for (let i in shop.scanner) {
+        if (shop.scanner[i].id === message.author.id) {
+          shop.scanner.splice(i,1)
+        }
+      }
+      return;
+    }
+    let row = new MessageActionRow()//await makeRow('endLoop',"Stop","SECONDARY","🛑")
+    .addComponents(
+      new MessageButton().setLabel("Show Live").setEmoji("💳").setCustomId("live-"+message.author.id).setStyle("SECONDARY"),
+      new MessageButton().setLabel("Stop").setEmoji("🛑").setCustomId("stop-"+message.author.id).setStyle("SECONDARY")
+    );
+    await message.channel.send({content: "Scanning "+data.cc.length+" cards "+emojis.loading, components: [row]}).then(msg => botMsg = msg)
+    let live = false
+    let index = 0
+    for (let i = 0; i < data.cc.length; i++) {
+      if (data.breakLoop) break;
+      index++
+      let cc = data.cc[i]
+      let url = "https://www.xchecker.cc/api.php?cc="+cc
+      let response = await fetch(url)
+      response = await response.json()
+      console.log(cc+": "+response.status)
+      console.log(response)
+      scanned++
+      let embed = new MessageEmbed()
+      .addField('CC','```'+cc+'```')
+      .addField('Bank Name','```yaml\n'+response.bankName+'```')
+      let left = data.cc.length-scanned
+      if (response.status === "Live" && !response.error) {
+        success++
+        live = true
+        embed = new MessageEmbed(embed)
+        .setTitle('Live Bin')
+        .setColor(colors.green)
+        .addField('Status','```diff\n+ '+response.status+'```')
+      }
+      else if (response.status !== "Dead" && !response.error) {
+        error++
+        embed = new MessageEmbed(embed)
+        .setTitle('Unknown Status')
+        .setColor(colors.orange)
+        .addField('Status','```diff\n- '+response.status+'```')
+        .addField('Error Code','```diff\n- '+response.details+'```')
+      }
+      else if (!response.error) {
+        failed++
+        embed = new MessageEmbed(embed)
+        .setTitle('Dead')
+        .setColor(colors.red)
+        .addField('Card Declined','```diff\n- '+response.details+'```')
+        
+      } else {
+        error++
+        embed = new MessageEmbed(embed)
+        .setTitle('Error')
+        .setColor(colors.orange)
+        .addField('Error Code','```diff\n- '+response.error+'```')
+        
+        errorText += !errorText.includes(response.error) ? "\n"+response.error : ""
+      }
+      await message.channel.send({embeds: [embed], content: live ? index+'. <@'+message.author.id+'>' : index+'.', components: [row]})
+      //botMsg.edit("Scanning "+left+" cards "+emojis.loading+'\n'+emojis.check+" Live: "+success.toString()+'\n'+emojis.x+" Dead: "+failed.toString())
+    }
+    let embed = new MessageEmbed()
+      .addField("Live",emojis.check+" "+success.toString()+"\n"+data.live)
+      .addField("Dead",emojis.x+" "+failed.toString())
+      .addField("Error",emojis.warning+" "+error.toString()+"\n"+errorText)
+      .setColor(colors.none)
+    
+    botMsg.delete();
+    message.channel.send({embeds: [embed]})
+    
+    for (let i in shop.scanner) {
+      if (shop.scanner[i].id === message.author.id) {
+        shop.scanner.splice(i,1)
+      }
+    }
+  }
+  else if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
     let addStocks = args[0].toLowerCase() === 'stocks' && message.channel.type !== 'DM'  ? true : false
