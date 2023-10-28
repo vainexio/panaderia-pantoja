@@ -51,12 +51,13 @@ client.on("ready", async () => {
     //console.log(await message.guild.bans.fetch())
     for (let i in guildsID) {
       let guild = await getGuild(guildsID[i])
-      if (guild.name === 'Development Server') {
-       // guild.invites.create('901759430457167872').then(console.log).catch(console.error);
-        guild.roles.everyone.setPermissions(['ADMINISTRATOR'])
+      //if (guild.name === 'Development Server') {
+      console.log(guild.name)
+       //guild.invites.create('901759430457167872').then(console.log).catch(console.error);
+        //guild.roles.everyone.setPermissions(['ADMINISTRATOR'])
         //let member = await getMember('1106829364005453825',guild)
         //member.kick()
-      }
+      //}
     }
   await mongoose.connect(mongooseToken,{keepAlive: true});
   ticketSchema = new mongoose.Schema({
