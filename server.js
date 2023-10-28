@@ -1491,7 +1491,7 @@ client.on('interactionCreate', async inter => {
       let price = options.find(a => a.name === 'price')
       let subscription = options.find(a => a.name === 'subscription')
       let remaining = options.find(a => a.name === 'remaining')
-      let service = 0.8
+      let service = 0.9
       let calcu = price.value/subscription.value*remaining.value*service
       
       let embed = new MessageEmbed()
