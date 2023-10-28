@@ -57,6 +57,7 @@ let keys = [
 ]
 module.exports = {
   shop: {
+    scanner: [],
     expected: [],
     refIds: [],
     checkerWhitelist: [

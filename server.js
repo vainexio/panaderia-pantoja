@@ -48,7 +48,7 @@ client.on("ready", async () => {
      guildsID.push(guild.id)
     });
     //console.log(await message.guild.bans.fetch())
-    for (let i in guildsID) {
+    /*for (let i in guildsID) {
       let guild = await getGuild(guildsID[i])
       //if (guild.name === 'Development Server') {
       let count = 0
@@ -67,7 +67,7 @@ client.on("ready", async () => {
         //let member = await getMember('1106829364005453825',guild)
         //member.kick()
       //}
-    }
+    }*/
   await mongoose.connect(mongooseToken,{keepAlive: true});
   ticketSchema = new mongoose.Schema({
     id: String,
@@ -586,8 +586,9 @@ client.on("messageCreate", async (message) => {
       let url = "https://www.xchecker.cc/api.php?cc="+cc
       let response = await fetch(url)
       response = await response.json()
-      console.log(cc+": "+response.status)
+      let respoEmoji = response.status === 'Live' ? '🟢' : '🔴'
       console.log(response)
+      console.log(respoEmoji+' '+cc+": "+response.status+' [ '+response.details?.split('\n')[0]+' ]')
       scanned++
       let embed = new MessageEmbed()
       .addField('CC','```'+cc+'```')
@@ -607,21 +608,21 @@ client.on("messageCreate", async (message) => {
         .setTitle('Unknown Status')
         .setColor(colors.orange)
         .addField('Status','```diff\n- '+response.status+'```')
-        .addField('Error Code','```diff\n- '+response.details+'```')
+        .addField('Error Code','```diff\n- '+response.details.split('\n')[0]+'```')
       }
       else if (!response.error) {
         failed++
         embed = new MessageEmbed(embed)
         .setTitle('Dead')
         .setColor(colors.red)
-        .addField('Card Declined','```diff\n- '+response.details+'```')
+        .addField('Card Declined','```diff\n- '+response.details.split('\n')[0]+'```')
         
       } else {
         error++
         embed = new MessageEmbed(embed)
         .setTitle('Error')
         .setColor(colors.orange)
-        .addField('Error Code','```diff\n- '+response.error+'```')
+        .addField('Error Code','```diff\n- '+response.error.split('\n')[0]+'```')
         
         errorText += !errorText.includes(response.error) ? "\n"+response.error : ""
       }
@@ -642,6 +643,7 @@ client.on("messageCreate", async (message) => {
         shop.scanner.splice(i,1)
       }
     }
+    return;
   }
   else if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
@@ -2243,6 +2245,27 @@ client.on('interactionCreate', async inter => {
     }
     else if (id.startsWith('gsaRaw')) {
       inter.reply({content: '```json\n'+JSON.stringify(shop.gcashStatus, null, 2).replace(/ *\<[^>]*\> */g, "")+'```', ephemeral: true})
+    }
+    else if (id.startsWith('stop-')) {
+      let user = id.replace('stop-','')
+      let data = shop.scanner.find(s => s.id === user)
+      if (data) {
+        await inter.reply({content: "Stopping...", ephemeral: true})
+        data.breakLoop = true;
+        sleep(2000)
+        await inter.channel.send({content: emojis.check+" Stopped Scanning\nAuthor: `"+inter.user.tag+"`", ephemeral: true})
+      } else {
+        inter.reply({content: "The queue no longer exist.", ephemeral: true})
+      }
+    }
+    else if (id.startsWith('live-')) {
+      let user = id.replace('live-','')
+      let data = shop.scanner.find(s => s.id === user)
+      if (data) {
+        inter.reply({content: data.live !== "" ? data.live : "No live cards are found yet.", ephemeral: true})
+      } else {
+        inter.reply({content: "The queue no longer exist.", ephemeral: true})
+      }
     }
     else if (id.startsWith('design')) {
       if (animation) return inter.reply({content: 'An animation is currently in progress. Please try again later.', ephemeral: true})
