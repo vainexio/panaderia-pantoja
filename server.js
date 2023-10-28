@@ -577,9 +577,9 @@ client.on("messageCreate", async (message) => {
       new MessageButton().setLabel("Stop").setEmoji("🛑").setCustomId("stop-"+message.author.id).setStyle("SECONDARY")
     );
     await message.channel.send({content: "Scanning "+data.cc.length+" cards "+emojis.loading, components: [row]}).then(msg => botMsg = msg)
-    let live = false
     let index = 0
     for (let i = 0; i < data.cc.length; i++) {
+      let live = false
       if (data.breakLoop) break;
       index++
       let cc = data.cc[i]
@@ -587,7 +587,7 @@ client.on("messageCreate", async (message) => {
       let response = await fetch(url)
       response = await response.json()
       let respoEmoji = response.status === 'Live' ? '🟢' : '🔴'
-      console.log(response)
+      //console.log(response)
       console.log(respoEmoji+' '+cc+": "+response.status+' [ '+response.details?.split('\n')[0]+' ]')
       scanned++
       let embed = new MessageEmbed()
