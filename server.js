@@ -597,7 +597,7 @@ client.on("messageCreate", async (message) => {
       if (response.status === "Live" && !response.error) {
         success++
         live = true
-        scanner.live += cc+'\n'
+        data.live += cc+'\n'
         embed = new MessageEmbed(embed)
         .setTitle('Live Bin')
         .setColor(colors.green)
