@@ -1492,7 +1492,7 @@ client.on('interactionCreate', async inter => {
       let subscription = options.find(a => a.name === 'subscription')
       let remaining = options.find(a => a.name === 'remaining')
       let service = 0.9
-      let calcu = price.value/subscription.value*remaining.value*service
+      let calcu = price.value/subscription.value*remaining.value
       
       let embed = new MessageEmbed()
       .addFields(
@@ -1500,7 +1500,7 @@ client.on('interactionCreate', async inter => {
         {name: 'Price paid',value: price.value.toString(),inline: true},
         {name: 'Remaining Days',value: remaining.value.toString(), inline: true},
         {name: 'Subscription Days',value: subscription.value.toString(), inline: true},
-        {name: 'Service Fee',value: service.toString(), inline: true},
+        //{name: 'Service Fee',value: service.toString(), inline: true},
       )
       .setFooter({text: "Formula: price paid/subscription days*remaining days*service fee"})
       //.addField("Calculation",price.value+'/'+subscription.value+'\\*'+remaining.value+'\\*'+service)
