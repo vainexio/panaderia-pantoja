@@ -1496,15 +1496,15 @@ client.on('interactionCreate', async inter => {
       
       let embed = new MessageEmbed()
       .addFields(
-        {name: 'Refund Amount',value: '♻️ **'+Math.round(calcu).toString()+'**', inline: true},
+        {name: 'Total Refund',value: '**'+Math.round(calcu).toString()+'**', inline: true},
         {name: 'Price paid',value: price.value.toString(),inline: true},
         {name: 'Remaining Days',value: remaining.value.toString(), inline: true},
         {name: 'Subscription Days',value: subscription.value.toString(), inline: true},
         //{name: 'Service Fee',value: service.toString(), inline: true},
       )
-      .setFooter({text: "Formula: price paid/subscription days*remaining days*service fee"})
+      //.setFooter({text: "Formula: price paid/subscription days*remaining days"})
       //.addField("Calculation",price.value+'/'+subscription.value+'\\*'+remaining.value+'\\*'+service)
-      .setColor(colors.none)
+      .setColor(colors.green)
       
       inter.reply({embeds: [embed]});
     }
