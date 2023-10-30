@@ -2398,10 +2398,10 @@ const interval = setInterval(async function() {
   let hours = (today.getHours() % 12) || 12;
   let time = hours +":" +today.getMinutes();
   
-  if (!randomTime) {
+  /*if (!randomTime) {
     randomTime = getRandom(1,13)+":"+getRandom(today.getMinutes(),60)
     sendChannel("Random: "+randomTime,"1109020437096181831",colors.red)
-  }
+  }*/
       //Get info
       if (ready) {
         ready = false
