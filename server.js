@@ -2415,7 +2415,7 @@ const interval = setInterval(async function() {
         let generatedVoucher = "₱"+amount[getRandom(0,amount.length)]+" "+type[getRandom(0,type.length)]+" voucher"
         let template = await getChannel(shop.channels.templates)
         let annc = await getChannel(shop.channels.shopStatus)
-      if (time === '11:11') {
+      /*if (time === '11:11') {
         ready = false
         let voucher = {
           code: makeCode(10),
@@ -2435,8 +2435,8 @@ const interval = setInterval(async function() {
           let vr = await getChannel(shop.channels.vouchers)
         vr.send(voucher.code+' - '+voucher.perks)
         await dropVoucher(voucher.code,'1109020436026634265',voucher.perks+' drop')
-        }
-        else if (today.getHours() === 22 && today.getMinutes() === 0) {
+        }*/
+        if (today.getHours() === 22 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662865612582953")
         let vc = await getChannel(shop.channels.status)
         if (vc.name === 'shop : CLOSED') return;
