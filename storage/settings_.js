@@ -430,7 +430,7 @@ module.exports = {
             children: [
               //
               { name: 'Nitro Basic (MTO)', price: 40, rs: 0 },
-              { name: 'Nitro Boost', price: 135, rs: 140 }, //<@&1109020434520887323>
+              { name: 'Nitro Boost', price: 175, rs: 140 }, //<@&1109020434520887323>
               //{ name: 'Nitro Boost <@&1138634227169112165> (server booster)', price: 165, rs: 125 },
               //
             ],
@@ -478,7 +478,7 @@ module.exports = {
         name: 'Genshin Impact',
         keywords: ['genesis crystals','genshin','welkin'],
         channel: '1109020436764827700',
-        status: 2,
+        status: 4,
         id: '1096319582240788490',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077185406550136/Logopit_1680918406428.png?width=1440&height=360',
         types: [
@@ -517,7 +517,7 @@ module.exports = {
               { name: '200  Robux', price: 100, rs: 0 },
               { name: '500 Robux', price: 230, rs: 0 },
               { name: '700 Robux', price: 250, rs: 0 },
-              { name: '1000 Robux', price: 310, rs: 0 },
+              { name: '1000 Robux', price: 300, rs: 0 },
               //
             ],
           },
@@ -602,7 +602,7 @@ module.exports = {
         name: 'Netflix',
         keywords: ['nf','netflix','netplix'],
         channel: '1109020436764827699',
-        status: 2,
+        status: 4,
         id: '1096319566902218813',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235939512320/Logopit_1680918539369.png?width=1440&height=360',
         types: [
