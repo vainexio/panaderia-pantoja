@@ -372,7 +372,7 @@ client.on("messageCreate", async (message) => {
      let member = message.mentions.members.first()
      let state = await hasRole(member,["Accepted TOS"]) ? "You have accepted our terms.\n— Therefore, we shall not be liable for any mistakes or excuses made once you've violated our rules." : "We shall not be liable for any mistakes or excuses made once you've violated our rules."
      if (vc.name === 'reports : CLOSED') {
-     message.channel.send(emojis.warning+" **Void Warranty**\nReport was submitted outside reporting hours.\n\n<:07:1069200743959109712> Remarks\n— Void warranty means no replacement nor refund.\n— "+state)
+     message.channel.send(emojis.warning+" **Void Warranty**\nReport was submitted outside reporting hours.\n\n⚠️ Remarks\n— Void warranty means no replacement nor refund.\n— "+state)
      await addRole(member,['void'],message.guild)
      } else if (await hasRole(member,['void'],message.guild)) {
        message.channel.send(emojis.warning+' **Void Warranty**\nA recent remark was detected that you violated our terms.\n\n— '+state)
