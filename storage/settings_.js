@@ -852,7 +852,7 @@ module.exports = {
     },
     stickyChannels: [
       {
-        id: '1169591423566368840',
+        id: '1169573502022602752',
         message: 'Type </search:1169591423566368840> to determine whether or not a user has a history of scamming!',
       },
       {
