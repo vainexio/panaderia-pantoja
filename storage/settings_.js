@@ -520,9 +520,9 @@ module.exports = {
               { name: '500 robux', price: 170, rs: 0 },
               { name: '600 robux', price: 200, rs: 0 },
               { name: '700 robux', price: 230, rs: 0 },
-              { name: '800 Robux', price: 250, rs: 0 },
-              { name: '900 Robux', price: 270, rs: 0 },
-              { name: '1000 Robux', price: 290, rs: 0 },
+              { name: '800 robux', price: 250, rs: 0 },
+              { name: '900 robux', price: 270, rs: 0 },
+              { name: '1000 robux', price: 290, rs: 0 },
               //
             ],
           },
