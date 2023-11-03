@@ -513,11 +513,16 @@ module.exports = {
             parent: 'Via Gamepass',
             children: [
               //
-              { name: '100  Robux', price: 80, rs: 0 },
-              { name: '200  Robux', price: 100, rs: 0 },
-              { name: '500 Robux', price: 230, rs: 0 },
-              { name: '700 Robux', price: 250, rs: 0 },
-              { name: '1000 Robux', price: 300, rs: 0 },
+              { name: '100 robux', price: 40, rs: 0 },
+              { name: '200 robux', price: 70, rs: 0 },
+              { name: '300 robux', price: 100, rs: 0 },
+              { name: '400 robux', price: 130, rs: 0 },
+              { name: '500 robux', price: 170, rs: 0 },
+              { name: '600 robux', price: 200, rs: 0 },
+              { name: '700 robux', price: 230, rs: 0 },
+              { name: '800 Robux', price: 250, rs: 0 },
+              { name: '900 Robux', price: 270, rs: 0 },
+              { name: '1000 Robux', price: 290, rs: 0 },
               //
             ],
           },
