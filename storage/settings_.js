@@ -853,14 +853,14 @@ module.exports = {
     stickyChannels: [
       {
         id: '1169573502022602752',
-        message: 'Type </search:1169591423566368840> to determine whether or not a user has a history of scamming!',
+        message: 'Type </search:1169591423566368840> to determine whether or not a user has a history of blacklist!',
       },
       {
         id: '1094975726127685726',
         message: "<a:S_bearheart:1094190497179910225> Type `;feedback` on <@1057167023492300881>'s DMs to submit a feedback."
       },
       {
-        id: '1109020436278300806',
+        id: '0',
         message: 'Type </stocks:1102433613116616734> to show the list of available stocks',
       },
       {
