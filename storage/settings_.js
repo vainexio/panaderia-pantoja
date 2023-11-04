@@ -656,12 +656,12 @@ module.exports = {
             parent: 'Valorant Points',
             children: [
               //
-              { name: '125 vp', price: 50 },
-              { name: '380 vp', price: 150 },
-              { name: '790 vp', price: 285 },
-              { name: '1650 vp', price: 560 },
+              { name: '125 vp', price: 45 },
+              { name: '380 vp', price: 143 },
+              { name: '790 vp', price: 275 },
+              { name: '1650 vp', price: 550 },
               { name: '2850 vp', price: 910 },
-              { name: '5800 vp', price: 1880 },
+              { name: '5800 vp', price: 1830 },
               //
             ],
           },
