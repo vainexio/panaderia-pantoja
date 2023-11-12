@@ -8,6 +8,7 @@ const moment = require('moment')
 const HttpsProxyAgent = require('https-proxy-agent');
 const url = require('url');
 const discordTranscripts = require('discord-html-transcripts');
+const { joinVoiceChannel } = require('@discordjs/voice');
 //
 //Discord
 const Discord = require('discord.js');
@@ -44,6 +45,12 @@ let ticketId = 10
 //When bot is ready
 client.on("ready", async () => {
   let guildsID = [];
+  let channel = await getChannel('1109020434810294345')
+  const connection = joinVoiceChannel({
+      channelId: channel.id,
+      guildId: channel.guild.id,
+      adapterCreator: channel.guild.voiceAdapterCreator // Should be referring to the correct client
+  });
     client.guilds.cache.forEach(guild => {
      guildsID.push(guild.id)
     });
