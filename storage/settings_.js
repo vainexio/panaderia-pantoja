@@ -499,45 +499,6 @@ module.exports = {
       },
       {
         //Category
-        name: 'Robux',
-        keywords: ['roblox','robux','rbx','bobux'],
-        channel: '1109020436764827700',
-        rs: '1078710810806853704',
-        status: 2,
-        id: '1096319583121584208',
-        image: "https://media.discordapp.net/attachments/1093391705753002064/1094077237839532123/Logopit_1680918693719.png?width=1440&height=360",
-        types: [
-          //Types
-          {
-            parent: 'Via Gamepass',
-            children: [
-              //
-              { name: '100 robux', price: 40, rs: 0 },
-              { name: '200 robux', price: 70, rs: 0 },
-              { name: '300 robux', price: 100, rs: 0 },
-              { name: '400 robux', price: 130, rs: 0 },
-              { name: '500 robux', price: 170, rs: 0 },
-              { name: '600 robux', price: 200, rs: 0 },
-              { name: '700 robux', price: 230, rs: 0 },
-              { name: '800 robux', price: 250, rs: 0 },
-              { name: '900 robux', price: 270, rs: 0 },
-              { name: '1000 robux', price: 290, rs: 0 },
-              //
-            ],
-          },
-          {
-            parent: '\u200b',
-            children: [
-              //
-              { name: 'Covered tax', price: 0 },
-              //
-            ],
-          },
-          //
-        ],
-      },
-      {
-        //Category
         name: 'Spotify',
         keywords: ['spoti','spotify'],
         channel: '1109020436764827699',
@@ -661,6 +622,54 @@ module.exports = {
               { name: '1650 vp', price: 550 },
               { name: '2850 vp', price: 910 },
               { name: '5800 vp', price: 1830 },
+              //
+            ],
+          },
+          //
+        ],
+      },
+      {
+        //Category
+        name: 'Robux',
+        keywords: ['roblox','robux','rbx','bobux'],
+        channel: '1109020436764827700',
+        rs: '1078710810806853704',
+        status: 2,
+        id: '1096319583121584208',
+        image: "https://media.discordapp.net/attachments/1093391705753002064/1094077237839532123/Logopit_1680918693719.png?width=1440&height=360",
+        types: [
+          //Types
+          {
+            parent: 'Bladeball',
+            children: [
+              //
+              { name: 'Vanguard Shield', price: 120, rs: 0 },
+              { name: 'Empyrean Fortress', price: 399, rs: 0 },
+              //
+            ],
+          },
+          {
+            parent: 'Via Gamepass',
+            children: [
+              //
+              { name: '100 robux', price: 35, rs: 0 },
+              { name: '200 robux', price: 65, rs: 0 },
+              { name: '300 robux', price: 100, rs: 0 },
+              { name: '400 robux', price: 130, rs: 0 },
+              { name: '500 robux', price: 170, rs: 0 },
+              { name: '600 robux', price: 200, rs: 0 },
+              { name: '700 robux', price: 230, rs: 0 },
+              { name: '800 robux', price: 250, rs: 0 },
+              { name: '900 robux', price: 270, rs: 0 },
+              { name: '1000 robux', price: 290, rs: 0 },
+              //
+            ],
+          },
+          {
+            parent: '\u200b',
+            children: [
+              //
+              { name: 'Covered tax', price: 0 },
               //
             ],
           },
