@@ -1021,13 +1021,19 @@ client.on("messageCreate", async (message) => {
     message.reply('We recently converted this command to a slash command. Please use </stocks:1102433613116616734> instead!')
   }
   else if (isCommand('forcenick',message)) {
-    let members = []
-    message.guild.members.forEach(mem => members.push(mem))
+    let members = await message.guild.members.cache
+    let cEmojis = ["🎄", "🎅", "⛄️", "❄️", "🎁", "🔔", "🦌", "🕯️", "🎶", "🍪", "🦃", "🤶", "🎉", "🌟", "🎊", "🌲", "🎀", "📦", "🕰️", "🎅🏻", "🍷", "🎶", "⛪️", "🎵", "🎶", "📚", "❤️", "🍭", "☃️", "🪅", "🕳️", "🧦"];
+    console.log(members.length)
     for (let i in members) {
       let mem = members[i]
       try {
-        mem.setNickname(mem.username.user.username)
-      } catch 
+        let randomEmoji = cEmojis[getRandom(0,cEmojis.length)]
+        await mem.setNickname(randomEmoji+' '+mem.username.user.username)
+        console.log(mem.nickname)
+        await sleep(1000)
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
   else if (isCommand('use',message)) {
