@@ -1032,7 +1032,7 @@ client.on("messageCreate", async (message) => {
         let mem = members[i]
           try {
         let randomEmoji = cEmojis[getRandom(0,cEmojis.length)]
-        if (!mem.nickname?.includes('🎁') || mem.nickname?.includes('undefined')) {
+        if (!mem.nickname?.startsWith('🎁') || mem.nickname?.includes('undefined')) {
           await mem.setNickname('🎁 '+mem.user.username)
           console.log(mem.nickname)
           
