@@ -902,9 +902,9 @@ module.exports = {
         message: 'Click the button below to create a ticket!\n\n🎁 Order — Availing products\n🎁 Support — General concerns and inquiries\n🎁 Report — Reporting revoked products',
         comp: new MessageActionRow()
         .addComponents(
-          new MessageButton().setLabel('Create Order').setCustomId('createTicket-order').setStyle('SECONDARY').setEmoji('⛄️'),
-          new MessageButton().setLabel('Support Ticket').setCustomId('createTicket-support').setStyle('SECONDARY').setEmoji('🎉'),
-          new MessageButton().setLabel('Submit Report').setCustomId('createTicket-report').setStyle('SECONDARY').setEmoji('🎊')
+          new MessageButton().setLabel('Create Order').setCustomId('createTicket-order').setStyle('SECONDARY').setEmoji('⛄'),
+          new MessageButton().setLabel('Support Ticket').setCustomId('createTicket-support').setStyle('SECONDARY').setEmoji('🎊'),
+          new MessageButton().setLabel('Submit Report').setCustomId('createTicket-report').setStyle('SECONDARY').setEmoji('🎉')
         ),
       },
       {
