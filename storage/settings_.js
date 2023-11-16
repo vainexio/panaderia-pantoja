@@ -643,8 +643,8 @@ module.exports = {
             parent: 'Bladeball',
             children: [
               //
-              { name: 'Vanguard Shield', price: 120, rs: 0 },
-              { name: 'Empyrean Fortress', price: 399, rs: 0 },
+              { name: 'Vanguard Shield', price: 110, rs: 0 },
+              { name: 'Empyrean Fortress', price: 389, rs: 0 },
               //
             ],
           },
@@ -654,7 +654,7 @@ module.exports = {
               //
               { name: '100 robux', price: 35, rs: 0 },
               { name: '200 robux', price: 65, rs: 0 },
-              { name: '300 robux', price: 100, rs: 0 },
+              { name: '300 robux', price: 99, rs: 0 },
               { name: '400 robux', price: 130, rs: 0 },
               { name: '500 robux', price: 170, rs: 0 },
               { name: '600 robux', price: 200, rs: 0 },
