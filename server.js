@@ -1021,20 +1021,24 @@ client.on("messageCreate", async (message) => {
     message.reply('We recently converted this command to a slash command. Please use </stocks:1102433613116616734> instead!')
   }
   else if (isCommand('forcenick',message)) {
-    let members = await message.guild.members.cache
-    let cEmojis = ["🎄", "🎅", "⛄️", "❄️", "🎁", "🔔", "🦌", "🕯️", "🎶", "🍪", "🦃", "🤶", "🎉", "🌟", "🎊", "🌲", "🎀", "📦", "🕰️", "🎅🏻", "🍷", "🎶", "⛪️", "🎵", "🎶", "📚", "❤️", "🍭", "☃️", "🪅", "🕳️", "🧦"];
-    console.log(members.length)
-    for (let i in members) {
-      let mem = members[i]
-      try {
+    let members = await message.guild.members.fetch().then(async mems => {
+      let cEmojis = ["🎄", "🎅", "⛄️", "❄️", "🎁", "🔔", "🦌", "🕯️", "🎶", "🍪", "🦃", "🤶", "🎉", "🌟", "🎊", "🌲", "🎀", "📦", "🕰️", "🎅🏻", "🍷", "🎶", "⛪️", "🎵", "🎶", "📚", "❤️", "🍭", "☃️", "🪅", "🕳️", "🧦"];
+      let members = []
+      mems.forEach(mem => members.push(mem))
+      for (let i in members) {
+        let mem = members[i]
+        if (mem.presence.status === 'online' || mem.presence.status === 'idle' || mem.presence.status === 'dnd') {
+          try {
         let randomEmoji = cEmojis[getRandom(0,cEmojis.length)]
-        await mem.setNickname(randomEmoji+' '+mem.username.user.username)
+        await mem.setNickname(randomEmoji+' '+mem.user.username)
         console.log(mem.nickname)
-        await sleep(1000)
+          //
       } catch (err) {
         console.log(err)
       }
-    }
+        }
+      }
+    })
   }
   else if (isCommand('use',message)) {
     console.log(message.channel.parent.name)
