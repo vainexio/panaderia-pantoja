@@ -1025,19 +1025,24 @@ client.on("messageCreate", async (message) => {
       let cEmojis = ["🎄", "🎅", "⛄️", "❄️", "🎁", "🔔", "🦌", "🕯️", "🎶", "🍪", "🦃", "🤶", "🎉", "🌟", "🎊", "🌲", "🎀", "📦", "🕰️", "🎅🏻", "🍷", "🎶", "⛪️", "🎵", "🎶", "📚", "❤️", "🍭", "☃️", "🪅", "🕳️", "🧦"];
       let members = []
       mems.forEach(mem => members.push(mem))
+      
+      message.reply(emojis.loading+' Changing '+members.length+' nicknames')
+      let success = 0
       for (let i in members) {
         let mem = members[i]
-        if (mem.presence.status === 'online' || mem.presence.status === 'idle' || mem.presence.status === 'dnd') {
           try {
         let randomEmoji = cEmojis[getRandom(0,cEmojis.length)]
-        await mem.setNickname(randomEmoji+' '+mem.user.username)
-        console.log(mem.nickname)
+        if (!mem.nickname.includes('🎁')) {
+          await mem.setNickname('🎁 '+mem.user.displayName)
+          console.log(mem.nickname)
+          success++
+        }
           //
       } catch (err) {
         console.log(err)
       }
-        }
       }
+      message.reply(emojis.check+' Successfully changed '+success+' nicknames')
     })
   }
   else if (isCommand('use',message)) {
