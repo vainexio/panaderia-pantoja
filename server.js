@@ -1032,9 +1032,10 @@ client.on("messageCreate", async (message) => {
         let mem = members[i]
           try {
         let randomEmoji = cEmojis[getRandom(0,cEmojis.length)]
-        if (!mem.nickname.includes('🎁')) {
-          await mem.setNickname('🎁 '+mem.user.displayName)
+        if (!mem.nickname?.includes('🎁') || mem.nickname?.includes('undefined')) {
+          await mem.setNickname('🎁 '+mem.user.username)
           console.log(mem.nickname)
+          
           success++
         }
           //
@@ -2395,6 +2396,7 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
       }
     }
  });
+
 client.on('presenceUpdate', async (pres) => {
   if (!pres) return;
   let guild = await getGuild('1109020434449575936')
