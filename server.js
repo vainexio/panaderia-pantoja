@@ -1020,6 +1020,16 @@ client.on("messageCreate", async (message) => {
   else if (isCommand('stocks',message)) {
     message.reply('We recently converted this command to a slash command. Please use </stocks:1102433613116616734> instead!')
   }
+  else if (isCommand('forcenick',message)) {
+    let members = []
+    message.guild.members.forEach(mem => members.push(mem))
+    for (let i in members) {
+      let mem = members[i]
+      try {
+        mem.setNickname(mem.username.user.username)
+      } catch 
+    }
+  }
   else if (isCommand('use',message)) {
     console.log(message.channel.parent.name)
     if (!message.channel.parent.name.toLowerCase().includes('orders')) return message.reply('This command can only be used in a ticket! You must purchase a product, If you wish to use your voucher.\n\n<#1054711675045036033>')
@@ -2462,7 +2472,7 @@ const interval = setInterval(async function() {
         if (vc.name === 'shop : CLOSED') return;
           vc.setName('shop : CLOSED')
           await annc.bulkDelete(10)
-          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/72/7b/24/727b247bc2d09404b67a7ed275b8d85d.gif']})
+          await annc.send({content: msg.content, files: ['https://chpic.su/_data/stickers/s/SoftandcutechickwinterScar/SoftandcutechickwinterScar_044.webp']})
         } 
         else if (today.getHours() === 8 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662565489152152")
@@ -2470,7 +2480,7 @@ const interval = setInterval(async function() {
         if (vc.name === 'shop : OPEN') return;
           vc.setName('shop : OPEN')
           await annc.bulkDelete(10)
-          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/1e/ed/c4/1eedc43a10e28ce98b9bd0ad2384c905.gif']})
+          await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/pTdTTrNYFMccY2tPSyR0/11-1.png']})
       }  
         else if (today.getHours() === 11 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662887922077757")
@@ -2478,7 +2488,7 @@ const interval = setInterval(async function() {
           if (vc.name === 'reports : OPEN') return;
           vc.setName('reports : OPEN')
           await annc.bulkDelete(10)
-          await annc.send({content: msg.content, files: ['https://media.tenor.com/H6H2hhidRhIAAAAC/chick-pio.gif']})
+          await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/24.png']})
         }
         else if (today.getHours() === 20 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662907396243489")
@@ -2486,7 +2496,7 @@ const interval = setInterval(async function() {
           if (vc.name === 'reports : CLOSED') return;
           vc.setName('reports : CLOSED')
           await annc.bulkDelete(10)
-          await annc.send({content: msg.content, files: ['https://media.tenor.com/7mmiOB9yyRUAAAAC/chick-pio.gif']})
+          await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/18.png']})
         }
       }
   
