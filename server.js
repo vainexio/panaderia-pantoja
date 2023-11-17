@@ -1382,6 +1382,7 @@ client.on('interactionCreate', async inter => {
       if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission'});
       let options = inter.options._hoistedOptions
       let msgIds = options.find(a => a.name === 'msg_ids')
+      await inter.reply({content: emojis.loading+' Resending messages...', ephemeral: true})
       let args = await getArgs(msgIds.value)
       let data = {
         success: 0,
@@ -1405,7 +1406,7 @@ client.on('interactionCreate', async inter => {
           data.failed++
         }
       }
-      await inter.reply({content: emojis.check+' Success: '+data.success+'\n'+emojis.x+' Failed: '+data.failed, ephemeral: true})
+      await inter.followUp({content: emojis.check+' Success: '+data.success+'\n'+emojis.x+' Failed: '+data.failed, ephemeral: true})
     }
     //Stocks
     else if (cname === 'stocks') {
