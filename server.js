@@ -111,6 +111,7 @@ client.on("ready", async () => {
     "Content-Type": 'application/json'
   }
   for (let i in slashes) {
+    await sleep(1000)
     let json = slashes[i]
     let response = await fetch(discordUrl, {
       method: 'post',
@@ -1375,6 +1376,36 @@ client.on('interactionCreate', async inter => {
         console.log(err)
         inter.followUp({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
       }
+    }
+    //
+    else if (cname === 'resend') {
+      if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission'});
+      let options = inter.options._hoistedOptions
+      let msgIds = options.find(a => a.name === 'msg_ids')
+      let args = await getArgs(msgIds.value)
+      let data = {
+        success: 0,
+        failed: 0,
+      }
+      for (let i in args) {
+        let id = args[i]
+        try {
+          let msg = await inter.channel.messages.fetch(id)
+          if (msg) {
+            let attachments = Array.from(msg.attachments.values())
+            let files = []
+
+            for (let i in attachments) { files.push(attachments[i].url) }
+            await inter.channel.send({content: msg.content, files: files})
+            await msg.delete();
+            data.success++
+          }
+        } catch (err) {
+          console.log(err)
+          data.failed++
+        }
+      }
+      await inter.reply({content: emojis.check+' Success: '+data.success+'\n'+emojis.x+' Failed: '+data.failed, ephemeral: true})
     }
     //Stocks
     else if (cname === 'stocks') {

@@ -13,7 +13,7 @@ ATTACHMENT - 11
 */
 module.exports = {
   register: true,
-  deleteSlashes: [],
+  deleteSlashes: ['1174898700338864138'],
   slashes: [
     {
       "name": "drop",
@@ -78,6 +78,19 @@ module.exports = {
       "name": "stocks",
       "type": 1,
       "description": "Shows a list of available stocks",
+    },
+    {
+      "name": "resend",
+      "type": 1,
+      "description": "Resend a message through the bot",
+      "options": [
+        {
+          "name": 'msg_ids',
+          "description": 'Message IDs',
+          "type": 3,
+          "required": false,
+        },
+      ]
     },
     {
       "name": "orderstatus",
