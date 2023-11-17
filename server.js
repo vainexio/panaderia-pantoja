@@ -1555,7 +1555,7 @@ client.on('interactionCreate', async inter => {
       
         let embed = new MessageEmbed()
         .addFields(
-          {name: title,value: '**₱'+total+'**',inline: true},
+          {name: title,value: '**'+total+'**',inline: true},
           {name: 'Fee',value: 'x'+percentage,inline: true}
         )
         .setColor(colors.none)
