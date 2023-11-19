@@ -1561,7 +1561,7 @@ client.on('interactionCreate', async inter => {
         .setColor(colors.none)
         .setFooter({text: footer})
         
-        await inter.reply({embeds: [embed]})
+        await inter.reply({content: '.',embeds: [embed]})
     }
     //Refund
     else if (cname === 'refund') {
@@ -2280,15 +2280,15 @@ client.on('interactionCreate', async inter => {
       let count = 0
       let thread = [
         {
-          question: '> <a:RWBearClap:1138805632984686712> Which product do you want to avail? (include subscription length)',
+          question: '> <a:y_starroll:1138704563529076786> Which product do you want to avail? (include subscription length)',
           answer: '',
         },
         {
-          question: '> <a:RWBearClap:1138805632984686712> How many of this item do you wish buy?',
+          question: '> <a:y_starroll:1138704563529076786> How many of this item do you wish to buy?',
           answer: '',
         },
         {
-          question: "> <a:RWBearClap:1138805632984686712> What's your selected mode of payment?",
+          question: "> <a:y_starroll:1138704563529076786> What's your selected mode of payment?",
           answer: '',
         },
       ]
