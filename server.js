@@ -2605,6 +2605,11 @@ app.get('/gcash', async function (req, res) {
     
     for (let i in shop.expected) {
       let transac = shop.expected[i]
+      let cd = await getChannel(transac.channel)
+      if (!cd) shop.expected.splice(i,1)
+    }
+    for (let i in shop.expected) {
+      let transac = shop.expected[i]
       if (transac.amount == data.amount) {
         console.log(transac)
         let cd = await getChannel(transac.channel)
