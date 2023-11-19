@@ -2525,12 +2525,17 @@ const interval = setInterval(async function() {
         } 
         else if (today.getHours() === 8 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662565489152152")
-        let vc = await getChannel(shop.channels.status)
-        if (vc.name === 'shop : OPEN') return;
+          let vc = await getChannel(shop.channels.status)
+          if (vc.name === 'shop : OPEN') return;
           vc.setName('shop : OPEN')
           await annc.bulkDelete(10)
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/pTdTTrNYFMccY2tPSyR0/11-1.png']})
-      }  
+        }
+        else if (today.getHours() === 8 && today.getMintes() === 30) {
+          let msg = await template.messages.fetch("1175703100460367872")
+          await annc.bulkDelete(1)
+          await annc.send({content: msg.content})
+        }
         else if (today.getHours() === 11 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662887922077757")
           let vc = await getChannel(shop.channels.reportsVc)
