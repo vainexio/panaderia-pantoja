@@ -29,7 +29,7 @@ module.exports = {
         {
           "name": 'quantity',
           "description": 'Amount to send',
-          "type": 10,
+          "type": 4,
           "required": true,
         },
         {

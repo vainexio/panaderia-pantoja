@@ -1298,7 +1298,7 @@ client.on('interactionCreate', async inter => {
       if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission'});
       let options = inter.options._hoistedOptions
       if (!yay) return inter.reply({content: emojis.warning+" The bot is currently busy deleting stocks ("+cStocks+"/"+tStocks+")", ephemeral: true})
-      await inter.reply({content: 'Fetching stocks.. '+emojis.loading, ephemeral: true})
+      await inter.deferReply();//inter.reply({content: 'Fetching stocks.. '+emojis.loading, ephemeral: true})
       //
       let user = options.find(a => a.name === 'user')
       let quan = options.find(a => a.name === 'quantity')
@@ -1322,8 +1322,8 @@ client.on('interactionCreate', async inter => {
           })
         })
         //Returns
-        if (links === "") return inter.followUp({content: emojis.x+" No stocks left.", ephemeral: true})
-        if (quan.value > index) return inter.followUp({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
+        if (links === "") return inter.editReply({content: emojis.x+" No stocks left.", ephemeral: true})
+        if (quan.value > index) return inter.editReply({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
         yay = false
         tStocks = quan.value
         //delete messages
@@ -1349,7 +1349,7 @@ client.on('interactionCreate', async inter => {
           new MessageButton().setCustomId("showDrop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📋'),
           new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('🔻')
         );
-        inter.followUp({content: "<:yl_exclamation:1138705048562581575> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1138714811908235444> Make sure to open your DMs.\n<:S_dot:1138714811908235444> The message may appear as **direct or request** message.", components: [row]})
+        inter.editReply({content: "<:yl_exclamation:1138705048562581575> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1138714811908235444> Make sure to open your DMs.\n<:S_dot:1138714811908235444> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
         let chName = quan.value+'。'+(item ? item.value : 'nitro boost')
         inter.channel.name !== chName ? inter.channel.setName(chName) : null
@@ -1374,7 +1374,7 @@ client.on('interactionCreate', async inter => {
         //
       } catch (err) {
         console.log(err)
-        inter.followUp({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
+        inter.editReply({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
       }
     }
     //
@@ -1487,7 +1487,8 @@ client.on('interactionCreate', async inter => {
       let mop = options.find(a => a.name === 'mop')
       let price = options.find(a => a.name === 'price')
       //
-      inter.reply({content: 'Adding to queue.. '+emojis.loading, ephemeral: true})
+      inter.deferReply();
+      //inter.reply({content: 'Adding to queue.. '+emojis.loading, ephemeral: true})
       try {
         let orders = await getChannel(shop.channels.orders)
         let template = await getChannel(shop.channels.templates)
@@ -1514,7 +1515,7 @@ client.on('interactionCreate', async inter => {
           new MessageButton().setURL(msgUrl).setStyle('LINK').setEmoji('<:S_letter:1138714993425125556>').setLabel("Go to queue"),
         );
         
-        inter.followUp({content: 'Queue was added to '+orders.toString(), components: [linkRow]})
+        inter.editReply({content: 'Queue was added to '+orders.toString(), components: [linkRow]})
       } catch (err) {
         inter.reply({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
       }
