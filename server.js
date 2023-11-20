@@ -2533,8 +2533,9 @@ const interval = setInterval(async function() {
         }
         else if (today.getHours() === 8 && today.getMintes() === 30) {
           let msg = await template.messages.fetch("1175703100460367872")
-          await annc.bulkDelete(1)
-          await annc.send({content: msg.content})
+          let ch = await getChannel('1174734135516991529')
+          await ch.bulkDelete(1)
+          await ch.send({content: msg.content})
         }
         else if (today.getHours() === 11 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662887922077757")
