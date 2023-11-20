@@ -1411,7 +1411,7 @@ client.on('interactionCreate', async inter => {
     //Stocks
     else if (cname === 'stocks') {
       //if (inter.channel.id !== '1047454193595732058' && !await getPerms(inter.member,4)) return inter.reply({content: 'This command only works in <#1047454193595732058>\nPlease head there to use the command.', ephemeral: true})
-      
+      await inter.deferReply();
       let stocks = await getChannel(shop.channels.stocks)
       let stocks2 = await getChannel(shop.channels.otherStocks);
       let quan = 0;
@@ -1471,7 +1471,7 @@ client.on('interactionCreate', async inter => {
         }
       }
         console.log(strong)
-      await inter.reply({components: comps})
+      await inter.editReply({components: comps})
         break;
       }
     }
