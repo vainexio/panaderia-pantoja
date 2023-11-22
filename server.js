@@ -2532,7 +2532,7 @@ const interval = setInterval(async function() {
           await annc.bulkDelete(10)
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/pTdTTrNYFMccY2tPSyR0/11-1.png']})
         }
-        else if (today.getHours() === 8 && today.getMintes() === 30) {
+        else if (today.getHours() === 8 && today.getMinutes() === 30) {
           let msg = await template.messages.fetch("1175703100460367872")
           let ch = await getChannel('1174734135516991529')
           await ch.bulkDelete(1)

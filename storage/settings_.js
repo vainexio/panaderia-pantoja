@@ -442,7 +442,7 @@ module.exports = {
           //
         ],
       },
-      {
+      /*{
         //Category
         name: 'Steam',
         keywords: ['swc','steam'],
@@ -492,7 +492,7 @@ module.exports = {
           },
           //
         ],
-      },
+      },*/
       {
         //Category
         name: 'Spotify',
@@ -598,7 +598,7 @@ module.exports = {
           //
         ],
       },
-      {
+      /*{
         //Category
         name: 'Valorant',
         keywords: ['vp','valorant','balo'],
@@ -623,7 +623,7 @@ module.exports = {
           },
           //
         ],
-      },
+      },*/
       {
         //Category
         name: 'Robux',
@@ -652,10 +652,10 @@ module.exports = {
               { name: '200 robux', price: 65, rs: 0 },
               { name: '300 robux', price: 99, rs: 0 },
               { name: '400 robux', price: 130, rs: 0 },
-              { name: '500 robux', price: 170, rs: 0 },
-              { name: '600 robux', price: 200, rs: 0 },
-              { name: '700 robux', price: 230, rs: 0 },
-              { name: '800 robux', price: 250, rs: 0 },
+              { name: '500 robux', price: 160, rs: 0 },
+              { name: '600 robux', price: 190, rs: 0 },
+              { name: '700 robux', price: 220, rs: 0 },
+              { name: '800 robux', price: 245, rs: 0 },
               { name: '900 robux', price: 270, rs: 0 },
               { name: '1000 robux', price: 290, rs: 0 },
               //
