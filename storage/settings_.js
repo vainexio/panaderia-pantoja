@@ -66,6 +66,7 @@ module.exports = {
       "921047129739370526", //Nov 23, 2023
       '1058263824349802506', //Dec 8, 2023
       '775026782776721409', //Dec 17, 2023
+      '821104982198976512', //Dec 22, 2023
     ],
     apiCheckers: [],
     orderForm: [],
@@ -630,20 +631,11 @@ module.exports = {
         keywords: ['roblox','robux','rbx','bobux'],
         channel: '1109020436764827700',
         rs: '1078710810806853704',
-        status: 2,
+        status: 3,
         id: '1096319583121584208',
         image: "https://media.discordapp.net/attachments/1093391705753002064/1094077237839532123/Logopit_1680918693719.png?width=1440&height=360",
         types: [
           //Types
-          {
-            parent: 'Bladeball',
-            children: [
-              //
-              { name: 'Vanguard Shield', price: 110, rs: 0 },
-              { name: 'Empyrean Fortress', price: 389, rs: 0 },
-              //
-            ],
-          },
           {
             parent: 'Via Gamepass',
             children: [
