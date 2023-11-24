@@ -162,6 +162,10 @@ module.exports = {
               value: 'gcash'
             },
             {
+              name: 'Robux',
+              value: 'robux'
+            },
+            {
               name: 'Paypal',
               value: 'paypal'
             },
