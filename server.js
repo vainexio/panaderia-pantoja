@@ -2488,7 +2488,7 @@ const interval = setInterval(async function() {
         if (!ready) {
         setTimeout(function() {
           ready = true;
-        },50000)
+        },60000)
         }
         let amount = shop.randomVouchers.amount
         let type = shop.randomVouchers.type
