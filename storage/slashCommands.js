@@ -11,6 +11,10 @@ MENTIONABLE - 9
 NUMBER - 10
 ATTACHMENT - 11
 */
+
+const settings = require('../storage/settings_.js')
+const {shop, emojis, colors, theme, status} = settings
+
 module.exports = {
   register: true,
   deleteSlashes: ['1174898700338864138'],
@@ -104,7 +108,7 @@ module.exports = {
           "choices": [
             {
               name: 'order noted',
-              value: '<a:check:1054020736454492220> Order noted'
+              value: '<a:qqWhtShk_CuteClap:1138849011965624320> Order noted'
             },
             {
               name: 'submitted to supplier',
@@ -112,11 +116,11 @@ module.exports = {
             },
             {
               name: 'currently being processed',
-              value: '<a:loading2:976650648600854538> Your order is currently being processed',
+              value: emojis.loading+' Your order is currently being processed',
             },
             {
               name: 'order completed',
-              value: '<a:check:1054020736454492220> Your order was completed',
+              value: emojis.check+' Your order was completed',
             },
           ],
           "required": false,

@@ -1773,7 +1773,6 @@ client.on('interactionCreate', async inter => {
       inter.reply({embeds: [embed]});
     }
     //Order status
-    //Refund
     else if (cname === 'orderstatus') {
       let options = inter.options._hoistedOptions
       let preset = options.find(a => a.name === 'preset_status')
@@ -1785,14 +1784,14 @@ client.on('interactionCreate', async inter => {
       let messages = await inter.channel.messages.fetch({limit: 100}).then(async messages => {
         messages.forEach(async (gotMsg) => {
           if (gotMsg.content.toLowerCase().startsWith('# [') && gotMsg.author.id === client.user.id) {
-            content = gotMsg.content+'\n> \n> \n> \n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n'+'<t:'+time+':R>'
+            content = gotMsg.content+'\n> \n> \n> \n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n<:indent:1174738613330788512> <t:'+time+':R>'
             got = true
             gotMsg.delete();
           }
         })
       })
       if (!got) {
-        inter.channel.send('# [ ORDER STATUS ]\n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n'+'<t:'+time+':R>')
+        inter.channel.send('# [ ORDER STATUS ]\n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n<:indent:1174738613330788512> <t:'+time+':R>')
       } else {
         inter.channel.send(content)
       }

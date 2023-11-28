@@ -632,7 +632,7 @@ module.exports = {
         keywords: ['roblox','robux','rbx','bobux'],
         channel: '1109020436764827700',
         rs: '1078710810806853704',
-        status: 3,
+        status: 2,
         id: '1096319583121584208',
         image: "https://media.discordapp.net/attachments/1093391705753002064/1094077237839532123/Logopit_1680918693719.png?width=1440&height=360",
         types: [
