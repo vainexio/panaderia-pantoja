@@ -839,7 +839,7 @@ client.on("messageCreate", async (message) => {
     }
     return;
   }
-  else if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
+  else if (message.channel.name?.includes('nitro-checker')) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
     let addStocks = args[0].toLowerCase() === 'stocks' && message.channel.type !== 'DM'  ? true : false

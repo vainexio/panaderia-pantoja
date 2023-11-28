@@ -249,10 +249,11 @@ module.exports = {
         types: [
           //Types
           {
-            parent: 'Nitro Checker',
+            parent: '1m nitro checker',
             children: [
               //
-              { name: 'Monthly', price: 50 },
+              { name: 'through bot dms', price: 50 },
+              { name: 'through server channel', price: 100 },
               { name: 'Features:\n+ Provided Bot (gudetama)\n+ Can scan 50 links per second\n+ Shows difference between valid, calimed and invalid links\n+ Shows accurate expiration (date & time) of links\n+ Fool proof (avoids scanning duplicated links)\n\u200b'}
               //
             ],
