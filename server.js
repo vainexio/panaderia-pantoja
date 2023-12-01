@@ -2505,7 +2505,7 @@ client.on('interactionCreate', async inter => {
     else if (id.startsWith('confirmOrder')) {
       inter.message.edit({components: []})
       let booster = await hasRole(inter.member,['1138634227169112165'],inter.guild) ? emojis.check : emojis.x
-      inter.reply({content: "Thank you for confirming your order! <a:yt_chickclap:1138707159287345263>\nOur staff will be with you shortly.\nBooster: "+booster})
+      inter.reply({content: "Thank you for confirming your order! <a:yt_chickclap:1138707159287345263>\nOur staff will be with you shortly.\nBooster — "+booster})
     }
     else if (id.startsWith('gsaRaw')) {
       inter.reply({content: '```json\n'+JSON.stringify(shop.gcashStatus, null, 2).replace(/ *\<[^>]*\> */g, "")+'```', ephemeral: true})
