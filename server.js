@@ -2465,7 +2465,7 @@ client.on('interactionCreate', async inter => {
       let count = 0
       let thread = [
         {
-          question: '> <a:y_starroll:1138704563529076786> Which product do you want to avail? (include subscription length)',
+          question: '> <a:y_starroll:1138704563529076786> Which product do you want to avail?',
           answer: '',
         },
         {
@@ -2503,9 +2503,9 @@ client.on('interactionCreate', async inter => {
       shop.orderForm.splice(shop.orderForm.indexOf(inter.user.id),1)
     }
     else if (id.startsWith('confirmOrder')) {
-      inter.message.edit({components: []})
+      inter.update({components: []})
       let booster = await hasRole(inter.member,['1138634227169112165'],inter.guild) ? emojis.check : emojis.x
-      inter.reply({content: "Thank you for confirming your order! <a:yt_chickclap:1138707159287345263>\nOur staff will be with you shortly.\nBooster — "+booster})
+      inter.channel.send({content: "Thank you for confirming your order! <a:yt_chickclap:1138707159287345263>\nOur staff will be with you shortly.\n\nBooster — "+booster+'\n<@&1109020434554433548>'})
     }
     else if (id.startsWith('gsaRaw')) {
       inter.reply({content: '```json\n'+JSON.stringify(shop.gcashStatus, null, 2).replace(/ *\<[^>]*\> */g, "")+'```', ephemeral: true})
