@@ -1078,8 +1078,8 @@ client.on("messageCreate", async (message) => {
     console.log(await joinServer)
     console.log(await joinServer.json(),'json')
   }
-  if (!message.channel.name.includes('gudetama') && message.content.toLowerCase().startsWith('calcu')) {
-    let expression = message.content.toLowerCase().replace('calcu','')
+  if (!message.channel.name.includes('gudetama') && message.content.toLowerCase().startsWith('calc')) {
+    let expression = message.content.toLowerCase().replace('calc','')
     try {
       let total = eval(expression)
       message.reply(total.toString())
