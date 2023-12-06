@@ -711,7 +711,7 @@ client.on("messageCreate", async (message) => {
     truck = false
   }
   //
-   let checkerVersion = 'Checker version 2.9adhID'
+   let checkerVersion = 'Checker version 2.8.9'
    if (message.author.bot) return;
   if (message.channel.name?.includes('cc-checker') && !message.author.bot) {
     let args = getArgs(message.content)
@@ -839,12 +839,13 @@ client.on("messageCreate", async (message) => {
     }
     return;
   }
-  else if (message.channel.name?.includes('nitro-checker')) {
+  //
+  if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
     let addStocks = args[0].toLowerCase() === 'stocks' && message.channel.type !== 'DM'  ? true : false
     let sortLinks = args[1]?.toLowerCase() === 'sort' && addStocks && message.channel.type !== 'DM'  ? true : args[0]?.toLowerCase() === 'sort' ? true : false
-    //if (shop.checkers.length > 0) return message.reply(emojis.warning+' Someone is currently scanning links.\nPlease use the checker one at a time to prevent rate limitation.')
+
     let codes = []
     let text = ''
     let msg = null
@@ -909,7 +910,7 @@ client.on("messageCreate", async (message) => {
           let e2 = res.expires_at ? moment(res.expires_at).unix() : null;
           codes[i].expireUnix = e2 ? "\n<t:"+e2+":f>" : '';
           codes[i].rawExpire = e2
-          codes[i].expire = diffDuration ? Math.floor(diffDuration.asHours()) : null
+          codes[i].expire = diffDuration ? diffDuration.asHours() < 1 ? Math.floor(diffDuration.asHours()) : diffDuration.asHours() : null
           codes[i].emoji = res.uses === 0 ? emojis.check : res.expires_at ? emojis.x : emojis.warning
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
@@ -944,7 +945,7 @@ client.on("messageCreate", async (message) => {
     .setColor(colors.none)
     let num = 0
     let stat = {
-      put: { count: 0, string: ''},
+      put: { boost: 0, basic: 0, boostString: '', basicString: ''},
       notput: { count: 0, string: ''}
     }
     for (let i in codes) {
@@ -976,10 +977,18 @@ client.on("messageCreate", async (message) => {
       })
       ////
       if (addStocks && codes[i].state === 'Claimable') {
-        stat.put.count++
-        stat.put.string += "\ndiscord.gift/"+codes[i].code //https://discord.gift/
-        let stocks = await getChannel(shop.channels.stocks)
-        await stocks.send('discord.gift/'+codes[i].code) //"https:///"+
+        let stocks = null
+        if (type === 'Nitro') {
+          stat.put.boost++
+          stat.put.boostString += "\ndiscord.gift/"+codes[i].code
+          stocks = await getChannel(shop.channels.boostStocks)
+        } 
+        else {
+          stat.put.basic++
+          stat.put.basicString += "\ndiscord.gift/"+codes[i].code
+          stocks = await getChannel(shop.channels.basicStocks)
+        }
+        await stocks.send('discord.gift/'+codes[i].code)
       } else {
         stat.notput.count++
         stat.notput.string += "\ndiscord.gift/"+codes[i].code
@@ -1000,7 +1009,8 @@ client.on("messageCreate", async (message) => {
     if (addStocks) {
       let newEmbed = new MessageEmbed();
       newEmbed.addFields(
-        { name: 'Stocked Links', value: stat.put.count > 20 ? stat.put.count.toString() : stat.put.count >= 1 ? stat.put.string : 'None' },
+        { name: 'Stocked NBoost', value: stat.put.count > 20 ? stat.put.boost.toString() : stat.put.count >= 1 ? stat.put.boostString : 'None' },
+        { name: 'Stocked NBasic', value: stat.put.count > 20 ? stat.put.basic.toString() : stat.put.count >= 1 ? stat.put.basicString : 'None' },
         { name: 'Not Stocked', value: stat.notput.count > 20 ? stat.notput.count.toString() : stat.notput.count >= 1 ? stat.notput.string : 'None' },
       )
       newEmbed.setColor(stat.notput.count > 0 ? colors.red : colors.lime)
@@ -1495,7 +1505,7 @@ client.on('interactionCreate', async inter => {
       //Send prompt
       try {
         //Get stocks
-        let stocks = item.value === 'Nitro Boost' ? await getChannel(shop.channels.boostStocks) : item.value === 'Nitro Basic' ? await getChannel(shop.channels.basicStocks) : await getChannel(shop.channels.itemStocks)
+        let stocks = item.value === 'nitro boost' ? await getChannel(shop.channels.boostStocks) : item.value === 'nitro basic' ? await getChannel(shop.channels.basicStocks) : await getChannel(shop.channels.itemStocks)
         let links = ""
         let index = ""
         let msgs = []
@@ -1531,9 +1541,9 @@ client.on('interactionCreate', async inter => {
         let row = new MessageActionRow().addComponents(
           new MessageButton().setCustomId("drop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📩').setLabel("Drop"),
           new MessageButton().setCustomId("showDrop-"+dropMsg.id).setStyle('SECONDARY').setEmoji('📋'),
-          new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('🔻')
+          new MessageButton().setCustomId("returnLinks-"+dropMsg.id).setStyle('SECONDARY').setEmoji('🔻').setLabel("Return")
         );
-        inter.editReply({content: "<:yl_exclamation:1138705048562581575> <@"+user.user.id+"> Sending **"+quan.value+"** "+(item ? item.value : 'nitro boost(s)')+".\n<:S_dot:1138714811908235444> Make sure to open your DMs.\n<:S_dot:1138714811908235444> The message may appear as **direct or request** message.", components: [row]})
+        inter.editReply({content: "<:yl_exclamation:1138705048562581575> <@"+user.user.id+"> Sending **"+quan.value+"** "+item.value+"(s) .\n<:S_dot:1138714811908235444> Make sure to open your DMs.\n<:S_dot:1138714811908235444> The message may appear as **direct or request** message.", components: [row]})
         //Send auto queue
         let chName = quan.value+'。'+(item ? item.value : 'nitro boost')
         inter.channel.name !== chName ? inter.channel.setName(chName) : null

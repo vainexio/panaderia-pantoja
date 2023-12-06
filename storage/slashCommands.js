@@ -49,15 +49,15 @@ module.exports = {
           "choices": [
             {
               name: 'nitro boost',
-              value: 'Nitro Boost'
+              value: 'nitro boost'
             },
             {
               name: 'nitro basic',
-              value: 'Nitro Basic'
+              value: 'nitro basic'
             },
             {
               name: 'other',
-              value: 'Other'
+              value: 'other'
             },
           ],
           "required": true,
