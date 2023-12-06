@@ -908,9 +908,9 @@ client.on("messageCreate", async (message) => {
           let e = res.expires_at ? moment(res.expires_at).diff(moment(new Date())) : null
           let diffDuration = e ? moment.duration(e) : null;
           let e2 = res.expires_at ? moment(res.expires_at).unix() : null;
-          codes[i].expireUnix = e2 ? "\n<t:"+e2+":f>" : '';
+          codes[i].expireUnix = e2 ? "\n<t:"+e2+":ff>" : '';
           codes[i].rawExpire = e2
-          codes[i].expire = diffDuration ? diffDuration.asHours() < 1 ? Math.floor(diffDuration.asHours()) : diffDuration.asHours() : null
+          codes[i].expire = diffDuration ? diffDuration.asHours().toFixed(1) : null
           codes[i].emoji = res.uses === 0 ? emojis.check : res.expires_at ? emojis.x : emojis.warning
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
@@ -920,6 +920,7 @@ client.on("messageCreate", async (message) => {
           if (!foundCode) nitroCodes.push({code: res.code, type: type})
           foundCode ? type = foundCode.type : null
           codes[i].typeEmoji = type === 'Nitro' ? emojis.nboost : type === 'Nitro Basic' ? emojis.nbasic : type === 'Nitro Classic' ? emojis.nclassic : '❓' 
+          codes[i].type = type
           if ((!res.expires_at || res.uses >= 1) && !eCode) {
             let data = {
               code: codes[i].code,
@@ -943,10 +944,11 @@ client.on("messageCreate", async (message) => {
     let embeds = []
     let embed = new MessageEmbed()
     .setColor(colors.none)
+    
     let num = 0
     let stat = {
-      put: { boost: 0, basic: 0, boostString: '', basicString: ''},
-      notput: { count: 0, string: ''}
+      put: { boost: 0, basic: 0, boostString: '', basicString: '' },
+      notput: { count: 0, string: '' }
     }
     for (let i in codes) {
       num++
@@ -988,7 +990,7 @@ client.on("messageCreate", async (message) => {
           stat.put.basicString += "\ndiscord.gift/"+codes[i].code
           stocks = await getChannel(shop.channels.basicStocks)
         }
-        await stocks.send('discord.gift/'+codes[i].code)
+        //await stocks.send('discord.gift/'+codes[i].code)
       } else {
         stat.notput.count++
         stat.notput.string += "\ndiscord.gift/"+codes[i].code
@@ -1009,11 +1011,11 @@ client.on("messageCreate", async (message) => {
     if (addStocks) {
       let newEmbed = new MessageEmbed();
       newEmbed.addFields(
-        { name: 'Stocked NBoost', value: stat.put.count > 20 ? stat.put.boost.toString() : stat.put.count >= 1 ? stat.put.boostString : 'None' },
-        { name: 'Stocked NBasic', value: stat.put.count > 20 ? stat.put.basic.toString() : stat.put.count >= 1 ? stat.put.basicString : 'None' },
-        { name: 'Not Stocked', value: stat.notput.count > 20 ? stat.notput.count.toString() : stat.notput.count >= 1 ? stat.notput.string : 'None' },
+        { name: 'Stocked NBoost', value: stat.put.boost > 20 ? stat.put.boost.toString() : stat.put.boost >= 1 ? '|| '+stat.put.boostString+' ||' : 'None' },
+        { name: 'Stocked NBasic', value: stat.put.basic > 20 ? stat.put.basic.toString() : stat.put.basic >= 1 ? '|| '+stat.put.basicString+' ||' : 'None' },
+        { name: 'Not Stocked', value: stat.notput.count > 20 ? stat.notput.count.toString() : stat.notput.count >= 1 ? '|| '+stat.notput.string+' ||' : 'None' },
       )
-      newEmbed.setColor(stat.notput.count > 0 ? colors.red : colors.lime)
+      newEmbed.setColor(colors.yellow)
       message.channel.send({embeds: [newEmbed]})
     }
     shop.checkers = []
