@@ -46,7 +46,21 @@ module.exports = {
           "name": 'item',
           "description": 'Item name',
           "type": 3,
-          "required": false,
+          "choices": [
+            {
+              name: 'nitro boost',
+              value: 'Nitro Boost'
+            },
+            {
+              name: 'nitro basic',
+              value: 'Nitro Basic'
+            },
+            {
+              name: 'other',
+              value: 'Other'
+            },
+          ],
+          "required": true,
         },
         {
           "name": 'note',

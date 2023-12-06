@@ -328,7 +328,7 @@ function makeCode(length) {
 }
 let truck = false
 client2.on("messageCreate", async (message) => {
-  let checkerVersion = 'Checker version 2.85'
+  let checkerVersion = 'Checker version 2.8.9'
    if (message.author.bot) return;
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
@@ -1495,7 +1495,7 @@ client.on('interactionCreate', async inter => {
       //Send prompt
       try {
         //Get stocks
-        let stocks = await getChannel(shop.channels.stocks)
+        let stocks = item.value === 'Nitro Boost' ? await getChannel(shop.channels.stocks) : item.value === 'Nitro Basic' ? await getChannel(shop.channels.basicStocks) : await getChannel(shop.channels.itemStocks)
         let links = ""
         let index = ""
         let msgs = []
@@ -1508,7 +1508,7 @@ client.on('interactionCreate', async inter => {
         })
         //Returns
         if (links === "") return inter.editReply({content: emojis.x+" No stocks left.", ephemeral: true})
-        if (quan.value > index) return inter.editReply({content: emojis.warning+" Insufficient stocks. **"+index+"** "+(item ? item.value : 'nitro boost(s)')+" remaining.", ephemeral: true})
+        if (quan.value > index) return inter.editReply({content: emojis.warning+" Insufficient stocks. **"+index+"** "+item.value+'(s)'+" remaining.", ephemeral: true})
         yay = false
         tStocks = quan.value
         //delete messages
@@ -1595,11 +1595,11 @@ client.on('interactionCreate', async inter => {
     }
     //Stocks
     else if (cname === 'stocks') {
-      //if (inter.channel.id !== '1047454193595732058' && !await getPerms(inter.member,4)) return inter.reply({content: 'This command only works in <#1047454193595732058>\nPlease head there to use the command.', ephemeral: true})
-      await inter.deferReply();
+      
       let stocks = await getChannel(shop.channels.stocks)
-      let stocks2 = await getChannel(shop.channels.otherStocks);
-      let quan = 0;
+      let stockTemplates = await getChannel(shop.channels.otherStocks);
+      let nitroBoost = 0;
+      let nitroBasic = 0;
       let strong = ''
       let stockHolder = [[],[],[],[],[],[],[],[],[],[]];
       let holderCount = 0
@@ -1611,31 +1611,43 @@ client.on('interactionCreate', async inter => {
       let msgSize = 0
       let totalMsg = 0
       
+      await inter.reply({content: emojis.loading+' Fetching stocks', ephemeral: true})
       while (true) {
       const options = { limit: 100 };
       if (last_id) {
         options.before = last_id;
       }
-      
-      let messages = await stocks.messages.fetch(options).then(async messages => {
+        
+        await stocks.messages.fetch(options).then(async messages => {
       
       last_id = messages.last()?.id;
       totalMsg += messages.size
       msgSize = messages.size
         await messages.forEach(async (gotMsg) => {
-          quan++
+          if (gotMsg.content.includes('discord.gift')) quan++
+          strong += gotMsg.content+'\n'
+        })
+      });
+        await stocks2.messages.fetch(options).then(async messages => {
+      
+      last_id = messages.last()?.id;
+      totalMsg += messages.size
+      msgSize = messages.size
+        await messages.forEach(async (gotMsg) => {
+          if (gotMsg.content.includes('discord.gift')) nitroBoost++
+          strong += gotMsg.content+'\n'
         })
       });
       //Return
       if (msgSize != 100) {
-        let messages2 = await stocks2.messages.fetch({ limit: 100 })
-      .then(async (messages) => {
-        messages.forEach(async (gotMsg) => {
-          arrays.push(gotMsg.content);
+        await stockTemplates.messages.fetch({ limit: 100 })
+        .then(async (messages) => {
+          messages.forEach(async (gotMsg) => {
+            arrays.push(gotMsg.content);
+          });
         });
-      });
-      console.log(quan,'this')
-      stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro Boost ('+quan+')').setEmoji('🍬')) //emojis.nboost
+        stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro Boost ('+nitroBoost+')').setEmoji(emojis.nbasic))
+        stockHolder[0].push(new MessageButton().setCustomId('none').setStyle('SECONDARY').setLabel('Nitro Basic ('+nitroBasic+')').setEmoji(emojis.nbasic))
       for (let i in arrays) {
         let msg = arrays[i];
         if (arrays.length > 0) {
@@ -1656,7 +1668,7 @@ client.on('interactionCreate', async inter => {
         }
       }
         console.log(strong)
-      await inter.editReply({components: comps})
+      await inter.followUp({components: comps})
         break;
       }
     }
