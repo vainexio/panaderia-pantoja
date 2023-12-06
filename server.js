@@ -711,8 +711,8 @@ client.on("messageCreate", async (message) => {
     truck = false
   }
   //
-   let checkerVersion = 'Checker version 2.8.9'
    if (message.author.bot) return;
+  let checkerVersion = 'Checker version 2.8.9'
   if (message.channel.name?.includes('cc-checker') && !message.author.bot) {
     let args = getArgs(message.content)
     let text = ""
