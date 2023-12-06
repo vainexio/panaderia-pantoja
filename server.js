@@ -876,7 +876,7 @@ client.on("messageCreate", async (message) => {
     if (embeds.length > 0 ) {
       for (let i in embeds) {
         page++
-        await message.channel.send({content: 'Page **'+page+'/'+embeds.length+'**', embeds: [embeds[i]]})
+        await message.channel.send({content: 'Page '+page+'/'+embeds.length, embeds: [embeds[i]]})
       }
     } 
     else {
