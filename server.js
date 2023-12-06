@@ -1596,48 +1596,81 @@ client.on('interactionCreate', async inter => {
     //Stocks
     else if (cname === 'stocks') {
       
-      let stocks = await getChannel(shop.channels.stocks)
+      let stocks = await getChannel(shop.channels.boostStocks)
+      let stocks2 = await getChannel(shop.channels.basicStocks)
       let stockTemplates = await getChannel(shop.channels.otherStocks);
-      let nitroBoost = 0;
-      let nitroBasic = 0;
       let strong = ''
       let stockHolder = [[],[],[],[],[],[],[],[],[],[]];
       let holderCount = 0
       let arrays = []
       
       let last_id;
-      let mentionsCount = 0
-      let limit = 500
       let msgSize = 0
       let totalMsg = 0
       
+      let data = {
+        nitroBoost: 0,
+        nitroBasic: 0,
+        f: {
+          last_id: null,
+          msgSize: 0,
+          totalMsg: 0,
+          completed: 0,
+        }
+      }
+      
       await inter.reply({content: emojis.loading+' Fetching stocks', ephemeral: true})
+      
+      while (true) {
+        const options = { limit: 100 };
+        if (data.f.last_id) options.before = last_id;
+        
+        //
+        let stocks = null
+        if (data.f.completed === 0) stocks = await getChannel(shop.channels.boostStocks)
+        else if (data.completed) stocks = await getChannel(shop.channels.basicStocks)
+        else console.log('WTF')
+        //Put to storage
+        await stocks.messages.fetch(options).then(async messages => {
+          last_id = messages.last()?.id;
+          totalMsg += messages.size
+          msgSize = messages.size
+          await messages.forEach(async (gotMsg) => {
+            data.completed === 0 ? data.nitroBoost++ : data.nitroBasic++
+            strong += gotMsg.content+'\n'
+          })
+        });
+        
+        if (msgSize != 100) {
+          
+        }
+      }
+      
+      ///
       while (true) {
       const options = { limit: 100 };
-      if (last_id) {
-        options.before = last_id;
-      }
-        
+        if (last_id) {
+          options.before = last_id;
+        }
         await stocks.messages.fetch(options).then(async messages => {
-      
-      last_id = messages.last()?.id;
-      totalMsg += messages.size
-      msgSize = messages.size
-        await messages.forEach(async (gotMsg) => {
-          if (gotMsg.content.includes('discord.gift')) quan++
-          strong += gotMsg.content+'\n'
-        })
-      });
+          last_id = messages.last()?.id;
+          totalMsg += messages.size
+          msgSize = messages.size
+          await messages.forEach(async (gotMsg) => {
+            nitroBoost++
+            strong += gotMsg.content+'\n'
+          })
+        });
         await stocks2.messages.fetch(options).then(async messages => {
       
-      last_id = messages.last()?.id;
-      totalMsg += messages.size
-      msgSize = messages.size
-        await messages.forEach(async (gotMsg) => {
-          if (gotMsg.content.includes('discord.gift')) nitroBoost++
-          strong += gotMsg.content+'\n'
-        })
-      });
+          last_id = messages.last()?.id;
+          totalMsg += messages.size
+          msgSize = messages.size
+          await messages.forEach(async (gotMsg) => {
+            nitroBasic++
+            strong += gotMsg.content+'\n'
+          })
+        });
       //Return
       if (msgSize != 100) {
         await stockTemplates.messages.fetch({ limit: 100 })
