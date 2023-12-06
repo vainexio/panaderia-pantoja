@@ -333,8 +333,6 @@ client2.on("messageCreate", async (message) => {
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
-    let addStocks = args[0].toLowerCase() === 'stocks' && message.channel.type !== 'DM'  ? true : false
-    let sortLinks = args[1]?.toLowerCase() === 'sort' && addStocks && message.channel.type !== 'DM'  ? true : args[0]?.toLowerCase() === 'sort' ? true : false
     //if (shop.checkers.length > 0) return message.reply(emojis.warning+' Someone is currently scanning links.\nPlease use the checker one at a time to prevent rate limitation.')
     let codes = []
     let text = ''
@@ -429,7 +427,6 @@ client2.on("messageCreate", async (message) => {
       msg.edit({content: emojis.warning+" Interaction was interrupted\n**"+scanData.total+"** link(s) was scanned"})
       return;
     }
-    sortLinks ? codes.sort((a, b) => (b.rawExpire - a.rawExpire)) : null
     let embeds = []
     let embed = new MessageEmbed()
     .setColor(colors.none)
@@ -466,15 +463,6 @@ client2.on("messageCreate", async (message) => {
         inline: true,
       })
       ////
-      if (addStocks && codes[i].state === 'Claimable') {
-        stat.put.count++
-        stat.put.string += "\ndiscord.gift/"+codes[i].code //https://discord.gift/
-        let stocks = type === 'Nitro' ? await getChannel(shop.channels.stocks) : await getChannel(shop.channels.basicStocks)
-        await stocks.send('discord.gift/'+codes[i].code) //"https:///"+
-      } else {
-        stat.notput.count++
-        stat.notput.string += "\ndiscord.gift/"+codes[i].code
-      }
     }
     msg.delete();
     console.log(embeds.length)
@@ -487,15 +475,6 @@ client2.on("messageCreate", async (message) => {
     } 
     else {
       message.channel.send({embeds: [embed]})
-    }
-    if (addStocks) {
-      let newEmbed = new MessageEmbed();
-      newEmbed.addFields(
-        { name: 'Stocked Links', value: stat.put.count > 20 ? stat.put.count.toString() : stat.put.count >= 1 ? stat.put.string : 'None' },
-        { name: 'Not Stocked', value: stat.notput.count > 20 ? stat.notput.count.toString() : stat.notput.count >= 1 ? stat.notput.string : 'None' },
-      )
-      newEmbed.setColor(stat.notput.count > 0 ? colors.red : colors.lime)
-      message.channel.send({embeds: [newEmbed]})
     }
     shop.checkers = []
     !message.channel.type === 'DM' ? message.delete() : null
