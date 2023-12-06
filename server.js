@@ -908,7 +908,7 @@ client.on("messageCreate", async (message) => {
           let e = res.expires_at ? moment(res.expires_at).diff(moment(new Date())) : null
           let diffDuration = e ? moment.duration(e) : null;
           let e2 = res.expires_at ? moment(res.expires_at).unix() : null;
-          codes[i].expireUnix = e2 ? "\n<t:"+e2+":ff>" : '';
+          codes[i].expireUnix = e2 ? "\n<t:"+e2+":f>" : '';
           codes[i].rawExpire = e2
           codes[i].expire = diffDuration ? diffDuration.asHours().toFixed(1) : null
           codes[i].emoji = res.uses === 0 ? emojis.check : res.expires_at ? emojis.x : emojis.warning
@@ -968,7 +968,7 @@ client.on("messageCreate", async (message) => {
       else {
         embeds.push(embed)
         embed = new MessageEmbed()
-          .setColor(colors.none)
+          .setColor(colors.yellow)
           .setFooter({ text: checkerVersion})
         if (codes.length === num) embeds.push(embed);
       }
