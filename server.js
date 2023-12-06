@@ -943,7 +943,7 @@ client.on("messageCreate", async (message) => {
     sortLinks ? codes.sort((a, b) => (b.rawExpire - a.rawExpire)) : null
     let embeds = []
     let embed = new MessageEmbed()
-    .setColor(colors.none)
+    .setColor(colors.yellow)
     
     let num = 0
     let stat = {
