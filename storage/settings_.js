@@ -640,6 +640,24 @@ module.exports = {
         types: [
           //Types
           {
+            parent: 'Via Group Payout',
+            children: [
+              //
+              { name: '100 robux', price: 29, rs: 0 },
+              { name: '200 robux', price: 55, rs: 0 },
+              { name: '300 robux', price: 85, rs: 0 },
+              { name: '400 robux', price: 110, rs: 0 },
+              { name: '500 robux', price: 135, rs: 0 },
+              { name: '600 robux', price: 165, rs: 0 },
+              { name: '700 robux', price: 189, rs: 0 },
+              { name: '800 robux', price: 220, rs: 0 },
+              { name: '900 robux', price: 243, rs: 0 },
+              { name: '1000 robux', price: 270, rs: 0 },
+              { name: '5000+ robux — ₱260 per 1k', price: 0, rs: 0 },
+              //
+            ],
+          },
+          {
             parent: 'Via Gamepass',
             children: [
               //
