@@ -689,10 +689,8 @@ client.on("messageCreate", async (message) => {
     await botMsg.edit('** ** :truck:       <:trucked_runner:1103701285091422288>')
     truck = false
   }
-  //
-   if (message.author.bot) return;
+  if (message.author.bot) return;
   let checkerVersion = 'Checker version 2.8.9'
-  //
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
