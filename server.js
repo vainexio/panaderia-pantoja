@@ -398,7 +398,7 @@ client2.on("messageCreate", async (message) => {
           let e2 = res.expires_at ? moment(res.expires_at).unix() : null;
           codes[i].expireUnix = e2 ? "\n<t:"+e2+":f>" : '';
           codes[i].rawExpire = e2
-          codes[i].expire = diffDuration ? Math.floor(diffDuration.asHours()) : null
+          codes[i].expire = diffDuration ? diffDuration.asHours().toFixed(1) : null
           codes[i].emoji = res.uses === 0 ? emojis.check : res.expires_at ? emojis.x : emojis.warning
           codes[i].state = res.expires_at && res.uses === 0 ? 'Claimable' : res.expires_at ? 'Claimed' : 'Invalid'
           codes[i].user = res.user ? '`'+res.user.username+'#'+res.user.discriminator+'`' : "`Unknown User`"
