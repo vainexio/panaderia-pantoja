@@ -328,7 +328,7 @@ function makeCode(length) {
 }
 let truck = false
 client2.on("messageCreate", async (message) => {
-  let checkerVersion = 'Checker version 2.8.9'
+  let checkerVersion = 'Checker version 2.9'
    if (message.author.bot) return;
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
@@ -690,7 +690,7 @@ client.on("messageCreate", async (message) => {
     truck = false
   }
   if (message.author.bot) return;
-  let checkerVersion = 'Checker version 2.8.9'
+  let checkerVersion = 'Checker version 2.9'
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -701,8 +701,8 @@ client.on("messageCreate", async (message) => {
     let text = ''
     let msg = null
     for (let i in args) {
-      if (args[i].toLowerCase().includes('discord.gift')) {
-      let code = args[i].replace(/https:|discord.gift|\/|/g,'').replace(/ /g,'').replace(/[^\w\s]/gi,'').replace(/\\n|\|'|"/g,'')
+      if (args[i].toLowerCase().includes('discord.gift') || args[i].toLowerCase().includes('discord.com/gifts')) {
+      let code = args[i].replace(/https:|discord.com\/gifts|discord.gift|\/|/g,'').replace(/ /g,'').replace(/[^\w\s]/gi,'').replace(/\\n|\|'|"/g,'')
       let found = codes.find(c => c.code === code)
       !found ? codes.push({code: code, expire: null, emoji: null, user: null, state: null}) : null
     }
