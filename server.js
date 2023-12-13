@@ -1702,9 +1702,9 @@ client.on('interactionCreate', async inter => {
           new MessageButton().setURL(msgUrl).setStyle('LINK').setEmoji('<:S_letter:1138714993425125556>').setLabel("Go to queue"),
         );
         
-        inter.editReply({content: 'Queue was added to '+orders.toString(), components: [linkRow]})
+        await inter.editReply({content: 'Queue was added to '+orders.toString(), components: [linkRow]})
       } catch (err) {
-        inter.reply({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
+        inter.editReply({content: emojis.warning+' Unexpected Error Occurred\n```diff\n- '+err+'```'})
       }
     }
     //Calculate
