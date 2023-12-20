@@ -573,7 +573,7 @@ client.on("messageCreate", async (message) => {
       
       let messages = await message.channel.messages.fetch(options).then(messages => {
       messages.forEach(async (gotMsg) => {
-        if (gotMsg.author.id === '1057167023492300881' && gotMsg.content === sticky.message && (message.author.id !== '1057167023492300881' || (message.author.id === '1057167023492300881' && message.content !== sticky.message))) {
+        if (gotMsg.author.id === client.user.id && gotMsg.content === sticky.message && (message.author.id !== client.user.id || (message.author.id === client.user.id && message.content !== sticky.message))) {
           gotMsg.delete();
           //
         }
@@ -2703,11 +2703,11 @@ const interval = setInterval(async function() {
         await dropVoucher(voucher.code,'1109020436026634265',voucher.perks+' drop')
         }*/
         if (today.getHours() === 22 && today.getMinutes() === 0) {
-          let msg = await template.messages.fetch("1138662865612582953")
+        let msg = await template.messages.fetch("1138662865612582953")
         let vc = await getChannel(shop.channels.status)
         if (vc.name === 'shop : CLOSED') return;
           vc.setName('shop : CLOSED')
-          await annc.bulkDelete(10)
+          await annc.bulkDelete(1)
           await annc.send({content: msg.content, files: ['https://chpic.su/_data/stickers/s/SoftandcutechickwinterScar/SoftandcutechickwinterScar_044.webp']})
         } 
         else if (today.getHours() === 8 && today.getMinutes() === 0) {
@@ -2715,7 +2715,7 @@ const interval = setInterval(async function() {
           let vc = await getChannel(shop.channels.status)
           if (vc.name === 'shop : OPEN') return;
           vc.setName('shop : OPEN')
-          await annc.bulkDelete(10)
+          await annc.bulkDelete(1)
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/pTdTTrNYFMccY2tPSyR0/11-1.png']})
         }
         else if (today.getHours() === 8 && today.getMinutes() === 30) {
@@ -2729,7 +2729,7 @@ const interval = setInterval(async function() {
           let vc = await getChannel(shop.channels.reportsVc)
           if (vc.name === 'reports : OPEN') return;
           vc.setName('reports : OPEN')
-          await annc.bulkDelete(10)
+          await annc.bulkDelete(1)
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/24.png']})
         }
         else if (today.getHours() === 20 && today.getMinutes() === 0) {
@@ -2737,7 +2737,7 @@ const interval = setInterval(async function() {
           let vc = await getChannel(shop.channels.reportsVc)
           if (vc.name === 'reports : CLOSED') return;
           vc.setName('reports : CLOSED')
-          await annc.bulkDelete(10)
+          await annc.bulkDelete(1)
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/18.png']})
         }
       }
