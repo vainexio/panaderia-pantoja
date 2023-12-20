@@ -2134,15 +2134,15 @@ client.on('interactionCreate', async inter => {
       logs.send({content: '<@'+inter.user.id+'>', embeds: [embed]})
     }
     else if (id.startsWith('roles-')) {
-    let role = id.replace('roles-','').replace(/_/g,' ')
-    if (hasRole(inter.member, [role], inter.guild)) {
-      removeRole(inter.member, [role], inter.guild)
-      await inter.reply({content: emojis.off+' Removed **'+role+'** role.', ephemeral: true})
-    } else {
-    addRole(inter.member, [role], inter.guild)
-    await inter.reply({ content: emojis.on+' Added **'+role+'** role.', ephemeral: true });
+      let role = id.replace('roles-','').replace(/_/g,' ')
+      if (hasRole(inter.member, [role], inter.guild)) {
+        removeRole(inter.member, [role], inter.guild)
+        await inter.reply({content: emojis.off+' Removed **'+role+'** role.', ephemeral: true})
+      } else {
+        addRole(inter.member, [role], inter.guild)
+        await inter.reply({ content: emojis.on+' Added **'+role+'** role.', ephemeral: true });
+      }
     }
-  }
     else if (id.startsWith('drop-')) {
       if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission', ephemeral: true});
       let msgId = id.replace('drop-','')
