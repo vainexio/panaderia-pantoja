@@ -30,9 +30,9 @@ let emojis = {
   on: '<:on:1107664866484953178>',
   off: '<:off:1107664839372964010>',
   
-  nboost: '<a:MN_NITRO_BOOST:1151773095296766002>',
-  nbasic: '<a:basic:1142718556300124271>',
-  nclassic: '<a:basic:1142718556300124271>',
+  nboost: '<:nitroboost:1138778798792384616>',
+  nbasic: '<:nitrobasic:1138778772540235786>',
+  nclassic: '<:nitrobasic:1138778772540235786>',
 }
 let keys = [
   
