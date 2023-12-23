@@ -2707,7 +2707,7 @@ const interval = setInterval(async function() {
         let vc = await getChannel(shop.channels.status)
         if (vc.name === 'shop : CLOSED') return;
           vc.setName('shop : CLOSED')
-          await annc.bulkDelete(1)
+          await annc.bulkDelete(2)
           await annc.send({content: msg.content, files: ['https://chpic.su/_data/stickers/s/SoftandcutechickwinterScar/SoftandcutechickwinterScar_044.webp']})
         } 
         else if (today.getHours() === 8 && today.getMinutes() === 0) {
@@ -2715,13 +2715,13 @@ const interval = setInterval(async function() {
           let vc = await getChannel(shop.channels.status)
           if (vc.name === 'shop : OPEN') return;
           vc.setName('shop : OPEN')
-          await annc.bulkDelete(1)
+          await annc.bulkDelete(2)
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/pTdTTrNYFMccY2tPSyR0/11-1.png']})
         }
         else if (today.getHours() === 8 && today.getMinutes() === 30) {
           let msg = await template.messages.fetch("1175703100460367872")
           let ch = await getChannel('1174734135516991529')
-          await ch.bulkDelete(1)
+          await ch.bulkDelete(2)
           await ch.send({content: msg.content})
         }
         else if (today.getHours() === 11 && today.getMinutes() === 0) {
@@ -2729,7 +2729,7 @@ const interval = setInterval(async function() {
           let vc = await getChannel(shop.channels.reportsVc)
           if (vc.name === 'reports : OPEN') return;
           vc.setName('reports : OPEN')
-          await annc.bulkDelete(1)
+          await annc.bulkDelete(2)
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/24.png']})
         }
         else if (today.getHours() === 20 && today.getMinutes() === 0) {
@@ -2737,7 +2737,7 @@ const interval = setInterval(async function() {
           let vc = await getChannel(shop.channels.reportsVc)
           if (vc.name === 'reports : CLOSED') return;
           vc.setName('reports : CLOSED')
-          await annc.bulkDelete(1)
+          await annc.bulkDelete(2)
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/18.png']})
         }
       }
