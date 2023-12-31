@@ -2702,7 +2702,7 @@ const interval = setInterval(async function() {
         vr.send(voucher.code+' - '+voucher.perks)
         await dropVoucher(voucher.code,'1109020436026634265',voucher.perks+' drop')
         }*/
-        if (today.getHours() === 22 && today.getMinutes() === 0) {
+        if (today.getHours() === 22 && today.getMinutes() === 0) { 
         let msg = await template.messages.fetch("1138662865612582953")
         let vc = await getChannel(shop.channels.status)
         if (vc.name === 'shop : CLOSED') return;
@@ -2739,6 +2739,11 @@ const interval = setInterval(async function() {
           vc.setName('reports : CLOSED')
           await annc.bulkDelete(2)
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/18.png']})
+        }
+        else if (today.getHours() === 0 && today.getMinutes() === 0) {
+          let msg = await template.messages.fetch("1190980197982412810")
+          let ch = await getChannel('1109020434978054229')
+          await ch.send({content: msg.content})
         }
       }
   
