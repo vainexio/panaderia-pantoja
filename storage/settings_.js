@@ -682,7 +682,7 @@ module.exports = {
             parent: '\u200b',
             children: [
               //
-              { name: 'Covered tax', price: 0 },
+              { name: 'covered tax', price: 0 },
               //
             ],
           },
