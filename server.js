@@ -2741,9 +2741,9 @@ const interval = setInterval(async function() {
           await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/18.png']})
         }
         else if (today.getHours() === 0 && today.getMinutes() === 0) {
-          let msg = await template.messages.fetch("1190980197982412810")
+          
           let ch = await getChannel('1109020434978054229')
-          await ch.send({content: msg.content})
+          let msg = await ch.messages.fetch("1191048220701364344")
         }
       }
   
