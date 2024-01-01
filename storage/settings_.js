@@ -952,7 +952,7 @@ module.exports = {
       {
         id: '1109020435523326025', //
         message: '',
-        condition: message => keys.find(k => message.channel.name.includes(k) && !message.channel.name.includes('done')),
+        condition: message => message.channel.name.includes('。') && !message.channel.name.includes('done'),//keys.find(k => message.channel.name.includes(k) && !message.channel.name.includes('done')),
         comp: new MessageActionRow()
         .addComponents(
           //new MessageButton().setLabel('Follow Up').setStyle('SECONDARY').setEmoji('<a:S_arrowright:1095503803761033276>').setCustomId('followup'),
