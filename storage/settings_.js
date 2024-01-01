@@ -193,7 +193,7 @@ module.exports = {
             parent: '\u200b',
             children: [
               //
-              { name: 'Via developer team invite', price: 0 },
+              { name: 'via developer team invite', price: 0 },
               //
             ],
           },
