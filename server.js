@@ -2347,7 +2347,7 @@ client.on('interactionCreate', async inter => {
     }
     else if (id.startsWith('done')) {
       if (!await getPerms(inter.member,4)) return inter.deferUpdate();
-      inter.reply({content: emojis.check+" Order marked as done! `"+inter.channel.name+"`\nPlease make sure to vouch within <#1109020436026634260>\n"})
+      inter.reply({content: emojis.check+" Your order is done! `"+inter.channel.name+"`\n>>> Please make sure to vouch in <#1109020436026634260> within 12 hours\nNot vouching will prohibit you from ordering again!"})
       inter.channel.setName('done。'+inter.channel.name)
     }
     else if (id.startsWith('none')) {
