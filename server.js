@@ -2702,13 +2702,13 @@ const interval = setInterval(async function() {
         vr.send(voucher.code+' - '+voucher.perks)
         await dropVoucher(voucher.code,'1109020436026634265',voucher.perks+' drop')
         }*/
-        if (today.getHours() === 22 && today.getMinutes() === 0) { 
+        if (today.getHours() === 23 && today.getMinutes() === 0) { 
         let msg = await template.messages.fetch("1138662865612582953")
         let vc = await getChannel(shop.channels.status)
         if (vc.name === 'shop : CLOSED') return;
           vc.setName('shop : CLOSED')
           await annc.bulkDelete(2)
-          await annc.send({content: msg.content, files: ['https://chpic.su/_data/stickers/s/SoftandcutechickwinterScar/SoftandcutechickwinterScar_044.webp']})
+          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/ce/aa/23/ceaa23a4f6664a0475ae694cb5653a52.gif']})
         } 
         else if (today.getHours() === 8 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662565489152152")
@@ -2716,7 +2716,7 @@ const interval = setInterval(async function() {
           if (vc.name === 'shop : OPEN') return;
           vc.setName('shop : OPEN')
           await annc.bulkDelete(2)
-          await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/pTdTTrNYFMccY2tPSyR0/11-1.png']})
+          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/04/57/a4/0457a416b9f977a60e53a7cafa99772b.gif']})
         }
         else if (today.getHours() === 8 && today.getMinutes() === 30) {
           let msg = await template.messages.fetch("1175703100460367872")
@@ -2730,7 +2730,7 @@ const interval = setInterval(async function() {
           if (vc.name === 'reports : OPEN') return;
           vc.setName('reports : OPEN')
           await annc.bulkDelete(2)
-          await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/24.png']})
+          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/03/0e/86/030e86761180bea617468b23054fb357.gif']})
         }
         else if (today.getHours() === 20 && today.getMinutes() === 0) {
           let msg = await template.messages.fetch("1138662907396243489")
@@ -2738,7 +2738,7 @@ const interval = setInterval(async function() {
           if (vc.name === 'reports : CLOSED') return;
           vc.setName('reports : CLOSED')
           await annc.bulkDelete(2)
-          await annc.send({content: msg.content, files: ['https://storage.googleapis.com/sticker-prod/aWY1POrmWyfMUF9n8LRx/18.png']})
+          await annc.send({content: msg.content, files: ['https://gifdb.com/images/high/penguin-comforting-chick-pio-jix8a7nwuapnfs8q.gif']})
         }
         else if (today.getHours() === 17 && today.getMinutes() === 73) {
           let msg = await template.messages.fetch("1190980197982412810")
