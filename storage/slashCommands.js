@@ -126,7 +126,7 @@ module.exports = {
             },
             {
               name: 'submitted to supplier',
-              value: '🚛 Order was submitted to our supplier',
+              value: '📤 Your order was submitted to our supplier',
             },
             {
               name: 'currently being processed',
