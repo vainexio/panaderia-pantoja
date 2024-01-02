@@ -1119,7 +1119,7 @@ client.on("messageCreate", async (message) => {
           for (let c in type.children) {
             let child = type.children[c]
             let pr = method === 'rs' ? child.rs ? child.rs : child.price : child.price
-            let emoji = method === 'rs' ? '<:red_dot:1141281924208414781>' : ':red_envelope:'
+            let emoji = method === 'rs' ? '<:red_dot:1141281924208414781>' : '<:y_seperator:1138707390657740870>'
             children += '> '+emoji+' '+child.name+(pr > 0 ? ' — ₱'+pr : '')+'\n'
           }
           let state = b == data.types.length-1 ? '\n<:g1:1056579657828417596><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g2:1056579660353372160><:g3:1056579662572179586>' : ''
@@ -1150,7 +1150,7 @@ client.on("messageCreate", async (message) => {
       let stockHolder = [[],[],[],[],[],[],[],[],[],[]];
       let holderCount = 0
       let channel = await getChannel(bulked[i].channel)
-      stockHolder[0].push(new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK').setEmoji('⛄'))
+      stockHolder[0].push(new MessageButton().setLabel('Order Here').setURL('https://discord.com/channels/1109020434449575936/1109020435754000423').setStyle('LINK').setEmoji('🌄'))
       for (let b in bulked[i].messages) {
       let msg = bulked[i].messages[b];
         let name = msg.name
@@ -1208,8 +1208,8 @@ client.on("messageCreate", async (message) => {
         let mem = members[i]
           try {
         let randomEmoji = cEmojis[getRandom(0,cEmojis.length)]
-        if (!mem.nickname?.startsWith('☀️') || mem.nickname?.includes('undefined')) {
-          await mem.setNickname('☀️ '+mem.user.username)
+        if (!mem.nickname?.startsWith('🌄 ') || mem.nickname?.includes('undefined')) {
+          await mem.setNickname('🌄  '+mem.user.username)
           console.log(mem.nickname)
           
           success++
