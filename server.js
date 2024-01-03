@@ -564,7 +564,7 @@ client.on("messageCreate", async (message) => {
     if (message.channel.id === shop.channels.orders || message.channel.id === '1101833714704601168') {
       let member = message.mentions.members.first()
       if (member) {
-      await addRole(member,['pending','buyer'],message.guild)
+      await addRole(member,['1109020434533458016','buyer'],message.guild)
       }
     }
 
@@ -1299,7 +1299,7 @@ client.on("messageCreate", async (message) => {
     if (message.attachments.size === 0) return message.reply('⚠️ Invalid form of vouch! Please attach an image file that shows the product you ordered!')
     else {
       await message.react('<a:checkmark_yellow:1151123927691694110>')
-      await removeRole(message.member,['pending'])
+      await removeRole(message.member,['1109020434533458016'])
       //
       let attachments = Array.from(message.attachments.values())
       let webhook = new WebhookClient({ url: 'https://discord.com/api/webhooks/1173981960423604314/5Gb4nx9lgc6IgZLbit7z-DXjmGPZFvZK3aTiemNCE17ZQorI4-JJAeduLEh2NHcOx3J8'})
@@ -1695,7 +1695,7 @@ client.on('interactionCreate', async inter => {
         let row = JSON.parse(JSON.stringify(shop.orderStatus));
         let msgUrl
         let member = await getMember(user.user.id,inter.guild)
-        await addRole(member,['pending','buyer'],inter.guild)
+        await addRole(member,['1109020434533458016','buyer'],inter.guild)
         await orders.send({content: content, components: [row]}).then(msg => msgUrl = msg.url)
         inter.channel.setName(quan.value+'。'+product.value)
         let linkRow = new MessageActionRow().addComponents(
