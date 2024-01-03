@@ -1915,7 +1915,8 @@ client.on('interactionCreate', async inter => {
         //inter.message.edit({components: []})
         if (method === 'delete') {
           inter.reply({content: text})
-          setTimeout(async function(){
+          setTimeout(async function() {
+            doc = await tixModel.findOne({id: user.id})
             for (let i in doc.tickets) {
               let ticket = doc.tickets[i]
               doc.tickets.splice(i,1)
