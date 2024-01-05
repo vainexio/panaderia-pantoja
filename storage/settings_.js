@@ -879,8 +879,12 @@ module.exports = {
         message: "<a:S_bearheart:1094190497179910225> Type `;feedback` on <@1057167023492300881>'s DMs to submit a feedback."
       },
       {
+        id: '1109020436026634265',
+        message: '<a:yl_exclamationan:1138705076395978802>Read <#1109020434978054229> for important notices *!*\n<:S_dot:1138714811908235444>Read <#1109020434978054230> for stock updates *!*',
+      },
+      {
         id: '1168377722712621108',
-        message: 'Read <#1109020434978054229> for important notices *!*\nRead <#1109020434978054230> for stock updates *!*',
+        message: '<a:yl_exclamationan:1138705076395978802>Read <#1109020434978054229> for important notices *!*\n<:S_dot:1138714811908235444>Read <#1109020434978054230> for stock updates *!*',
       },
       {
         id: '0',
