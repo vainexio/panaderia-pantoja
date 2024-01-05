@@ -660,7 +660,7 @@ module.exports = {
               //
               { name: '100 robux', price: 35, rs: 0 },
               { name: '200 robux', price: 65, rs: 0 },
-              { name: '300 robux', price: 99, rs: 0 },
+              { name: '300 robux', price: 98, rs: 0 },
               { name: '400 robux', price: 130, rs: 0 },
               { name: '500 robux', price: 160, rs: 0 },
               { name: '600 robux', price: 190, rs: 0 },
