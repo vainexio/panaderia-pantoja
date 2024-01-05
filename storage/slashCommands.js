@@ -162,12 +162,12 @@ module.exports = {
           "name": 'product',
           "description": 'Product name',
           "type": 3,
-          "required": false,
+          "required": true,
         },
         {
           "name": 'quantity',
           "description": 'Amount ordered',
-          "type": 10,
+          "type": 3,
           "required": true,
         },
         {
