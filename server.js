@@ -513,7 +513,7 @@ client.on("messageCreate", async (message) => {
     let embed = new MessageEmbed()
       .addFields({name: 'Terms and Conditions',value: '<:S_letter:1138714993425125556> Before proceeding, you must read and accept our terms and conditions.\n\n<:y_seperator:1138707390657740870> By clicking the button, you indicate that you have read, understood and accepted the terms stated in <#1109020435754000421> and the rules implied in <#1109020435754000422> for the product you want to avail.\n\n<:y_seperator:1138707390657740870> You will be held liable for any violation of our rules, for you have accepted the terms and agreed to comply.', inline: true})
       .setColor(colors.yellow)
-      .setThumbnail(message.channel.guild.iconURL())
+      //.setThumbnail(message.channel.guild.iconURL())
       
       let row = await makeRow('terms','Agree and continue','SECONDARY','<:hb_rule_book:1138712613769990254>')
       //
