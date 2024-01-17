@@ -370,7 +370,7 @@ module.exports = {
         //Category
         name: 'Canva',
         keywords: ['canva'],
-        channel: '1109020436764827699',
+        channel: '',
         status: 2,
         id: '1109020436764827699',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1104012111346151494/Logopit_1683287379481.png?width=1440&height=360',
@@ -499,7 +499,7 @@ module.exports = {
         //Category
         name: 'Spotify',
         keywords: ['spoti','spotify'],
-        channel: '1109020436764827699',
+        channel: '',
         status: 4,
         id: '1096319564662448198',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077186379624478/Logopit_1680918508558.png?width=1440&height=360',
@@ -533,7 +533,7 @@ module.exports = {
         //Category
         name: 'Youtube',
         keywords: ['yt','youtube'],
-        channel: '1109020436764827699',
+        channel: '',
         status: 4,
         id: '1096319565606174800',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235713028126/Logopit_1680918525501.png?width=1440&height=360',
@@ -564,7 +564,7 @@ module.exports = {
         //Category
         name: 'Netflix',
         keywords: ['nf','netflix','netplix'],
-        channel: '1109020436764827699',
+        channel: '',
         status: 4,
         id: '1096319566902218813',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077235939512320/Logopit_1680918539369.png?width=1440&height=360',
@@ -600,11 +600,11 @@ module.exports = {
           //
         ],
       },
-      /*{
+      {
         //Category
         name: 'Valorant',
         keywords: ['vp','valorant','balo'],
-        channel: '1109020436764827700',
+        channel: '1109020436764827699',
         status: 2,
         id: '1096319584514080859',
         image: 'https://media.discordapp.net/attachments/1093391705753002064/1094077185666592768/Logopit_1680918349259.png?width=1440&height=360',
@@ -614,18 +614,18 @@ module.exports = {
             parent: 'Valorant Points',
             children: [
               //
-              { name: '125 vp', price: 45 },
-              { name: '380 vp', price: 143 },
-              { name: '790 vp', price: 275 },
-              { name: '1650 vp', price: 550 },
-              { name: '2850 vp', price: 910 },
-              { name: '5800 vp', price: 1830 },
+              { name: '125 vp', price: 48 },
+              { name: '380 vp', price: 139 },
+              { name: '790 vp', price: 279 },
+              { name: '1650 vp', price: 560 },
+              { name: '2850 vp', price: 930 },
+              { name: '5800 vp', price: 1850 },
               //
             ],
           },
           //
         ],
-      },*/
+      },
       {
         //Category
         name: 'Robux',
