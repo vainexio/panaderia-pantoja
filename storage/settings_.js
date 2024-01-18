@@ -928,7 +928,7 @@ module.exports = {
       },
       {
         id: '1109020434978054230',
-        message: '** **',
+        message: '** **\nBoost the server to get the Sloopier role *!*',
         order: true,
         comp: new MessageActionRow()
         .addComponents(
