@@ -125,8 +125,8 @@ module.exports = {
               value: '<a:qqWhtShk_CuteClap:1138849011965624320> Order noted'
             },
             {
-              name: 'submitted to supplier',
-              value: '📤 Your order was submitted to our supplier',
+              name: 'submitted for processing',
+              value: '⏳ Your order was submitted for processing',
             },
             {
               name: 'currently being processed',
