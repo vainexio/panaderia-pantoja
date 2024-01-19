@@ -1919,8 +1919,10 @@ client.on('interactionCreate', async inter => {
             doc = await tixModel.findOne({id: user.id})
             for (let i in doc.tickets) {
               let ticket = doc.tickets[i]
-              doc.tickets.splice(i,1)
-              await doc.save();
+              if (ticket.id === inter.channel.id) {
+                doc.tickets.splice(i,1)
+                await doc.save();
+              }
             }
             await inter.channel.delete();
           },8000)
@@ -2018,7 +2020,7 @@ client.on('interactionCreate', async inter => {
           );
           await msg.edit({content: null, embeds: [embed], components: [row]})
           await inter.channel.send({content: emojis.check+' Transcript saved *!*'})
-          user.send({content: 'Your ticket transcript was generated.', embeds: [embed], components: [row]}).catch(err => console.log(err))
+          user.send({content: 'Your ticket was closed.', embeds: [embed], components: [row]}).catch(err => console.log(err))
         });
       }
     }
