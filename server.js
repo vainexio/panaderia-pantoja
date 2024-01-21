@@ -330,6 +330,12 @@ let truck = false
 client2.on("messageCreate", async (message) => {
   let checkerVersion = 'Checker version 2.9'
    if (message.author.bot) return;
+  if (message.content.length > 0 && message.content.toLowerCase().startsWith('.invite')) {
+    let row = new MessageActionRow().addComponents(
+          new MessageButton().setURL('https://discord.com/api/oauth2/authorize?client_id=1178955230608625704&permissions=8&scope=bot').setStyle('LINK').setEmoji('📩').setLabel("Invite Checkor"),
+        );
+    message.reply({components: [row]})
+  }
   if (message.channel.name?.includes('nitro-checker') || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
