@@ -1141,13 +1141,9 @@ client.on("messageCreate", async (message) => {
             emojis.x+' Not Available ' //4
           ]
         embed = new MessageEmbed(embed)
-        .addFields({name: 'Product Status',value: productStatus[data.status]+''})
+          .addFields({name: 'Product Status',value: productStatus[data.status]+''})
           
-          //await channel.messages.fetch(data.id).then(foundMsg => {
-          //  foundMsg.edit({embeds: [embed]})//.then(msg => foundBulked.messages.push({name: data.name, url: msg.url, emoji: data.status === 4 ? '<:Pastelred:1094798538220765274>' : data.status === 3 ? emojis.loading : method === 'rs' ? '<a:S_bearheart:1094190497179910225>' : '<a:S_pastelheart:1093737606451298354>'}))
-          //}).catch(async err => {
-            await channel.send({embeds: [embed]}).then(msg => foundBulked.messages.push({name: data.name, url: msg.url, emoji: data.status === 4 ? '<:red_dot:1141281924208414781>' : data.status === 3 ? emojis.loading : method === 'rs' ? '<a:y_starroll:1138704563529076786>' : '<a:y_starroll:1138704563529076786>'}))
-          //})
+          await channel.send({embeds: [embed]}).then(msg => foundBulked.messages.push({name: data.name, url: msg.url, emoji: data.status === 4 ? '<:red_dot:1141281924208414781>' : data.status === 3 ? emojis.loading : method === 'rs' ? '<a:y_starroll:1138704563529076786>' : '<a:y_starroll:1138704563529076786>'}))
         }
       }
     }
@@ -1239,19 +1235,6 @@ client.on("messageCreate", async (message) => {
     if (!voucher) return message.reply(emojis.x+' The voucher `'+code+'` was already claimed or expired!')
     sendChannel(emojis.check+' <@'+message.author.id+'> used a **'+voucher.perks+'**!\nCode: `'+code+'`',message.channel.id,colors.none)
     let use = await useVoucher(voucher.code)
-  }
-  else if (isCommand('drop',message)) {
-    if (!await getPerms(message.member,4)) return;
-    let args = await requireArgs(message,2)
-    if (!args) return;
-    let perks = args.slice(2).join(" ").replace('- ','');
-    let voucher = {
-      code: makeCode(10),
-      perks: perks
-    }
-    let vr = await getChannel(shop.channels.vouchers)
-    vr.send(voucher.code+' - '+voucher.perks)
-    await dropVoucher(voucher.code,args[1],voucher.perks+' drop')
   }
   else if (isCommand('delete',message)) {
     if (!await getPerms(message.member,4)) return;
