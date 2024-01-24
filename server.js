@@ -1596,7 +1596,6 @@ client.on('interactionCreate', async inter => {
       let holderCount = 0
       let arrays = []
       
-      let last_id;
       let msgSize = 0
       let totalMsg = 0
       
@@ -1615,7 +1614,7 @@ client.on('interactionCreate', async inter => {
       
       while (true) {
         const options = { limit: 100 };
-        if (data.f.last_id) options.before = last_id;
+        if (data.f.last_id) options.before = data.f.last_id;
         
         //
         let stocks = null
@@ -1623,7 +1622,7 @@ client.on('interactionCreate', async inter => {
         else stocks = await getChannel(shop.channels.basicStocks)
         //Put to storage
         await stocks.messages.fetch(options).then(async messages => {
-          last_id = messages.last()?.id;
+          data.f.last_id = messages.last()?.id;
           totalMsg += messages.size
           msgSize = messages.size
           await messages.forEach(async (gotMsg) => {
