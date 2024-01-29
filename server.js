@@ -2035,19 +2035,19 @@ client.on('interactionCreate', async inter => {
       let time = getTime(new Date().getTime())
       let gotContent = null
       inter.reply({content: emojis.loading+' Updating order status', ephemeral: true})
-      let messages = await inter.channel.messages.fetch({limit: 100}).then(async messages => {
+      let messages = await ticket.messages.fetch({limit: 100}).then(async messages => {
         messages.forEach(async (gotMsg) => {
           if (gotMsg.content.toLowerCase().startsWith('# [') && gotMsg.author.id === client.user.id) {
-            gotContent = gotMsg.content+'\n> \n> \n> \n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n<:indent:1174738613330788512> <t:'+time+':R>'
+            gotContent = gotMsg.content+'\n> \n> \n> \n'+found.toUpperCase()+'\n<:indent:1174738613330788512> <t:'+time+':R>'
             got = true
             gotMsg.delete();
           }
         })
       })
       if (!got) {
-        inter.channel.send('# [ ORDER STATUS ]\n'++'\n<:indent:1174738613330788512> <t:'+time+':R>')
+        await ticket.send('# [ ORDER STATUS ]\n'+found.toUpperCase()+'\n<:indent:1174738613330788512> <t:'+time+':R>')
       } else {
-        inter.channel.send(gotContent)
+        await ticket.send(gotContent)
       }
     }
     else if (id === 'cancel') {
