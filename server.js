@@ -2028,7 +2028,27 @@ client.on('interactionCreate', async inter => {
       let row = JSON.parse(JSON.stringify(shop.orderStatus));
       found === 'completed' || found === 'cancelled' ? row.components[0].disabled = true : null
       
-      inter.update({content: content, components: [row]})
+      await inter.update({content: content, components: [row]})
+      //
+      let ticket = await inter.message.mentions.channels.first()
+      let got = false
+      let time = getTime(new Date().getTime())
+      let gotContent = null
+      inter.reply({content: emojis.loading+' Updating order status', ephemeral: true})
+      let messages = await inter.channel.messages.fetch({limit: 100}).then(async messages => {
+        messages.forEach(async (gotMsg) => {
+          if (gotMsg.content.toLowerCase().startsWith('# [') && gotMsg.author.id === client.user.id) {
+            gotContent = gotMsg.content+'\n> \n> \n> \n'+(preset ? preset.value : '')+' '+(status ? status.value : '')+'\n<:indent:1174738613330788512> <t:'+time+':R>'
+            got = true
+            gotMsg.delete();
+          }
+        })
+      })
+      if (!got) {
+        inter.channel.send('# [ ORDER STATUS ]\n'++'\n<:indent:1174738613330788512> <t:'+time+':R>')
+      } else {
+        inter.channel.send(gotContent)
+      }
     }
     else if (id === 'cancel') {
       inter.reply({content: 'Interaction cancelled.', ephemeral: true})
