@@ -2017,6 +2017,7 @@ client.on('interactionCreate', async inter => {
       if (!await getPerms(inter.member,4)) return inter.reply({content: emojis.warning+' Insufficient Permission', ephemeral: true});
       
       let stat = ['noted','processing','completed','cancelled']
+      let otherStat = ['<a:qqWhtShk_CuteClap:1138849011965624320> Order noted','⏳ Your order was submitted for processing','']
       let found = stat.find(s => s === inter.values[0])
       if (!found) return inter.reply({content: emojis.warning+' Invalid order status: `'+inter.values[0]+'`', ephemeral: true})
       //if (inter)
@@ -2034,7 +2035,7 @@ client.on('interactionCreate', async inter => {
       let got = false
       let time = getTime(new Date().getTime())
       let gotContent = null
-      inter.reply({content: emojis.loading+' Updating order status', ephemeral: true})
+
       let messages = await ticket.messages.fetch({limit: 100}).then(async messages => {
         messages.forEach(async (gotMsg) => {
           if (gotMsg.content.toLowerCase().startsWith('# [') && gotMsg.author.id === client.user.id) {
