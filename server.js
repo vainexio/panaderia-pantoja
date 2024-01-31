@@ -553,17 +553,46 @@ client.on("messageCreate", async (message) => {
   }
   
   if (message.content.toLowerCase() === 'scan') {
-    console.log(message)
     if (message.type === 'REPLY') {
       let msg = await message.channel.messages.fetch(message.reference.messageId)
       if (msg) {
         let args = getArgs(msg.content)
-        let content 
+        let content = ''
+        let count = 0
+        console.log(args)
         for (let i in args) {
-          if (args.includes('roblox.com')) {
-            
+          if (args[i].includes('roblox.com')) {
+            console.log('scan')
+            let auth = {
+              method: 'GET',
+              headers: {
+                'Host': 'www.roblox.com',
+                'Cookie': process.env.robloxCookie,
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Accept-Encoding': 'gzip, deflate',
+                'Upgrade-Insecure-Requests': '1',
+                'Sec-Fetch-Dest': 'document',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Site': 'none',
+                'Sec-Fetch-User': '?1',
+                'Te': 'trailers',
+                'Content-Type': 'application/json'
+              }
+            }
+            count++
+            let response = await fetch(args[i].replace(',',''),auth)
+            let htmlContent = await response.text()
+            let $ = cheerio.load(htmlContent);
+            let spanElement = $('.text-robux-lg');
+            let value = spanElement.text().trim();
+            let raw = Number(value.replace(/,/g,''))
+            let ct = Math.round(raw*0.7)
+            content +=  count+'. '+args[i]+'\n'+emojis.robux+' '+value+'\n'+emojis.robux+' '+ct+' CT\n\n'
           }
         }
+        message.reply(content)
       }
     }
   }

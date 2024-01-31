@@ -29,7 +29,7 @@ let emojis = {
   offline: '<:offline_:1004015005282340916>',
   on: '<:on:1107664866484953178>',
   off: '<:off:1107664839372964010>',
-  
+  robux: '<:Robux:1174546499087122464>',
   nboost: '<:nitroboost:1138778798792384616>',
   nbasic: '<:nitrobasic:1138778772540235786>',
   nclassic: '<:nitrobasic:1138778772540235786>',
