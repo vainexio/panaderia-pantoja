@@ -317,15 +317,49 @@ client2.on("messageCreate", async (message) => {
         );
     message.reply({components: [row]})
   }
-  if (message.content.toLowerCase().startsWith('scan')) {
-    let args = await getArgs(message.content)
-    for (let i in args) {
-      if (args[i].includes('https')) {
-        let url = args[i].replace(/ /g,'')
-        console.log(url)
-        let response = await fetch(url)
-        response = await response.text()
-        console.log(response)
+  if (message.content.toLowerCase() === 'scan') {
+    if (message.type === 'REPLY') {
+      let msg = await message.channel.messages.fetch(message.reference.messageId)
+      if (msg) {
+        let args = getArgs(msg.content)
+        let content = ''
+        let count = 0
+        for (let i in args) {
+          await sleep(500)
+          if (args[i].includes('roblox.com')) {
+            console.log('scan')
+            let auth = {
+              method: 'GET',
+              headers: {
+                'Host': 'www.roblox.com',
+                'Cookie': process.env.robloxCookie,
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.5',
+                'Accept-Encoding': 'gzip, deflate',
+                'Upgrade-Insecure-Requests': '1',
+                'Sec-Fetch-Dest': 'document',
+                'Sec-Fetch-Mode': 'navigate',
+                'Sec-Fetch-Site': 'none',
+                'Sec-Fetch-User': '?1',
+                'Te': 'trailers',
+                'Content-Type': 'application/json'
+              }
+            }
+            count++
+            let response = await fetch(args[i].replace(',',''),auth)
+            
+            let htmlContent = await response.text()
+            let $ = cheerio.load(htmlContent);
+            let spanElement = $('.text-robux-lg');
+            console.log(spanElement.text())
+            let value = spanElement.text().trim();
+            let raw = Number(value.replace(/,/g,''))
+            let ct = Math.floor(raw*0.7)
+            content +=  count+'. '+args[i]+'\nPrice: '+emojis.robux+' '+value+'\nYou will receive: '+emojis.robux+' '+ct+'\n\n'
+          }
+        }
+        message.reply(content)
       }
     }
   }
@@ -550,53 +584,6 @@ client.on("messageCreate", async (message) => {
        await removeRole(member,['void'])
      }
    } 
-  }
-  
-  if (message.content.toLowerCase() === 'scan') {
-    if (message.type === 'REPLY') {
-      let msg = await message.channel.messages.fetch(message.reference.messageId)
-      if (msg) {
-        let args = getArgs(msg.content)
-        let content = ''
-        let count = 0
-        console.log(args)
-        for (let i in args) {
-          await sleep(500)
-          if (args[i].includes('roblox.com')) {
-            console.log('scan')
-            let auth = {
-              method: 'GET',
-              headers: {
-                'Host': 'www.roblox.com',
-                'Cookie': process.env.robloxCookie,
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5',
-                'Accept-Encoding': 'gzip, deflate',
-                'Upgrade-Insecure-Requests': '1',
-                'Sec-Fetch-Dest': 'document',
-                'Sec-Fetch-Mode': 'navigate',
-                'Sec-Fetch-Site': 'none',
-                'Sec-Fetch-User': '?1',
-                'Te': 'trailers',
-                'Content-Type': 'application/json'
-              }
-            }
-            count++
-            let response = await fetch(args[i].replace(',',''),auth)
-            let htmlContent = await response.text()
-            let $ = cheerio.load(htmlContent);
-            let spanElement = $('.text-robux-lg');
-            console.log(spanElement.text(),spanElement)
-            let value = spanElement.text().trim();
-            let raw = Number(value.replace(/,/g,''))
-            let ct = Math.round(raw*0.7)
-            content +=  count+'. '+args[i]+'\nPrice: '+emojis.robux+' '+value+'\nYou will receive: '+emojis.robux+' '+ct+'\n\n'
-          }
-        }
-        message.reply(content)
-      }
-    }
   }
   //
   for (let i in shop.stickyChannels) {
