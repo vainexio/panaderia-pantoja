@@ -329,7 +329,7 @@ client2.on("messageCreate", async (message) => {
           await message.react(emojis.loading)
           
           for (let i in args) {
-            await sleep(100)
+            //await sleep(100)
             if (args[i].includes('roblox.com')) {
               console.log('scan')
               let auth = {
@@ -360,7 +360,7 @@ client2.on("messageCreate", async (message) => {
               let value = spanElement.text().trim();
               let raw = Number(value.replace(/,/g,''))
               let ct = Math.floor(raw*0.7)
-              content +=  count+'. '+args[i]+'\nPrice: '+emojis.robux+' '+value+'\nYou will receive: **'+emojis.robux+'** '+ct+'\n\n'
+              content +=  count+'. '+args[i]+'\nPrice: '+value+' '+emojis.robux+'\nYou will receive: **'+ct+'** '+emojis.robux+'\n\n'
             }
           }
           message.channel.send(content)
