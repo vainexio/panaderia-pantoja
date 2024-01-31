@@ -336,6 +336,16 @@ client2.on("messageCreate", async (message) => {
         );
     message.reply({components: [row]})
   }
+  if (message.content.toLowerCase().startsWith('scan')) {
+    let args = await getArgs(message.content)
+    for (let i in args) {
+      if (args[i].includes('https')) {
+        let url = args[i].replace(/\\n|\|'|"/g,'').replace(/ /g,'').replace(/[^\w\s]/gi,'')
+        let response = await fetch(args[i])
+        console.log(response)
+      }
+    }
+  }
   if ((message.channel.name?.includes('nitro-checker') && shop.checkerWhitelist.find(u => u === message.author.id)) || (message.channel.type === 'DM' && shop.checkerWhitelist.find(u => u === message.author.id))) {
     let args = getArgs(message.content)
     if (args.length === 0) return;
@@ -1787,7 +1797,6 @@ client.on('interactionCreate', async inter => {
       }
     }
   }
-  
   //BUTTONS
   else if (inter.isButton() || inter.isSelectMenu()) {
     let id = inter.customId
