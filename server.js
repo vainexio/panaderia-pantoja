@@ -356,7 +356,7 @@ client2.on("messageCreate", async (message) => {
             let value = spanElement.text().trim();
             let raw = Number(value.replace(/,/g,''))
             let ct = Math.floor(raw*0.7)
-            content +=  count+'. '+args[i]+'\nPrice: '+emojis.robux+' '+value+'\nYou will receive: '+emojis.robux+' '+ct+'\n\n'
+            content +=  count+'. '+args[i]+'\nPrice: '+emojis.robux+' '+value+'\nYou will receive: **'+emojis.robux+'** '+ct+'\n'
           }
         }
         message.reply(content)
