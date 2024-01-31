@@ -93,31 +93,31 @@ client.on("ready", async () => {
     newDoc.count = 0
     await newDoc.save()
   }
+  //Register
   if (slashCmd.register) {
-  let discordUrl = "https://discord.com/api/v10/applications/"+client.user.id+"/commands"
-  let headers = {
-    "Authorization": "Bot "+token,
-    "Content-Type": 'application/json'
-  }
-  for (let i in slashes) {
-    await sleep(1000)
-    let json = slashes[i]
-    let response = await fetch(discordUrl, {
-      method: 'post',
-      body: JSON.stringify(json),
-      headers: headers
-    });
-    response = await response.json();
-    //console.log(response)
-  }
+    let discordUrl = "https://discord.com/api/v10/applications/"+client.user.id+"/commands"
+    let headers = {
+      "Authorization": "Bot "+token,
+      "Content-Type": 'application/json'
+    }
+    for (let i in slashes) {
+      let json = slashes[i]
+      await sleep(1000)
+      let response = await fetch(discordUrl, {
+        method: 'post',
+        body: JSON.stringify(json),
+        headers: headers
+      });
+      console.log(json.name+' - '+response.status)
+    }
     for (let i in slashCmd.deleteSlashes) {
       let deleteUrl = "https://discord.com/api/v10/applications/"+client.user.id+"/commands/"+slashCmd.deleteSlashes[i]
       let deleteRes = await fetch(deleteUrl, {
         method: 'delete',
         headers: headers
       })
-      //console.log(deleteRes)
-    }
+      console.log('Delete - '+deleteRes.status)
+      }
   }
   console.log('Successfully logged in to discord bot.')
   client.user.setPresence({ status: 'idle', activities: [{ name: '.gg/sloopies', type: "WATCHING" }] });
