@@ -587,6 +587,7 @@ client.on("messageCreate", async (message) => {
             let htmlContent = await response.text()
             let $ = cheerio.load(htmlContent);
             let spanElement = $('.text-robux-lg');
+            console.log(spanElement.text(),spanElement)
             let value = spanElement.text().trim();
             let raw = Number(value.replace(/,/g,''))
             let ct = Math.round(raw*0.7)
