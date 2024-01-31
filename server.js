@@ -9,6 +9,7 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const url = require('url');
 const discordTranscripts = require('discord-html-transcripts');
 const { joinVoiceChannel } = require('@discordjs/voice');
+const cheerio = require('cheerio');
 
 //
 //Discord
@@ -551,28 +552,20 @@ client.on("messageCreate", async (message) => {
    } 
   }
   
-  if (message.content === 'a') {
-    let auth = {
-      method: 'GET',
-      headers: {
-        'Host': 'www.roblox.com',
-        'Cookie': 'RBXcb=RBXViralAcquisition=true&RBXSource=true&GoogleAnalytics=true; RBXEventTrackerV2=CreateDate=1/31/2024 4:32:09 AM&rbxid=563130786&browserid=208011083019; GuestData=UserID=-85724381; _gcl_au=1.1.1069312908.1701081761; _ga_6EQHKRQ6YR=GS1.1.1701962359.1.1.1701962375.0.0.0; _ga=GA1.1.1045390565.1701962359; __stripe_mid=b5a5b4a4-8261-45e7-b58c-c9f85a3e18887d2065; rbx-ip2=; RBXcb=RBXViralAcquisition=true&RBXSource=true&GoogleAnalytics=true; RBXSource=rbx_acquisition_time=1/31/2024 4:31:30 AM&rbx_acquisition_referrer=https://www.roblox.com/login?returnUrl=https%3A%2F%2Fwww.roblox.com%2Fgame-pass%2F679246393%2FThankyouuu&rbx_medium=Direct&rbx_source=www.roblox.com&rbx_campaign=&rbx_adgroup=&rbx_keyword=&rbx_matchtype=&rbx_send_info=1; .ROBLOSECURITY=_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_8F9BA554E69E3B9A205E108EC47583D9FDE1BA4606E83EF098D4D74DA9C5F93525CF8C6194B8B9FC79660A58D290DB9A67696122A2CA11E5760347D6C1DCDC59696BD55C4C08863147E92D2B36B0BB49FD9CBB0A6CD1913818735673862715D497F842997D33450FCB4041A0443247DDD68233D5CA7B3CB8CEAD461474D49752327991ACC09FA0496040E97CE469E78A97E5B07D4BD2B1666E4D86A645F61D62FE605C743423E606A29E3948E29DD7B52F3358B3387355EBBF0100FA6956E85FBAA813C8ECCCCFAF6DC73A8556F0C7E57DDF2AE71E3465FF3AB67FFC47A2CC02484C8997438FC19656A50EBF74333854D57435F4DD600EF9123BD72D1A02CA5DB4755E76A1F407F23544FF244ADA4F67C3DF73671FE034BF25B8953A4F1CD65FE0BF9C783D9F63EAE99B55392D4034289D26CF29168D8074426085579606E0F0FC0B2AA7CC71549C3F4020F997B6B1AF523CB1D4598102C8D49975109F5001A21BFDD787B875F8B2C7342D9A028F9D4C48249FF69FBF46AC5EC20E71A4C5558FE8EC94AAAB562B1347FBA6291A807D69D8E4C18BE4A38B9765C2960A2D74BD54240A1C7EEC73D0511B2F3E6754E7ACEDC101941A05844C0E74AC3557A6B5FABC0D4BB46703DB036123F2C78AC78386F059787070BBDAEF7C453758DDA0CF99BE527331D9D0FD44B7C1356C8BAE6CEDB374E667C7C133194C05826D0828CECBCE40945BD784E28862989DB5D92AB219B55921A44122DDC54F51EE944C057AF0EEB575253F56D24A0D0E94339ADD605FC29FDD1739A5B8729F23FC1C66B923DB0334D801E12EA1765DAAF2F0D165BEBB79819816EB8C08B855518D81D635C1E41D07EEFCF6194BE385E9DDE888CEB5BBDE5755522D0CAEE2854D2524A3B91A3E39F02436D6028FDF4960C7A346A441FFEDFC8893C79C5D2944771A5E12C878C4A8F4FB2D4AC1910CFA6B36204DEF314B99BCAC8DA5298C6BC630A380750C52AFE11DB07E5F35DEEDF4EBAFE842F0D69552F1510F11; .RBXIDCHECK=40830cd0-d540-4f1c-a46b-ce00100c93ee; rbxas=27987c8af6897246632b66d70f70bfc4baa30e2896e35335c18e1a54fbf17553; RBXSessionTracker=sessionid=0801c5cb-60d8-4ab4-b191-84199401de25; __utma=200924205.1045390565.1701962359.1706697131.1706697131.1; __utmb=200924205.2.10.1706697131; __utmz=200924205.1706697131.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmt_b=1',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Accept-Encoding': 'gzip, deflate',
-        'Upgrade-Insecure-Requests': '1',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'none',
-        'Sec-Fetch-User': '?1',
-        'Te': 'trailers',
-        'Content-Type': 'application/json'
+  if (message.content.toLowerCase() === 'scan') {
+    console.log(message)
+    if (message.type === 'REPLY') {
+      let msg = await message.channel.messages.fetch(message.reference.messageId)
+      if (msg) {
+        let args = getArgs(msg.content)
+        let content 
+        for (let i in args) {
+          if (args.includes('roblox.com')) {
+            
+          }
+        }
       }
     }
-    let response = await fetch('https://roblox.com/game-pass/679246393/Thankyouuu?nl=true',auth)
-    let text = await response.text()
-    let index = text.indexOf('<span class="text-robux-lg wait-for-i18n-format-render ">')
   }
   //
   for (let i in shop.stickyChannels) {
