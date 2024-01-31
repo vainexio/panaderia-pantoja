@@ -561,6 +561,7 @@ client.on("messageCreate", async (message) => {
         let count = 0
         console.log(args)
         for (let i in args) {
+          await sleep(500)
           if (args[i].includes('roblox.com')) {
             console.log('scan')
             let auth = {
@@ -589,7 +590,7 @@ client.on("messageCreate", async (message) => {
             let value = spanElement.text().trim();
             let raw = Number(value.replace(/,/g,''))
             let ct = Math.round(raw*0.7)
-            content +=  count+'. '+args[i]+'\n'+emojis.robux+' '+value+'\n'+emojis.robux+' '+ct+' CT\n\n'
+            content +=  count+'. '+args[i]+'\nPrice: '+emojis.robux+' '+value+'\nYou will receive: '+emojis.robux+' '+ct+'\n\n'
           }
         }
         message.reply(content)
