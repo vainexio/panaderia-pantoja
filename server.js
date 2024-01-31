@@ -1075,7 +1075,7 @@ client.on("messageCreate", async (message) => {
         shop.expected.push({channel: message.channel.id, amount: total})
       }
     } catch (err) {
-      //
+      console.log(err)
     }
   }
   //Sticky
