@@ -340,8 +340,10 @@ client2.on("messageCreate", async (message) => {
     let args = await getArgs(message.content)
     for (let i in args) {
       if (args[i].includes('https')) {
-        let url = args[i].replace(/\\n|\|'|"/g,'').replace(/ /g,'').replace(/[^\w\s]/gi,'')
-        let response = await fetch(args[i])
+        let url = args[i].replace(/ /g,'')
+        console.log(url)
+        let response = await fetch(url)
+        response = await response.text()
         console.log(response)
       }
     }
