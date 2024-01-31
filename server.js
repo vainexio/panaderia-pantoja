@@ -2662,96 +2662,64 @@ let streamers = [
 
 
 const interval = setInterval(async function() {
-      //Get time//
+  //Get time//
   let date = new Date().toLocaleString("en-US", { timeZone: 'Asia/Shanghai' });
   let today = new Date(date);
   let hours = (today.getHours() % 12) || 12;
-  let time = hours +":" +today.getMinutes();
-  
-  /*if (!randomTime) {
-    randomTime = getRandom(1,13)+":"+getRandom(today.getMinutes(),60)
-    sendChannel("Random: "+randomTime,"1109020437096181831",colors.red)
-  }*/
-      //Get info
-      if (ready) {
-        ready = false
-        if (!ready) {
-        setTimeout(function() {
-          ready = true;
-        },60000)
-        }
-        let amount = shop.randomVouchers.amount
-        let type = shop.randomVouchers.type
-        let generatedVoucher = "₱"+amount[getRandom(0,amount.length)]+" "+type[getRandom(0,type.length)]+" voucher"
-        let template = await getChannel(shop.channels.templates)
-        let annc = await getChannel(shop.channels.shopStatus)
-      /*if (time === '11:11') {
-        ready = false
-        let voucher = {
-          code: makeCode(10),
-          perks: generatedVoucher
-        }
-        let vr = await getChannel(shop.channels.vouchers)
-        vr.send(voucher.code+' - '+voucher.perks)
-        await dropVoucher(voucher.code,'1109020436026634265',voucher.perks+' drop')
-      }
-        else if (time === randomTime) {
-          let voucher = {
-          code: makeCode(10),
-          perks: generatedVoucher
-          }
-          randomTime = null
-          
-          let vr = await getChannel(shop.channels.vouchers)
-        vr.send(voucher.code+' - '+voucher.perks)
-        await dropVoucher(voucher.code,'1109020436026634265',voucher.perks+' drop')
-        }*/
-        if (today.getHours() === 23 && today.getMinutes() === 0) { 
-        let msg = await template.messages.fetch("1138662865612582953")
-        let vc = await getChannel(shop.channels.status)
-        if (vc.name === 'shop : CLOSED') return;
-          vc.setName('shop : CLOSED')
-          await annc.bulkDelete(2)
-          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/ce/aa/23/ceaa23a4f6664a0475ae694cb5653a52.gif']})
-        } 
-        else if (today.getHours() === 8 && today.getMinutes() === 0) {
-          let msg = await template.messages.fetch("1138662565489152152")
-          let vc = await getChannel(shop.channels.status)
-          if (vc.name === 'shop : OPEN') return;
-          vc.setName('shop : OPEN')
-          await annc.bulkDelete(2)
-          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/04/57/a4/0457a416b9f977a60e53a7cafa99772b.gif']})
-        }
-        else if (today.getHours() === 8 && today.getMinutes() === 30) {
-          let msg = await template.messages.fetch("1175703100460367872")
-          let ch = await getChannel('1174734135516991529')
-          await ch.bulkDelete(2)
-          await ch.send({content: msg.content})
-        }
-        else if (today.getHours() === 11 && today.getMinutes() === 0) {
-          let msg = await template.messages.fetch("1138662887922077757")
-          let vc = await getChannel(shop.channels.reportsVc)
-          if (vc.name === 'reports : OPEN') return;
-          vc.setName('reports : OPEN')
-          await annc.bulkDelete(2)
-          await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/03/0e/86/030e86761180bea617468b23054fb357.gif']})
-        }
-        else if (today.getHours() === 20 && today.getMinutes() === 0) {
-          let msg = await template.messages.fetch("1138662907396243489")
-          let vc = await getChannel(shop.channels.reportsVc)
-          if (vc.name === 'reports : CLOSED') return;
-          vc.setName('reports : CLOSED')
-          await annc.bulkDelete(2)
-          await annc.send({content: msg.content, files: ['https://gifdb.com/images/high/penguin-comforting-chick-pio-jix8a7nwuapnfs8q.gif']})
-        }
-        else if (today.getHours() === 17 && today.getMinutes() === 73) {
-          let msg = await template.messages.fetch("1190980197982412810")
-          let ch = await getChannel('1109020434978054229')
-          let msg2 = await ch.messages.fetch("1191048220701364344")
-          
-          await msg2.edit({content: msg.content})
-        }
-      }
+  let state = today.getHours() % 12 ? 'PM' : 'AM';
+  let day = today.getDay();
+  let time = hours +":"+today.getMinutes()+state;
+  //console.log(time)
+  //Get info
+  if (ready) {
+    ready = false
+    if (!ready) {
+      setTimeout(function() {
+        ready = true;
+      },60000)
+    }
+    let template = await getChannel(shop.channels.templates)
+    let annc = await getChannel(shop.channels.shopStatus)
+    
+    if (time === '11:0PM') { 
+      let msg = await template.messages.fetch("1138662865612582953")
+      let vc = await getChannel(shop.channels.status)
+      if (vc.name === 'shop : CLOSED') return;
+      vc.setName('shop : CLOSED')
+      await annc.bulkDelete(2)
+      await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/ce/aa/23/ceaa23a4f6664a0475ae694cb5653a52.gif']})
+    } 
+    else if (time === '8:0AM') {
+      let msg = await template.messages.fetch("1138662565489152152")
+      let vc = await getChannel(shop.channels.status)
+      if (vc.name === 'shop : OPEN') return;
+      vc.setName('shop : OPEN')
+      await annc.bulkDelete(2)
+      await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/04/57/a4/0457a416b9f977a60e53a7cafa99772b.gif']})
+    }
+    else if (time === '8:30AM') {
+      let msg = await template.messages.fetch("1175703100460367872")
+      let ch = await getChannel('1174734135516991529')
+      await ch.bulkDelete(2)
+      await ch.send({content: msg.content})
+    }
+    else if (time === '11:0AM') {
+      let msg = await template.messages.fetch("1138662887922077757")
+      let vc = await getChannel(shop.channels.reportsVc)
+      if (vc.name === 'reports : OPEN') return;
+      vc.setName('reports : OPEN')
+      await annc.bulkDelete(2)
+      await annc.send({content: msg.content, files: ['https://i.pinimg.com/originals/03/0e/86/030e86761180bea617468b23054fb357.gif']})
+    }
+    else if (time === '8:0PM') {
+      let msg = await template.messages.fetch("1138662907396243489")
+      let vc = await getChannel(shop.channels.reportsVc)
+      if (vc.name === 'reports : CLOSED') return;
+      vc.setName('reports : CLOSED')
+      await annc.bulkDelete(2)
+      await annc.send({content: msg.content, files: ['https://gifdb.com/images/high/penguin-comforting-chick-pio-jix8a7nwuapnfs8q.gif']})
+    }
+  }
   
   },5000)
 
