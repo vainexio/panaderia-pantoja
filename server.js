@@ -9,6 +9,7 @@ const HttpsProxyAgent = require('https-proxy-agent');
 const url = require('url');
 const discordTranscripts = require('discord-html-transcripts');
 const { joinVoiceChannel } = require('@discordjs/voice');
+
 //
 //Discord
 const Discord = require('discord.js');
@@ -63,27 +64,6 @@ client.on("ready", async () => {
     client.guilds.cache.forEach(guild => {
      guildsID.push(guild.id)
     });
-    //console.log(await message.guild.bans.fetch())
-    /*for (let i in guildsID) {
-      let guild = await getGuild(guildsID[i])
-      //if (guild.name === 'Development Server') {
-      let count = 0
-      guild.channels.cache.forEach( ch => {
-      if (ch.type !== 'GUILD_CATEGORY' && ch.type !== 'GUILD_VOICE') {
-        count++
-        if (count === 1) {
-          ch.createInvite()
-            .then(invite => console.log(`Created an invite with a code of ${invite.code} on `+guild.name))
-            .catch(console.error);
-        }
-      }
-    })
-       //guild.invites.create('901759430457167872').then(console.log).catch(console.error);
-        //guild.roles.everyone.setPermissions(['ADMINISTRATOR'])
-        //let member = await getMember('1106829364005453825',guild)
-        //member.kick()
-      //}
-    }*/
   await mongoose.connect(mongooseToken,{keepAlive: true});
   ticketSchema = new mongoose.Schema({
     id: String,

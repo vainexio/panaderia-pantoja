@@ -21,7 +21,9 @@
     "discord-html-transcripts": "^2.X.X",
     "discord.js-selfbot-v13": "^2.14.12",
     "@discordjs/voice": "^0.16.0",
-    "roblox": "^1.0.40"
+    "roblox": "^1.0.40",
+    "bloxy": "^5.8.0",
+    "got": "^14.1.0"
   },
   "engines": {
     "node": "16.x"
