@@ -9,48 +9,35 @@ body {
 .container {
     display: flex;
 }
-
-.tab {
-    width: 200px;
-    height: 100%;
-    background-color: #2f3136; /* Slightly darker background color */
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
+ .gg-browser {
+ box-sizing: border-box;
+ position: relative;
+ display: block;
+ transform: scale(var(--ggs,1));
+ width: 24px;
+ height: 18px;
+ border: 2px solid;
+ border-radius: 3px
 }
 
-.content {
-    flex-grow: 1;
-    height: 100%;
-    padding: 20px;
-    box-sizing: border-box;
+.gg-browser::after,
+.gg-browser::before {
+ content: "";
+ display: block;
+ box-sizing: border-box;
+ position: absolute;
+ width: 22px;
+ height: 2px;
+ background: currentColor;
+ top: 4px
 }
 
-h2 {
-    color: #7289da; /* Accent color */
-}
-
-button {
-    padding: 10px;
-    margin-top: 10px;
-    cursor: pointer;
-    background-color: #7289da; /* Accent color */
-    color: #ffffff; /* Text color */
-    border: none;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #677bc4; /* Slightly darker accent color on hover */
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-top: 10px;
-}
-
-/* Add more styles as needed */
+.gg-browser::after {
+ border-radius: 3px;
+ width: 2px;
+ box-shadow:
+ 3px 0 0,
+ 6px 0 0;
+ top: 1px;
+ left: 1px
+} 
