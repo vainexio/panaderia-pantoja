@@ -321,35 +321,6 @@ client2.on("messageCreate", async (message) => {
       let msg = await message.channel.messages.fetch(message.reference.messageId)
       if (msg) {
         try {
-          
-          let auth1 = {
-            method: 'GET',
-            headers: {
-                  'Authorization': process.env.robloxCookie,
-                  'Host': 'www.roblox.com',
-                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
-                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                  'Accept-Language': 'en-US,en;q=0.5',
-                  'Accept-Encoding': 'gzip, deflate',
-                  'Upgrade-Insecure-Requests': '1',
-                  'Sec-Fetch-Dest': 'document',
-                  'Sec-Fetch-Mode': 'navigate',
-                  'Sec-Fetch-Site': 'none',
-                  'Sec-Fetch-User': '?1',
-                  'Te': 'trailers',
-                  'Referer': 'https://www.roblox.com/login?returnUrl=https%3A%2F%2Fwww.roblox.com%2Fcatalog%2F14189234649%2FGP',
-                  'Content-Type': 'application/json'
-                },
-            body: {
-              "items": [
-                {
-                  "itemType": 1,
-                  "id": 0
-                }
-              ]
-            }
-          }
-          let response = await fetch('https://catalog.roblox.com/v1/catalog/items/details',auth1)
           let args = getArgs(msg.content)
           let content = ''
           let count = 0
@@ -392,20 +363,26 @@ client2.on("messageCreate", async (message) => {
             
               let htmlContent = await response.text()
               let $ = cheerio.load(htmlContent);
-              let price
+              let price = null
               //
               const itemContainer = $('#item-container');
               
               if ($('.text-robux-lg').length > 0) {
-                price = $('.text-robux-lg').text().trim()
+                price = 'Price: '+$('.text-robux-lg').text().trim()
                 console.log(price);
               } else {
-                price = itemContainer.get(0).attribs['data-expected-price'];
-                console.log(price);
+                let itemId = itemContainer.attr('data-item-id');
+                let res = await fetch('https://catalog.roblox.com/v1/catalog/items/'+itemId+'/details?itemType=Asset')
+                res = await res.json();
+                if (res.errors) price = "Can't scan catalog items"
+                  else {
+                  price = 'Price: '+res.price.toString();
+                  console.log(price);
+                }
               }
-              let raw = Number(isNaN(price) ? price.replace(/,/g,'') : price)
-              let ct = Math.floor(raw*0.7)
-              content +=  count+'. '+args[i]+'\nPrice: '+price+' '+emojis.robux+'\nYou will receive: **'+ct+'** '+emojis.robux+'\n\n'
+              let raw = price !== "Can't scan catalog items" ? Number(price.replace(/,|Price: /g,'')) : price
+              let ct = !isNaN(raw) ? '\nYou will receive: **'+Math.floor(raw*0.7)+'** '+emojis.robux : ''
+              content +=  count+'. '+args[i]+'\n'+price+' '+emojis.robux+ct+'\n\n'
               console.log(content)
             }
           }
