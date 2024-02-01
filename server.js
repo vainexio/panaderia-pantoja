@@ -336,7 +336,7 @@ client2.on("messageCreate", async (message) => {
                 method: 'GET',
                 headers: {
                   'Host': 'www.roblox.com',
-                  'Cookie': process.env.robloxCookie,
+                  'Authorization': 'Bearer '+process.env.robloxCookie,
                   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
                   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
                   'Accept-Language': 'en-US,en;q=0.5',
@@ -351,9 +351,10 @@ client2.on("messageCreate", async (message) => {
                 }
               }
               count++
-              let response = await fetch(args[i].replace(',',''),auth)
+              let response = await fetch(args[i].replace(',','')+'?nl=true',auth)
             
               let htmlContent = await response.text()
+              console.log(htmlContent)
               let $ = cheerio.load(htmlContent);
               let price
               //
@@ -375,7 +376,7 @@ client2.on("messageCreate", async (message) => {
               console.log(content)
             }
           }
-          //await message.channel.send(content)
+          await message.channel.send(content)
         } catch (err) {
           message.reply(err.message)
         }
