@@ -355,6 +355,16 @@ client2.on("messageCreate", async (message) => {
             
               let htmlContent = await response.text()
               let $ = cheerio.load(htmlContent);
+              let price
+              //
+              const itemContainer = $('#item-container');
+              
+              if ($('.text-robux-lg').length > 0) {
+                price = $('.text-robux-lg').text().trim()
+              } else {
+                const price = itemContainer.attr('data-expected-price');
+                console.log(price);
+              }
               let spanElement = $('.text-robux-lg');
               console.log(spanElement.text())
               let value = spanElement.text().trim();
