@@ -361,21 +361,23 @@ client2.on("messageCreate", async (message) => {
               
               if ($('.text-robux-lg').length > 0) {
                 price = $('.text-robux-lg').text().trim()
+                console.log(price);
               } else {
-                const price = itemContainer.attr('data-expected-price');
+                price = itemContainer.get(0).attribs['data-expected-price'];
                 console.log(price);
               }
-              let spanElement = $('.text-robux-lg');
-              console.log(spanElement.text())
-              let value = spanElement.text().trim();
-              let raw = Number(value.replace(/,/g,''))
+              //let spanElement = $('.text-robux-lg');
+              //console.log(spanElement.text())
+              //let value = spanElement.text().trim();
+              let raw = Number(price.replace(/,/g,''))
               let ct = Math.floor(raw*0.7)
-              content +=  count+'. '+args[i]+'\nPrice: '+value+' '+emojis.robux+'\nYou will receive: **'+ct+'** '+emojis.robux+'\n\n'
+              content +=  count+'. '+args[i]+'\nPrice: '+price+' '+emojis.robux+'\nYou will receive: **'+ct+'** '+emojis.robux+'\n\n'
+              console.log(content)
             }
           }
-          message.channel.send(content)
+          //await message.channel.send(content)
         } catch (err) {
-          message.reply(err)
+          message.reply(err.message)
         }
       }
     }
