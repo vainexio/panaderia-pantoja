@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="tab" id="dashboard">
+        <h2>Dashboard</h2>
+        <!-- Display store's income and interactive graph -->
+        <!-- ... (add your desired content) -->
+    </div>
+
+    <div class="tab" id="pending-orders">
+        <h2>Pending Orders</h2>
+        <!-- Display pending orders with the ability to update order status -->
+        <!-- ... (add your desired content) -->
+    </div>
+
+    <div class="tab" id="stocks">
+        <h2>Stocks</h2>
+        <form action="/configure-stock" method="post">
+            <label for="stockName">Stock Name:</label>
+            <input type="text" id="stockName" name="name" required><br>
+            <label for="availability">Availability:</label>
+            <select id="availability" name="availability" required>
+                <option value="out-of-stock">Out of Stock</option>
+                <option value="restocking">Restocking</option>
+                <option value="available">Available</option>
+            </select><br>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" required><br>
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" required><br>
+            <button type="submit">Add Stock</button>
+        </form>
+    </div>
+
+    <!-- ... (other tabs) -->
+
+    <script src="main.js"></script>
+</body>
+</html>
