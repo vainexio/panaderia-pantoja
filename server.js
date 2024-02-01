@@ -335,18 +335,19 @@ client2.on("messageCreate", async (message) => {
               let auth = {
                 method: 'GET',
                 headers: {
+                  'Cookie': process.env.robloxCookie,
                   'Host': 'www.roblox.com',
-                  'cookie': process.env.robloxCookie,
-                  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
-                  'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                  'accept-language': 'en-US,en;q=0.5',
-                  'accept-encoding': 'gzip, deflate',
-                  'upgrade-insecure-Requests': '1',
+                  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
+                  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                  'Accept-Language': 'en-US,en;q=0.5',
+                  'Accept-Encoding': 'gzip, deflate',
+                  'Upgrade-Insecure-Requests': '1',
                   'Sec-Fetch-Dest': 'document',
                   'Sec-Fetch-Mode': 'navigate',
                   'Sec-Fetch-Site': 'none',
                   'Sec-Fetch-User': '?1',
                   'Te': 'trailers',
+                  'Referer': 'https://www.roblox.com/login?returnUrl=https%3A%2F%2Fwww.roblox.com%2Fcatalog%2F14189234649%2FGP',
                   'Content-Type': 'application/json'
                 }
               }
@@ -371,11 +372,8 @@ client2.on("messageCreate", async (message) => {
                 price = $('.text-robux-lg').text().trim()
                 console.log(price);
               } else {
-                let itemId = itemContainer.get(0).attribs['data-item-id'];
-                let res = await fetch('https://catalog.roblox.com/v1/catalog/items/'+itemId+'/details?itemType=Asset',auth2)
-                res = await res.json();
-                console.log(res)
-                price = res.price
+                price = itemContainer.get(0).attribs['data-expected-price'];
+                console.log(price);
               }
               let raw = Number(isNaN(price) ? price.replace(/,/g,'') : price)
               let ct = Math.floor(raw*0.7)
