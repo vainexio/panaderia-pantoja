@@ -354,7 +354,6 @@ client2.on("messageCreate", async (message) => {
               let response = await fetch(args[i].replace(',','')+'?nl=true',auth)
             
               let htmlContent = await response.text()
-              console.log(htmlContent)
               let $ = cheerio.load(htmlContent);
               let price
               //
@@ -364,13 +363,13 @@ client2.on("messageCreate", async (message) => {
                 price = $('.text-robux-lg').text().trim()
                 console.log(price);
               } else {
-                price = itemContainer.get(0).attribs['data-expected-price'];
-                console.log(price);
+                let itemId = itemContainer.get(0).attribs['data-item-id'];
+                let res = await fetch('https://catalog.roblox.com/v1/catalog/items/'+itemId+'/details?itemType=Asset',auth)
+                res = await res.json();
+                console.log(res)
+                price = res.price
               }
-              //let spanElement = $('.text-robux-lg');
-              //console.log(spanElement.text())
-              //let value = spanElement.text().trim();
-              let raw = Number(price.replace(/,/g,''))
+              let raw = Number(isNaN(price) ? price.replace(/,/g,'') : price)
               let ct = Math.floor(raw*0.7)
               content +=  count+'. '+args[i]+'\nPrice: '+price+' '+emojis.robux+'\nYou will receive: **'+ct+'** '+emojis.robux+'\n\n'
               console.log(content)
