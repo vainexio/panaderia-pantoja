@@ -11,11 +11,13 @@
 <body>
   <div class="container">
     <div class="sidebar">
-      <button onclick="location.href='/admin'">View Admin</button>
+      <button onclick="location.href='/dashboard'">View Dashboard</button>
     </div>
     <div class="content">
       <!-- User Order Form -->
-      <form action="/user/order" method="POST">
+      <form action="/order" method="POST">
+        <label for="clientName">Client:</label>
+        <input type="text" name="client" required>
         <label for="itemName">Item Name:</label>
         <input type="text" name="itemName" required>
         <label for="description">Description:</label>

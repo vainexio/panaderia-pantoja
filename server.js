@@ -33,14 +33,15 @@ async function startDatabase() {
     price: Number,
   });
   
-  stocks = mongoose.model('Stock', stockSchema);
+  stocks = mongoose.model('Stock2', stockSchema);
   orderSchema = new mongoose.Schema({
+    client: String,
     itemName: String,
     description: String,
     orderStatus: String,
     price: Number,
   });
-  orders = mongoose.model('Order', orderSchema);
+  orders = mongoose.model('Order2', orderSchema);
 }
 
 startDatabase();
@@ -52,37 +53,44 @@ app.use(express.static('public'));
 //REQUESTS
 
 //Order
-app.post('/user/order', async (req, res) => {
+app.post('/order', async (req, res) => {
   let { itemName, description, price } = req.body
+  console.log(req.body)
   let doc = new orders(orderSchema)
   doc.itemName = itemName
   doc.description = description
+  doc.orderStatus = 'pending'
   doc.price = price
   await doc.save();
   res.redirect('/')
 });
 
 //Admin
-app.get('/admin', async (req, res) => {
+app.get('/dashboard', async (req, res) => {
   const s = await stocks.find();
   const o = await orders.find();
   res.sendFile(__dirname + '/public/admin.html');
 });
 //Add stocks
+
 app.post('/admin/addStocks', async (req, res) => {
-  const { name, availability, amount, price } = req.body;
+  const { stockName, availability, amount, price } = req.body;
   let doc = new stocks(stockSchema)
-  doc.name = name
+  doc.name = stockName
   doc.availability = availability
   doc.amount = amount
   doc.price = price
-  console.log('this',req.body)
   await doc.save();
   
   res.redirect('/admin');
 });
-app.get('/admin/getStocks', async (req, res) => {
+app.get('/dashboard/getStocks', async (req, res) => {
   let doc = await stocks.find();
+  res.send(doc).status(200)
+  //res.redirect('/admin');
+});
+app.get('/dashboard/getOrders', async (req, res) => {
+  let doc = await orders.find();
   res.send(doc).status(200)
   //res.redirect('/admin');
 });
