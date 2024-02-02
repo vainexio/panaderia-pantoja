@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Ordering System</title>
-</head>
-<body>
-    <div class="container">
-        <div class="sidebar">
-            <button onclick="showDashboard()">Dashboard</button>
-            <button onclick="showStocks()">Stocks</button>
-            <button onclick="showOrders()">Orders</button>
-            <button onclick="showPendingOrders()">Pending Orders</button>
-        </div>
-        <div class="content" id="content">
-            <!-- Content will be dynamically updated here -->
-        </div>
-    </div>
 
-    <script src="main.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Ordering System</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <button onclick="location.href='/admin'">View Admin</button>
+    </div>
+    <div class="content">
+      <!-- User Order Form -->
+      <form action="/user/order" method="POST">
+        <label for="itemName">Item Name:</label>
+        <input type="text" name="itemName" required>
+        <label for="description">Description:</label>
+        <textarea name="description" required></textarea>
+        <label for="price">Negotiated Price:</label>
+        <input type="number" name="price" required>
+        <button type="submit">Place Order</button>
+      </form>
+    </div>
+  </div>
 </body>
+
 </html>

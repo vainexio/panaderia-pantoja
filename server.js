@@ -50,36 +50,42 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 //REQUESTS
-// Admin Dashboard
-app.get('/admin/dashboard', (req, res) => {
-  // Implement dashboard logic here
+
+//Order
+app.post('/user/order', async (req, res) => {
+  let { itemName, description, price } = req.body
+  let doc = new orders(orderSchema)
+  doc.itemName = itemName
+  doc.description = description
+  doc.price = price
+  await doc.save();
+  res.redirect('/')
 });
 
-// Stocks
-app.get('/stocks', (req, res) => {
-  // Implement stocks logic here
+//Admin
+app.get('/admin', async (req, res) => {
+  const s = await stocks.find();
+  const o = await orders.find();
+  res.sendFile(__dirname + '/public/admin.html');
 });
-
-app.post('/stocks', (req, res) => {
-  // Implement adding stocks logic here
+//Add stocks
+app.post('/admin/addStock', async (req, res) => {
+  const { name, availability, amount, price } = req.body;
+  let doc = new stocks(stockSchema)
+  doc.name = name
+  doc.availability = availability
+  doc.amount = amount
+  doc.price = price
+  console.log('this',req.body)
+  await doc.save();
+  
+  res.redirect('/admin');
 });
-
-// Orders
-app.get('/orders', (req, res) => {
-  // Implement orders logic here
-});
-
-app.post('/orders', (req, res) => {
-  // Implement placing orders logic here
-});
-
-// Pending Orders (Admin)
-app.get('/admin/pending-orders', (req, res) => {
-  // Implement pending orders logic here
-});
-
-app.put('/admin/pending-orders/:orderId', (req, res) => {
-  // Implement updating order status logic here
+app.get('/admin/getStocks', async (req, res) => {
+  let doc = await stocks.find();
+  console.log(doc)
+  res.send(doc).status(200)
+  //res.redirect('/admin');
 });
 
 process.on('unhandledRejection', async error => {

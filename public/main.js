@@ -1,22 +1,34 @@
-// main.js
-function showDashboard() {
-    // Implement logic to fetch and display the dashboard content
-    document.getElementById('content').innerHTML = '<h1>Dashboard Content</h1>';
+// Get all elements with class "tab" and hide them
+const tabs = document.querySelectorAll('.tab');
+tabs.forEach(tab => tab.style.display = 'none');
+
+// Get all elements with class "content" and set their width
+const content = document.querySelector('.content');
+content.style.width = '80%';
+
+// Show the default tab (assuming the first tab is the default)
+tabs[0].style.display = 'block';
+
+// Function to switch between tabs
+function openTab(tabName) {
+    tabs.forEach(tab => tab.style.display = 'none');
+    document.getElementById(tabName).style.display = 'block';
 }
 
-function showStocks() {
-    // Implement logic to fetch and display the stocks content
-    document.getElementById('content').innerHTML = '<h1>Stocks Content</h1>';
-}
+// Add click event listeners to tab buttons
+document.getElementById('orders-btn').addEventListener('click', () => openTab('orders'));
+document.getElementById('dashboard-btn').addEventListener('click', () => openTab('dashboard'));
+document.getElementById('pending-orders-btn').addEventListener('click', () => openTab('pending-orders'));
+document.getElementById('stocks-btn').addEventListener('click', () => openTab('stocks'));
+// Add click event listeners to other tab buttons
 
-function showOrders() {
-    // Implement logic to fetch and display the orders content
-    document.getElementById('content').innerHTML = '<h1>Orders Content</h1>';
-}
+// Add animation to buttons
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('mouseover', () => {
+        button.style.backgroundColor = '#4CAF50'; // Change color on hover
+    });
 
-function showPendingOrders() {
-    // Implement logic to fetch and display the pending orders content
-    document.getElementById('content').innerHTML = '<h1>Pending Orders Content</h1>';
-}
-
-// Add more functions and logic as needed
+    button.addEventListener('mouseout', () => {
+        button.style.backgroundColor = '#008CBA'; // Change color back on mouseout
+    });
+});
