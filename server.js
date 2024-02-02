@@ -27,21 +27,22 @@ async function startDatabase() {
   
   // Define MongoDB schemas and models
   stockSchema = new mongoose.Schema({
-    name: String,
+    itemName: String,
     availability: String,
     amount: Number,
     price: Number,
   });
   
-  stocks = mongoose.model('Stock2', stockSchema);
+  stocks = mongoose.model('Stock3', stockSchema);
   orderSchema = new mongoose.Schema({
     client: String,
     itemName: String,
     description: String,
     orderStatus: String,
     price: Number,
+    id: Number,
   });
-  orders = mongoose.model('Order2', orderSchema);
+  orders = mongoose.model('Order3', orderSchema);
 }
 
 startDatabase();
@@ -54,13 +55,15 @@ app.use(express.static('public'));
 
 //Order
 app.post('/order', async (req, res) => {
-  let { itemName, description, price } = req.body
+  let { client, itemName, description, price } = req.body
   console.log(req.body)
   let doc = new orders(orderSchema)
+  doc.client = client
   doc.itemName = itemName
   doc.description = description
   doc.orderStatus = 'pending'
   doc.price = price
+  doc.id = 
   await doc.save();
   res.redirect('/')
 });
@@ -69,20 +72,25 @@ app.post('/order', async (req, res) => {
 app.get('/dashboard', async (req, res) => {
   const s = await stocks.find();
   const o = await orders.find();
-  res.sendFile(__dirname + '/public/admin.html');
+  res.sendFile(__dirname + '/public/dashboard.html');
 });
 //Add stocks
 
-app.post('/admin/addStocks', async (req, res) => {
+app.post('/dashboard/addStocks', async (req, res) => {
   const { stockName, availability, amount, price } = req.body;
   let doc = new stocks(stockSchema)
-  doc.name = stockName
+  doc.itemName = stockName
   doc.availability = availability
   doc.amount = amount
   doc.price = price
   await doc.save();
   
-  res.redirect('/admin');
+  res.redirect('/dashboard');
+});
+app.post('/dashboard/updateStocks', async (req, res) => {
+  console.log(req.body)
+  
+  res.redirect('/dashboard');
 });
 app.get('/dashboard/getStocks', async (req, res) => {
   let doc = await stocks.find();

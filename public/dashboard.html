@@ -55,7 +55,11 @@
 
     stocks.forEach((stock) => {
       const stockItem = document.createElement('li');
-      stockItem.textContent = `${stock.name}\nStatus: ${stock.availability} (${stock.amount})\nSelling Price: $${stock.price}`;
+      stockItem.innerHTML = `
+      <br><b>Item:</b> ${stock.itemName}
+      <br><b>Status:</b> ₱${stock.availability}
+      <br><b>Amount:</b> ${stock.amount}
+      <br><b>Price:</b> ${stock.price}`;
       currentStocksList.appendChild(stockItem);
     });
     //Update pending orders
@@ -65,7 +69,24 @@
 
     orders.forEach((order) => {
       const ordersItem = document.createElement('li');
-      ordersItem.innerText = `Client: ${order.client}\n${order.itemName} • ₱${order.price}\nDescription: ${order.description}\nOrder Status: ${order.orderStatus.toUpperCase()}`;
+      ordersItem.innerHTML = `
+      <b>Client:</b> ${order.client}
+      <br><b>Item:</b> ${order.itemName}
+      <br><b>Price:</b> ₱${order.price}
+      <br><b>Amount:</b> ${order.amount}
+      <br><b>Description:</b> ${order.description}
+      <br><b>Order Status:</b> ${order.orderStatus.toUpperCase()}
+      <br><b>Tracking ID:</b> ${order.id}
+      
+      <form action="/dashboard/updateStocks" method="POST">
+      <select name="status" required>
+      <option value="invoiced">Invoiced</option>
+      <option value="packed">Packed</option>
+      <option value="shipped">Shipped</option>
+      <option value="completed">Completed</option>
+  </select>
+  </form>`;
+      
       currentOrdersList.appendChild(ordersItem);
     });
     
