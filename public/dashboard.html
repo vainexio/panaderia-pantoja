@@ -78,13 +78,15 @@
       <br><b>Order Status:</b> ${order.orderStatus.toUpperCase()}
       <br><b>Tracking ID:</b> ${order.id}
       
+      <br><br><b>UPDATE ORDER STATUS</b><br><br>
       <form action="/dashboard/updateStocks" method="POST">
       <select name="status" required>
-      <option value="invoiced">Invoiced</option>
-      <option value="packed">Packed</option>
-      <option value="shipped">Shipped</option>
-      <option value="completed">Completed</option>
+      <option value="invoiced ${order.id}">Invoiced</option>
+      <option value="packed ${order.id}">Packed</option>
+      <option value="shipped ${order.id}">Shipped</option>
+      <option value="completed ${order.id}">Completed</option>
   </select>
+  <button type="submit">Update Order Status</button>
   </form>`;
       
       currentOrdersList.appendChild(ordersItem);

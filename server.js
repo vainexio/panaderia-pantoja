@@ -33,16 +33,17 @@ async function startDatabase() {
     price: Number,
   });
   
-  stocks = mongoose.model('Stock3', stockSchema);
+  stocks = mongoose.model('Stock4', stockSchema);
   orderSchema = new mongoose.Schema({
     client: String,
     itemName: String,
     description: String,
+    amount: Number,
     orderStatus: String,
     price: Number,
     id: Number,
   });
-  orders = mongoose.model('Order3', orderSchema);
+  orders = mongoose.model('Order4', orderSchema);
 }
 
 startDatabase();
@@ -55,15 +56,16 @@ app.use(express.static('public'));
 
 //Order
 app.post('/order', async (req, res) => {
-  let { client, itemName, description, price } = req.body
+  let { client, itemName, description, price, amount } = req.body
   console.log(req.body)
   let doc = new orders(orderSchema)
   doc.client = client
   doc.itemName = itemName
   doc.description = description
   doc.orderStatus = 'pending'
+  doc.amount = amount
   doc.price = price
-  doc.id = 
+  doc.id = Math.floor((Math.random() * 1000000) + 1)
   await doc.save();
   res.redirect('/')
 });
@@ -89,6 +91,13 @@ app.post('/dashboard/addStocks', async (req, res) => {
 });
 app.post('/dashboard/updateStocks', async (req, res) => {
   console.log(req.body)
+  const { status } = req.body;
+  let args = status.trim().split(/\n| /)
+  let doc = await orders.findOne({id: args[1]})
+  if (doc) {
+    doc.orderStatus = args[0]
+    await doc.save();
+  }
   
   res.redirect('/dashboard');
 });
