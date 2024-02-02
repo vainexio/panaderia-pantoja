@@ -69,7 +69,7 @@ app.get('/admin', async (req, res) => {
   res.sendFile(__dirname + '/public/admin.html');
 });
 //Add stocks
-app.post('/admin/addStock', async (req, res) => {
+app.post('/admin/addStocks', async (req, res) => {
   const { name, availability, amount, price } = req.body;
   let doc = new stocks(stockSchema)
   doc.name = name
@@ -83,7 +83,6 @@ app.post('/admin/addStock', async (req, res) => {
 });
 app.get('/admin/getStocks', async (req, res) => {
   let doc = await stocks.find();
-  console.log(doc)
   res.send(doc).status(200)
   //res.redirect('/admin');
 });

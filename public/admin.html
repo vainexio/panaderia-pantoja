@@ -21,7 +21,7 @@
 
       <!-- Stocks Page -->
 <h2>Stocks</h2>
-<form action="/admin/addStock" method="POST" id="addStockForm">
+<form action="/admin/addStocks" method="POST" id="addStockForm">
   <label for="stockName">Stock Name:</label>
   <input type="text" name="stockName" required>
 
@@ -63,9 +63,10 @@
   const addStockForm = document.getElementById('addStockForm');
   addStockForm.addEventListener('submit', async function (event) {
     event.preventDefault();
-
+    
     const formData = new FormData(addStockForm);
-    await fetch('/admin/addStock', {
+    
+    await fetch('/admin/addStocks', {
       method: 'POST',
       body: formData,
     });
