@@ -16,8 +16,7 @@
     <div class="content">
       <!-- Admin Dashboard -->
       <h2>Admin Dashboard</h2>
-      <p>Total Income: $5000</p>
-      <!-- Interactable Graph Goes Here -->
+      <p id="income"><b>Total Income:</b> Loading...<br><b>Expected Income:</b> Loading...</p>
 
       <!-- Stocks Page -->
 <h2>Stocks</h2>
@@ -46,14 +45,19 @@
   document.addEventListener('DOMContentLoaded', async function () {
     
     //Update pending orders
+    const income = document.getElementById('income');
     const currentOrdersList = document.getElementById('ordersList');
     const res = await fetch('/dashboard/getOrders');
     const orders = await res.json();
     
-    if (orders.error) {
-      alert(orders.error);
-      return;
+    let totalIncome = 0
+    let expectedIncome = 0
+    for (let i in orders) {
+      let order = order[i]
+      if (order.orderStatus === 'completed') totalIncome += order.price
+      expectedIncome += order.price
     }
+    income.innextHTML = `<b>Total Income:</b> ${totalIncome}<br><b>Expected Income:</b> ${expectedIncome}`
 
     orders.forEach((order) => {
       const ordersItem = document.createElement('li');
@@ -67,7 +71,7 @@
       <br><b>Tracking ID:</b> ${order.id}
       
       <br><br><b>UPDATE ORDER STATUS</b><br><br>
-      <form action="/dashboard/updateStocks" method="POST">
+      <form action="/dashboard/updateOrder" method="POST">
       <select name="status" required>
       <option value="invoiced ${order.id}">Invoiced</option>
       <option value="packed ${order.id}">Packed</option>

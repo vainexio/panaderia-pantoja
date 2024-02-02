@@ -31,6 +31,7 @@ async function startDatabase() {
     availability: String,
     amount: Number,
     price: Number,
+    id: Number,
   });
   
   stocks = mongoose.model('Stock4', stockSchema);
@@ -58,16 +59,32 @@ app.use(express.static('public'));
 app.post('/order', async (req, res) => {
   let { client, itemName, description, price, amount } = req.body
   console.log(req.body)
-  let doc = new orders(orderSchema)
-  doc.client = client
-  doc.itemName = itemName
-  doc.description = description
-  doc.orderStatus = 'pending'
-  doc.amount = amount
-  doc.price = price
-  doc.id = Math.floor((Math.random() * 1000000) + 1)
-  await doc.save();
-  res.redirect('/')
+  
+  let item = await stocks.findOne({itemName: itemName})
+  if (item) {
+    if (item.amount >= amount) {
+      item.amount -= amount
+      
+      let doc = new orders(orderSchema)
+      doc.client = client
+      doc.itemName = itemName
+      doc.description = description
+      doc.orderStatus = 'pending'
+      doc.amount = amount
+      doc.price = price
+      doc.id = Math.floor((Math.random() * 1000000) + 1)
+      
+      if (item.amount === 0) {
+        item.availability = "Out of Stock"
+      }
+      await item.save();
+      await doc.save();
+    
+      res.redirect('/')
+    } else {
+      //not enough stocks
+    }
+  }
 });
 
 //Admin
@@ -89,7 +106,18 @@ app.post('/dashboard/addStocks', async (req, res) => {
   
   res.redirect('/dashboard');
 });
-app.post('/dashboard/updateStocks', async (req, res) => {
+app.post('/dashboard/updateStock', async (req, res) => {
+  const { status } = req.body;
+  let args = status.trim().split(/\n| /)
+  let doc = await stocks.findOne({id: args[1]})
+  if (doc) {
+    doc.availability = args[0]
+    await doc.save();
+  }
+  
+  res.redirect('/dashboard');
+});
+app.post('/dashboard/updateOrder', async (req, res) => {
   console.log(req.body)
   const { status } = req.body;
   let args = status.trim().split(/\n| /)
