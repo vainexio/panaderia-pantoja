@@ -16,7 +16,7 @@
     <div class="content">
       <!-- Admin Dashboard -->
       <h2>Admin Dashboard</h2>
-      <p id="income"><b>Total Income:</b> Loading...<br><b>Expected Income:</b> Loading...</p>
+      <p id="income"></p>
 
       <!-- Stocks Page -->
 <h2>Stocks</h2>
@@ -54,21 +54,23 @@
     let expectedIncome = 0
     for (let i in orders) {
       let o = orders[i]
-      if (o.orderStatus === 'completed') totalIncome += o.price
-      expectedIncome += o.price
+      if (o.orderStatus === 'completed') totalIncome += o.price*o.amount
+      else expectedIncome += o.price*o.amount
     }
-    income.innerHTML = `<b>Total Income:</b> ₱${totalIncome}<br /> <b>Expected Income:</b> ₱${expectedIncome}`
+    income.innerHTML = `<b>Current Revenue:</b> ₱${totalIncome}<br /> <b>Pending Revenue:</b> ₱${expectedIncome}`
 
     orders.forEach((order) => {
       const ordersItem = document.createElement('li');
+      let state = order.orderStatus === 'completed' ? '#238837' : '#292929'
       ordersItem.innerHTML = `
-      <b>Client:</b> ${order.client}
-      <br><b>Item:</b> ${order.itemName}
-      <br><b>Price:</b> ₱${order.price}
-      <br><b>Amount:</b> ${order.amount}
-      <br><b>Description:</b> ${order.description}
-      <br><b>Order Status:</b> ${order.orderStatus.toUpperCase()}
-      <br><b>Tracking ID:</b> ${order.id}
+      <style="color:white;">
+      Client: ${order.client}
+      <br>Item: ${order.itemName}
+      <br>Price: ₱${order.price}
+      <br>Amount: ${order.amount}
+      <br>Description: ${order.description}
+      <br>Order Status: <b>${order.orderStatus.toUpperCase()}</b>
+      <br>Tracking ID: ${order.id}
       
       <br><br><b>UPDATE ORDER STATUS</b><br><br>
       <form action="/dashboard/updateOrder" method="POST">
@@ -78,8 +80,8 @@
       <option value="shipped ${order.id}">Shipped</option>
       <option value="completed ${order.id}">Completed</option>
   </select>
-  <button type="submit">Update Order Status</button>
-  </form>`;
+  <button type="submit" style="background-color: ${state};">Update Order Status</button>
+  </form></style>`;
       
       currentOrdersList.appendChild(ordersItem);
     });
@@ -89,7 +91,7 @@
 <ul id="stocksList"></ul>
 
 <!-- Pending Orders Page -->
-<h2>Pending Orders</h2>
+<h2>Orders</h2>
 <ul id="ordersList"></ul>
     </div>
   </div>

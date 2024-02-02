@@ -57,7 +57,7 @@ app.use(express.static('public'));
 
 //Order
 app.post('/order', async (req, res) => {
-  let { client, itemName, description, price, amount } = req.body
+  let { client, itemName, description, amount } = req.body
   console.log(req.body)
   
   let item = await stocks.findOne({itemName: itemName})
@@ -71,7 +71,7 @@ app.post('/order', async (req, res) => {
       doc.description = description
       doc.orderStatus = 'pending'
       doc.amount = amount
-      doc.price = price
+      doc.price = item.price
       doc.id = Math.floor((Math.random() * 1000000) + 1)
       
       if (item.amount === 0) {
@@ -79,12 +79,11 @@ app.post('/order', async (req, res) => {
       }
       await item.save();
       await doc.save();
-    
-      res.redirect('/')
     } else {
       //not enough stocks
     }
   }
+  res.redirect('/')
 });
 
 //Admin
