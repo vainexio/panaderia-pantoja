@@ -1,24 +1,22 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #2b2b30;
+  background-color: #8a8aff;
 }
 
 .container {
   display: flex;
-  background-color: #2b2b30;
 }
 
 .sidebar {
   width: 20%;
-  background-color: #f1f1f1;
+  background-color: #6464c3;
   padding: 20px;
   display: flex;
   flex-direction: column;
 }
 
 .sidebar button {
-  background-color: #2b2b30;
   margin-bottom: 10px;
   padding: 10px;
   cursor: pointer;
@@ -47,7 +45,7 @@ textarea {
 }
 
 button {
-  background-color: #4caf50;
+  background-color: #292929;
   color: white;
   padding: 10px;
   border: none;
@@ -55,11 +53,13 @@ button {
 }
 
 ul {
-  background-color: #2b2b30;
   list-style-type: none;
   padding: 0;
 }
 
 ul li {
   margin-bottom: 10px;
+}
+div {
+  color: #272727
 }

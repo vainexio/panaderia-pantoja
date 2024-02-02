@@ -41,31 +41,19 @@
   <button type="submit">Add Stock</button>
 </form>
 
-<!-- Display Stocks -->
-<h2>Current Stocks</h2>
-<ul id="currentStocksList"></ul>
-
 <script>
   // JavaScript code to fetch and display current stocks
   document.addEventListener('DOMContentLoaded', async function () {
-    //Update stocks
-    const currentStocksList = document.getElementById('currentStocksList');
-    const response = await fetch('/dashboard/getStocks');
-    const stocks = await response.json();
-
-    stocks.forEach((stock) => {
-      const stockItem = document.createElement('li');
-      stockItem.innerHTML = `
-      <br><b>Item:</b> ${stock.itemName}
-      <br><b>Status:</b> ₱${stock.availability}
-      <br><b>Amount:</b> ${stock.amount}
-      <br><b>Price:</b> ${stock.price}`;
-      currentStocksList.appendChild(stockItem);
-    });
+    
     //Update pending orders
     const currentOrdersList = document.getElementById('ordersList');
     const res = await fetch('/dashboard/getOrders');
     const orders = await res.json();
+    
+    if (orders.error) {
+      alert(orders.error);
+      return;
+    }
 
     orders.forEach((order) => {
       const ordersItem = document.createElement('li');
