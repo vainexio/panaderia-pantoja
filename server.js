@@ -14,29 +14,36 @@ let listener = app.listen(process.env.PORT, function() {
 var output = "901759430457167872";
 const { settings } = require('./storage/settings_.js')
 
+//Models and Schema
+let stockSchema
+let Stock
+let orderSchema
+let Order
 //Database
-mongoose.connect(process.env.MONGOOSE, { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-// Define MongoDB schemas and models
-const stockSchema = new mongoose.Schema({
+async function startDatabase() {
+  await mongoose.connect(process.env.MONGOOSE);
+  const db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+  
+  // Define MongoDB schemas and models
+  stockSchema = new mongoose.Schema({
     name: String,
     availability: String,
     amount: Number,
     price: Number,
-});
-
-const Stock = mongoose.model('Stock', stockSchema);
-
-const orderSchema = new mongoose.Schema({
+  });
+  
+  Stock = mongoose.model('Stock', stockSchema);
+  orderSchema = new mongoose.Schema({
     itemName: String,
     description: String,
     orderStatus: String,
     price: Number,
-});
+  });
+  Order = mongoose.model('Order', orderSchema);
+}
 
-const Order = mongoose.model('Order', orderSchema);
+startDatabase();
 
 //App
 app.use(bodyParser.urlencoded({ extended: true }));
