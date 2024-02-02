@@ -12,7 +12,7 @@
   <div class="container">
     <div class="sidebar">
       <button onclick="location.href='/admin'">Dashboard</button>
-      <button onclick="location.href='/admin/stocks'">Stocks</button>
+      <button onclick="location.href='/admin/getStocjs'">Stocks</button>
       <button onclick="location.href='/admin/orders'">Pending Orders</button>
     </div>
     <div class="content">
@@ -23,9 +23,68 @@
 
       <!-- Stocks Page -->
 <h2>Stocks</h2>
-<form action="/admin/addStock" method="POST">
-  <!-- Form inputs go here -->
+<form action="/admin/addStock" method="POST" id="addStockForm">
+  <label for="stockName">Stock Name:</label>
+  <input type="text" name="stockName" required>
+
+  <label for="availability">Availability:</label>
+  <select name="availability" required>
+    <option value="available">Available</option>
+    <option value="restocking">Restocking</option>
+    <option value="outOfStock">Out of Stock</option>
+  </select>
+
+  <label for="amount">Amount:</label>
+  <input type="number" name="amount" required>
+
+  <label for="price">Price:</label>
+  <input type="number" name="price" step="0.01" required>
+
+  <button type="submit">Add Stock</button>
 </form>
+
+<!-- Display Stocks -->
+<h2>Current Stocks</h2>
+<ul id="currentStocksList"></ul>
+
+<script>
+  // JavaScript code to fetch and display current stocks
+  document.addEventListener('DOMContentLoaded', async function () {
+    const currentStocksList = document.getElementById('currentStocksList');
+    const response = await fetch('/admin/getStocks');
+    const stocks = await response.json();
+
+    stocks.forEach((stock) => {
+      const stockItem = document.createElement('li');
+      stockItem.textContent = `${stock.name} - ${stock.availability} - Amount: ${stock.amount} - Price: $${stock.price}`;
+      currentStocksList.appendChild(stockItem);
+    });
+  });
+
+  // JavaScript code to handle form submission
+  const addStockForm = document.getElementById('addStockForm');
+  addStockForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(addStockForm);
+    await fetch('/admin/addStock', {
+      method: 'POST',
+      body: formData,
+    });
+
+    // After submitting the form, refresh the displayed stocks
+    const currentStocksList = document.getElementById('currentStocksList');
+    currentStocksList.innerHTML = ''; // Clear the current list
+    const response = await fetch('/admin/getStocks');
+    const stocks = await response.json();
+
+    stocks.forEach((stock) => {
+      const stockItem = document.createElement('li');
+      stockItem.textContent = `${stock.name} - ${stock.availability} - Amount: ${stock.amount} - Price: $${stock.price}`;
+      currentStocksList.appendChild(stockItem);
+    });
+  });
+</script>
 <ul id="stocksList"></ul>
 
 <!-- Pending Orders Page -->

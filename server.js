@@ -16,9 +16,9 @@ const { settings } = require('./storage/settings_.js')
 
 //Models and Schema
 let stockSchema
-let Stock
+let stocks
 let orderSchema
-let Order
+let orders
 //Database
 async function startDatabase() {
   await mongoose.connect(process.env.MONGOOSE);
@@ -33,14 +33,14 @@ async function startDatabase() {
     price: Number,
   });
   
-  Stock = mongoose.model('Stock', stockSchema);
+  stocks = mongoose.model('Stock', stockSchema);
   orderSchema = new mongoose.Schema({
     itemName: String,
     description: String,
     orderStatus: String,
     price: Number,
   });
-  Order = mongoose.model('Order', orderSchema);
+  orders = mongoose.model('Order', orderSchema);
 }
 
 startDatabase();
@@ -49,31 +49,37 @@ startDatabase();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/index.html');
+//REQUESTS
+// Admin Dashboard
+app.get('/admin/dashboard', (req, res) => {
+  // Implement dashboard logic here
 });
 
-app.get('/admin', (req, res) => {
-    res.sendFile(__dirname + '/public/admin.html');
+// Stocks
+app.get('/stocks', (req, res) => {
+  // Implement stocks logic here
 });
 
-
-app.get('/admin', async (req, res) => {
-  const stocks = await Stock.find();
-  const orders = await Order.find();
-  res.sendFile(__dirname + '/views/admin.html');
+app.post('/stocks', (req, res) => {
+  // Implement adding stocks logic here
 });
 
-app.post('/admin/addStock', async (req, res) => {
-  const { name, availability, amount, price } = req.body;
-  await Stock.create({ name, availability, amount, price });
-  res.redirect('/admin');
+// Orders
+app.get('/orders', (req, res) => {
+  // Implement orders logic here
 });
 
-app.post('/user/order', async (req, res) => {
-  const { itemName, description, price } = req.body;
-  await Order.create({ itemName, description, orderStatus: 'Pending', price });
-  res.redirect('/');
+app.post('/orders', (req, res) => {
+  // Implement placing orders logic here
+});
+
+// Pending Orders (Admin)
+app.get('/admin/pending-orders', (req, res) => {
+  // Implement pending orders logic here
+});
+
+app.put('/admin/pending-orders/:orderId', (req, res) => {
+  // Implement updating order status logic here
 });
 
 process.on('unhandledRejection', async error => {

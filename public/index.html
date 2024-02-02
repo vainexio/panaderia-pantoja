@@ -1,61 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Ordering System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Ordering System</title>
 </head>
-
 <body>
-  <div class="container">
-    <div class="sidebar">
-      <button onclick="location.href='/admin'">Admin</button>
-      <button onclick="location.href='/user'">User</button>
+    <div class="container">
+        <div class="sidebar">
+            <button onclick="showDashboard()">Dashboard</button>
+            <button onclick="showStocks()">Stocks</button>
+            <button onclick="showOrders()">Orders</button>
+            <button onclick="showPendingOrders()">Pending Orders</button>
+        </div>
+        <div class="content" id="content">
+            <!-- Content will be dynamically updated here -->
+        </div>
     </div>
-    <div class="content">
-      <!-- User Order Form -->
-      <form action="/user/order" method="POST">
-        <label for="itemName">Item Name:</label>
-        <input type="text" name="itemName" required>
-        <label for="description">Description:</label>
-        <textarea name="description" required></textarea>
-        <label for="price">Price:</label>
-        <input type="number" name="price" required>
-        <button type="submit">Place Order</button>
-      </form>
 
-      <!-- Button to toggle available stocks -->
-      <button onclick="toggleAvailableStocks()">Toggle Available Stocks</button>
-
-      <!-- Section to display available stocks -->
-      <div id="availableStocksSection" style="display: none;">
-        <h2>Available Stocks</h2>
-        <ul id="availableStocksList"></ul>
-      </div>
-
-      <script>
-        // JavaScript code to toggle available stocks
-        function toggleAvailableStocks() {
-          const availableStocksSection = document.getElementById('availableStocksSection');
-
-          // Toggle visibility
-          if (availableStocksSection.style.display === 'none') {
-            availableStocksSection.style.display = 'block';
-          } else {
-            availableStocksSection.style.display = 'none';
-          }
-
-          // You would need to fetch the available stocks from the server
-          // and populate the list dynamically similar to the admin page.
-          // This is a simplified example.
-          const availableStocksList = document.getElementById('availableStocksList');
-          availableStocksList.innerHTML = '<li>Sample Stock 1 - Available</li><li>Sample Stock 2 - Available</li>';
-        }
-      </script>
-    </div>
-  </div>
+    <script src="main.js"></script>
 </body>
-
 </html>
