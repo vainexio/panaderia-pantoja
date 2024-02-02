@@ -1,45 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href= "styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Admin Dashboard</title>
 </head>
+
 <body>
-    <div class="tab" id="dashboard">
-        <h2>Dashboard</h2>
-        <!-- Display store's income and interactive graph -->
-        <!-- ... (add your desired content) -->
+  <div class="container">
+    <div class="sidebar">
+      <button onclick="location.href='/admin'">Dashboard</button>
+      <button onclick="location.href='/admin/stocks'">Stocks</button>
+      <button onclick="location.href='/admin/orders'">Pending Orders</button>
     </div>
+    <div class="content">
+      <!-- Admin Dashboard -->
+      <h2>Admin Dashboard</h2>
+      <p>Total Income: $5000</p>
+      <!-- Interactable Graph Goes Here -->
 
-    <div class="tab" id="pending-orders">
-        <h2>Pending Orders</h2>
-        <!-- Display pending orders with the ability to update order status -->
-        <!-- ... (add your desired content) -->
+      <!-- Stocks Page -->
+<h2>Stocks</h2>
+<form action="/admin/addStock" method="POST">
+  <!-- Form inputs go here -->
+</form>
+<ul id="stocksList"></ul>
+
+<!-- Pending Orders Page -->
+<h2>Pending Orders</h2>
+<ul id="ordersList"></ul>
+
+<script>
+  // JavaScript code to populate stocks list
+  const stocksList = document.getElementById('stocksList');
+  <% for (const stock of stocks) { %>
+    const stockItem = document.createElement('li');
+    stockItem.textContent = '<%= stock.name %> - <%= stock.availability %> - Amount: <%= stock.amount %> - Price: $<%= stock.price %>';
+    stocksList.appendChild(stockItem);
+  <% } %>
+
+  // JavaScript code to populate pending orders list
+  const ordersList = document.getElementById('ordersList');
+  <% for (const order of orders) { %>
+    const orderItem = document.createElement('li');
+    orderItem.textContent = '<%= order.itemName %> - <%= order.orderStatus %> - Price: $<%= order.price %>';
+    ordersList.appendChild(orderItem);
+  <% } %>
+</script>
     </div>
-
-    <div class="tab" id="stocks">
-        <h2>Stocks</h2>
-        <form action="/configure-stock" method="post">
-            <label for="stockName">Stock Name:</label>
-            <input type="text" id="stockName" name="name" required><br>
-            <label for="availability">Availability:</label>
-            <select id="availability" name="availability" required>
-                <option value="out-of-stock">Out of Stock</option>
-                <option value="restocking">Restocking</option>
-                <option value="available">Available</option>
-            </select><br>
-            <label for="amount">Amount:</label>
-            <input type="number" id="amount" name="amount" required><br>
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" required><br>
-            <button type="submit">Add Stock</button>
-        </form>
-    </div>
-
-    <!-- ... (other tabs) -->
-
-    <script src="main.js"></script>
+  </div>
 </body>
+
 </html>

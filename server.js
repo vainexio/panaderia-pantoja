@@ -58,52 +58,22 @@ app.get('/admin', (req, res) => {
 });
 
 
-// Handle stock configuration and addition
-app.post('/configure-stock', async (req, res) => {
-    try {
-        const { name, availability, amount, price } = req.body;
-        const newStock = new Stock({ name, availability, amount, price });
-        await newStock.save();
-        res.redirect('/admin#stocks');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
+app.get('/admin', async (req, res) => {
+  const stocks = await Stock.find();
+  const orders = await Order.find();
+  res.sendFile(__dirname + '/views/admin.html');
 });
 
-// Handle order placement
-app.post('/place-order', async (req, res) => {
-    try {
-        const { itemName, description, price } = req.body;
-        const newOrder = new Order({ itemName, description, orderStatus: 'Pending', price });
-        await newOrder.save();
-        res.redirect('/#orders');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
+app.post('/admin/addStock', async (req, res) => {
+  const { name, availability, amount, price } = req.body;
+  await Stock.create({ name, availability, amount, price });
+  res.redirect('/admin');
 });
 
-// Retrieve stocks from the database
-app.get('/get-stocks', async (req, res) => {
-    try {
-        const stocks = await Stock.find();
-        res.json(stocks);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-// Retrieve pending orders from the database
-app.get('/get-pending-orders', async (req, res) => {
-    try {
-        const pendingOrders = await Order.find({ orderStatus: 'Pending' });
-        res.json(pendingOrders);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
-    }
+app.post('/user/order', async (req, res) => {
+  const { itemName, description, price } = req.body;
+  await Order.create({ itemName, description, orderStatus: 'Pending', price });
+  res.redirect('/');
 });
 
 process.on('unhandledRejection', async error => {

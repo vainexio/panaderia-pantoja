@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="styles.css">
   <title>Ordering System</title>
 </head>
 
@@ -25,6 +25,35 @@
         <input type="number" name="price" required>
         <button type="submit">Place Order</button>
       </form>
+
+      <!-- Button to toggle available stocks -->
+      <button onclick="toggleAvailableStocks()">Toggle Available Stocks</button>
+
+      <!-- Section to display available stocks -->
+      <div id="availableStocksSection" style="display: none;">
+        <h2>Available Stocks</h2>
+        <ul id="availableStocksList"></ul>
+      </div>
+
+      <script>
+        // JavaScript code to toggle available stocks
+        function toggleAvailableStocks() {
+          const availableStocksSection = document.getElementById('availableStocksSection');
+
+          // Toggle visibility
+          if (availableStocksSection.style.display === 'none') {
+            availableStocksSection.style.display = 'block';
+          } else {
+            availableStocksSection.style.display = 'none';
+          }
+
+          // You would need to fetch the available stocks from the server
+          // and populate the list dynamically similar to the admin page.
+          // This is a simplified example.
+          const availableStocksList = document.getElementById('availableStocksList');
+          availableStocksList.innerHTML = '<li>Sample Stock 1 - Available</li><li>Sample Stock 2 - Available</li>';
+        }
+      </script>
     </div>
   </div>
 </body>
