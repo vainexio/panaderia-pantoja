@@ -28,7 +28,7 @@
   <select name="availability" required>
     <option value="available">Available</option>
     <option value="restocking">Restocking</option>
-    <option value="outOfStock">Out of Stock</option>
+    <option value="out of stock">Out of Stock</option>
   </select>
 
   <label for="amount">Amount:</label>
@@ -53,11 +53,11 @@
     let totalIncome = 0
     let expectedIncome = 0
     for (let i in orders) {
-      let order = order[i]
-      if (order.orderStatus === 'completed') totalIncome += order.price
-      expectedIncome += order.price
+      let o = orders[i]
+      if (o.orderStatus === 'completed') totalIncome += o.price
+      expectedIncome += o.price
     }
-    income.innextHTML = `<b>Total Income:</b> ${totalIncome}<br><b>Expected Income:</b> ${expectedIncome}`
+    income.innerHTML = `<b>Total Income:</b> ₱${totalIncome}<br /> <b>Expected Income:</b> ₱${expectedIncome}`
 
     orders.forEach((order) => {
       const ordersItem = document.createElement('li');

@@ -52,7 +52,18 @@
       <br><b>Item:</b> ${stock.itemName}
       <br><b>Status:</b> ${stock.availability.toUpperCase()}
       <br><b>Amount:</b> ${stock.amount}
-      <br><b>Price:</b> ${stock.price}`;
+      <br><b>Price:</b> ${stock.price}
+      
+      <br><br><b>UPDATE STOCK</b><br><br>
+      <form action="/dashboard/updateStock" method="POST">
+      <select name="status" required>
+      <option value="available,${stock.id}">Available</option>
+      <option value="restocking,${stock.id}">Restocking</option>
+      <option value="out of stock,${stock.id}">Out of Stock</option>
+      <option value="delete,${stock.id}">Delete Stock</option>
+    </select>
+    <button type="submit">Update Stock</button>
+    </form>`;
       currentStocksList.appendChild(stockItem);
     });
     });

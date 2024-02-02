@@ -34,7 +34,7 @@ async function startDatabase() {
     id: Number,
   });
   
-  stocks = mongoose.model('Stock4', stockSchema);
+  stocks = mongoose.model('Stock5', stockSchema);
   orderSchema = new mongoose.Schema({
     client: String,
     itemName: String,
@@ -44,7 +44,7 @@ async function startDatabase() {
     price: Number,
     id: Number,
   });
-  orders = mongoose.model('Order4', orderSchema);
+  orders = mongoose.model('Order5', orderSchema);
 }
 
 startDatabase();
@@ -102,20 +102,31 @@ app.post('/dashboard/addStocks', async (req, res) => {
   doc.availability = availability
   doc.amount = amount
   doc.price = price
+  doc.id = Math.floor((Math.random() * 1000000) + 1)
   await doc.save();
   
   res.redirect('/dashboard');
 });
 app.post('/dashboard/updateStock', async (req, res) => {
   const { status } = req.body;
-  let args = status.trim().split(/\n| /)
+  let args = status.trim().split(/,/)
   let doc = await stocks.findOne({id: args[1]})
   if (doc) {
-    doc.availability = args[0]
-    await doc.save();
+    console.log(args)
+    if (args[0] === 'delete') {
+      await stocks.deleteOne({id: args[1]})
+    }
+    else if (args[0] === 'out of stock') {
+      doc.availability = args[0]
+      doc.amount = 0
+      await doc.save();
+    } else {
+      doc.availability = args[0]
+      await doc.save();
+    }
   }
   
-  res.redirect('/dashboard');
+  res.redirect('/');
 });
 app.post('/dashboard/updateOrder', async (req, res) => {
   console.log(req.body)
