@@ -61,18 +61,18 @@
 
     orders.forEach((order) => {
       const ordersItem = document.createElement('li');
-      let state = order.orderStatus === 'completed' ? '#238837' : '#292929'
+      //let state = order.orderStatus === 'completed' ? '#238837' : '#292929'
+      let stateColor = order.orderStatus === 'completed' ? '#49ff88' : '#fff2ad'
       ordersItem.innerHTML = `
-      <style="color:white;">
-      Client: ${order.client}
-      <br>Item: ${order.itemName}
-      <br>Price: ₱${order.price}
-      <br>Amount: ${order.amount}
-      <br>Description: ${order.description}
-      <br>Order Status: <b>${order.orderStatus.toUpperCase()}</b>
-      <br>Tracking ID: ${order.id}
+      Client: <b>${order.client}</b>
+      <br>Item: <b>${order.itemName}</b>
+      <br>Price: <b>₱${order.price}</b>
+      <br>Amount: <b>${order.amount}</b>
+      <br>Description: <b>${order.description}</b>
+      <br>Order Status: <div style="color:${stateColor};"><b>${order.orderStatus.toUpperCase()}</div></b>
+      <br>ID: <b>${order.id}</b>
       
-      <br><br><b>UPDATE ORDER STATUS</b><br><br>
+      <br><b>UPDATE ORDER STATUS</b><br><br>
       <form action="/dashboard/updateOrder" method="POST">
       <select name="status" required>
       <option value="invoiced ${order.id}">Invoiced</option>
@@ -80,8 +80,8 @@
       <option value="shipped ${order.id}">Shipped</option>
       <option value="completed ${order.id}">Completed</option>
   </select>
-  <button type="submit" style="background-color: ${state};">Update Order Status</button>
-  </form></style>`;
+  <button type="submit">Update Order Status</button>
+  </form>`;
       
       currentOrdersList.appendChild(ordersItem);
     });
