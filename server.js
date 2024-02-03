@@ -104,7 +104,7 @@ app.post('/order', async (req, res) => {
       await doc.save();
       await sendNotif("The order was placed")
     } else {
-      //not enough stocks
+      await sendNotif("Not enough "+itemName+" on stock")
     }
   } else {
     await sendNotif(itemName+" is not on stock")
@@ -122,7 +122,7 @@ app.get('/dashboard', async (req, res) => {
 
 app.post('/dashboard/addStocks', async (req, res) => {
   const { stockName, availability, amount, price } = req.body;
-  let existing = await stocks.findOne({stocks: stockName.toLowerCase()})
+  let existing = await stocks.findOne({itemName: stockName.toLowerCase()})
   if (existing) {
     existing.amount = amount
     existing.price = price

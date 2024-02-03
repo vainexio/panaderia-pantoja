@@ -78,7 +78,7 @@ function sendNotif(message) {
 <script>
   // JavaScript code to fetch and display current stocks
   document.addEventListener('DOMContentLoaded', async function () {
-    //sendNotif("Welcome, Admin!")
+    sendNotif("Welcome, Admin!")
     //
     let notifs = await fetch('/notifs');
     notifs = await notifs.json();
