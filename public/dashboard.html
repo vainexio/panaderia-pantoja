@@ -11,7 +11,7 @@
 <body>
   <div class="container">
     <div class="sidebar">
-      <button onclick="location.href='/'">Add Order</button>
+      <button onclick="location.href='/'">HANDLE ORDERS</button>
     </div>
     <div class="content">
       <!-- Admin Dashboard -->
@@ -62,17 +62,16 @@
     orders.forEach((order) => {
       const ordersItem = document.createElement('li');
       //let state = order.orderStatus === 'completed' ? '#238837' : '#292929'
-      let stateColor = order.orderStatus === 'completed' ? '#49ff88' : '#fff2ad'
+      let stateColor = order.orderStatus === 'completed' ? '#19d831' : '#fd841d'
       ordersItem.innerHTML = `
       Client: <b>${order.client}</b>
       <br>Item: <b>${order.itemName}</b>
       <br>Price: <b>₱${order.price}</b>
       <br>Amount: <b>${order.amount}</b>
       <br>Description: <b>${order.description}</b>
-      <br>Order Status: <div style="color:${stateColor};"><b>${order.orderStatus.toUpperCase()}</div></b>
+      <br><div style="color:${stateColor};">Order Status: <i><b>${order.orderStatus.toUpperCase()}</i></div></b>
       <br>ID: <b>${order.id}</b>
       
-      <br><b>UPDATE ORDER STATUS</b><br><br>
       <form action="/dashboard/updateOrder" method="POST">
       <select name="status" required>
       <option value="invoiced ${order.id}">Invoiced</option>
@@ -81,6 +80,9 @@
       <option value="completed ${order.id}">Completed</option>
   </select>
   <button type="submit">Update Order Status</button>
+  </form>
+  <form action="/dashboard/updateOrder?delete=${order.id}" method="POST">
+  <button type="submit" style="background-color:#ca4648">Delete Order</button>
   </form>`;
       
       currentOrdersList.appendChild(ordersItem);

@@ -128,13 +128,17 @@ app.post('/dashboard/updateStock', async (req, res) => {
   res.redirect('/');
 });
 app.post('/dashboard/updateOrder', async (req, res) => {
-  console.log(req.body)
-  const { status } = req.body;
-  let args = status.trim().split(/\n| /)
-  let doc = await orders.findOne({id: args[1]})
-  if (doc) {
-    doc.orderStatus = args[0]
-    await doc.save();
+  console.log(req.query,req.body)
+  if (req.query.delete) {
+    await orders.deleteOne({id: req.query.delete})
+  } else {
+    const { status } = req.body;
+    let args = status.trim().split(/\n| /)
+    let doc = await orders.findOne({id: args[1]})
+    if (doc) {
+      doc.orderStatus = args[0]
+      await doc.save();
+    }
   }
   
   res.redirect('/dashboard');

@@ -24,11 +24,13 @@ body {
 .sidebar button {
   background-color: #2874f0;
   color: #ffffff;
-  padding: 10px 20px;
+  padding: 15px 20px; /* Increased padding for a more robust look */
+  margin-top: 20px;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  transition: transform 0.3s ease-in-out; /* Adding transition for smooth animation */
+  border-radius: 8px; /* Rounded corners for a softer appearance */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Adding transition for smooth animation */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle lift effect */
 }
 
 .sidebar button:hover {
