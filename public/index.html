@@ -9,12 +9,16 @@
 </head>
 
 <body>
-  <div id="notification" class="notification">${notif}<button onclick="closeNotification()">X</button>
+  <div id="notification" class="notification"><button onclick="closeNotification()">X</button>
   </div>
   <script>
     // Function to close the notification
     function closeNotification() {
       document.getElementById('notification').style.animation = 'fadeOut 0.5s ease-in-out forwards';
+    }
+    
+    function setNotif(notif) {
+      document.getElementById('notification').innerText = notif;
     }
 
     // Set timeout to show the notification after 3 seconds
@@ -33,7 +37,7 @@
     </div>
     <div class="content">
       <!-- User Order Form -->
-      <form action="/order" method="POST">
+      <form action="/order" method="POST" id="placeOrder">
         <label for="clientName">Client:</label>
         <input type="text" name="client" required>
         <label for="itemName">Item Name:</label>
@@ -53,6 +57,33 @@
   <script>
   // JavaScript code to fetch and display current stocks
   document.addEventListener('DOMContentLoaded', async function () {
+    let placeOrder = document.getElementById('placeOrder');
+    placeOrder.addEventListener('submit', function() {
+      event.preventDefault();
+
+      // Access form controls directly using the form's elements property
+      const form = event.target;
+      const client = form.elements.client.value;
+      const itemName = form.elements.itemName.value;
+      const amount = form.elements.amount.value;
+      const description = form.elements.description.value;
+      
+      let response = await fetch('/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          client: client,
+          itemName: itemName,
+          amount: amount,
+          description: description,
+        }),
+      })
+      
+      response = await response.json()
+      if (response.notif) setNotif(response.notif)
+    });
     //Update stocks
     const currentStocksList = document.getElementById('currentStocksList');
     const response = await fetch('/dashboard/getStocks');

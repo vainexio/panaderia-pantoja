@@ -56,13 +56,6 @@ app.use(express.static('public'));
 
 //REQUESTS
 //Order
-app.post('/', async (req, res) => {
-  const { notif } = req.body
-  await fs.readFile(__dirname+'/index.html',function(htmlContent) {
-    htmlContent.replace('${notif}',notif)
-  res.send(htmlContent)
-  });
-});
 //Order
 app.post('/order', async (req, res) => {
   let { client, itemName, description, amount } = req.body
@@ -91,14 +84,8 @@ app.post('/order', async (req, res) => {
       //not enough stocks
     }
   }
+  res.send({notif})
   res.redirect('/')
-  let auth = {
-    method: 'post',
-    body: {
-      notif: notif
-    }
-  }
-  let response = await fetch('https://printing-services-system.glitch.me/',auth)
 });
 
 //Admin

@@ -31,16 +31,6 @@ body {
       }
     }
 
-    .notification button {
-      background-color: #fff;
-      color: #4CAF50;
-      border: none;
-      padding: 5px 10px;
-      cursor: pointer;
-      border-radius: 3px;
-      margin-left: 10px;
-    }
-
 .sidebar {
   background-color: #3d568d;
   color: #ffffff;
