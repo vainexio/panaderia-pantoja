@@ -9,6 +9,24 @@
 </head>
 
 <body>
+  <div id="notification" class="notification"><button onclick="closeNotification()">X</button>
+  </div>
+  <script>
+    // Function to close the notification
+    function closeNotification() {
+      document.getElementById('notification').style.animation = 'fadeOut 0.5s ease-in-out forwards';
+    }
+
+    // Set timeout to show the notification after 3 seconds
+    setTimeout(function () {
+      document.getElementById('notification').style.opacity = '1';
+    }, 3000);
+
+    // Set timeout to close the notification after 10 seconds
+    setTimeout(function () {
+      closeNotification();
+    }, 10000);
+  </script>
   <div class="container">
     <div class="sidebar">
       <button onclick="location.href='/dashboard'">VIEW DASHBOARD</button>
@@ -24,7 +42,7 @@
         <input type="number" name="amount" required>
         <label for="description">Description:</label>
         <textarea name="description" required></textarea>
-        <button type="submit">Place Order</button>
+        <button type="submit" class="actionButtons">Place Order</button>
       </form>
       <!-- Display Stocks -->
       <h2>Available Stocks</h2>
@@ -40,8 +58,9 @@
     const response = await fetch('/dashboard/getStocks');
     const stocks = await response.json();
     
-    if (stocks.error) {
-      alert(stocks.error);
+    if (stocks.notif) {
+      let notif = document.getElementById('notification')
+      notif.innerText = stocks.notif
       return;
     }
     stocks.forEach((stock) => {
@@ -52,16 +71,17 @@
       <br><b>Amount:</b> ${stock.amount}
       <br><b>Price:</b> ${stock.price}
       
-      <br><br><b>UPDATE STOCK</b><br><br>
       <form action="/dashboard/updateStock" method="POST">
       <select name="status" required>
       <option value="available,${stock.id}">Available</option>
-      <option value="restocking,${stock.id}">Restocking</option>
       <option value="out of stock,${stock.id}">Out of Stock</option>
       <option value="delete,${stock.id}">Delete Stock</option>
     </select>
-    <button type="submit">Update Stock</button>
-    </form>`;
+    <button class="actionButtons" type="submit">Update Stock</button>
+    </form>
+    <form action="/dashboard/updateStock?delete=${stock.id}" method="POST">
+  <button class="actionButtons" type="submit" style="background-color:#ca4648">Remove Display</button>
+  </form>`;
       currentStocksList.appendChild(stockItem);
     });
     });

@@ -20,7 +20,7 @@
 
       <!-- Stocks Page -->
 <h2>Stocks</h2>
-<form action="/dashboard/addStocks" method="POST" id="addStockForm">
+<form action="/dashboard/addStocks" method="POST">
   <label for="stockName">Stock Name:</label>
   <input type="text" name="stockName" required>
 
@@ -37,7 +37,7 @@
   <label for="price">Price:</label>
   <input type="number" name="price" step="0.01" required>
 
-  <button type="submit">Add Stock</button>
+  <button class="actionButtons" type="submit">Add Stock</button>
 </form>
 
 <script>
@@ -79,10 +79,10 @@
       <option value="shipped ${order.id}">Shipped</option>
       <option value="completed ${order.id}">Completed</option>
   </select>
-  <button type="submit">Update Order Status</button>
+  <button class="actionButtons" type="submit">Update Order Status</button>
   </form>
   <form action="/dashboard/updateOrder?delete=${order.id}" method="POST">
-  <button type="submit" style="background-color:#ca4648">Delete Order</button>
+  <button class="actionButtons" type="submit" style="background-color:#ca4648">Delete Order</button>
   </form>`;
       
       currentOrdersList.appendChild(ordersItem);

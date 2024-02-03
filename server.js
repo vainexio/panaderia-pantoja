@@ -107,28 +107,31 @@ app.post('/dashboard/addStocks', async (req, res) => {
   res.redirect('/dashboard');
 });
 app.post('/dashboard/updateStock', async (req, res) => {
-  const { status } = req.body;
-  let args = status.trim().split(/,/)
-  let doc = await stocks.findOne({id: args[1]})
-  if (doc) {
-    console.log(args)
-    if (args[0] === 'delete') {
-      await stocks.deleteOne({id: args[1]})
-    }
-    else if (args[0] === 'out of stock') {
-      doc.availability = args[0]
-      doc.amount = 0
-      await doc.save();
-    } else {
-      doc.availability = args[0]
-      await doc.save();
+  if (req.query.delete) {
+    await stocks.deleteOne({id: req.query.delete})
+  } else {
+    const { status } = req.body;
+    let args = status.trim().split(/,/)
+    let doc = await stocks.findOne({id: args[1]})
+    if (doc) {
+      console.log(args)
+      if (args[0] === 'delete') {
+        await stocks.deleteOne({id: args[1]})
+      }
+      else if (args[0] === 'out of stock') {
+        doc.availability = args[0]
+        doc.amount = 0
+        await doc.save();
+      } else {
+        doc.availability = args[0]
+        await doc.save();
+      }
     }
   }
   
   res.redirect('/');
 });
 app.post('/dashboard/updateOrder', async (req, res) => {
-  console.log(req.query,req.body)
   if (req.query.delete) {
     await orders.deleteOne({id: req.query.delete})
   } else {

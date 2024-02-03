@@ -9,6 +9,37 @@ body {
   display: flex;
   height: 100vh;
 }
+.notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .notification button {
+      background-color: #fff;
+      color: #4CAF50;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+      margin-left: 10px;
+    }
 
 .sidebar {
   background-color: #3d568d;
@@ -62,21 +93,22 @@ textarea {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   border-radius: 5px;
 }
 
-button {
+.actionButtons {
   background-color: #2874f0;
-  color: #fff;
+  color: #ffffff;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
 }
 
-button:hover {
-  background-color: #1e60c6;
+.actionButtons:hover {
+  background-color: #194ba0;
 }
 
 h2 {
@@ -85,7 +117,7 @@ h2 {
   text-align: center;
   background-color: #f8f8f8; /* Background color for the border */
   padding: 10px; /* Padding inside the border */
-  border: 1px solid #ccc; /* Border color */
+  border: 1px solid #cccccc; /* Border color */
   border-radius: 5px; /* Border radius for rounded corners */
   transition: transform 0.3s ease-in-out; /* Adding transition for smooth animation */
 }
@@ -100,8 +132,8 @@ ul {
 }
 
 li {
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
   border-radius: 5px;
   padding: 15px;
   margin-bottom: 15px;
@@ -112,7 +144,7 @@ select {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   border-radius: 5px;
 }
 
