@@ -20,6 +20,8 @@ let stockSchema
 let stocks
 let orderSchema
 let orders
+let notifSchema
+let notif
 //Database
 async function startDatabase() {
   await mongoose.connect(process.env.MONGOOSE);
@@ -34,7 +36,10 @@ async function startDatabase() {
     price: Number,
     id: Number,
   });
-  
+  notifSchema = new mongoose.Schema({
+    status: String,
+    text: String,
+  });
   stocks = mongoose.model('Stock5', stockSchema);
   orderSchema = new mongoose.Schema({
     client: String,
@@ -55,12 +60,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 //REQUESTS
-//Order
+//Handle Notif
+app.get('/notifications', async (req, res) => {
+  let notif = await stocks.find()
+  res.send(notif);
+})
 //Order
 app.post('/order', async (req, res) => {
   let { client, itemName, description, amount } = req.body
-  console.log(req.body)
-  let notif = 'Hi'
   let item = await stocks.findOne({itemName: itemName})
   if (item) {
     if (item.amount >= amount) {
@@ -84,7 +91,6 @@ app.post('/order', async (req, res) => {
       //not enough stocks
     }
   }
-  res.send({notif})
   res.redirect('/')
 });
 
