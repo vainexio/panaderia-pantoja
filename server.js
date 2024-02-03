@@ -70,7 +70,19 @@ app.use(express.static('public'));
 app.get('/notifs', async (req, res) => {
   let notifications = await notif.find()
   console.log(notifications)
-  res.send({pending: notifications});
+  let pending = []
+  for (let i in notifications) {
+    if (notifications[i].status !== 'completed') {
+      pending.push(notifications[i].text)
+    }
+  }
+  await res.send({pending: pending});
+  setTimeout(async function() {
+    for (let i in notifications) {
+    notifications[i].status = 'completed'
+    //await notifications[i].save();
+  }
+  },5000)
 })
 //Order
 app.post('/order', async (req, res) => {

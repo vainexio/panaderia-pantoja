@@ -9,22 +9,30 @@
 </head>
 
 <body>
-
   <script>
     function showNotification(message) {
-      // Create a new notification element
-      const notification = document.createElement('div');
-      notification.className = 'notification';
-      notification.textContent = message;
+  // Create a new notification element
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.textContent = message;
 
-      // Append the notification to the body
-      document.body.appendChild(notification);
+  // Append the notification to the body
+  document.body.appendChild(notification);
 
-      // Remove the notification after 10 seconds
-      setTimeout(() => {
-        notification.remove();
-      }, 10000);
+  // Add the notification to the queue
+  notificationQueue.push(notification);
+
+  // Remove the notification after 5 seconds
+  setTimeout(() => {
+    // Remove the first notification from the queue
+    const removedNotification = notificationQueue.shift();
+
+    // Remove the notification from the DOM
+    if (removedNotification) {
+      removedNotification.remove();
     }
+  }, 5000);
+}
   </script>
   <div class="container">
     <div id="notifications"></div>
@@ -62,7 +70,9 @@
     notifs = await notifs.json();
     console.log(notifs)
     for (let i in notifs.pending) {
-      showNotification(notifs.pending[i].text)
+      showNotification('aaaaa')
+      showNotification(notifs.pending[i])
+      showNotification('heheh')
     }
     stocks.forEach((stock) => {
       const stockItem = document.createElement('li');
