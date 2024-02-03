@@ -10,7 +10,10 @@
 
 <body>
   <script>
-    function showNotification(message) {
+    let notificationQueue = [];
+    let notificationIndex = 0;
+
+function sendNotif(message) {
   // Create a new notification element
   const notification = document.createElement('div');
   notification.className = 'notification';
@@ -19,8 +22,17 @@
   // Append the notification to the body
   document.body.appendChild(notification);
 
-  // Add the notification to the queue
-  notificationQueue.push(notification);
+  // Calculate the top position based on the index after it's added to the DOM
+  setTimeout(() => {
+    const topPosition = 20 + (notificationIndex * (notification.offsetHeight + 10));
+    notification.style.top = `${topPosition}px`;
+
+    // Increment the index for the next notification
+    notificationIndex++;
+
+    // Add the notification to the queue
+    notificationQueue.push(notification);
+  });
 
   // Remove the notification after 5 seconds
   setTimeout(() => {
@@ -70,9 +82,7 @@
     notifs = await notifs.json();
     console.log(notifs)
     for (let i in notifs.pending) {
-      showNotification('aaaaa')
-      showNotification(notifs.pending[i])
-      showNotification('heheh')
+      sendNotif(notifs.pending[i])
     }
     stocks.forEach((stock) => {
       const stockItem = document.createElement('li');

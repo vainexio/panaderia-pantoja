@@ -37,7 +37,7 @@ async function startDatabase() {
     id: Number,
   });
   notifSchema = new mongoose.Schema({
-    status: String,
+    id: Number,
     text: String,
   });
   notif = mongoose.model('Notifs1', notifSchema);
@@ -55,8 +55,8 @@ async function startDatabase() {
 }
 async function sendNotif(text) {
   let doc = new notif(notifSchema)
-  doc.status = 'pending'
   doc.text = text
+  doc.id = Math.floor((Math.random() * 10000000) + 1)
   await doc.save();
 } 
 startDatabase();
@@ -72,17 +72,12 @@ app.get('/notifs', async (req, res) => {
   console.log(notifications)
   let pending = []
   for (let i in notifications) {
-    if (notifications[i].status !== 'completed') {
       pending.push(notifications[i].text)
-    }
   }
   await res.send({pending: pending});
-  setTimeout(async function() {
-    for (let i in notifications) {
-    notifications[i].status = 'completed'
-    //await notifications[i].save();
+  for (let i in notifications) {
+    await notif.deleteOne({id: notifications[i].id})
   }
-  },5000)
 })
 //Order
 app.post('/order', async (req, res) => {
@@ -103,16 +98,16 @@ app.post('/order', async (req, res) => {
       
       if (item.amount === 0) {
         item.availability = "Out of Stock"
-        await sendNotif("Item is out of stock!")
+        await sendNotif("Item is out of stock")
       }
       await item.save();
       await doc.save();
-      await sendNotif("The order was placed!")
+      await sendNotif("The order was placed")
     } else {
       //not enough stocks
     }
   } else {
-    await sendNotif(itemName+" is not on stock!")
+    await sendNotif(itemName+" is not on stock")
   }
   res.redirect('/')
 });
@@ -134,22 +129,19 @@ app.post('/dashboard/addStocks', async (req, res) => {
   doc.price = price
   doc.id = Math.floor((Math.random() * 1000000) + 1)
   await doc.save();
-  
+  sendNotif("New Stock Added")
   res.redirect('/dashboard');
 });
 app.post('/dashboard/updateStock', async (req, res) => {
   if (req.query.delete) {
     await stocks.deleteOne({id: req.query.delete})
+    sendNotif("Deleted Stock")
   } else {
     const { status } = req.body;
     let args = status.trim().split(/,/)
     let doc = await stocks.findOne({id: args[1]})
     if (doc) {
-      console.log(args)
-      if (args[0] === 'delete') {
-        await stocks.deleteOne({id: args[1]})
-      }
-      else if (args[0] === 'out of stock') {
+      if (args[0] === 'out of stock') {
         doc.availability = args[0]
         doc.amount = 0
         await doc.save();
@@ -157,6 +149,9 @@ app.post('/dashboard/updateStock', async (req, res) => {
         doc.availability = args[0]
         await doc.save();
       }
+      sendNotif("Stock Updated")
+    } else {
+      sendNotif("Unknown data")
     }
   }
   
@@ -165,6 +160,7 @@ app.post('/dashboard/updateStock', async (req, res) => {
 app.post('/dashboard/updateOrder', async (req, res) => {
   if (req.query.delete) {
     await orders.deleteOne({id: req.query.delete})
+    sendNotif("Order Deleted")
   } else {
     const { status } = req.body;
     let args = status.trim().split(/\n| /)
@@ -172,6 +168,7 @@ app.post('/dashboard/updateOrder', async (req, res) => {
     if (doc) {
       doc.orderStatus = args[0]
       await doc.save();
+      sendNotif("Order Updated")
     }
   }
   
