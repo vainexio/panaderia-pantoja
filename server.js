@@ -6,6 +6,7 @@ const fetch = require('node-fetch');
 const mongoose = require('mongoose');
 const moment = require('moment')
 const bodyParser = require('body-parser')
+const fs = require('fs')
 //
 let listener = app.listen(process.env.PORT, function() {
    console.log('Not that it matters but your app is listening on port ' + listener.address().port);
@@ -54,12 +55,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 //REQUESTS
-
+//Order
+app.post('/', async (req, res) => {
+  const { notif } = req.body
+  await fs.readFile(__dirname+'/index.html',function(htmlContent) {
+    htmlContent.replace('${notif}',notif)
+  res.send(htmlContent)
+  });
+});
 //Order
 app.post('/order', async (req, res) => {
   let { client, itemName, description, amount } = req.body
   console.log(req.body)
-  
+  let notif = 'Hi'
   let item = await stocks.findOne({itemName: itemName})
   if (item) {
     if (item.amount >= amount) {
@@ -84,6 +92,13 @@ app.post('/order', async (req, res) => {
     }
   }
   res.redirect('/')
+  let auth = {
+    method: 'post',
+    body: {
+      notif: notif
+    }
+  }
+  let response = await fetch('https://printing-services-system.glitch.me/',auth)
 });
 
 //Admin
