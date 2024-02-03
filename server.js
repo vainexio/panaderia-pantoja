@@ -146,7 +146,7 @@ app.post('/dashboard/updateStock', async (req, res) => {
     await stocks.deleteOne({id: req.query.delete})
     sendNotif("Deleted Stock")
   } else {
-    const { status } = req.body;
+    const { status, amount } = req.body;
     let args = status.trim().split(/,/)
     let doc = await stocks.findOne({id: args[1]})
     if (doc) {
@@ -156,6 +156,7 @@ app.post('/dashboard/updateStock', async (req, res) => {
         await doc.save();
       } else {
         doc.availability = args[0]
+        doc.amount = amount
         await doc.save();
       }
       sendNotif("Stock Updated")

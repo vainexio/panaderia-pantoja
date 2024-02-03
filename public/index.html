@@ -55,7 +55,7 @@ function sendNotif(message) {
     <div class="content">
       <!-- User Order Form -->
       <form action="/order" method="POST">
-        <label for="clientName">Client:</label>
+        <label for="clientName">Customer:</label>
         <input type="text" name="client" required>
         <label for="itemName">Item Name:</label>
         <input type="text" name="itemName" required>
@@ -94,6 +94,8 @@ function sendNotif(message) {
       <br><b>Price:</b> ${stock.price}
       
       <form action="/dashboard/updateStock" method="POST">
+      <label for="amount">Change Amount:</label>
+      <input type="number" name="amount" required>
       <select name="status" required>
       <option value="available,${stock.id}">Available</option>
       <option value="out of stock,${stock.id}">Out of Stock</option>

@@ -52,6 +52,16 @@ function sendNotif(message) {
     <div class="content">
       <!-- Admin Dashboard -->
       <h2>Admin Dashboard</h2>
+      <div class="revenue-container">
+  <div class="revenue-card">
+    <h3>Current Revenue</h3>
+    <p id="current-revenue" class="revenue-amount">₱0</p>
+  </div>
+  <div class="revenue-card">
+    <h3>Pending Revenue</h3>
+    <p id="pending-revenue" class="revenue-amount">₱0</p>
+  </div>
+</div>
       <p id="income"></p>
 
       <!-- Stocks Page -->
@@ -99,7 +109,11 @@ function sendNotif(message) {
       if (o.orderStatus === 'completed') totalIncome += o.price*o.amount
       else expectedIncome += o.price*o.amount
     }
-    income.innerHTML = `<b>Current Revenue:</b> ₱${totalIncome}<br /> <b>Pending Revenue:</b> ₱${expectedIncome}`
+    const currentRevenue = document.getElementById('current-revenue');
+    const pendingRevenue = document.getElementById('pending-revenue');
+    currentRevenue.textContent = `₱${totalIncome}`
+    pendingRevenue.textContent
+    income.innerHTML = `<b>Current Revenue:</b> <br /> <b>Pending Revenue:</b> ₱${expectedIncome}`
 
     orders.forEach((order) => {
       const ordersItem = document.createElement('li');
