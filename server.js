@@ -82,14 +82,14 @@ app.get('/notifs', async (req, res) => {
 //Order
 app.post('/order', async (req, res) => {
   let { client, itemName, description, amount } = req.body
-  let item = await stocks.findOne({itemName: itemName})
+  let item = await stocks.findOne({itemName: itemName.toLowerCase()})
   if (item) {
     if (item.amount >= amount) {
       item.amount -= amount
       
       let doc = new orders(orderSchema)
       doc.client = client
-      doc.itemName = itemName
+      doc.itemName = itemName.toLowerCase()
       doc.description = description
       doc.orderStatus = 'pending'
       doc.amount = amount
@@ -98,7 +98,7 @@ app.post('/order', async (req, res) => {
       
       if (item.amount === 0) {
         item.availability = "Out of Stock"
-        await sendNotif("Item is out of stock")
+        await sendNotif(itemName+" is now out of stock")
       }
       await item.save();
       await doc.save();
@@ -122,14 +122,23 @@ app.get('/dashboard', async (req, res) => {
 
 app.post('/dashboard/addStocks', async (req, res) => {
   const { stockName, availability, amount, price } = req.body;
-  let doc = new stocks(stockSchema)
-  doc.itemName = stockName
-  doc.availability = availability
-  doc.amount = amount
-  doc.price = price
-  doc.id = Math.floor((Math.random() * 1000000) + 1)
-  await doc.save();
-  sendNotif("New Stock Added")
+  let existing = await stocks.findOne({stocks: stockName.toLowerCase()})
+  if (existing) {
+    existing.amount = amount
+    existing.price = price
+    existing.availability = availability
+    await existing.save();
+    sendNotif("Updated Existing Stock")
+  } else {
+    let doc = new stocks(stockSchema)
+    doc.itemName = stockName.toLowerCase()
+    doc.availability = availability
+    doc.amount = amount
+    doc.price = price
+    doc.id = Math.floor((Math.random() * 1000000) + 1)
+    await doc.save();
+    sendNotif("New Stock Added")
+  }
   res.redirect('/dashboard');
 });
 app.post('/dashboard/updateStock', async (req, res) => {

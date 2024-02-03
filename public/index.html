@@ -87,7 +87,7 @@ function sendNotif(message) {
     stocks.forEach((stock) => {
       const stockItem = document.createElement('li');
       stockItem.innerHTML = `
-      <br><b>Item:</b> ${stock.itemName}
+      <br><b>Item:</b> ${stock.itemName.toUpperCase()}
       <br><b>Status:</b> ${stock.availability.toUpperCase()}
       <br><b>Amount:</b> ${stock.amount}
       <br><b>Price:</b> ${stock.price}
@@ -96,7 +96,6 @@ function sendNotif(message) {
       <select name="status" required>
       <option value="available,${stock.id}">Available</option>
       <option value="out of stock,${stock.id}">Out of Stock</option>
-      <option value="delete,${stock.id}">Delete Stock</option>
     </select>
     <button class="actionButtons" type="submit">Update Stock</button>
     </form>

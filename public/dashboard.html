@@ -64,7 +64,6 @@ function sendNotif(message) {
   <select name="availability" required>
     <option value="available">Available</option>
     <option value="restocking">Restocking</option>
-    <option value="out of stock">Out of Stock</option>
   </select>
 
   <label for="amount">Amount:</label>
@@ -108,7 +107,7 @@ function sendNotif(message) {
       let stateColor = order.orderStatus === 'completed' ? '#19d831' : '#fd841d'
       ordersItem.innerHTML = `
       Client: <b>${order.client}</b>
-      <br>Item: <b>${order.itemName}</b>
+      <br>Item: <b>${order.itemName.toUpperCase()}</b>
       <br>Price: <b>₱${order.price}</b>
       <br>Amount: <b>${order.amount}</b>
       <br>Description: <b>${order.description}</b>
