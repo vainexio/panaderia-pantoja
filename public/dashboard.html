@@ -55,30 +55,29 @@ function sendNotif(message) {
       <div class="revenue-container">
   <div class="revenue-card">
     <h3>Current Revenue</h3>
-    <p id="current-revenue" class="revenue-amount">₱0</p>
+    <p id="current-revenue" class="revenue-amount">Loading..</p>
   </div>
   <div class="revenue-card">
     <h3>Pending Revenue</h3>
-    <p id="pending-revenue" class="revenue-amount">₱0</p>
+    <p id="pending-revenue" class="revenue-amount">Loading..</p>
   </div>
 </div>
-      <p id="income"></p>
 
       <!-- Stocks Page -->
-<h2>Stocks</h2>
+<h2>Handle Stocks</h2>
 <form action="/dashboard/addStocks" method="POST">
   <label for="stockName">Stock Name:</label>
   <input type="text" name="stockName" required>
 
+  <label for="amount">Amount:</label>
+  <input type="number" name="amount" required>
+  
   <label for="availability">Availability:</label>
   <select name="availability" required>
     <option value="available">Available</option>
     <option value="restocking">Restocking</option>
   </select>
-
-  <label for="amount">Amount:</label>
-  <input type="number" name="amount" required>
-
+  
   <label for="price">Price:</label>
   <input type="number" name="price" step="0.01" required>
 
@@ -88,7 +87,7 @@ function sendNotif(message) {
 <script>
   // JavaScript code to fetch and display current stocks
   document.addEventListener('DOMContentLoaded', async function () {
-    //sendNotif("Welcome, Admin!")
+    sendNotif("Welcome, Admin!")
     //
     let notifs = await fetch('/notifs');
     notifs = await notifs.json();
@@ -97,7 +96,6 @@ function sendNotif(message) {
       sendNotif(notifs.pending[i])
     }
     //Update pending orders
-    const income = document.getElementById('income');
     const currentOrdersList = document.getElementById('ordersList');
     const res = await fetch('/dashboard/getOrders');
     const orders = await res.json();
@@ -112,15 +110,14 @@ function sendNotif(message) {
     const currentRevenue = document.getElementById('current-revenue');
     const pendingRevenue = document.getElementById('pending-revenue');
     currentRevenue.textContent = `₱${totalIncome}`
-    pendingRevenue.textContent
-    income.innerHTML = `<b>Current Revenue:</b> <br /> <b>Pending Revenue:</b> ₱${expectedIncome}`
+    pendingRevenue.textContent = `₱${expectedIncome}`
 
     orders.forEach((order) => {
       const ordersItem = document.createElement('li');
       //let state = order.orderStatus === 'completed' ? '#238837' : '#292929'
       let stateColor = order.orderStatus === 'completed' ? '#19d831' : '#fd841d'
       ordersItem.innerHTML = `
-      Client: <b>${order.client}</b>
+      Customer: <b>${order.client}</b>
       <br>Item: <b>${order.itemName.toUpperCase()}</b>
       <br>Price: <b>₱${order.price}</b>
       <br>Amount: <b>${order.amount}</b>
