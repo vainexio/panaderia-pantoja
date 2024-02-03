@@ -40,6 +40,7 @@ async function startDatabase() {
     status: String,
     text: String,
   });
+  notif = mongoose.model('Notifs1', notifSchema);
   stocks = mongoose.model('Stock5', stockSchema);
   orderSchema = new mongoose.Schema({
     client: String,
@@ -52,7 +53,12 @@ async function startDatabase() {
   });
   orders = mongoose.model('Order5', orderSchema);
 }
-
+async function sendNotif(text) {
+  let doc = new notif(notifSchema)
+  doc.status = 'pending'
+  doc.text = text
+  await doc.save();
+} 
 startDatabase();
 
 //App
@@ -61,9 +67,10 @@ app.use(express.static('public'));
 
 //REQUESTS
 //Handle Notif
-app.get('/notifications', async (req, res) => {
-  let notif = await stocks.find()
-  res.send(notif);
+app.get('/notifs', async (req, res) => {
+  let notifications = await notif.find()
+  console.log(notifications)
+  res.send({pending: notifications});
 })
 //Order
 app.post('/order', async (req, res) => {
@@ -84,12 +91,16 @@ app.post('/order', async (req, res) => {
       
       if (item.amount === 0) {
         item.availability = "Out of Stock"
+        await sendNotif("Item is out of stock!")
       }
       await item.save();
       await doc.save();
+      await sendNotif("The order was placed!")
     } else {
       //not enough stocks
     }
+  } else {
+    await sendNotif(itemName+" is not on stock!")
   }
   res.redirect('/')
 });

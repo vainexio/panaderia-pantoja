@@ -58,10 +58,11 @@
     const response = await fetch('/dashboard/getStocks');
     const stocks = await response.json();
     
-    const notifs = await fetch('/notifs');
+    let notifs = await fetch('/notifs');
     notifs = await notifs.json();
+    console.log(notifs)
     for (let i in notifs.pending) {
-      showNotification(notifs.pending[i])
+      showNotification(notifs.pending[i].text)
     }
     stocks.forEach((stock) => {
       const stockItem = document.createElement('li');
