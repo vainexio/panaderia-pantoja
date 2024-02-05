@@ -14,32 +14,22 @@
     let notificationIndex = 0;
 
 function sendNotif(message) {
-  // Create a new notification element
+  //New notification
   const notification = document.createElement('div');
   notification.className = 'notification';
   notification.textContent = message;
 
-  // Append the notification to the body
   document.body.appendChild(notification);
-
-  // Calculate the top position based on the index after it's added to the DOM
   setTimeout(() => {
     const topPosition = 20 + (notificationIndex * (notification.offsetHeight + 10));
     notification.style.top = `${topPosition}px`;
 
-    // Increment the index for the next notification
     notificationIndex++;
-
-    // Add the notification to the queue
     notificationQueue.push(notification);
   });
 
-  // Remove the notification after 5 seconds
   setTimeout(() => {
-    // Remove the first notification from the queue
     const removedNotification = notificationQueue.shift();
-
-    // Remove the notification from the DOM
     if (removedNotification) {
       removedNotification.remove();
     }
@@ -70,9 +60,8 @@ function sendNotif(message) {
     <ul id="currentStocksList"></ul>
     </div>
   </div>
-  
   <script>
-  // JavaScript code to fetch and display current stocks
+  //
   document.addEventListener('DOMContentLoaded', async function () {
     //Update stocks
     const currentStocksList = document.getElementById('currentStocksList');

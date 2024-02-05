@@ -14,7 +14,19 @@ let colors = {
   none: "#2B2D31",
 }
 
+/*
+Simple order management system, admin side only
+
+Dependencies
+- mongoose
+- node-fetch
+- body-parser
+- express
+
+Dev's Discord: @vainexio / Ian
+*/
 module.exports = {
+  
   settings: {
     colors: colors,
     auth: {
