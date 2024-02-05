@@ -47,7 +47,7 @@ function sendNotif(message) {
 <body>
   <div class="container">
     <div class="sidebar">
-      <button onclick="location.href='/'">HANDLE ORDERS</button>
+      <button onclick="location.href='/'">VIEW STOCKS &amp; PLACE ORDERS</button>
     </div>
     <div class="content">
       <!-- Admin Dashboard -->
@@ -87,7 +87,7 @@ function sendNotif(message) {
 <script>
   // JavaScript code to fetch and display current stocks
   document.addEventListener('DOMContentLoaded', async function () {
-    //sendNotif("Welcome, Admin!")
+    sendNotif("✅ Welcome, Admin!")
     //
     let notifs = await fetch('/notifs');
     notifs = await notifs.json();

@@ -14,7 +14,7 @@ body {
   position: fixed;
   top: 20px;
   right: 50px;
-  background-color: #46a144;
+  background-color: #3a3a3a;
   color: #ffffff;
   padding: 15px;
   border-radius: 8px;
@@ -23,6 +23,7 @@ body {
   text-align: center;
   transform: translateY(-20px);
   animation: fadeInUp 0.5s ease-in-out forwards;
+  z-index: 4;
 }
 
 @keyframes fadeInUp {
@@ -39,9 +40,8 @@ body {
 .sidebar {
   background-color: #2b365c;
   color: #ffffff;
-  padding: 5vw; /* Use viewport width for padding */
-  width: 100%; /* Make the width 100% for responsiveness */
-  max-width: 220px; /* Set a maximum width */
+  padding: 20px;
+  width: 220px;
   box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -55,10 +55,10 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #ffcc00;
-  font-size: 1.5vw; /* Use viewport width for font size */
+  color: #ffcc00; /* Text color for the surprise element */
+  font-size: 16px;
   background-color: #1a4785;
-  padding: 1vw 1.5vw; /* Use viewport width for padding */
+  padding: 10px 15px;
   border-radius: 5px;
   z-index: 1;
   opacity: 0;
@@ -69,13 +69,13 @@ body {
 .sidebar button {
   background-color: #1a4785;
   color: #ffffff;
-  padding: 1.5vw 2vw; /* Use viewport width for padding */
-  margin-top: 2vw; /* Use viewport width for margin */
+  padding: 15px 20px;
+  margin-top: 20px;
   border: none;
   cursor: pointer;
-  border-radius: 1vw; /* Use viewport width for border-radius */
+  border-radius: 10px;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
-  box-shadow: 0 0.75vw 2vw rgba(0, 0, 0, 0.2); /* Use viewport width for box-shadow */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 .sidebar button:not(:first-child) {
@@ -223,14 +223,15 @@ select {
   animation: amountChange 0.3s ease-in-out;
 }
 
+/* Add media query for smaller screens */
 @media screen and (max-width: 768px) {
   .container {
     flex-direction: column;
   }
 
   .sidebar {
-    width: 100%;
-    position: fixed;
+    width: 90%;
+    position: absolute; /* Change from fixed to absolute */
     top: 0;
     left: 0;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
@@ -249,7 +250,7 @@ select {
 
   .content {
     flex: 1;
-    padding-top: 60px; /* Adjust padding to avoid content overlap with fixed sidebar */
+    padding-top: 110px; /* Adjust padding to avoid content overlap with absolute sidebar */
   }
 
   form {
