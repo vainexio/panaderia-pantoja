@@ -73,24 +73,22 @@ function sendNotif(message) {
     for (let i in notifs.pending) {
       sendNotif(notifs.pending[i])
     }
-    stocks.forEach((stock) => {
+    stocks.forEach((order) => {
       const orderItem = document.createElement('li');
       orderItem.innerHTML = `
-      <br><b>Item:</b> ${stock.itemName.toUpperCase()}
-      <br><b>Status:</b> ${stock.availability.toUpperCase()}
-      <br><b>Amount:</b> ${stock.amount}
-      <br><b>Price:</b> ${stock.price}
+      <br><b>Item:</b> ${order.itemName.toUpperCase()}
+      <br><b>Item:</b> ${order.itemName.toUpperCase()}
+      <br><b>Status:</b> ${order.availability.toUpperCase()}
+      <br><b>Amount:</b> ${order.amount}
+      <br><b>Price:</b> ${order.price}
       
       <form action="/dashboard/updateStock" method="POST">
       <label for="amount">Change Amount:</label>
       <input type="number" name="amount" required>
-      <select name="status" required>
-      <option value="available,${stock.id}">Available</option>
-      <option value="out of stock,${stock.id}">Out of Stock</option>
     </select>
     <button class="actionButtons" type="submit">Update Stock</button>
     </form>
-    <form action="/dashboard/updateStock?delete=${stock.id}" method="POST">
+    <form action="/dashboard/updateStock?delete=${order.id}" method="POST">
   <button class="actionButtons" type="submit" style="background-color:#ca4648">Remove Display</button>
   </form>`;
       pendingOrders.appendChild(orderItem);
