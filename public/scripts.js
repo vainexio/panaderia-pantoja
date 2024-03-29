@@ -111,21 +111,26 @@ const handleEditOrder = async (orderId) => {
   // Function to handle delete order
   const handleDeleteOrder = async (orderId) => {
     try {
-      const response = await fetch(`/purchase-orders/${orderId}`, {
-        method: 'DELETE'
-      });
+        // Ask for confirmation
+        const confirmed = window.confirm('Are you sure you want to delete this order?');
 
-      if (response.ok) {
-        // Remove the deleted order from the table
-        const rowToDelete = document.querySelector(`[data-id="${orderId}"]`).parentNode.parentNode;
-        rowToDelete.remove();
-      } else {
-        console.error('Failed to delete order:', response.statusText);
-      }
+        if (confirmed) {
+            const response = await fetch(`/purchase-orders/${orderId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                // Remove the deleted order from the table
+                const rowToDelete = document.querySelector(`[data-id="${orderId}"]`).parentNode.parentNode;
+                rowToDelete.remove();
+            } else {
+                console.error('Failed to delete order:', response.statusText);
+            }
+        }
     } catch (error) {
-      console.error('Error deleting order:', error);
+        console.error('Error deleting order:', error);
     }
-  };
+};
 
   // Function to handle form submission
   orderForm.addEventListener('submit', async (event) => {

@@ -119,26 +119,66 @@ app.get('/generate-excel', async (req, res) => {
   try {
     const orders = await poModel.find();
 
+    // Create a new Excel workbook
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Orders');
+
+    // Define column headers
+    worksheet.columns = [
+      { header: 'Reference Code', key: 'referenceCode', width: 17},
+      { header: 'Item Name', key: 'itemName', width: 25 },
+      { header: 'Pending Amount', key: 'pendingAmount', width: 25 },
+      { header: 'Delivered Amount', key: 'deliveredAmount', width: 25 },
+      { header: 'Description', key: 'description', width: 30 }, // Set width for Description column
+      { header: 'Status', key: 'status', width: 15 }
+    ];
+
     // Convert orders to a format suitable for Excel
-    const excelData = orders.map(order => {
-      return {
-        'Reference Code': order.referenceCode,
-        'Item Name': order.itemName,
-        'Pending Amount': order.pendingAmount,
-        'Delivered Amount': order.deliveredAmount,
-        'Description': order.description,
-        'Status': order.deliveredAmount-order.pendingAmount !== 0 ? 'Pending' : 'Completed'
-      };
+    orders.forEach(order => {
+      const row = worksheet.addRow({
+        referenceCode: order.referenceCode,
+        itemName: order.itemName,
+        pendingAmount: order.pendingAmount,
+        deliveredAmount: order.deliveredAmount,
+        description: order.description,
+        status: (order.pendingAmount - order.deliveredAmount == 0) ? 'Completed' : 
+                (order.pendingAmount - order.deliveredAmount < 0) ? 'Overlapped' : 'Pending'
+      });
+    
+    // Add color to cells based on status
+      const statusCell = row.getCell('status');
+      if (statusCell.value === 'Completed') {
+        statusCell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: '7cdd6a' } // Green color
+        };
+      } else if (statusCell.value === 'Overlapped') {
+        statusCell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'dd6a6a' } // Red color
+        };
+      } else {
+        statusCell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'ddbc6a' } // Yellow color
+        };
+      }
+    });
+    // Set "Wrap Text" for Description column
+    worksheet.getColumn('description').eachCell(cell => {
+      cell.alignment = { wrapText: true };
     });
 
-    // Convert JSON data to Excel format
-    const xls = json2xls(excelData);
-
-    // Write Excel data to a file
-    fs.writeFileSync('orders.xlsx', xls, 'binary');
-
     // Send the Excel file as a response
-    res.download('orders.xlsx');
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=orders.xlsx');
+
+    await workbook.xlsx.write(res);
+
+    res.end();
   } catch (err) {
     console.error('Error generating Excel file:', err);
     res.status(500).send('Internal Server Error');
