@@ -14,7 +14,23 @@ mongoose.connect('mongodb://localhost/purchase_orders', {
   useUnifiedTopology: true,
 });
 
-const PurchaseOrder = require('./models/PurchaseOrder.js');
+const purchaseOrderSchema = new mongoose.Schema({
+  referenceCode: { type: String, required: true },
+  itemName: { type: String, required: true },
+  pendingAmount: { type: Number, required: true },
+  description: { type: String },
+});
+
+let poSchema = new mongoose.Schema({
+  referenceCode: String,
+  itemName: String,
+  pendingAmount: Number,
+  description: String,
+  })
+
+let poModel = mongoose.model('PurchaseOrder', poSchema);
+
+///////////////
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,27 +46,32 @@ app.use(express.static('public', { // assuming your scripts.js file is in the 'p
 // Routes
 app.get('/purchase-orders', async (req, res) => {
   try {
-    const orders = await PurchaseOrder.find();
+    const orders = await poModel.find();
+    console.log(orders);
     res.json(orders);
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-// Ensure that the server returns an array of orders
-app.get('/purchase-orders', async (req, res) => {
+app.post('/purchase-orders', async (req, res) => {
   try {
-    const orders = await PurchaseOrder.find();
-    res.json(orders);
+    const order = new poModel(poSchema)
+    order.referenceCode = req.body.referenceCode
+    order.itemName = req.body.order
+    order.pendingAmount = req.body.pendingAmount
+    order.description = req.body.description
+    console.log(req.body)
+    await order.save();
+    res.status(201).send(order);
   } catch (err) {
-    console.error('Error fetching orders:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).send(err);
   }
 });
 
 app.put('/purchase-orders/:id', async (req, res) => {
   try {
-    const order = await PurchaseOrder.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const order = await poModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.send(order);
   } catch (err) {
     res.status(500).send(err);
@@ -59,7 +80,7 @@ app.put('/purchase-orders/:id', async (req, res) => {
 
 app.delete('/purchase-orders/:id', async (req, res) => {
   try {
-    await PurchaseOrder.findByIdAndDelete(req.params.id);
+    await poModel.findByIdAndDelete(req.params.id);
     res.status(204).send();
   } catch (err) {
     res.status(500).send(err);
@@ -68,7 +89,7 @@ app.delete('/purchase-orders/:id', async (req, res) => {
 
 app.get('/purchase-orders/download', async (req, res) => {
   try {
-    const orders = await PurchaseOrder.find();
+    const orders = await poModel.find();
     const xls = json2xls(orders);
     fs.writeFileSync('purchase_orders.xlsx', xls, 'binary');
     res.download('purchase_orders.xlsx');

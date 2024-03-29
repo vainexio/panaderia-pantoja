@@ -1,13 +1,13 @@
-// scripts.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const orderTableBody = document.getElementById('order-table-body');
+  const orderForm = document.getElementById('order-form');
 
   // Function to fetch orders from the server
   const fetchOrders = async () => {
     try {
       const response = await fetch('/purchase-orders');
       const orders = await response.json();
+      console.log(orders)
       populateTable(orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -32,6 +32,39 @@ document.addEventListener('DOMContentLoaded', () => {
       orderTableBody.appendChild(row);
     });
   };
+
+  // Function to handle form submission
+  orderForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(orderForm);
+    const orderData = {
+      referenceCode: formData.get('referenceCode'),
+      itemName: formData.get('itemName'),
+      pendingAmount: formData.get('pendingAmount'),
+      description: formData.get('description')
+    };
+
+    try {
+      const response = await fetch('/purchase-orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      if (response.ok) {
+        const newOrder = await response.json();
+        populateTable([newOrder]);
+        orderForm.reset();
+      } else {
+        console.error('Failed to add order:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error adding order:', error);
+    }
+  });
 
   // Fetch orders when the page loads
   fetchOrders();
