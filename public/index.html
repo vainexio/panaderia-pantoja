@@ -1,114 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Order Monitoring</title>
   <link rel="stylesheet" href="styles.css">
-  <title>Ordering System</title>
 </head>
-
 <body>
-  <script>
-    let notificationQueue = [];
-    let notificationIndex = 0;
-
-function sendNotif(message) {
-  // Create a new notification element
-  const notification = document.createElement('div');
-  notification.className = 'notification';
-  notification.textContent = message;
-
-  // Append the notification to the body
-  document.body.appendChild(notification);
-
-  // Calculate the top position based on the index after it's added to the DOM
-  setTimeout(() => {
-    const topPosition = 20 + (notificationIndex * (notification.offsetHeight + 10));
-    notification.style.top = `${topPosition}px`;
-
-    // Increment the index for the next notification
-    notificationIndex++;
-
-    // Add the notification to the queue
-    notificationQueue.push(notification);
-  });
-
-  // Remove the notification after 5 seconds
-  setTimeout(() => {
-    // Remove the first notification from the queue
-    const removedNotification = notificationQueue.shift();
-
-    // Remove the notification from the DOM
-    if (removedNotification) {
-      removedNotification.remove();
-    }
-  }, 5000);
-}
-  </script>
-  <div class="container">
-    <div id="notifications"></div>
-    <div class="sidebar">
-      <button onclick="location.href='/dashboard'">VIEW DASHBOARD</button>
-    </div>
-    <div class="content">
-      <h2>Place Orders</h2>
-      <!-- User Order Form -->
-      <form action="/order" method="POST">
-        <label for="clientName">Customer:</label>
-        <input type="text" name="client" required>
-        <label for="itemName">Item Name:</label>
-        <input type="text" name="itemName" required>
-        <label for="amount">Amount</label>
-        <input type="number" name="amount" required>
-        <label for="description">Description:</label>
-        <textarea name="description" required></textarea>
-        <button type="submit" class="actionButtons">Place Order</button>
-      </form>
-      <!-- Display Stocks -->
-      <h2>Available Stocks</h2>
-    <ul id="currentStocksList"></ul>
-    </div>
-  </div>
+  <header>
+    <h1>Purchase Order Monitoring System</h1>
+  </header>
   
-  <script>
-  // JavaScript code to fetch and display current stocks
-  document.addEventListener('DOMContentLoaded', async function () {
-    //Update stocks
-    const currentStocksList = document.getElementById('currentStocksList');
-    const response = await fetch('/dashboard/getStocks');
-    const stocks = await response.json();
+  <main>
+    <section id="add-order">
+      <h2>Add Purchase Order</h2>
+      <form id="order-form">
+        <div>
+          <label for="reference-code">Reference Code:</label>
+          <input type="text" id="reference-code" name="referenceCode" required>
+        </div>
+        <div>
+          <label for="item-name">Item Name:</label>
+          <input type="text" id="item-name" name="itemName" required>
+        </div>
+        <div>
+          <label for="pending-amount">Pending Amount:</label>
+          <input type="number" id="pending-amount" name="pendingAmount" required>
+        </div>
+        <div>
+          <label for="description">Description:</label>
+          <textarea id="description" name="description"></textarea>
+        </div>
+        <button type="submit">Add Order</button>
+      </form>
+    </section>
     
-    let notifs = await fetch('/notifs');
-    notifs = await notifs.json();
-    console.log(notifs)
-    for (let i in notifs.pending) {
-      sendNotif(notifs.pending[i])
-    }
-    stocks.forEach((stock) => {
-      const stockItem = document.createElement('li');
-      stockItem.innerHTML = `
-      <br><b>Item:</b> ${stock.itemName.toUpperCase()}
-      <br><b>Status:</b> ${stock.availability.toUpperCase()}
-      <br><b>Amount:</b> ${stock.amount}
-      <br><b>Price:</b> ${stock.price}
-      
-      <form action="/dashboard/updateStock" method="POST">
-      <label for="amount">Change Amount:</label>
-      <input type="number" name="amount" required>
-      <select name="status" required>
-      <option value="available,${stock.id}">Available</option>
-      <option value="out of stock,${stock.id}">Out of Stock</option>
-    </select>
-    <button class="actionButtons" type="submit">Update Stock</button>
-    </form>
-    <form action="/dashboard/updateStock?delete=${stock.id}" method="POST">
-  <button class="actionButtons" type="submit" style="background-color:#ca4648">Remove Display</button>
-  </form>`;
-      currentStocksList.appendChild(stockItem);
-    });
-    });
-</script>
-</body>
+    <section id="order-list">
+      <h2>Purchase Orders</h2>
+      <table id="order-table">
+        <thead>
+          <tr>
+            <th>Reference Code</th>
+            <th>Item Name</th>
+            <th>Pending Amount</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="order-table-body">
+          <!-- Orders will be dynamically added here -->
+        </tbody>
+      </table>
+      <div id="download">
+        <button id="download-btn">Download Orders</button>
+      </div>
+    </section>
+  </main>
 
+  <script src="scripts.js"></script>
+</body>
 </html>

@@ -1,259 +1,80 @@
 body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
 }
 
-.container {
-  display: flex;
-  height: 100vh;
-}
-
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 50px;
-  background-color: #3a3a3a;
-  color: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  opacity: 0;
+header {
+  background-color: #3b5998;
+  color: #fff;
+  padding: 20px;
   text-align: center;
-  transform: translateY(-20px);
-  animation: fadeInUp 0.5s ease-in-out forwards;
-  z-index: 4;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+header h1 {
+  margin: 0;
 }
 
-.sidebar {
-  background-color: #2b365c;
-  color: #ffffff;
+main {
   padding: 20px;
-  width: 220px;
-  box-shadow: 2px 0px 8px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: box-shadow 0.3s ease-in-out, border 0.3s ease-in-out;
-  position: relative;
-  overflow: hidden;
 }
 
-.sidebar:hover::after {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #ffcc00; /* Text color for the surprise element */
-  font-size: 16px;
-  background-color: #1a4785;
-  padding: 10px 15px;
-  border-radius: 5px;
-  z-index: 1;
-  opacity: 0;
-  display: flex;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.sidebar button {
-  background-color: #1a4785;
-  color: #ffffff;
-  padding: 15px 20px;
-  margin-top: 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-}
-
-.sidebar button:not(:first-child) {
-  margin-top: 8px;
-}
-.sidebar button:hover,
-.sidebar button:active {
-  background: linear-gradient(to right, #1e3350, #1a4785);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4); /* Increased shadow on hover for a more dynamic effect */
-}
-
-
-
-.content {
-  flex: 1;
+section {
+  background-color: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px;
   padding: 20px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
 }
 
-form {
-  max-width: 400px;
-  margin: 0 auto;
-  align-self: flex-start;
+h2 {
+  color: #3b5998;
 }
 
 label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-input,
+input[type="text"],
+input[type="number"],
 textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-.actionButtons {
-  background-color: #2874f0;
-  color: #ffffff;
-  padding: 10px 20px;
+button[type="submit"],
+#download-btn {
+  background-color: #3b5998;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  padding: 10px 20px;
   cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
 }
 
-.actionButtons:hover {
-  background-color: #194ba0;
+button[type="submit"]:hover,
+#download-btn:hover {
+  background-color: #2d4373;
 }
 
-h2 {
-  color: #2874f0;
-  margin-bottom: 15px;
-  text-align: center;
-  background-color: #f8f8f8; /* Background color for the border */
-  padding: 10px; /* Padding inside the border */
-  border: 1px solid #cccccc; /* Border color */
-  border-radius: 5px; /* Border radius for rounded corners */
-  transition: transform 0.3s ease-in-out; /* Adding transition for smooth animation */
-}
-
-h2:hover {
-  transform: translateY(-5px); /* Move the element upward on hover */
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-select {
+table {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
+  border-collapse: collapse;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
 }
 
-/* rev */
-.revenue-container {
-  display: flex;
-  justify-content: space-around;
-  background-color: #f5f5f5;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+th {
+  background-color: #f2f2f2;
 }
 
-.revenue-card {
-  text-align: center;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-}
-
-.revenue-card:hover {
-  transform: scale(1.05);
-}
-
-.revenue-amount {
-  font-size: 24px;
-  font-weight: bold;
-  color: #1a4785;
-  margin-top: 10px;
-}
-
-@keyframes amountChange {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.2);
-  }
-}
-
-.revenue-amount.animate {
-  animation: amountChange 0.3s ease-in-out;
-}
-
-/* Add media query for smaller screens */
-@media screen and (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 90%;
-    position: absolute; /* Change from fixed to absolute */
-    top: 0;
-    left: 0;
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
-    z-index: 2;
-  }
-
-  .sidebar:hover::after {
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .sidebar button {
-    width: 100%;
-  }
-
-  .content {
-    flex: 1;
-    padding-top: 110px; /* Adjust padding to avoid content overlap with absolute sidebar */
-  }
-
-  form {
-    max-width: 100%;
-  }
+#download {
+  text-align: right;
 }
