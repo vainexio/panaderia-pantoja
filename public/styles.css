@@ -38,12 +38,14 @@ label {
 
 input[type="text"],
 input[type="number"],
-textarea {
+textarea,
+select {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
 
 button[type="submit"],
@@ -79,22 +81,50 @@ th {
   text-align: right;
 }
 
-/* Style the dropdown menu */
-  select {
-    padding: 7px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-
-  /* Style the options */
-  select option {
+/* Media Query for adjusting styles on smaller screens */
+@media screen and (max-width: 768px) {
+  section {
     padding: 10px;
-    background-color: #f0f0f0;
   }
 
-  /* Style the selected option */
-  select option:checked {
-    background-color: #ccc;
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    padding: 8px;
+    font-size: 14px;
   }
+}
+
+/* Default styles for the table */
+#order-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+#order-table th,
+#order-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+#order-table th {
+  background-color: #f2f2f2;
+}
+
+#order-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#order-table tbody tr:hover {
+  background-color: #e2e2e2;
+}
+
+/* Media Query for adjusting table styles on smaller screens */
+@media screen and (max-width: 768px) {
+  #order-table th,
+  #order-table td {
+    padding: 6px; /* Reduce padding for smaller screens */
+  }
+}
