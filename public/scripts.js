@@ -18,16 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
     orderTableBody.innerHTML = '';
     orders.forEach((order) => {
       const row = document.createElement('tr');
+      let status = order.pendingAmount-order.deliveredAmount <= 0 ? "#5f905f" : "#b6844a"
       row.innerHTML = `
-        <td>${order.referenceCode}</td>
-        <td>${order.itemName}</td>
-        <td>${order.pendingAmount}</td>
-        <td>${order.deliveredAmount}</td>
-        <td>${order.description}</td>
-        <td>
-          <button class="edit-btn" data-id="${order._id}">Edit</button>
-          <button class="delete-btn" data-id="${order._id}">Delete</button>
-        </td>
+      <td style="background-color: ${status}; color: white;">${order.referenceCode}</td>
+      <td>${order.itemName}</td>
+      <td>${order.pendingAmount}</td>
+      <td>${order.deliveredAmount}</td>
+      <td>${order.description}</td>
+      <td>
+      <button class="edit-btn" data-id="${order._id}">Edit</button>
+      <button class="delete-btn" data-id="${order._id}">Delete</button>
+      </td>
       `;
       orderTableBody.appendChild(row);
 
