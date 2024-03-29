@@ -42,41 +42,40 @@ function sendNotif(message) {
       <button onclick="location.href='/dashboard'">VIEW DASHBOARD</button>
     </div>
     <div class="content">
-      <h2>Place Orders</h2>
+      <h2>Purchase Orders</h2>
       <!-- User Order Form -->
       <form action="/order" method="POST">
-        <label for="clientName">Customer:</label>
-        <input type="text" name="client" required>
         <label for="itemName">Item Name:</label>
         <input type="text" name="itemName" required>
         <label for="amount">Amount</label>
         <input type="number" name="amount" required>
         <label for="description">Description:</label>
         <textarea name="description" required></textarea>
-        <button type="submit" class="actionButtons">Place Order</button>
+        <button type="submit" class="actionButtons">Submit PO</button>
       </form>
       <!-- Display Stocks -->
-      <h2>Available Stocks</h2>
-    <ul id="currentStocksList"></ul>
+      <h2>Pending Orders</h2>
+    <ul id="pendingOrders"></ul>
     </div>
   </div>
   <script>
   //
   document.addEventListener('DOMContentLoaded', async function () {
     //Update stocks
-    const currentStocksList = document.getElementById('currentStocksList');
-    const response = await fetch('/dashboard/getStocks');
+    const pendingOrders = document.getElementById('pendingOrders');
+    const response = await fetch('/dashboard/getPendingOrders');
     const stocks = await response.json();
     
     let notifs = await fetch('/notifs');
     notifs = await notifs.json();
     console.log(notifs)
+    
     for (let i in notifs.pending) {
       sendNotif(notifs.pending[i])
     }
     stocks.forEach((stock) => {
-      const stockItem = document.createElement('li');
-      stockItem.innerHTML = `
+      const orderItem = document.createElement('li');
+      orderItem.innerHTML = `
       <br><b>Item:</b> ${stock.itemName.toUpperCase()}
       <br><b>Status:</b> ${stock.availability.toUpperCase()}
       <br><b>Amount:</b> ${stock.amount}
@@ -94,7 +93,7 @@ function sendNotif(message) {
     <form action="/dashboard/updateStock?delete=${stock.id}" method="POST">
   <button class="actionButtons" type="submit" style="background-color:#ca4648">Remove Display</button>
   </form>`;
-      currentStocksList.appendChild(stockItem);
+      pendingOrders.appendChild(orderItem);
     });
     });
 </script>

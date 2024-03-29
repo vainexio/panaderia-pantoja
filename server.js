@@ -42,7 +42,6 @@ async function startDatabase() {
   notif = mongoose.model('Notifs1', notifSchema);
   stocks = mongoose.model('Stock5', stockSchema);
   orderSchema = new mongoose.Schema({
-    client: String,
     itemName: String,
     description: String,
     amount: Number,
@@ -80,33 +79,16 @@ app.get('/notifs', async (req, res) => {
 //Order
 app.post('/order', async (req, res) => {
   let { client, itemName, description, amount } = req.body
-  let item = await stocks.findOne({itemName: itemName.toLowerCase()})
-  if (item) {
-    if (item.amount >= amount) {
-      item.amount -= amount
       
       let doc = new orders(orderSchema)
-      doc.client = client
       doc.itemName = itemName.toLowerCase()
       doc.description = description
       doc.orderStatus = 'pending'
       doc.amount = amount
-      doc.price = item.price
       doc.id = Math.floor((Math.random() * 1000000) + 1)
-      
-      if (item.amount === 0) {
-        item.availability = "Out of Stock"
-        await sendNotif('⚠️ '+itemName+" is now out of stock")
-      }
-      await item.save();
+  
       await doc.save();
-      await sendNotif("✅ The order was placed")
-    } else {
-      await sendNotif("❌ Not enough "+itemName+" on stock")
-    }
-  } else {
-    await sendNotif('⚠️ '+itemName+" is not on stock")
-  }
+      await sendNotif("✅ PO was placed")
   res.redirect('/')
 });
 
@@ -181,8 +163,8 @@ app.post('/dashboard/updateOrder', async (req, res) => {
   
   res.redirect('/dashboard');
 });
-app.get('/dashboard/getStocks', async (req, res) => {
-  let doc = await stocks.find();
+app.get('/dashboard/getPendingOrders', async (req, res) => {
+  let doc = await orders.find();
   res.send(doc).status(200)
   //res.redirect('/admin');
 });
