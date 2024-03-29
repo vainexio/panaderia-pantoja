@@ -9,22 +9,16 @@ const fs = require('fs');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/purchase_orders', {
+mongoose.connect(process.env.MONGOOSE, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
-
-const purchaseOrderSchema = new mongoose.Schema({
-  referenceCode: { type: String, required: true },
-  itemName: { type: String, required: true },
-  pendingAmount: { type: Number, required: true },
-  description: { type: String },
 });
 
 let poSchema = new mongoose.Schema({
   referenceCode: String,
   itemName: String,
   pendingAmount: Number,
+  deliveredAmount: Number,
   description: String,
   })
 
@@ -54,12 +48,24 @@ app.get('/purchase-orders', async (req, res) => {
   }
 });
 
+// Routes
+app.get('/purchase-orders/:id', async (req, res) => {
+  try {
+    const order = await poModel.findOne({_id: req.params.id});
+    console.log(order);
+    res.json(order);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 app.post('/purchase-orders', async (req, res) => {
   try {
     const order = new poModel(poSchema)
     order.referenceCode = req.body.referenceCode
-    order.itemName = req.body.order
+    order.itemName = req.body.itemName
     order.pendingAmount = req.body.pendingAmount
+    order.deliveredAmount = req.body.deliveredAmount
     order.description = req.body.description
     console.log(req.body)
     await order.save();

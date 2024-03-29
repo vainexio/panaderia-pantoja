@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await fetch('/purchase-orders');
       const orders = await response.json();
-      console.log(orders)
       populateTable(orders);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -30,7 +29,92 @@ document.addEventListener('DOMContentLoaded', () => {
         </td>
       `;
       orderTableBody.appendChild(row);
+
+      // Add event listener for edit button
+      const editButton = row.querySelector('.edit-btn');
+      editButton.addEventListener('click', () => handleEditOrder(order._id));
+
+      // Add event listener for delete button
+      const deleteButton = row.querySelector('.delete-btn');
+      deleteButton.addEventListener('click', () => handleDeleteOrder(order._id));
     });
+  };
+
+  // Function to handle edit order
+const handleEditOrder = async (orderId) => {
+  try {
+    // Fetch the order details from the server
+    const response = await fetch(`/purchase-orders/${orderId}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch order details');
+    }
+    const order = await response.json();
+
+    // Display a form for editing the order details
+    const updatedDeliveredAmount = prompt('Enter updated pending amount:', order.pendingAmount);
+
+    // Update the order details in the database
+    const updatedOrderData = {
+      referenceCode: order.referenceCode,
+      itemName: order.itemName,
+      pendingAmount: order.pendingAmount,
+      pendingAmount: updatedPendingAmount,
+      description: updatedDescription
+    };
+
+    const updateResponse = await fetch(`/purchase-orders/${orderId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedOrderData)
+    });
+
+    if (!updateResponse.ok) {
+      throw new Error('Failed to update order');
+    }
+
+    // Fetch the updated order details from the server
+    const updatedOrderResponse = await fetch(`/purchase-orders/${orderId}`);
+    if (!updatedOrderResponse.ok) {
+      throw new Error('Failed to fetch updated order details');
+    }
+    const updatedOrder = await updatedOrderResponse.json();
+
+    // Update the order in the table
+    const rowToUpdate = document.querySelector(`[data-id="${orderId}"]`).parentNode.parentNode;
+    rowToUpdate.innerHTML = `
+      <td>${updatedOrder.referenceCode}</td>
+      <td>${updatedOrder.itemName}</td>
+      <td>${updatedOrder.pendingAmount}</td>
+      <td>${updatedOrder.description}</td>
+      <td>
+        <button class="edit-btn" data-id="${updatedOrder._id}">Edit</button>
+        <button class="delete-btn" data-id="${updatedOrder._id}">Delete</button>
+      </td>
+    `;
+  } catch (error) {
+    console.error('Error editing order:', error);
+  }
+};
+
+  // Function to handle delete order
+  const handleDeleteOrder = async (orderId) => {
+    try {
+      const response = await fetch(`/purchase-orders/${orderId}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        // Remove the deleted order from the table
+        const rowToDelete = document.querySelector(`[data-id="${orderId}"]`).parentNode.parentNode;
+        rowToDelete.remove();
+      } else {
+        console.error('Failed to delete order:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting order:', error);
+    }
   };
 
   // Function to handle form submission
