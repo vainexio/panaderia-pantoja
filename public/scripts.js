@@ -18,9 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
     orderTableBody.innerHTML = '';
     orders.forEach((order) => {
       const row = document.createElement('tr');
-      let status = order.pendingAmount-order.deliveredAmount <= 0 ? "#5f905f" : "#b6844a"
+      let status = order.pendingAmount-order.deliveredAmount == 0 ? "#5f905f" : order.pendingAmount-order.deliveredAmount < 0 ? "#b64a4a" :"#b6844a"
+      let warning = order.pendingAmount-order.deliveredAmount < 0 ? '⚠️' : ''
       row.innerHTML = `
-      <td style="background-color: ${status}; color: white;">${order.referenceCode}</td>
+      <td style="background-color: ${status}; color: white;">${warning+order.referenceCode}</td>
       <td>${order.itemName}</td>
       <td>${order.pendingAmount}</td>
       <td>${order.deliveredAmount}</td>
@@ -31,17 +32,21 @@ document.addEventListener('DOMContentLoaded', () => {
       </td>
       `;
       orderTableBody.appendChild(row);
-
-      // Add event listener for edit button
-      const editButton = row.querySelector('.edit-btn');
-      editButton.addEventListener('click', () => handleEditOrder(order._id));
-
-      // Add event listener for delete button
-      const deleteButton = row.querySelector('.delete-btn');
-      deleteButton.addEventListener('click', () => handleDeleteOrder(order._id));
     });
   };
-
+  
+// Add event listener for edit and delete buttons using event delegation
+  orderTableBody.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target.classList.contains('edit-btn')) {
+      const orderId = target.getAttribute('data-id');
+      handleEditOrder(orderId);
+    } else if (target.classList.contains('delete-btn')) {
+      const orderId = target.getAttribute('data-id');
+      handleDeleteOrder(orderId);
+    }
+  });
+  
   // Function to handle edit order
 const handleEditOrder = async (orderId) => {
   try {
@@ -53,7 +58,7 @@ const handleEditOrder = async (orderId) => {
     const order = await response.json();
 
     // Display a form for editing the order details
-    const updatedDeliveredAmount = prompt('Enter updated pending amount:', order.deliveredAmount);
+    const updatedDeliveredAmount = prompt('['+order.referenceCode+'] Enter updated delivered amount:', order.deliveredAmount);
 
     // Update the order details in the database
     const updatedOrderData = {
@@ -85,8 +90,10 @@ const handleEditOrder = async (orderId) => {
 
     // Update the order in the table
     const rowToUpdate = document.querySelector(`[data-id="${orderId}"]`).parentNode.parentNode;
+    let status = updatedOrder.pendingAmount-updatedOrder.deliveredAmount == 0 ? "#5f905f" : updatedOrder.pendingAmount-updatedOrder.deliveredAmount < 0 ? "#b64a4a" :"#b6844a"
+    let warning = updatedOrder.pendingAmount-updatedOrder.deliveredAmount < 0 ? '⚠️' : ''
     rowToUpdate.innerHTML = `
-      <td>${updatedOrder.referenceCode}</td>
+      <td style="background-color: ${status}; color: white;">${warning+updatedOrder.referenceCode}</td>
       <td>${updatedOrder.itemName}</td>
       <td>${updatedOrder.pendingAmount}</td>
       <td>${updatedOrder.deliveredAmount}</td>
