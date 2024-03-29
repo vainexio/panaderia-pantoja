@@ -12,6 +12,7 @@ let listener = app.listen(process.env.PORT, function() {
    console.log('Not that it matters but your app is listening on port ' + listener.address().port);
 });
 //LOG VARIABLES
+var output = "901759430457167872";
 const { settings } = require('./storage/settings_.js')
 
 //Models and Schema
@@ -42,6 +43,7 @@ async function startDatabase() {
   notif = mongoose.model('Notifs1', notifSchema);
   stocks = mongoose.model('Stock5', stockSchema);
   orderSchema = new mongoose.Schema({
+    client: String,
     itemName: String,
     description: String,
     amount: Number,
@@ -63,6 +65,7 @@ startDatabase();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+//REQUESTS
 //Handle Notif
 app.get('/notifs', async (req, res) => {
   let notifications = await notif.find()
@@ -79,16 +82,33 @@ app.get('/notifs', async (req, res) => {
 //Order
 app.post('/order', async (req, res) => {
   let { client, itemName, description, amount } = req.body
+  let item = await stocks.findOne({itemName: itemName.toLowerCase()})
+  if (item) {
+    if (item.amount >= amount) {
+      item.amount -= amount
       
       let doc = new orders(orderSchema)
+      doc.client = client
       doc.itemName = itemName.toLowerCase()
       doc.description = description
       doc.orderStatus = 'pending'
       doc.amount = amount
+      doc.price = item.price
       doc.id = Math.floor((Math.random() * 1000000) + 1)
-  
+      
+      if (item.amount === 0) {
+        item.availability = "Out of Stock"
+        await sendNotif(itemName+" is now out of stock")
+      }
+      await item.save();
       await doc.save();
-      await sendNotif("✅ PO was placed")
+      await sendNotif("The order was placed")
+    } else {
+      await sendNotif("Not enough "+itemName+" on stock")
+    }
+  } else {
+    await sendNotif(itemName+" is not on stock")
+  }
   res.redirect('/')
 });
 
@@ -99,6 +119,7 @@ app.get('/dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/dashboard.html');
 });
 //Add stocks
+
 app.post('/dashboard/addStocks', async (req, res) => {
   const { stockName, availability, amount, price } = req.body;
   let existing = await stocks.findOne({itemName: stockName.toLowerCase()})
@@ -107,7 +128,7 @@ app.post('/dashboard/addStocks', async (req, res) => {
     existing.price = price
     existing.availability = availability
     await existing.save();
-    sendNotif("✅ Updated Existing Stock")
+    sendNotif("Updated Existing Stock")
   } else {
     let doc = new stocks(stockSchema)
     doc.itemName = stockName.toLowerCase()
@@ -116,7 +137,7 @@ app.post('/dashboard/addStocks', async (req, res) => {
     doc.price = price
     doc.id = Math.floor((Math.random() * 1000000) + 1)
     await doc.save();
-    sendNotif("📥 New Stock Added")
+    sendNotif("New Stock Added")
   }
   res.redirect('/dashboard');
 });
@@ -138,9 +159,9 @@ app.post('/dashboard/updateStock', async (req, res) => {
         doc.amount = amount
         await doc.save();
       }
-      sendNotif("📤 Stock Updated")
+      sendNotif("Stock Updated")
     } else {
-      sendNotif("⚠️ Unknown data")
+      sendNotif("Unknown data")
     }
   }
   
@@ -149,7 +170,7 @@ app.post('/dashboard/updateStock', async (req, res) => {
 app.post('/dashboard/updateOrder', async (req, res) => {
   if (req.query.delete) {
     await orders.deleteOne({id: req.query.delete})
-    sendNotif("🗑️ Order Deleted")
+    sendNotif("Order Deleted")
   } else {
     const { status } = req.body;
     let args = status.trim().split(/\n| /)
@@ -157,14 +178,14 @@ app.post('/dashboard/updateOrder', async (req, res) => {
     if (doc) {
       doc.orderStatus = args[0]
       await doc.save();
-      sendNotif("✅ Order Updated")
+      sendNotif("Order Updated")
     }
   }
   
   res.redirect('/dashboard');
 });
-app.get('/dashboard/getPendingOrders', async (req, res) => {
-  let doc = await orders.find();
+app.get('/dashboard/getStocks', async (req, res) => {
+  let doc = await stocks.find();
   res.send(doc).status(200)
   //res.redirect('/admin');
 });
