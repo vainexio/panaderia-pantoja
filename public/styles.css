@@ -128,3 +128,50 @@ th {
     padding: 6px; /* Reduce padding for smaller screens */
   }
 }
+
+#download {
+  text-align: center; /* Center the download link */
+  margin-top: 20px; /* Add some space above the download link */
+}
+
+#download a {
+  display: inline-block; /* Make the link a block element */
+  background-color: #3b5998; /* Background color */
+  color: #fff; /* Text color */
+  text-decoration: none; /* Remove underline */
+  padding: 10px 20px; /* Padding */
+  border-radius: 4px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+#download a:hover {
+  background-color: #2d4373; /* Darker background color on hover */
+}
+
+.edit-btn, .delete-btn {
+  padding: 8px 12px; /* Padding for the buttons */
+  margin-right: 5px; /* Margin between the buttons */
+  border: none; /* Remove default button border */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Cursor style */
+  transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+.edit-btn {
+  background-color: #777777; /* Green background color for edit button */
+  color: white; /* Text color */
+}
+
+.delete-btn {
+  background-color: #f44336; /* Red background color for delete button */
+  color: white; /* Text color */
+}
+
+/* Hover effect for buttons */
+.edit-btn:hover, .delete-btn:hover {
+  background-color: #303030; /* Darker green on hover for edit button */
+}
+
+.delete-btn:hover {
+  background-color: #660000; /* Darker red on hover for delete button */
+}

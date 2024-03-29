@@ -125,7 +125,7 @@ app.get('/generate-excel', async (req, res) => {
 
     // Define column headers
     worksheet.columns = [
-      { header: 'Reference Code', key: 'referenceCode', width: 17},
+      { header: 'Reference Code', key: 'referenceCode', width: 17, length: 10},
       { header: 'Item Name', key: 'itemName', width: 25 },
       { header: 'Pending Amount', key: 'pendingAmount', width: 25 },
       { header: 'Delivered Amount', key: 'deliveredAmount', width: 25 },
