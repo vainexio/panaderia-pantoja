@@ -24,11 +24,11 @@
           <input type="text" id="item-name" name="itemName" required>
         </div>
         <div>
-          <label for="pending-amount">Pending Amount:</label>
+          <label for="pending-amount">Amount:</label>
           <input type="number" id="pending-amount" name="pendingAmount" required>
         </div>
         <div>
-          <label for="delivered-amount">Pending Amount:</label>
+          <label for="delivered-amount">Delivered Amount:</label>
           <input type="number" id="delivered-amount" name="deliveredAmount" required>
         </div>
         <div>
@@ -46,7 +46,8 @@
           <tr>
             <th>Reference Code</th>
             <th>Item Name</th>
-            <th>Pending Amount</th>
+            <th>Amount</th>
+            <th>Delivered Amount</th>
             <th>Description</th>
             <th>Actions</th>
           </tr>
@@ -56,7 +57,7 @@
         </tbody>
       </table>
       <div id="download">
-        <button id="download-btn">Download Orders</button>
+        <a href="/generate-excel" download="orders.xlsx">Download Excel</a>
       </div>
     </section>
   </main>

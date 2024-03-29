@@ -22,7 +22,7 @@ let poSchema = new mongoose.Schema({
   description: String,
   })
 
-let poModel = mongoose.model('PurchaseOrder', poSchema);
+let poModel = mongoose.model('PurchaseOrder2', poSchema);
 
 ///////////////
 
@@ -69,7 +69,9 @@ app.post('/purchase-orders', async (req, res) => {
     order.description = req.body.description
     console.log(req.body)
     await order.save();
-    res.status(201).send(order);
+    
+    const orders = await poModel.find();
+    res.status(201).send(orders);
   } catch (err) {
     res.status(500).send(err);
   }
@@ -108,4 +110,33 @@ app.get('/purchase-orders/download', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+});
+
+app.get('/generate-excel', async (req, res) => {
+  try {
+    const orders = await poModel.find();
+
+    // Convert orders to a format suitable for Excel
+    const excelData = orders.map(order => {
+      return {
+        'Reference Code': order.referenceCode,
+        'Item Name': order.itemName,
+        'Pending Amount': order.pendingAmount,
+        'Description': order.description,
+        'Status': order.pendingAmount !== 0 ? 'Pending' : 'Completed'
+      };
+    });
+
+    // Convert JSON data to Excel format
+    const xls = json2xls(excelData);
+
+    // Write Excel data to a file
+    fs.writeFileSync('orders.xlsx', xls, 'binary');
+
+    // Send the Excel file as a response
+    res.download('orders.xlsx');
+  } catch (err) {
+    console.error('Error generating Excel file:', err);
+    res.status(500).send('Internal Server Error');
+  }
 });

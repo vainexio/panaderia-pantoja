@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${order.referenceCode}</td>
         <td>${order.itemName}</td>
         <td>${order.pendingAmount}</td>
+        <td>${order.deliveredAmount}</td>
         <td>${order.description}</td>
         <td>
           <button class="edit-btn" data-id="${order._id}">Edit</button>
@@ -51,15 +52,15 @@ const handleEditOrder = async (orderId) => {
     const order = await response.json();
 
     // Display a form for editing the order details
-    const updatedDeliveredAmount = prompt('Enter updated pending amount:', order.pendingAmount);
+    const updatedDeliveredAmount = prompt('Enter updated pending amount:', order.deliveredAmount);
 
     // Update the order details in the database
     const updatedOrderData = {
       referenceCode: order.referenceCode,
       itemName: order.itemName,
       pendingAmount: order.pendingAmount,
-      pendingAmount: updatedPendingAmount,
-      description: updatedDescription
+      deliveredAmount: updatedDeliveredAmount,
+      description: order.description,
     };
 
     const updateResponse = await fetch(`/purchase-orders/${orderId}`, {
@@ -87,6 +88,7 @@ const handleEditOrder = async (orderId) => {
       <td>${updatedOrder.referenceCode}</td>
       <td>${updatedOrder.itemName}</td>
       <td>${updatedOrder.pendingAmount}</td>
+      <td>${updatedOrder.deliveredAmount}</td>
       <td>${updatedOrder.description}</td>
       <td>
         <button class="edit-btn" data-id="${updatedOrder._id}">Edit</button>
@@ -126,6 +128,7 @@ const handleEditOrder = async (orderId) => {
       referenceCode: formData.get('referenceCode'),
       itemName: formData.get('itemName'),
       pendingAmount: formData.get('pendingAmount'),
+      deliveredAmount: formData.get('deliveredAmount'),
       description: formData.get('description')
     };
 
