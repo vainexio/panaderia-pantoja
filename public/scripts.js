@@ -143,7 +143,7 @@ const handleEditOrder = async (orderId) => {
 
       if (response.ok) {
         const newOrder = await response.json();
-        populateTable([newOrder]);
+        populateTable(newOrder);
         orderForm.reset();
       } else {
         console.error('Failed to add order:', response.statusText);

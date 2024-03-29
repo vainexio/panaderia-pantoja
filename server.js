@@ -41,7 +41,6 @@ app.use(express.static('public', { // assuming your scripts.js file is in the 'p
 app.get('/purchase-orders', async (req, res) => {
   try {
     const orders = await poModel.find();
-    console.log(orders);
     res.json(orders);
   } catch (err) {
     res.status(500).send(err);
@@ -52,7 +51,6 @@ app.get('/purchase-orders', async (req, res) => {
 app.get('/purchase-orders/:id', async (req, res) => {
   try {
     const order = await poModel.findOne({_id: req.params.id});
-    console.log(order);
     res.json(order);
   } catch (err) {
     res.status(500).send(err);
@@ -71,6 +69,7 @@ app.post('/purchase-orders', async (req, res) => {
     await order.save();
     
     const orders = await poModel.find();
+    //res.json(order)
     res.status(201).send(orders);
   } catch (err) {
     res.status(500).send(err);
@@ -122,8 +121,9 @@ app.get('/generate-excel', async (req, res) => {
         'Reference Code': order.referenceCode,
         'Item Name': order.itemName,
         'Pending Amount': order.pendingAmount,
+        'Delivered Amount': order.deliveredAmount,
         'Description': order.description,
-        'Status': order.pendingAmount !== 0 ? 'Pending' : 'Completed'
+        'Status': order.deliveredAmount-order.pendingAmount !== 0 ? 'Pending' : 'Completed'
       };
     });
 
