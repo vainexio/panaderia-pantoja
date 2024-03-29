@@ -21,19 +21,27 @@
         </div>
         <div>
           <label for="item-name">Item Name:</label>
-          <input type="text" id="item-name" name="itemName" required>
+          <select id="item-name" name="itemName" required>
+            <option value="Item 111111111111111111111111111111111111111111">Item 111111111111111111111111111111111111111111</option>
+            <option value="Item 2">Item 2</option>
+            <option value="Item 3">Item 3</option>
+          </select>
         </div>
         <div>
-          <label for="pending-amount">Amount:</label>
+          <label for="pending-amount">Quantity:</label>
           <input type="number" id="pending-amount" name="pendingAmount" required>
         </div>
         <div>
-          <label for="delivered-amount">Delivered Amount:</label>
+          <label for="delivered-amount">Delivered:</label>
           <input type="number" id="delivered-amount" name="deliveredAmount" required>
         </div>
         <div>
-          <label for="description">Description:</label>
-          <textarea id="description" name="description"></textarea>
+          <label for="description">Item Name:</label>
+          <select id="description" name="description" required>
+            <option value="Desc 1">Desc 1</option>
+            <option value="Desc 2">Desc 2</option>
+            <option value="Desc 3">Desc 3</option>
+          </select>
         </div>
         <button type="submit">Add Order</button>
       </form>

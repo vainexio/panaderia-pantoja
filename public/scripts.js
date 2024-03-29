@@ -59,7 +59,7 @@ const handleEditOrder = async (orderId) => {
       referenceCode: order.referenceCode,
       itemName: order.itemName,
       pendingAmount: order.pendingAmount,
-      deliveredAmount: updatedDeliveredAmount,
+      deliveredAmount: updatedDeliveredAmount ? updatedDeliveredAmount : order.deliveredAmount,
       description: order.description,
     };
 

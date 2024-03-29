@@ -78,3 +78,23 @@ th {
 #download {
   text-align: right;
 }
+
+/* Style the dropdown menu */
+  select {
+    padding: 7px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+
+  /* Style the options */
+  select option {
+    padding: 10px;
+    background-color: #f0f0f0;
+  }
+
+  /* Style the selected option */
+  select option:checked {
+    background-color: #ccc;
+  }

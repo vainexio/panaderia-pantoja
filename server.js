@@ -115,26 +115,43 @@ app.get('/generate-excel', async (req, res) => {
   try {
     const orders = await poModel.find();
 
-    // Convert orders to a format suitable for Excel
-    const excelData = orders.map(order => {
-      return {
-        'Reference Code': order.referenceCode,
-        'Item Name': order.itemName,
-        'Pending Amount': order.pendingAmount,
-        'Delivered Amount': order.deliveredAmount,
-        'Description': order.description,
-        'Status': order.deliveredAmount-order.pendingAmount !== 0 ? 'Pending' : 'Completed'
-      };
+    // Create a new Excel workbook
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Orders');
+
+    // Define column headers
+    worksheet.columns = [
+      { header: 'Reference Code', key: 'referenceCode' },
+      { header: 'Item Name', key: 'itemName' },
+      { header: 'Pending Amount', key: 'pendingAmount' },
+      { header: 'Delivered Amount', key: 'deliveredAmount' },
+      { header: 'Description', key: 'description' },
+      { header: 'Status', key: 'status' }
+    ];
+
+    // Add data to the worksheet
+    orders.forEach(order => {
+      worksheet.addRow({
+        referenceCode: order.referenceCode,
+        itemName: order.itemName,
+        pendingAmount: order.pendingAmount,
+        deliveredAmount: order.deliveredAmount,
+        description: order.description,
+        status: order.deliveredAmount - order.pendingAmount !== 0 ? 'Pending' : 'Completed'
+      });
     });
 
-    // Convert JSON data to Excel format
-    const xls = json2xls(excelData);
+    // Auto-size columns
+    worksheet.columns.forEach(column => {
+      column.width = Math.max(column.header.length, ...column.values.map(value => value ? value.toString().length : 0)) + 2;
+    });
 
-    // Write Excel data to a file
-    fs.writeFileSync('orders.xlsx', xls, 'binary');
+    // Generate the Excel file
+    const filePath = 'orders.xlsx';
+    await workbook.xlsx.writeFile(filePath);
 
     // Send the Excel file as a response
-    res.download('orders.xlsx');
+    res.download(filePath);
   } catch (err) {
     console.error('Error generating Excel file:', err);
     res.status(500).send('Internal Server Error');
