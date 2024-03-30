@@ -163,15 +163,15 @@ th {
 }
 
 .delete-btn {
-  background-color: #f44336; /* Red background color for delete button */
+  background-color: #bd3838; /* Red background color for delete button */
   color: white; /* Text color */
 }
 
 /* Hover effect for buttons */
-.edit-btn:hover, .delete-btn:hover {
+.edit-btn:hover {
   background-color: #303030; /* Darker green on hover for edit button */
 }
 
 .delete-btn:hover {
-  background-color: #660000; /* Darker red on hover for delete button */
+  background-color: #992e2e; /* Darker red on hover for delete button */
 }
