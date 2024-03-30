@@ -169,7 +169,7 @@ th {
 
 /* Hover effect for buttons */
 .edit-btn:hover {
-  background-color: #303030; /* Darker green on hover for edit button */
+  background-color: #474747; /* Darker green on hover for edit button */
 }
 
 .delete-btn:hover {

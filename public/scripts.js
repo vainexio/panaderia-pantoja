@@ -18,13 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
     orderTableBody.innerHTML = '';
     orders.forEach((order) => {
       const row = document.createElement('tr');
-      let status = order.pendingAmount-order.deliveredAmount == 0 ? "#5f905f" : order.pendingAmount-order.deliveredAmount < 0 ? "#b64a4a" :"#b6844a"
-      let warning = order.pendingAmount-order.deliveredAmount < 0 ? '⚠️' : ''
+      let overlapped = order.pendingAmount-order.deliveredAmount < 0
+      let done  = order.pendingAmount-order.deliveredAmount == 0
+      let status = done ? "#5f905f" : overlapped ? "#b64a4a" :"#b6844a"
+      let warning = overlapped ? '⚠️' : ''
+      
+      let doneColor = done ? '#15e400' : 'black'
+      let styleColor = overlapped ? 'red' : done ? '#15e400' : 'black'
       row.innerHTML = `
       <td style="background-color: ${status}; color: white;">${warning+order.referenceCode}</td>
       <td>${order.itemName}</td>
-      <td>${order.pendingAmount}</td>
-      <td>${order.deliveredAmount}</td>
+      <td style="color: ${doneColor}">${order.pendingAmount}</td>
+      <td style="color: ${styleColor}">${order.deliveredAmount}</td>
       <td>${order.description}</td>
       <td>
       <button class="edit-btn" data-id="${order._id}">Edit</button>
@@ -90,13 +95,17 @@ const handleEditOrder = async (orderId) => {
 
     // Update the order in the table
     const rowToUpdate = document.querySelector(`[data-id="${orderId}"]`).parentNode.parentNode;
-    let status = updatedOrder.pendingAmount-updatedOrder.deliveredAmount == 0 ? "#5f905f" : updatedOrder.pendingAmount-updatedOrder.deliveredAmount < 0 ? "#b64a4a" :"#b6844a"
-    let warning = updatedOrder.pendingAmount-updatedOrder.deliveredAmount < 0 ? '⚠️' : ''
+    let overlapped = updatedOrder.pendingAmount-updatedOrder.deliveredAmount < 0
+    let done = updatedOrder.pendingAmount-updatedOrder.deliveredAmount == 0
+    let status = done ? "#5f905f" : overlapped ? "#b64a4a" :"#b6844a"
+    let warning = overlapped ? '⚠️' : ''
+    let doneColor = done ? '#15e400' : 'black'
+    let styleColor = overlapped ? 'red' : done ? '#15e400' : 'black'
     rowToUpdate.innerHTML = `
       <td style="background-color: ${status}; color: white;">${warning+updatedOrder.referenceCode}</td>
       <td>${updatedOrder.itemName}</td>
-      <td>${updatedOrder.pendingAmount}</td>
-      <td>${updatedOrder.deliveredAmount}</td>
+      <td style="color: ${doneColor}">${updatedOrder.pendingAmount}</td>
+      <td style="color: ${styleColor}">${updatedOrder.deliveredAmount}</td>
       <td>${updatedOrder.description}</td>
       <td>
         <button class="edit-btn" data-id="${updatedOrder._id}">Edit</button>
