@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
       let status = done ? "#5f905f" : overlapped ? "#b64a4a" :"#b6844a"
       let warning = overlapped ? '⚠️' : ''
       
-      let doneColor = done ? '#15e400' : 'black'
-      let styleColor = overlapped ? 'red' : done ? '#15e400' : 'black'
+      let doneColor = done ? 'green' : 'black'
+      let styleColor = overlapped ? 'red' : done ? 'green' : 'black'
       row.innerHTML = `
       <td style="background-color: ${status}; color: white;">${warning+order.referenceCode}</td>
       <td>${order.itemName}</td>
@@ -99,8 +99,8 @@ const handleEditOrder = async (orderId) => {
     let done = updatedOrder.pendingAmount-updatedOrder.deliveredAmount == 0
     let status = done ? "#5f905f" : overlapped ? "#b64a4a" :"#b6844a"
     let warning = overlapped ? '⚠️' : ''
-    let doneColor = done ? '#15e400' : 'black'
-    let styleColor = overlapped ? 'red' : done ? '#15e400' : 'black'
+    let doneColor = done ? 'green' : 'black'
+    let styleColor = overlapped ? 'red' : done ? 'green' : 'black'
     rowToUpdate.innerHTML = `
       <td style="background-color: ${status}; color: white;">${warning+updatedOrder.referenceCode}</td>
       <td>${updatedOrder.itemName}</td>
