@@ -59,12 +59,12 @@ h2 {
 
 .user-type button.selected {
   background: #1361b4;
-  color: white;
+  color: rgb(255, 209, 6);;
 }
 
 .user-type button:hover {
   background: #0156b1;
-  color: white;
+  color: rgb(255, 209, 6);;
 }
 
 /* Input Fields */
@@ -91,7 +91,7 @@ input:focus {
 /* Submit Button */
 button {
   background: linear-gradient(145deg, #007bff, #0056b3);
-  color: white;
+  color: rgb(255, 255, 255);
   font-size: 16px;
   padding: 12px 15px;
   width: 100%;
