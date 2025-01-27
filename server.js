@@ -80,6 +80,24 @@ app.use(express.static('public', { // assuming your scripts.js file is in the 'p
   }
 }));
 
+app.post('/login', async (req, res) => {
+  const { email, password, userType } = req.body;
+
+  if (userType === 'doctor') {
+    const doctor = await doctors.findOne({ email, password });
+    if (doctor) {
+      return res.json({ redirect: '/doctors.html', message: 'Login successful as Doctor' });
+    }
+  } else if (userType === 'patient') {
+    const patient = await patient.findOne({ email, password });
+    if (patient) {
+      return res.json({ message: 'Login successful as Patient', user: patient });
+    }
+  }
+return res.redirect('/doctors.html');
+  //return res.status(401).json({ message: 'Invalid credentials or user type' });
+});
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
