@@ -4,163 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
-  <style>
-    /* General Styles */
-    body {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    /* Form Container */
-    form {
-      background: linear-gradient(145deg, #ffffff, #f0f0f0);
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), inset 0 3px 6px rgba(255, 255, 255, 0.5);
-      border-radius: 20px;
-      padding: 30px 40px;
-      width: 350px;
-      text-align: center;
-    }
-
-    h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    select, input {
-      width: 100%;
-      padding: 12px 15px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 25px;
-      box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.05);
-      font-size: 14px;
-      color: #555;
-      background: #fff;
-      outline: none;
-      transition: 0.3s ease;
-    }
-
-    select:focus, input:focus {
-      border-color: #66afe9;
-      box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
-    }
-
-    button {
-      background: linear-gradient(145deg, #4CAF50, #3e8e41);
-      color: white;
-      font-size: 16px;
-      padding: 12px 15px;
-      width: 100%;
-      border: none;
-      border-radius: 25px;
-      box-shadow: 0 5px #3e8e41;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    button:hover {
-      background: linear-gradient(145deg, #5cbf60, #4CAF50);
-    }
-
-    button:active {
-      box-shadow: 0 2px #3e8e41;
-      transform: translateY(3px);
-    }
-
-    /* Error Message */
-    #error-message {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #e74c3c;
-    }
-
-    /* Extra Design Elements */
-    form::before {
-      content: '';
-      position: absolute;
-      top: -50px;
-      left: calc(50% - 25px);
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(145deg, #4CAF50, #3e8e41);
-      border-radius: 50%;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    form::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: calc(50% - 30px);
-      width: 60px;
-      height: 5px;
-      background: #4CAF50;
-      border-radius: 10px;
-    }
-
-    @media (max-width: 400px) {
-      form {
-        width: 90%;
-        padding: 20px;
-      }
-
-      h2 {
-        font-size: 20px;
-      }
-    }
-  </style>
+  <link href="css/login.css" rel="stylesheet">
 </head>
 <body>
   <form id="loginForm">
     <h2>Login</h2>
-    <select name="userType" id="userType" required>
-      <option value="">Select User Type</option>
-      <option value="doctor">Doctor</option>
-      <option value="patient">Patient</option>
-    </select>
+    <div id="error-message" style="display: none;"></div>
+    <div class="user-type">
+      <button type="button" id="doctorButton">Doctor</button>
+      <button type="button" id="patientButton">Patient</button>
+    </div>
     <input type="email" name="email" id="email" placeholder="Email" required />
     <input type="password" name="password" id="password" placeholder="Password" required />
     <button type="submit">Login</button>
   </form>
-  <div id="error-message" style="display: none;"></div>
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const userType = document.getElementById('userType').value;
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email, password, userType })
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.redirect) {
-            window.location.href = data.redirect;
-          } else {
-            const errorMessageElement = document.getElementById('error-message');
-            errorMessageElement.textContent = data.message;
-            errorMessageElement.style.display = 'block';
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    });
-  </script>
 </body>
 </html>
