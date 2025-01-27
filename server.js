@@ -66,12 +66,11 @@ let patients = mongoose.model('Patients', patientsSchema);
 let medicalRecords = mongoose.model('Medical Records', medicalRecordsSchema);
 let appointments = mongoose.model('Appointments', appointmentsSchema);
 let availableDoctors = mongoose.model('Doctor Availability', doctorAvailabilitySchema);
-///////////////
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('public', { // assuming your scripts.js file is in the 'public' folder
+app.use(express.static('public', {
   setHeaders: (res, path) => {
     if (path.endsWith('.js')) {
       res.setHeader('Content-Type', 'text/javascript');
@@ -81,21 +80,22 @@ app.use(express.static('public', { // assuming your scripts.js file is in the 'p
 
 app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
-
+  
+  // Manage login
   if (userType === 'doctor') {
-    const doctor = await doctors.findOne({ email }); // Find user by email only
+    const doctor = await doctors.findOne({ email });
     if (doctor) {
-      // Compare the hashed password
       const isMatch = await bcrypt.compare(password, doctor.password);
       if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
       return res.json({ redirect: '/doctors.html', message: 'Login successful as Doctor' });
     }
-  } else if (userType === 'patient') {
-    const patient = await patients.findOne({ email }); // Find user by email only
+  } 
+  
+  else if (userType === 'patient') {
+    const patient = await patients.findOne({ email });
     if (patient) {
-      // Compare the hashed password
       const isMatch = await bcrypt.compare(password, patient.password);
       if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
@@ -103,7 +103,8 @@ app.post('/login', async (req, res) => {
       return res.json({ redirect: '/patients.html', message: 'Login successful as Patient' });
     }
   }
-  return res.status(401).json({ message: 'Invalid credentials or user type' });
+  
+  return res.status(401).json({ message: 'Invalid email or password' });
 });
 
 

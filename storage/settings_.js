@@ -1,4 +1,3 @@
-
 let colors = {
   red: "#ea3737",
   blue: "#1200ff",
