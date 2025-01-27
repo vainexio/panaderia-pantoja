@@ -84,13 +84,23 @@ app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
 
   if (userType === 'doctor') {
-    const doctor = await doctors.findOne({ email, password });
+    const doctor = await doctors.findOne({ email }); // Find user by email only
     if (doctor) {
+      // Compare the hashed password
+      const isMatch = await bcrypt.compare(password, doctor.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
       return res.json({ redirect: '/doctors.html', message: 'Login successful as Doctor' });
     }
   } else if (userType === 'patient') {
-    const patient = await patients.findOne({ email, password });
+    const patient = await patients.findOne({ email }); // Find user by email only
     if (patient) {
+      // Compare the hashed password
+      const isMatch = await bcrypt.compare(password, patient.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+      }
       return res.json({ message: 'Login successful as Patient', user: patient });
     }
   }
