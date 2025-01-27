@@ -1,75 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Purchase Order Monitoring</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="description" content="I am Ian. This is my portfolio that I created for my Interim Examination in Website Programming">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+
+    <!-- Styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="../assets/css/main.css" rel="stylesheet">
 </head>
+
 <body>
-  <header>
-    <h1>Purchase Order Monitoring System</h1>
-  </header>
-  
-  <main>
-    <section id="add-order">
-      <h2>Add Purchase Order</h2>
-      <form id="order-form">
-        <div>
-          <label for="reference-code">Reference:</label>
-          <input type="text" id="reference-code" name="referenceCode" required>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">My Portfolio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#education">Education</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#works">Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
         </div>
-        <div>
-          <label for="item-name">Item Name:</label>
-          <select id="item-name" name="itemName" required>
-            <option value="Item 1">Item 1</option>
-            <option value="Item 2">Item 2</option>
-            <option value="Item 3">Item 3</option>
-          </select>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="home">
+        <div class="container">
+            <h3 class="i-am">I AM</h3>
+            <h1 class="my-name">IAN IGLIPA</h1>
+            <p class="role">Application and Game Developer</p>
+            <div class="button-container mt-2">
+                <a href="#works" class="btn btn-outline-primary">See My Works</a>
+                <a href="#contact" class="btn btn-primary">Hire Me</a>
+            </div>
         </div>
-        <div>
-          <label for="pending-amount">Quantity:</label>
-          <input type="number" id="pending-amount" name="pendingAmount" required>
+        <div class="container">
+            <h1 class="about-me-title">ABOUT ME</h1>
+            <h2 class="about-me">I'm an IT student at National University Laguna with a passion for technology and
+                innovation. I enjoy exploring areas like app development, IoT, and game design, constantly seeking ways
+                to turn creative ideas into practical solutions!</h2>
         </div>
-        <div>
-          <label for="delivered-amount">Delivered:</label>
-          <input type="number" id="delivered-amount" name="deliveredAmount" required>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="education">
+        <div class="container">
+            <h2 class="title-holder">Education</h2>
+            <div class="education-list">
+                <div class="education-item">
+                    <h3>NATIONAL UNIVERSITY LAGUNA</h3>
+                    <p><strong>BS Information Technology</strong></p>
+                    <p>KM 53 Pan-Philippine Hwy, Calamba, 4027 Laguna</p>
+                    <p>2023 - Present</p>
+                </div>
+                <div class="education-item">
+                    <h3>TANAUAN INSTITUTE, INC.</h3>
+                    <p><strong>Senior High School</strong></p>
+                    <p>J. Gonzales, Barangay 4, Tanauan, 4232 Batangas</p>
+                    <p>2020 - 2022</p>
+                </div>
+                <div class="education-item">
+                    <h3>TANAUAN INSTITUTE, INC.</h3>
+                    <p><strong>Junior High School</strong></p>
+                    <p>J. Gonzales, Barangay 4, Tanauan, 4232 Batangas</p>
+                    <p>2016 - 2020</p>
+                </div>
+                <div class="education-item">
+                    <h3>SAN ANTONIO ELEMENTARY SCHOOL</h3>
+                    <p><strong>Primary Education</strong></p>
+                    <p>San Antonio Rd, Santo Tomas, Batangas</p>
+                    <p>2010 - 2016</p>
+                </div>
+            </div>
         </div>
-        <div>
-          <label for="description">Description:</label>
-          <select id="description" name="description" required>
-            <option value="Desc 1">Desc 1</option>
-            <option value="Desc 2">Desc 2</option>
-            <option value="Desc 3">Desc 3</option>
-          </select>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container text-center">
+            <h2 class="title-holder">Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-item"><img src="assets/images/js.webp" alt="JavaScript logo" class="skill-image"></div>
+                <div class="skill-item"><img src="assets/images/html.webp" alt="HTML logo" class="skill-image"></div>
+                <div class="skill-item"><img src="assets/images/css.webp" alt="CSS logo" class="skill-image"></div>
+                <div class="skill-item"><img src="assets/images/java.webp" alt="Java logo" class="skill-image"></div>
+                <div class="skill-item"><img src="assets/images/kotlin.webp" alt="Kotlin logo" class="skill-image"></div>
+                <div class="skill-item"><img src="assets/images/mongodb.webp" alt="MongoDB logo" class="skill-image"></div>
+                <div class="skill-item"><img src="assets/images/firebase.webp" alt="Firebase logo" class="skill-image"></div>
+                <div class="skill-item"><img src="assets/images/mysql.webp" alt="MySQL logo" class="skill-image"></div>
+            </div>
         </div>
-        <button type="submit">Add Order</button>
-      </form>
+    </section>
+
+    <!-- Works & Achievements Section -->
+    <section id="works" class="works">
+        <div class="container">
+            <h2 class="title-holder">Works & Achievements</h2>
+            <div class="certificates">
+                <h3>CERTIFICATES</h3>
+                <div class="certificate-image-grid">
+                    <img src="assets/images/certificate.webp" alt="Certificate of Copyright Registration">
+                    <img src="assets/images/certificate3.webp" alt="Certificate of Code Combat">
+                    <img src="assets/images/certificate2.webp" alt="Certificate of Wadhwani">
+                </div>
+            </div>
+
+            <!-- Works Section -->
+            <div class="works-section">
+                <h3>WORKS</h3>
+                <div class="works-grid">
+                    <img src="assets/images/calibrium.webp" alt="Work 1">
+                    <img src="assets/images/valcore.webp" alt="Work 2">
+                    <img src="assets/images/adhs.webp" alt="Work 3">
+                    <img src="assets/images/nu.webp" alt="Work 4">
+                    <img src="assets/images/nux.webp" alt="Work 5">
+                    <img src="assets/images/roblox.webp" alt="Work 6">
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="reviews">
+                <h3>TOP REVIEWS</h3>
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <div class="review-user">👤 User</div>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p>Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Sed Do Eiusmod Tempor...</p>
+                        <div class="review-actions">
+                            👍 5 👎 2
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-user">👤 User</div>
+                        <div class="review-stars">⭐⭐⭐⭐</div>
+                        <p>Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Sed Do Eiusmod Tempor...</p>
+                        <div class="review-actions">
+                            👍 8 👎 1
+                        </div>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-user">👤 User</div>
+                        <div class="review-stars">⭐⭐⭐⭐⭐</div>
+                        <p>Lorem Ipsum Dolor Sit Amet, Consectetur Adipiscing Elit. Sed Do Eiusmod Tempor...</p>
+                        <div class="review-actions">
+                            👍 10 👎 1
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="title-holder">Contact Me</h2>
+            <ul class="contact-list">
+                <li>
+                    <img src="assets/images/facebook.webp" alt="Facebook">
+                    <span>Ian Iglipa</span>
+                </li>
+                <li>
+                    <img src="assets/images/gmail.webp" alt="Gmail">
+                    <span>ian.iglipa@gmail.com</span>
+                </li>
+                <li>
+                    <img src="assets/images/phone.webp" alt="Phone">
+                    <span>+63 945-326-3549</span>
+                </li>
+                <li>
+                    <img src="assets/images/discord.webp" alt="Discord">
+                    <span>@vainexio</span>
+                </li>
+                <li>
+                    <img src="assets/images/telegram.webp" alt="Telegram">
+                    <span>t.me/wecutcats</span>
+                </li>
+            </ul>
+        </div>
     </section>
     
-    <section id="order-list">
-      <h2>Purchase Orders</h2>
-      <table id="order-table">
-        <thead>
-          <tr>
-            <th>Reference</th>
-            <th>Item Name</th>
-            <th>Quantity</th>
-            <th>Delivered</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="order-table-body">
-          <!-- Orders will be dynamically added here -->
-        </tbody>
-      </table>
-      <div id="download">
-        <a href="/generate-excel" download="orders.xlsx">Download Excel</a>
-      </div>
-    </section>
-  </main>
-
-  <script src="scripts.js"></script>
 </body>
 </html>
