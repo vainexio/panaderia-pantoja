@@ -89,13 +89,12 @@ app.post('/login', async (req, res) => {
       return res.json({ redirect: '/doctors.html', message: 'Login successful as Doctor' });
     }
   } else if (userType === 'patient') {
-    const patient = await patient.findOne({ email, password });
+    const patient = await patients.findOne({ email, password });
     if (patient) {
       return res.json({ message: 'Login successful as Patient', user: patient });
     }
   }
-return res.redirect('/doctors.html');
-  //return res.status(401).json({ message: 'Invalid credentials or user type' });
+  return res.status(401).json({ message: 'Invalid credentials or user type' });
 });
 
 
