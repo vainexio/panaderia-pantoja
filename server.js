@@ -100,7 +100,7 @@ app.post('/login', async (req, res) => {
       if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
-      return res.json({ message: 'Login successful as Patient', user: patient });
+      return res.json({ redirect: '/patients.html', message: 'Login successful as Patient' });
     }
   }
   return res.status(401).json({ message: 'Invalid credentials or user type' });

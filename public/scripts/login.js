@@ -23,7 +23,7 @@ let selectedUserType = "";
       const password = document.getElementById("password").value;
 
       if (!selectedUserType) {
-        errorMessageElement.textContent = "Please select a user type.";
+        errorMessageElement.textContent = "Please select a user type (doctor/patient).";
         errorMessageElement.style.display = "block";
         return;
       }
