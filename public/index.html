@@ -3,63 +3,125 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="I am Ian. This is my portfolio that I created for my Interim Examination in Website Programming">
+    <meta name="description"
+        content="I am Ian. This is my portfolio that I created for my Interim Examination in Website Programming">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
 
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
 </head>
 
 <body>
+    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Navbar -->
-    <nav class="navbar navbar-dark bg-dark position-fixed h-100" style="width: 250px;">
-    <div class="container-fluid flex-column">
-        <a class="navbar-brand mb-4" href="#">Bulldogs Care Center</a>
-        <ul class="navbar-nav w-100">
+    <nav class="navbar navbar-light bg-light position-fixed h-100 d-flex flex-column">
+        <div>
+            <h1 class="navbar-brand">Bulldogs Care Center</h1>
+        </div>
+        <ul class="navbar-nav flex-grow-1 w-100">
             <li class="nav-item">
-                <a class="nav-link" href="#">Dashboard</a>
+                <a class="nav-link align-items-center nav-item-custom active" href="#" onclick="showSection('dashboard')">
+                    <i class="bi bi-house-door me-2"></i>
+                    Dashboard
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#appointments">Appointments</a>
+                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('appointments')">
+                    <i class="bi bi-calendar-check me-2"></i>
+                    Appointments
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#availability">Manage Availability</a>
+                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('availability')">
+                    <i class="bi bi-clock-history me-2"></i>
+                    Work Schedule
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#settings">Settings</a>
+                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('patient_history')">
+                    <i class="bi bi-person-heart me-2"></i>
+                    Patient History
+                </a>
             </li>
         </ul>
-    </div>
-</nav>
-
-<div style="margin-left: 250px; padding: 20px;">
-    <h1>Welcome to Bulldogs Care Center</h1>
-    <p>Here is your main content.</p>
-</div>
-
+        <ul class="navbar-nav w-100">
+            <li class="nav-item">
+                <a class="nav-link d-flex align-items-center nav-item-custom" href="#" onclick="showSection('settings')">
+                    <i class="bi bi-gear me-2"></i>
+                    Settings
+                </a>
+            </li>
+        </ul>
+    </nav>
+    
     <!-- Home Section -->
-    <section id="home" class="home">
-        <div class="container">
-        </div>
-    </section>
-
-    <section id="appointments" class="appointments">
-        <div class="container">
-        </div>
-    </section>
-
-    <section id="availability" class="availability">
-        <div class="container text-center">
-        </div>
-    </section>
-  
-  <section id="settings" class="settings">
-        <div class="container text-center">
+    <section id="dashboard" class="dashboard section-content">
+        <div class="container mx-auto">
+            <!-- Header -->
+            <header class="mb-6 text-center">
+                <h1 class="text-3xl font-bold mb-2">Analytics And Reports</h1>
+                <p class="text-gray-600">Dive into insights from Common Diagnosis and Appointment trends</p>
+            </header>
+    
+            <!-- Analytics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Common Diagnosis Analytics -->
+                <div class="bg-gray-100 p-6 rounded-2xl shadow-md">
+                    <h2 class="text-2xl font-semibold mb-4">Common Diagnosis Analytics</h2>
+                    <ul class="list-disc pl-4 text-gray-700">
+                        <li>Top 5 Diagnoses</li>
+                        <li>Diagnosis Frequency over Time</li>
+                    </ul>
+                    <button class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-600">View Report</button>
+                </div>
+    
+                <!-- Appointment Analytics -->
+                <div class="bg-gray-100 p-6 rounded-2xl shadow-md">
+                    <h2 class="text-2xl font-semibold mb-4">Appointment Analytics</h2>
+                    <ul class="list-disc pl-4 text-gray-700">
+                        <li>Peak Appointment Days</li>
+                        <li>Appointment Status Breakdown</li>
+                    </ul>
+                    <button class="mt-4 px-6 py-2 bg-green-500 text-white font-semibold rounded-xl shadow-lg hover:bg-green-600">View Report</button>
+                </div>
+            </div>
         </div>
     </section>
     
+    
+    <section id="appointments" class="appointments section-content">
+        <div class="container m-0">
+            <h1 class="title-holder">Scheduled Appointments</h1>
+            <p>Here is your main content.</p>
+        </div>
+    </section>
+    
+    <section id="availability" class="availability section-content">
+        <div class="container m-0">
+            <h1 class="title-holder">Set Availability</h1>
+            <p>Here is your main content.</p>
+        </div>
+    </section>
+
+    <section id="patient_history" class="availability section-content">
+        <div class="container m-0">
+            <h1 class="title-holder">Patient History</h1>
+            <p>Here is your main content.</p>
+        </div>
+    </section>
+    
+    <section id="settings" class="settings section-content" style="display: none;">
+        <div class="container m-0">
+            <h1 class="title-holder">Account Settings</h1>
+            <p>Here is your main content.</p>
+        </div>
+    </section>
+
 </body>
+
 </html>
