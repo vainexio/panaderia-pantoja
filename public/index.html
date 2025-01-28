@@ -11,7 +11,9 @@
 </head>
 <body>
   <form id="loginForm">
-    <h2>Bulldogs Care Center</h2>
+    <div>
+          <img class="logo" src="https://media.discordapp.net/attachments/1301112711278755895/1333636925608820807/Logopit_1738034212146.png?ex=67999dac&is=67984c2c&hm=53ecfc6294a3031f9ba62a1949c7d65a9b40c55bbf7207d67a73c993c5694d8c&=&format=webp&quality=lossless&width=1408&height=440" alt="Logo">
+        </div>
     <div id="error-message"></div>
     <div class="user-type">
       <button type="button" id="doctorButton"><i class="bi bi-clipboard2-pulse-fill p-4"></i> I'm a Doctor</button>
@@ -35,11 +37,11 @@
           value: 100, // Number of particles
           density: {
             enable: true,
-            value_area: 800
+            value_area: 900
           }
         },
         color: {
-          value: "#FFD41C" // Dot color
+          value: "#ffffff" // Dot color
         },
         shape: {
           type: "circle", // Shape of the particles
@@ -67,7 +69,7 @@
         line_linked: {
           enable: true, // Enable lines connecting the dots
           distance: 150, // Distance to draw the line
-          color: "#FFD41C", // Line color
+          color: "#ffffff", // Line color
           opacity: 0.4, // Line opacity
           width: 1 // Line width
         },
@@ -94,7 +96,7 @@
             duration: 0.4
           },
           push: {
-            particles_nb: 0 // Number of particles added on click
+            particles_nb: 4 // Number of particles added on click
           }
         }
       },
