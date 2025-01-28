@@ -24,87 +24,86 @@
   
   <!-- The particles container -->
     <div id="particles-js"></div>
-
     <!-- Include particles.js -->
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     
     <script>
         // Initialize particles.js
         particlesJS('particles-js', {
-            particles: {
-                number: {
-                    value: 100, // Number of particles
-                    density: {
-                        enable: true,
-                        value_area: 800
-                    }
-                },
-                color: {
-                    value: "#ffffff" // Dot color
-                },
-                shape: {
-                    type: "circle", // Shape of the particles
-                },
-                opacity: {
-                    value: 0.5,
-                    random: true,
-                    anim: {
-                        enable: true,
-                        speed: 1,
-                        opacity_min: 0.1,
-                        sync: false
-                    }
-                },
-                size: {
-                    value: 3, // Size of each dot
-                    random: true,
-                    anim: {
-                        enable: true,
-                        speed: 3,
-                        size_min: 0.1,
-                        sync: false
-                    }
-                },
-                line_linked: {
-                    enable: true, // Enable lines connecting the dots
-                    distance: 150, // Distance to draw the line
-                    color: "#ffffff", // Line color
-                    opacity: 0.4, // Line opacity
-                    width: 1 // Line width
-                },
-                move: {
-                    enable: true,
-                    speed: 2, // Speed of the particles
-                    direction: "none",
-                    random: true,
-                    straight: false,
-                    out_mode: "out", // Keep particles inside the screen
-                    bounce: false
-                }
-            },
-            interactivity: {
-                events: {
-                    onhover: {
-                        enable: true,
-                        mode: "repulse" // Repel particles when hovering
-                    },
-                    onclick: {
-                        enable: true,
-                        mode: "push" // Push new particles when clicking
-                    }
-                },
-                modes: {
-                    repulse: {
-                        distance: 100, // Repulsion distance
-                        duration: 0.4
-                    },
-                    push: {
-                        particles_nb: 4 // Number of particles added on click
-                    }
-                }
-            },
-            retina_detect: true // Detect retina displays for crisp visuals
-        });
+      particles: {
+        number: {
+          value: 50, // Number of particles
+          density: {
+            enable: true,
+            value_area: 800
+          }
+        },
+        color: {
+          value: "#ffffff" // Dot color
+        },
+        shape: {
+          type: "circle", // Shape of the particles
+        },
+        opacity: {
+          value: 0.5,
+          random: true,
+          anim: {
+            enable: true,
+            speed: 1,
+            opacity_min: 0.1,
+            sync: false
+          }
+        },
+        size: {
+          value: 3, // Size of each dot
+          random: true,
+          anim: {
+            enable: true,
+            speed: 3,
+            size_min: 0.1,
+            sync: false
+          }
+        },
+        line_linked: {
+          enable: true, // Enable lines connecting the dots
+          distance: 150, // Distance to draw the line
+          color: "#ffffff", // Line color
+          opacity: 0.4, // Line opacity
+          width: 1 // Line width
+        },
+        move: {
+          enable: true,
+          speed: 2, // Speed of the particles
+          direction: "none",
+          random: true,
+          straight: false,
+          out_mode: "out", // Keep particles inside the screen
+          bounce: false
+        }
+      },
+      interactivity: {
+        events: {
+          onhover: {
+            enable: true,
+            mode: "repulse" // Repel particles when hovering
+          },
+          onclick: {
+            enable: true,
+            mode: "push" // Push new particles when clicking
+          }
+        },
+        modes: {
+          repulse: {
+            distance: 100, // Repulsion distance
+            duration: 0.4
+          },
+          push: {
+            particles_nb: 4 // Number of particles added on click
+          }
+        }
+      },
+      retina_detect: true // Detect retina displays for crisp visuals
+    });
     </script>
   
   <script src="scripts/login.js"></script>
