@@ -1,102 +1,115 @@
 :root {
-  --white: #FCFCFC;
-  --light-gray: #e9ecef;
-  --blue: #283986;
-  --secondary-blue: #91b2ff;
-  --yellow: #FFD41C;
-  --secondary-yellow: #ffe365;
-  --black: #202020;
-}
-
-body {
-  scroll-behavior: smooth;
-  font-family: "Roboto Slab", serif;
-  font-weight: 400;
-  line-height: 1.6;
-  margin: 0;
-  padding: 0;
-}
-
-section {
-  height: 100vh;
-  display: flex;
-  margin-left: 250px;
-  padding: 10px;
-  overflow-x: hidden;
-  background: url("https://media.discordapp.net/attachments/1301112711278755895/1333628898990231572/image.png?ex=67999633&is=679844b3&hm=9bb1c9efddd1196c42e74ff14842d26ed789dc1400ff194a32b25e0c8b75b3cd&=&format=webp&quality=lossless&width=1920&height=1080") no-repeat center center/cover;
-}
-
-/* Navigation Bar */
-.navbar {
-  width: 250px;
-  position: sticky;
-  top: 0;
-  z-index: 1020;
-  background-color: var(--blue);
-}
-
-.nav-link {
-  display: flex;
-  width: 100%;
-  position: relative;
-  transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-  border-radius: 12px;
-  background-color: var(--white);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
-.nav-item {
-  display: flex;
-  justify-content: center;
-}
-
-.nav-link:hover {
-  background-color: var(--light-gray);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.nav-link.active {
-  background-color: var(--secondary-yellow);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.nav-link.active::after {
-  width: 87%;
-  background-color: var(--blue);
-  color: var(--white);
-}
-
-.nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background-color: var(--yellow);
-  transition: width 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.nav-link:hover::after {
-  width: 87%;
-}
-
-.navbar-brand {
-  margin-bottom: 5vh;
-  margin-right: 0px;
-  text-align: center;
-  align-items: center;
-  color: white;
-}
-
-.nav-item-custom {
-  padding: 15px 20px;
-  margin-bottom: 1vh;
-  width: calc(100% - 20px);
-}
-
-.nav-item-custom:first-child {
-  margin-top: 10px;
-}
+    --white: #FCFCFC;
+    --light-gray: #e9ecef;
+    --blue: #283986;
+    --secondary-blue: #91b2ff;
+    --yellow: #FFD41C;
+    --secondary-yellow: #ffe365;
+    --black: #202020;
+  }
+  
+  body {
+    scroll-behavior: smooth;
+    font-family: "Roboto Slab", serif;
+    font-weight: 400;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+  
+  section {
+    height: 100vh;
+    display: flex;
+    margin-left: 250px;
+    padding: 10px;
+    overflow-x: hidden;
+    background: url("https://media.discordapp.net/attachments/1301112711278755895/1333628898990231572/image.png?ex=67999633&is=679844b3&hm=9bb1c9efddd1196c42e74ff14842d26ed789dc1400ff194a32b25e0c8b75b3cd&=&format=webp&quality=lossless&width=1920&height=1080") no-repeat center center/cover;
+  }
+  
+  section header {
+      margin-bottom: 1.5rem;
+      text-align: center;
+  }
+  
+  section h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: #222222;
+  }
+  
+  /* Navigation Bar */
+  .navbar {
+    width: 250px;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    background-color: var(--blue);
+  }
+  
+  .nav-link {
+    display: flex;
+    width: 100%;
+    position: relative;
+    transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    border-radius: 12px;
+    background-color: transparent;
+    color: white;
+  }
+  
+  .nav-item {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .nav-link:hover {
+    background-color: #ffffff34;
+    color: white;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .nav-link.active {
+    background-color: var(--secondary-yellow);
+    /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);*/
+  }
+  
+  .nav-link.active::after {
+    width: 87%;
+    background-color: var(--blue);
+    color: var(--white);
+  }
+  
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--white);
+    transition: width 0.3s ease;
+    transform: translateX(-50%);
+  }
+  
+  .nav-link:hover::after {
+    width: 87%;
+  }
+  
+  .navbar-brand {
+    margin-bottom: 5vh;
+    margin-right: 0px;
+    text-align: center;
+    align-items: center;
+    color: white;
+  }
+  
+  .nav-item-custom {
+    padding: 15px 20px;
+    margin-bottom: 1vh;
+    width: calc(100% - 20px);
+  }
+  
+  .nav-item-custom:first-child {
+    margin-top: 10px;
+  }
