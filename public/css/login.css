@@ -1,153 +1,167 @@
 /* Universal box-sizing fix */
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
+
 /* Body Styling */
 body {
-  font-family: "Roboto Slab", serif;
-  font-weight: 400;
-  line-height: 1.6;
-  background: url('https://media.discordapp.net/attachments/1301112711278755895/1333446861192826880/image.png?ex=6798eca9&is=67979b29&hm=5b2bd553569596471687a0c8e31ca9b3ae3a282a59535b57134f97b92cc5883f&=&format=webp&quality=lossless&width=1193&height=671') no-repeat center center/cover;
-  margin: 0;
-  padding: 0;
-  background-color: #f9f9f9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  overflow: hidden;
+    font-family: "Roboto Slab", serif;
+    font-weight: 400;
+    line-height: 1.6;
+    background: url('https://media.discordapp.net/attachments/1301112711278755895/1333446861192826880/image.png?ex=6798eca9&is=67979b29&hm=5b2bd553569596471687a0c8e31ca9b3ae3a282a59535b57134f97b92cc5883f&=&format=webp&quality=lossless&width=1193&height=671') no-repeat center center/cover;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#particles-js {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #00000000;
+    z-index: -1;
 }
 
 /* Form Container */
 form {
-  background: linear-gradient(145deg, #ffffff, #f0f0f0);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), inset 0 3px 6px rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
-  padding: 30px 20px; /* Adjust padding for better responsiveness */
-  width: 350px;
-  text-align: center;
-  overflow: hidden; /* Prevent content overflow */
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), inset 0 3px 6px rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    padding: 30px 20px;
+    /* Adjust padding for better responsiveness */
+    width: 350px;
+    text-align: center;
+    overflow: hidden;
+    /* Prevent content overflow */
 }
 
 h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #333333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333333;
 }
 
 /* Input Fields */
 input {
-  width: 100%; /* Ensure inputs take up the full form width */
-  padding: 12px 15px;
-  margin-bottom: 15px;
-  border: 1px solid #dddddd;
-  border-radius: 8px;
-  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.05);
-  font-size: 14px;
-  color: #555555;
-  background: #ffffff;
-  outline: none;
-  transition: 0.3s ease;
-  font-family: "Roboto Slab", serif;
+    width: 100%;
+    /* Ensure inputs take up the full form width */
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.05);
+    font-size: 14px;
+    color: #555555;
+    background: #ffffff;
+    outline: none;
+    transition: 0.3s ease;
+    font-family: "Roboto Slab", serif;
 }
 
 input:focus {
-  border-color: #66afe9;
-  box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+    border-color: #66afe9;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
 }
 
 /* Submit Button */
 button {
-  background: linear-gradient(145deg, #007bff, #0056b3);
-  color: rgb(255, 255, 255);
-  font-size: 16px;
-  padding: 12px 15px;
-  width: 100%;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-  font-family: "Roboto Slab", serif;
+    background: linear-gradient(145deg, #007bff, #0056b3);
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    padding: 12px 15px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    font-family: "Roboto Slab", serif;
 }
 
 button.loading span {
-  display: none;
+    display: none;
 }
 
 button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
+    background-color: #cccccc;
+    cursor: not-allowed;
 }
 
 button:hover {
-  background: linear-gradient(145deg, #007bff, #0069d9);
+    background: linear-gradient(145deg, #007bff, #0069d9);
 }
 
 button:active {
-  box-shadow: 0 2px #202020;
-  transform: translateY(3px);
+    box-shadow: 0 2px #202020;
+    transform: translateY(3px);
 }
 
 /* User-Type Buttons */
 .user-type {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
 }
 
 .user-type button {
-  font-family: "Roboto Slab", serif;
-  flex: 1;
-  margin: 0 5px;
-  padding: 10px;
-  background: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-  color: rgb(27, 27, 27);
+    font-family: "Roboto Slab", serif;
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px;
+    background: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+    color: rgb(27, 27, 27);
 }
 
 .user-type button.selected {
-  background: #1361b4;
-  color: rgb(255, 209, 6);
+    background: #1361b4;
+    color: rgb(255, 209, 6);
 }
 
 .user-type button:hover {
-  background: #0156b1;
-  color: rgb(255, 209, 6);
+    background: #0156b1;
+    color: rgb(255, 209, 6);
 }
 
 /* Error Message */
 #error-message {
-  font-size: 14px;
-  color: #e74c3c;
-  margin-bottom: 15px;
+    font-size: 14px;
+    color: #e74c3c;
+    margin-bottom: 15px;
 }
 
 /* Form Design Elements */
 form::before {
-  content: '';
-  position: absolute;
-  top: -50px;
-  left: calc(50% - 25px);
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(145deg, #007bff, #0056b3);
-  border-radius: 50%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 25px);
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(145deg, #007bff, #0056b3);
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 form::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: calc(50% - 30px);
-  width: 60px;
-  height: 5px;
-  background: #007bff;
-  border-radius: 10px;
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: calc(50% - 30px);
+    width: 60px;
+    height: 5px;
+    background: #007bff;
+    border-radius: 10px;
 }
