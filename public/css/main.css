@@ -1,8 +1,10 @@
 :root {
   --white: #FCFCFC;
-  --light-gray: #9b9b9b;
+  --light-gray: #e9ecef;
   --blue: #35408E;
-  --gold: #FFD41C;
+  --secondary-blue: #91b2ff;
+  --yellow: #FFD41C;
+  --secondary-yellow: #ffe365;
   --black: #202020;
 }
 
@@ -30,7 +32,7 @@ section {
   position: sticky;
   top: 0;
   z-index: 1020;
-  background-color: --white;
+  background-color: var(--blue);
 }
 
 .nav-link {
@@ -39,30 +41,30 @@ section {
   position: relative;
   transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   border-radius: 12px;
-  background-color: --white;
+  background-color: var(--white);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .nav-item {
   display: flex;
   justify-content: center;
-  /* Center the nav-link horizontally */
 }
 
 .nav-link:hover {
-  background-color: --light-gray;
-  /* Slightly darker background on hover */
+  background-color: var(--light-gray);
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* Enhanced shadow on hover */
   transform: translateY(-2px);
-  /* Slight lift effect */
 }
 
 .nav-link.active {
-  background-color: --blue;
-  /* Highlighted background for active items */
+  background-color: var(--secondary-yellow);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
-  /* Stronger shadow for active items */
+}
+
+.nav-link.active::after {
+  width: 87%;
+  background-color: var(--blue);
+  color: var(--white);
 }
 
 .nav-link::after {
@@ -72,7 +74,7 @@ section {
   left: 50%;
   width: 0;
   height: 2px;
-  background-color: --blue;
+  background-color: var(--yellow);
   transition: width 0.3s ease;
   transform: translateX(-50%);
   /* Center the line on the x-axis */
@@ -99,9 +101,4 @@ section {
 .nav-item-custom:first-child {
   margin-top: 10px;
   /* Adjust top spacing for the first item */
-}
-
-.nav-link.active::after {
-  width: 87%;
-  background-color: --blue;
 }
