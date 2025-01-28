@@ -29,8 +29,8 @@ section {
     padding: 10px;
     overflow-x: hidden;
     background: url("https://media.discordapp.net/attachments/1301112711278755895/1333628898990231572/image.png?ex=67999633&is=679844b3&hm=9bb1c9efddd1196c42e74ff14842d26ed789dc1400ff194a32b25e0c8b75b3cd&=&format=webp&quality=lossless&width=1920&height=1080");
-    background-repeat: no-repeat;
     background-size: cover;
+    background-repeat: no-repeat;
 }
 
 section header {
@@ -78,7 +78,6 @@ section h1 {
 
 .nav-link.active {
     background-color: var(--secondary-yellow);
-    /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);*/
 }
 
 .nav-link.active::after {
@@ -119,4 +118,65 @@ section h1 {
 
 .nav-item-custom:first-child {
     margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    /* Shrink the navbar */
+    .navbar {
+        width: 80px;
+        padding: 0;
+    }
+
+    /* Adjust nav links to show only icons */
+    .nav-link {
+        justify-content: center;
+        padding: 10px;
+        color: white;
+    }
+
+    .nav-link i {
+        font-size: 1.5rem; /* Larger icon for visibility */
+    }
+
+    .nav-link span {
+        display: none; /* Hide text on smaller screens */
+    }
+
+    .nav-item-custom {
+        padding: 10px 0;
+        margin: 5px 0;
+    }
+
+    /* Adjust the logo size */
+    .navbar img {
+        width: 50px; /* Shrink logo */
+        height: auto;
+        margin: 10px auto;
+    }
+
+    /* Adjust sections to match the navbar size */
+    section {
+        margin-left: 80px; /* Adjust to the shrunk navbar width */
+        padding: 10px;
+    }
+
+    section h1 {
+        font-size: 1.5rem; /* Adjust font size for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    /* Further adjustments for very small screens */
+    .navbar {
+        width: 60px;
+    }
+
+    .nav-link i {
+        font-size: 1.25rem; /* Slightly smaller icons */
+    }
+
+    section {
+        margin-left: 60px; /* Match the navbar width */
+    }
 }
