@@ -32,39 +32,7 @@ form {
 h2 {
   font-size: 24px;
   margin-bottom: 20px;
-  color: #333;
-}
-
-/* User-Type Buttons */
-.user-type {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.user-type button {
-  font-family: "Roboto Slab", serif;
-  flex: 1;
-  margin: 0 5px;
-  padding: 10px;
-  background: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-  color: rgb(27, 27, 27);
-}
-
-.user-type button.selected {
-  background: #1361b4;
-  color: rgb(255, 209, 6);
-}
-
-.user-type button:hover {
-  background: #0156b1;
-  color: rgb(255, 209, 6);
+  color: #333333;
 }
 
 /* Input Fields */
@@ -119,6 +87,38 @@ button:hover {
 button:active {
   box-shadow: 0 2px #202020;
   transform: translateY(3px);
+}
+
+/* User-Type Buttons */
+.user-type {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.user-type button {
+  font-family: "Roboto Slab", serif;
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  background: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  color: rgb(27, 27, 27);
+}
+
+.user-type button.selected {
+  background: #1361b4;
+  color: rgb(255, 209, 6);
+}
+
+.user-type button:hover {
+  background: #0156b1;
+  color: rgb(255, 209, 6);
 }
 
 /* Error Message */
