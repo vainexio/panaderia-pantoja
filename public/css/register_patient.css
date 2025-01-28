@@ -1,0 +1,9 @@
+.card {
+  max-width: 800px; /* Adjust width as needed */
+  width: 700px; /* Ensures responsiveness */
+}
+
+.d-grid {
+  width: 50%;
+  
+}
