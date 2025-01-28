@@ -8,8 +8,10 @@
     --black: #202020;
 }
 
-img {
-    max-width: 100%;
+
+img.logo {
+    display: block;
+    width: 100%;
     height: auto;
 }
 
@@ -173,7 +175,10 @@ section h1 {
 }
 
 @media (max-width: 480px) {
-
+  
+  img.logo {
+        display: none; /* Hide the original image */
+    }
     /* Further adjustments for very small screens */
     .navbar {
         width: 70px;
@@ -183,6 +188,7 @@ section h1 {
         margin-left: 60px;
         /* Match the navbar width */
         background: url("https://media.discordapp.net/attachments/1301112711278755895/1333458351811727441/image.png?ex=6799a01d&is=67984e9d&hm=1b861aabfc327a3a1f2f15be4608b52b7f84b2d507115b004ec1771c6872788a&=&format=webp&quality=lossless&width=1193&height=671");
+      background-size: cover;
     }
 
     .nav-link i {
