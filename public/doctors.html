@@ -15,6 +15,7 @@
   
     <link href="css/main.css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/register_patient.css" rel="stylesheet">
 </head>
 
 <body>
@@ -45,7 +46,7 @@
                 </a>
             </li>
           <li class="nav-item">
-                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('register_patient')">
+                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('patient_registration')">
                     <i class="bi bi-person-add me-2"></i>
                     <span>Register Patient</span>
                 </a>
@@ -129,14 +130,112 @@
         </div>
     </section>
   
-  <section id="register_patient" class="register_patient section-content">
-        <div class="container m-auto">
-          <header class="mb-6 text-center">
-                <h1>Register Patient</h1>
-                <p class="text-gray-600">Subtext here</p>
-            </header>
-        </div>
-    </section>
+  <section id="patient_registration" class="patient_registration section-content">
+  <div class="card shadow-lg rounded-4 p-4 mx-auto" style="max-width: 500px;">
+    <header class="mb-4 text-center">
+      <h1 class="fw-bold">Register Patient Account</h1>
+      <p class="text-muted">Fill in the details below to create a new patient account</p>
+    </header>
+    <form id="patientForm" class="needs-validation" novalidate>
+      <!-- First Name -->
+      <div class="mb-3">
+        <label for="first_name" class="form-label">First Name</label>
+        <input type="text" id="first_name" name="first_name" class="form-control rounded-3" required>
+      </div>
+
+      <!-- Last Name -->
+      <div class="mb-3">
+        <label for="last_name" class="form-label">Last Name</label>
+        <input type="text" id="last_name" name="last_name" class="form-control rounded-3" required>
+      </div>
+
+      <!-- Sex -->
+      <div class="mb-3">
+        <label for="sex" class="form-label">Sex</label>
+        <select id="sex" name="sex" class="form-select rounded-3" required>
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Birthdate -->
+      <div class="mb-3">
+        <label for="birthdate" class="form-label">Birthdate</label>
+        <input type="date" id="birthdate" name="birthdate" class="form-control rounded-3" required>
+      </div>
+
+      <!-- Contact Number -->
+      <div class="mb-3">
+        <label for="contact_number" class="form-label">Contact Number</label>
+        <input type="tel" id="contact_number" name="contact_number" class="form-control rounded-3" required>
+      </div>
+
+      <!-- Patient Type -->
+      <div class="mb-3">
+        <label for="patient_type" class="form-label">Patient Type</label>
+        <select id="patient_type" name="patient_type" class="form-select rounded-3" required>
+          <option value="">Select</option>
+          <option value="Student">Student</option>
+          <option value="Faculty">Faculty</option>
+          <option value="Staff">Staff</option>
+          <option value="Staff">Visitor</option>
+        </select>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" class="form-control rounded-3" required>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control rounded-3" required>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary rounded-3">Register</button>
+      </div>
+    </form>
+    <div id="notification" class="alert d-none mt-4 rounded-3" role="alert"></div>
+  </div>
+
+  <script>
+    document.getElementById('patientForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const formData = Object.fromEntries(new FormData(event.target).entries());
+      const notification = document.getElementById('notification');
+      notification.classList.add('d-none');
+
+      try {
+        const response = await fetch('/api/registerPatient', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          notification.textContent = 'Patient account registered successfully!';
+          notification.className = 'alert alert-success mt-4 rounded-3';
+        } else {
+          const error = await response.json();
+          notification.textContent = error.message || 'Failed to register patient.';
+          notification.className = 'alert alert-danger mt-4 rounded-3';
+        }
+      } catch (err) {
+        notification.textContent = 'An error occurred. Please try again later.';
+        notification.className = 'alert alert-danger mt-4 rounded-3';
+      } finally {
+        notification.classList.remove('d-none');
+      }
+    });
+  </script>
+</section>
     
     <section id="settings" class="settings section-content">
         <div class="container m-auto">
