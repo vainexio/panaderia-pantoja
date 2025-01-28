@@ -45,7 +45,7 @@ body {
 
 /* Form Container */
 form {
-   z-index: 1;
+    z-index: 1;
     background: linear-gradient(145deg, #ffffff, #f0f0f0);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), inset 0 3px 6px rgba(255, 255, 255, 0.5);
     border-radius: 8px;
