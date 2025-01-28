@@ -174,7 +174,7 @@ section h1 {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   
   img.logo {
         display: none; /* Hide the original image */

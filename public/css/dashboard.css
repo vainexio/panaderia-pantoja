@@ -5,7 +5,7 @@
     --secondary-blue: #91b2ff;
     --yellow: #FFD41C;
     --secondary-yellow: #ffe365;
-    --black: #202020;
+    --black: #363636;
 }
 
 /* Dashboard */
@@ -72,23 +72,40 @@
     color: var(--secondary-yellow);
     border-radius: 12px;
     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
-    margin-top: 1rem; /* Ensures button stays inside card */
+    margin-top: 1rem;
+    /* Ensures button stays inside card */
 }
 
 .view-report-button:hover {
-    background-color: #2563eb;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    color: white;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
-.view-report-button.green {
-    background-color: #10b981;
+.view-report-button::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--white);
+    transition: width 0.3s ease;
+    transform: translateX(-50%);
 }
 
-.view-report-button.green:hover {
-    background-color: #059669;
+.nav-link:hover::after {
+    width: 87%;
+}
+
+.nav-item-custom {
+    padding: 15px 20px;
+    margin-bottom: 1vh;
+    width: calc(100% - 20px);
 }
 
 @media (min-width: 768px) {
+
     /* For medium screens and above (tablet +) */
     .grid {
         grid-template-columns: repeat(2, 1fr);
@@ -118,11 +135,13 @@
     }
 
     .card {
-        height: auto; /* Remove fixed height for mobile view */
+        height: auto;
+        /* Remove fixed height for mobile view */
     }
 
     .view-report-button {
-        width: 100%; /* Ensure button stretches within the card */
+        width: 100%;
+        /* Ensure button stretches within the card */
     }
 
     .container {
