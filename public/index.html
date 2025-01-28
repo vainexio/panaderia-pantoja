@@ -32,14 +32,14 @@
         particlesJS('particles-js', {
       particles: {
         number: {
-          value: 50, // Number of particles
+          value: 100, // Number of particles
           density: {
             enable: true,
             value_area: 800
           }
         },
         color: {
-          value: "#ffffff" // Dot color
+          value: "#FFD41C" // Dot color
         },
         shape: {
           type: "circle", // Shape of the particles
@@ -67,13 +67,13 @@
         line_linked: {
           enable: true, // Enable lines connecting the dots
           distance: 150, // Distance to draw the line
-          color: "#ffffff", // Line color
+          color: "#FFD41C", // Line color
           opacity: 0.4, // Line opacity
           width: 1 // Line width
         },
         move: {
           enable: true,
-          speed: 2, // Speed of the particles
+          speed: 1, // Speed of the particles
           direction: "none",
           random: true,
           straight: false,
@@ -87,10 +87,6 @@
             enable: true,
             mode: "repulse" // Repel particles when hovering
           },
-          onclick: {
-            enable: true,
-            mode: "push" // Push new particles when clicking
-          }
         },
         modes: {
           repulse: {
@@ -98,7 +94,7 @@
             duration: 0.4
           },
           push: {
-            particles_nb: 4 // Number of particles added on click
+            particles_nb: 0 // Number of particles added on click
           }
         }
       },
