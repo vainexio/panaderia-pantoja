@@ -7,7 +7,10 @@
     --secondary-yellow: #ffe365;
     --black: #202020;
   }
-  
+  img {
+            max-width: 100%;
+            height: auto;
+        }
   body {
     scroll-behavior: smooth;
     font-family: "Roboto Slab", serif;
