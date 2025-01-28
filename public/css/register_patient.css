@@ -1,9 +1,24 @@
-.card {
-  max-width: 800px; /* Adjust width as needed */
+.register-card {
   width: 700px; /* Ensures responsiveness */
+  background-color: #F3F4F6;
 }
 
 .d-grid {
-  width: 50%;
+  width: 100%;
+  justify-content: end;
+}
+
+.d-grid button {
+  width: 10vw;
+}
+
+@media (max-width: 768px) {
+  .register-card {
+  width: 100%; /* Ensures responsiveness */
+  background-color: #F3F4F6;
+}
   
+  .d-grid button {
+    width: 100px;
+}
 }
