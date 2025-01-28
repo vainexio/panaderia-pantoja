@@ -19,10 +19,8 @@ document.addEventListener("DOMContentLoaded", function() {
             this.classList.add('active');
         });
     });
-});
-
-// Patient registration
-document.getElementById('patientForm').addEventListener('submit', async function(event) {
+  
+  document.getElementById('patientForm').addEventListener('submit', async function(event) {
       event.preventDefault();
 
       const formData = Object.fromEntries(new FormData(event.target).entries());
@@ -45,9 +43,10 @@ document.getElementById('patientForm').addEventListener('submit', async function
           notification.className = 'alert alert-danger mt-4 rounded-3';
         }
       } catch (err) {
-        notification.textContent = 'An error occurred. Please try again later.';
+        notification.textContent = err//'An error occurred. Please try again later.';
         notification.className = 'alert alert-danger mt-4 rounded-3';
       } finally {
         notification.classList.remove('d-none');
       }
     });
+});

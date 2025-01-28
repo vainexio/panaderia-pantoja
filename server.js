@@ -106,10 +106,70 @@ app.post('/login', async (req, res) => {
   
   return res.status(401).json({ message: 'Invalid email or password' });
 });
-app.post('/registerPatient', async (req, res) => {
-  
-});
 
+const generatePatientId = async () => {
+  let patientId;
+  let isUnique = false;
+
+  while (!isUnique) {
+    patientId = 'PT-' + Math.floor(100000 + Math.random() * 900000); 
+    const existingPatient = await patients.findOne({ patient_id: patientId });
+    if (!existingPatient) {
+      isUnique = true;
+    }
+  }
+
+  return patientId;
+};
+
+app.post('/registerPatient', async (req, res) => {
+  try {
+    const { first_name, last_name, email, password, sex, birthdate, contact_number, patient_type } = req.body;
+    console.log(req.body)
+    if (!first_name || !last_name || !email || !password || !sex || !birthdate || !contact_number || !patient_type) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+
+    // Check if patient with same name or email already exists
+    const existingPatient = await patients.findOne({
+      $or: [
+        { first_name, last_name },
+        { email }
+      ]
+    });
+
+    if (existingPatient) {
+      return res.status(400).json({ message: "Patient with same name or email already exists." });
+    }
+
+    // Generate a unique patient ID
+    const patient_id = await generatePatientId();
+
+    // Hash password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new patient
+    const newPatient = new patients({
+      patient_id,
+      first_name,
+      last_name,
+      sex,
+      birthdate,
+      contact_number,
+      patient_type,
+      email,
+      password: hashedPassword
+    });
+
+    // Save to database
+    await newPatient.save();
+
+    res.status(201).json({ message: "Patient registered successfully!" });
+  } catch (error) {
+    console.error("Error registering patient:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
 
 // Start the server
 const PORT = process.env.PORT || 3000;
