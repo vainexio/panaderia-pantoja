@@ -23,7 +23,7 @@ section {
   margin-left: 250px;
   padding: 10px;
   overflow-x: hidden;
-  background: url("https://media.discordapp.net/attachments/1301112711278755895/1333458351811727441/image.png?ex=6798f75d&is=6797a5dd&hm=29f792b21c8b756457caa8c2a107337159e005f7003349754df3894a19570500&=&format=webp&quality=lossless&width=1193&height=671") no-repeat center center/cover;
+  background: url("https://media.discordapp.net/attachments/1301112711278755895/1333624773896573000/image.png") no-repeat center center/cover;
 }
 
 /* Navigation Bar */
@@ -77,7 +77,6 @@ section {
   background-color: var(--yellow);
   transition: width 0.3s ease;
   transform: translateX(-50%);
-  /* Center the line on the x-axis */
 }
 
 .nav-link:hover::after {
@@ -94,11 +93,9 @@ section {
 .nav-item-custom {
   padding: 15px 20px;
   margin-bottom: 1vh;
-  /* Space between items */
   width: calc(100% - 20px);
 }
 
 .nav-item-custom:first-child {
   margin-top: 10px;
-  /* Adjust top spacing for the first item */
 }
