@@ -1,5 +1,20 @@
+:root {
+    --white: #FCFCFC;
+    --light-gray: #e9ecef;
+    --blue: #283986;
+    --secondary-blue: #91b2ff;
+    --yellow: #FFD41C;
+    --secondary-yellow: #ffe365;
+    --black: #363636;
+}
+
+.patient_registration {
+  background: none;
+  background-color: var(--blue);
+}
 .register-card {
-  width: 700px; /* Ensures responsiveness */
+  width: 80%; /* Ensures responsiveness */
+  height: 100%;
   background-color: #F3F4F6;
 }
 
@@ -16,7 +31,7 @@
 @media (max-width: 768px) {
   .register-card {
   width: 100%; /* Ensures responsiveness */
-  background-color: transparent;
+  height: auto;
   box-shadow: none;
 }
   

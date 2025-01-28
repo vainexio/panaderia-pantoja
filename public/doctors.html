@@ -130,7 +130,7 @@
         </div>
     </section>
 <section id="patient_registration" class="patient_registration section-content">
-  <div class="register-card shadow-lg rounded-4 p-4 mx-auto">
+  <div class="register-card rounded-4 p-4 mx-auto">
     <header class="mb-4 text-center">
       <h1 class="fw-bold">Register Patient Account</h1>
       <p class="text-muted">Fill in the details below to create a new patient account</p>
@@ -185,16 +185,22 @@
         </div>
 
         <!-- Email -->
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="email" class="form-label">Email</label>
           <input type="email" id="email" name="email" class="form-control rounded-3" required/>
         </div>
 
         <!-- Password -->
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="password" class="form-label">Password</label>
           <input type="password" id="password" name="password" class="form-control rounded-3" required/>
         </div>
+        
+        <div class="col-md-4">
+          <label for="confirm_password" class="form-label">Confirm Password</label>
+          <input type="confirm_password" id="confirm_password" name="confirm_password" class="form-control rounded-3" required/>
+        </div>
+        
       </div>
       
       <!-- Submit Button -->

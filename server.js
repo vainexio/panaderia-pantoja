@@ -126,7 +126,7 @@ app.post('/registerPatient', async (req, res) => {
   try {
     const { first_name, last_name, email, password, sex, birthdate, contact_number, patient_type } = req.body;
     console.log(req.body)
-    if (!first_name || !last_name || !email || !password || !sex || !birthdate || !contact_number || !patient_type) {
+    if (!first_name || !last_name || !email || !password || !sex || !birthdate || !contact_number || !patient_type || !confirm_password) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
