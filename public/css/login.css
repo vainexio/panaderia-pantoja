@@ -89,7 +89,7 @@ input:focus {
 }
 
 /* Submit Button */
-.button {
+button {
   background: linear-gradient(145deg, #007bff, #0056b3);
   color: rgb(255, 255, 255);
   font-size: 16px;
@@ -103,20 +103,20 @@ input:focus {
   font-family: "Roboto Slab", serif;
 }
 
-.button.loading span {
+button.loading span {
   display: none;
 }
 
-.button:disabled {
+button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
 
-.button:hover {
+button:hover {
   background: linear-gradient(145deg, #007bff, #0069d9);
 }
 
-.button:active {
+button:active {
   box-shadow: 0 2px #202020;
   transform: translateY(3px);
 }

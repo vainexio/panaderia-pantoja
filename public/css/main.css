@@ -26,7 +26,9 @@
     margin-left: 250px;
     padding: 10px;
     overflow-x: hidden;
-    background: url("https://media.discordapp.net/attachments/1301112711278755895/1333628898990231572/image.png?ex=67999633&is=679844b3&hm=9bb1c9efddd1196c42e74ff14842d26ed789dc1400ff194a32b25e0c8b75b3cd&=&format=webp&quality=lossless&width=1920&height=1080") no-repeat center center/cover;
+    background: url("https://media.discordapp.net/attachments/1301112711278755895/1333628898990231572/image.png?ex=67999633&is=679844b3&hm=9bb1c9efddd1196c42e74ff14842d26ed789dc1400ff194a32b25e0c8b75b3cd&=&format=webp&quality=lossless&width=1920&height=1080");
+    background-repeat: no-repeat;
+    background-size: cover;
   }
   
   section header {
