@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         setTimeout(function() {
           notification.classList.add('d-none');
-        },3000)
+        },5000)
       } catch (err) {
         notification.textContent = err//'An error occurred. Please try again later.';
         notification.className = 'alert alert-danger mt-4 rounded-3';

@@ -124,10 +124,15 @@ const generatePatientId = async () => {
 
 app.post('/registerPatient', async (req, res) => {
   try {
-    const { first_name, last_name, email, password, sex, birthdate, contact_number, patient_type } = req.body;
+    const { first_name, last_name, email, password, sex, birthdate, contact_number, patient_type, confirm_password } = req.body;
     console.log(req.body)
+    
     if (!first_name || !last_name || !email || !password || !sex || !birthdate || !contact_number || !patient_type || !confirm_password) {
       return res.status(400).json({ message: "All fields are required." });
+    }
+    
+    if (confirm_password !== password) {
+      return res.status(400).json({ message: "Password confirmation do not match." });
     }
 
     // Check if patient with same name or email already exists

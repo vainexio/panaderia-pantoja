@@ -15,7 +15,9 @@
 .register-card {
   width: 80%; /* Ensures responsiveness */
   height: 100%;
-  background-color: #F3F4F6;
+  
+  background: url('https://media.discordapp.net/attachments/1301112711278755895/1333783368126697634/image.png?ex=679a260f&is=6798d48f&hm=aa25f7913d60ec92b87388d8aaa8ac731993ce8b3bc49d9051089deff6772428&=&format=webp&quality=lossless&width=1320&height=1060') no-repeat center center/cover;
+  background-size: cover;
 }
 
 .d-grid {
