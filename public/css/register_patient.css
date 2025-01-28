@@ -10,15 +10,17 @@
 
 .d-grid button {
   width: 10vw;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
   .register-card {
   width: 100%; /* Ensures responsiveness */
-  background-color: #F3F4F6;
+  background-color: transparent;
+  box-shadow: none;
 }
   
   .d-grid button {
-    width: 100px;
+    width: 150px;
 }
 }

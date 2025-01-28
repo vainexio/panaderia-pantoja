@@ -112,7 +112,7 @@ const generatePatientId = async () => {
   let isUnique = false;
 
   while (!isUnique) {
-    patientId = 'PT-' + Math.floor(100000 + Math.random() * 900000); 
+    patientId = Math.floor(100000 + Math.random() * 900000); 
     const existingPatient = await patients.findOne({ patient_id: patientId });
     if (!existingPatient) {
       isUnique = true;
