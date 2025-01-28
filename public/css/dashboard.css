@@ -67,17 +67,15 @@
     font-weight: 600;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     background-color: var(--blue);
-    color: var(--secondary-yellow);
+    color: var(--white);
     border-radius: 12px;
-    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
     margin-top: 1rem;
-    /* Ensures button stays inside card */
 }
 
 .view-report-button:hover {
-    color: white;
+    color: var(--yellow);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
 }
@@ -89,12 +87,12 @@
     left: 50%;
     width: 0;
     height: 2px;
-    background-color: var(--white);
+    background-color: var(--yellow);
     transition: width 0.3s ease;
     transform: translateX(-50%);
 }
 
-.nav-link:hover::after {
+.view-report-button:hover::after {
     width: 87%;
 }
 
