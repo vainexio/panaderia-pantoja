@@ -5,7 +5,6 @@ const patientButton = document.getElementById("patientButton");
 const errorMessageElement = document.getElementById("error-message");
 
 const button = document.getElementById("loginButton");
-const spinner = document.getElementById("spinner");
 
 doctorButton.addEventListener("click", () => {
     selectedUserType = "doctor";

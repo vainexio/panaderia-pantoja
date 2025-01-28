@@ -59,12 +59,12 @@ h2 {
 
 .user-type button.selected {
   background: #1361b4;
-  color: rgb(255, 209, 6);;
+  color: rgb(255, 209, 6);
 }
 
 .user-type button:hover {
   background: #0156b1;
-  color: rgb(255, 209, 6);;
+  color: rgb(255, 209, 6);
 }
 
 /* Input Fields */
@@ -72,12 +72,12 @@ input {
   width: 100%; /* Ensure inputs take up the full form width */
   padding: 12px 15px;
   margin-bottom: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   border-radius: 8px;
   box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.05);
   font-size: 14px;
-  color: #555;
-  background: #fff;
+  color: #555555;
+  background: #ffffff;
   outline: none;
   transition: 0.3s ease;
   font-family: "Roboto Slab", serif;
@@ -89,7 +89,7 @@ input:focus {
 }
 
 /* Submit Button */
-button {
+.button {
   background: linear-gradient(145deg, #007bff, #0056b3);
   color: rgb(255, 255, 255);
   font-size: 16px;
@@ -103,21 +103,20 @@ button {
   font-family: "Roboto Slab", serif;
 }
 
-button.loading span {
+.button.loading span {
   display: none;
 }
 
-button:disabled {
+.button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
 }
 
-
-button:hover {
+.button:hover {
   background: linear-gradient(145deg, #007bff, #0069d9);
 }
 
-button:active {
+.button:active {
   box-shadow: 0 2px #202020;
   transform: translateY(3px);
 }
