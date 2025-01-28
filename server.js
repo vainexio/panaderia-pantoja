@@ -106,6 +106,9 @@ app.post('/login', async (req, res) => {
   
   return res.status(401).json({ message: 'Invalid email or password' });
 });
+app.post('/registerPatient', async (req, res) => {
+  
+});
 
 
 // Start the server

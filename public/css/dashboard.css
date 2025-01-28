@@ -74,28 +74,6 @@
     margin-top: 1rem;
 }
 
-.view-report-button:hover {
-    color: var(--yellow);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-}
-
-.view-report-button::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: var(--yellow);
-    transition: width 0.3s ease;
-    transform: translateX(-50%);
-}
-
-.view-report-button:hover::after {
-    width: 87%;
-}
-
 .nav-item-custom {
     padding: 15px 20px;
     margin-bottom: 1vh;

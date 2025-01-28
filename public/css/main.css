@@ -5,7 +5,7 @@
     --secondary-blue: #91b2ff;
     --yellow: #FFD41C;
     --secondary-yellow: #ffe365;
-    --black: #202020;
+    --black: #363636;
 }
 
 
@@ -13,26 +13,6 @@ img.logo {
     display: block;
     width: 100%;
     height: auto;
-}
-
-.action-button {
-    font-family: "Roboto Slab", serif;
-    flex: 1;
-    margin: 0 5px;
-    padding: 10px;
-    background: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-    color: rgb(27, 27, 27);
-}
-
-.user-type button:hover {
-    background: #0156b1;
-    color: rgb(255, 209, 6);
 }
 
 body {
@@ -142,12 +122,46 @@ section h1 {
     margin-top: 10px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
 
-    /* Shrink the navbar */
+/* Action Buttons */
+.action-button {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    background-color: var(--blue);
+    color: var(--white);
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+.action-button:hover {
+    color: var(--yellow);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+.action-button::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--yellow);
+    transition: width 0.3s ease;
+    transform: translateX(-50%);
+}
+.action-button:hover::after {
+    width: 87%;
+}
+
+@media (max-width: 768px) {
+  
+  /* Shrink the navbar */
     .navbar {
-        width: 80px;
+        width: 70px;
         padding: 0;
     }
 
@@ -159,7 +173,7 @@ section h1 {
     }
 
     .nav-link i {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         /* Larger icon for visibility */
     }
 
@@ -183,36 +197,14 @@ section h1 {
 
     /* Adjust sections to match the navbar size */
     section {
-        margin-left: 80px;
-        /* Adjust to the shrunk navbar width */
-        padding: 10px;
-    }
-
-    section h1 {
-        font-size: 1.5rem;
-        /* Adjust font size for smaller screens */
-    }
-}
-
-@media (max-width: 768px) {
-  
-  img.logo {
-        display: none; /* Hide the original image */
-    }
-    /* Further adjustments for very small screens */
-    .navbar {
-        width: 70px;
-    }
-
-    section {
         margin-left: 60px;
         /* Match the navbar width */
         background: url("https://media.discordapp.net/attachments/1301112711278755895/1333458351811727441/image.png?ex=6799a01d&is=67984e9d&hm=1b861aabfc327a3a1f2f15be4608b52b7f84b2d507115b004ec1771c6872788a&=&format=webp&quality=lossless&width=1193&height=671");
       background-size: cover;
     }
 
-    .nav-link i {
-        font-size: 1.25rem;
-        /* Slightly smaller icons */
+    section h1 {
+        font-size: 1.5rem;
+        /* Adjust font size for smaller screens */
     }
 }

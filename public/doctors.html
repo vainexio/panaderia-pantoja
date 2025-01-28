@@ -87,7 +87,7 @@
                     <li>Top 5 Diagnoses</li>
                     <li>Diagnosis Frequency over Time</li>
                 </ul>
-                <button class="view-report-button nav-item-custom">View Report</button>
+                <button class="action-button nav-item-custom">View Report</button>
             </div>
 
             <!-- Appointment Analytics -->
@@ -97,7 +97,7 @@
                     <li>Peak Appointment Days</li>
                     <li>Appointment Status Breakdown</li>
                 </ul>
-                <button class="view-report-button nav-item-custom">View Report</button>
+                <button class="action-button nav-item-custom">View Report</button>
             </div>
         </div>
     </div>
@@ -199,43 +199,11 @@
       
       <!-- Submit Button -->
       <div class="d-grid mt-4">
-        <button type="submit" class="btn btn-primary rounded-3">Register</button>
+        <button type="submit" class="action-button rounded-3">Register</button>
       </div>
     </form>
     <div id="notification" class="alert d-none mt-4 rounded-3" role="alert"></div>
   </div>
-
-  <script>
-    document.getElementById('patientForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
-
-      const formData = Object.fromEntries(new FormData(event.target).entries());
-      const notification = document.getElementById('notification');
-      notification.classList.add('d-none');
-
-      try {
-        const response = await fetch('/api/registerPatient', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
-        });
-
-        if (response.ok) {
-          notification.textContent = 'Patient account registered successfully!';
-          notification.className = 'alert alert-success mt-4 rounded-3';
-        } else {
-          const error = await response.json();
-          notification.textContent = error.message || 'Failed to register patient.';
-          notification.className = 'alert alert-danger mt-4 rounded-3';
-        }
-      } catch (err) {
-        notification.textContent = 'An error occurred. Please try again later.';
-        notification.className = 'alert alert-danger mt-4 rounded-3';
-      } finally {
-        notification.classList.remove('d-none');
-      }
-    });
-  </script>
 </section>
     
     <section id="settings" class="settings section-content">

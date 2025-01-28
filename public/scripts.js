@@ -21,3 +21,33 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+// Patient registration
+document.getElementById('patientForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const formData = Object.fromEntries(new FormData(event.target).entries());
+      const notification = document.getElementById('notification');
+      notification.classList.add('d-none');
+
+      try {
+        const response = await fetch('/registerPatient', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          notification.textContent = 'Patient account registered successfully!';
+          notification.className = 'alert alert-success mt-4 rounded-3';
+        } else {
+          const error = await response.json();
+          notification.textContent = error.message || 'Failed to register patient.';
+          notification.className = 'alert alert-danger mt-4 rounded-3';
+        }
+      } catch (err) {
+        notification.textContent = 'An error occurred. Please try again later.';
+        notification.className = 'alert alert-danger mt-4 rounded-3';
+      } finally {
+        notification.classList.remove('d-none');
+      }
+    });
