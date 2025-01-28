@@ -122,6 +122,7 @@ section h1 {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+
     /* Shrink the navbar */
     .navbar {
         width: 80px;
@@ -136,11 +137,13 @@ section h1 {
     }
 
     .nav-link i {
-        font-size: 1.5rem; /* Larger icon for visibility */
+        font-size: 1.5rem;
+        /* Larger icon for visibility */
     }
 
     .nav-link span {
-        display: none; /* Hide text on smaller screens */
+        display: none;
+        /* Hide text on smaller screens */
     }
 
     .nav-item-custom {
@@ -150,33 +153,40 @@ section h1 {
 
     /* Adjust the logo size */
     .navbar img {
-        width: 50px; /* Shrink logo */
+        width: 50px;
+        /* Shrink logo */
         height: auto;
         margin: 10px auto;
     }
 
     /* Adjust sections to match the navbar size */
     section {
-        margin-left: 80px; /* Adjust to the shrunk navbar width */
+        margin-left: 80px;
+        /* Adjust to the shrunk navbar width */
         padding: 10px;
     }
 
     section h1 {
-        font-size: 1.5rem; /* Adjust font size for smaller screens */
+        font-size: 1.5rem;
+        /* Adjust font size for smaller screens */
     }
 }
 
 @media (max-width: 480px) {
+
     /* Further adjustments for very small screens */
     .navbar {
-        width: 60px;
-    }
-
-    .nav-link i {
-        font-size: 1.25rem; /* Slightly smaller icons */
+        width: 70px;
     }
 
     section {
-        margin-left: 60px; /* Match the navbar width */
+        margin-left: 60px;
+        /* Match the navbar width */
+        background: url("https://media.discordapp.net/attachments/1301112711278755895/1333458351811727441/image.png?ex=6799a01d&is=67984e9d&hm=1b861aabfc327a3a1f2f15be4608b52b7f84b2d507115b004ec1771c6872788a&=&format=webp&quality=lossless&width=1193&height=671");
+    }
+
+    .nav-link i {
+        font-size: 1.25rem;
+        /* Slightly smaller icons */
     }
 }
