@@ -3,6 +3,7 @@ let selectedUserType = "";
     const doctorButton = document.getElementById("doctorButton");
     const patientButton = document.getElementById("patientButton");
     const errorMessageElement = document.getElementById("error-message");
+    const loginButton = document.getElementById('loginButton');
 
     doctorButton.addEventListener("click", () => {
       selectedUserType = "doctor";
@@ -27,7 +28,9 @@ let selectedUserType = "";
         errorMessageElement.style.display = "block";
         return;
       }
-
+      loginButton.disabled = true;
+      loginButton.classList.add('loading');
+      
       fetch("/login", {
         method: "POST",
         headers: {
@@ -43,8 +46,12 @@ let selectedUserType = "";
             errorMessageElement.textContent = data.message;
             errorMessageElement.style.display = "block";
           }
+        loginButton.disabled = false;
+        loginButton.classList.remove('loading');
         })
         .catch((error) => {
           console.error("Error:", error);
+        loginButton.disabled = false;
+        loginButton.classList.remove('loading');
         });
     });

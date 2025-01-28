@@ -103,6 +103,36 @@ button {
   font-family: "Roboto Slab", serif;
 }
 
+button.loading span {
+  display: none;
+}
+
+button.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border: 2px solid #ffffff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 button:hover {
   background: linear-gradient(145deg, #007bff, #0069d9);
 }
