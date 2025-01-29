@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <script src="scripts.js"></script>
+    <script src="scripts/patients.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Navbar -->
     <nav class="navbar position-fixed h-100 d-flex flex-column">
@@ -29,13 +29,25 @@
           <li class="nav-item">
                 <a class="nav-link align-items-center nav-item-custom active" href="#" onclick="showSection('appointments')">
                     <i class="bi bi-calendar-check me-2"></i>
-                    <span>Schedule Appointments</span>
+                    <span>Schedule an Appointment</span>
+                </a>
+            </li>
+          <li class="nav-item">
+                <a class="nav-link align-items-center nav-item-custom active" href="#" onclick="showSection('appointments')">
+                    <i class="bi bi-calendar-check me-2"></i>
+                    <span>My Appointments</span>
+                </a>
+            </li>
+          <li class="nav-item">
+                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('clinic_hours')">
+                    <i class="bi bi-calendar-plus me-2"></i>
+                    <span>Clinic Hours</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('patient_history')">
-                    <i class="bi bi-people me-2"></i>
-                    <span>History</span>
+                    <i class="bi bi-clipboard2-pulse me-2"></i>
+                    <span>Medical Records</span>
                 </a>
             </li>
         </ul>
@@ -58,11 +70,20 @@
             </header>
         </div>
     </section>
-
+  
+  <section id="clinic_hours" class="clinic_hours section-content">
+        <div class="container m-auto">
+          <header class="mb-6 text-center">
+                <h1>Clinic Hours</h1>
+                <p class="text-gray-600">Subtext here</p>
+            </header>
+        </div>
+    </section>
+  
     <section id="patient_history" class="patient_history section-content">
         <div class="container m-auto">
           <header class="mb-6 text-center">
-                <h1>Patients History</h1>
+                <h1>My History</h1>
                 <p class="text-gray-600">Subtext here</p>
             </header>
         </div>
