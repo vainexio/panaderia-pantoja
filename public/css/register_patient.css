@@ -16,7 +16,7 @@
   width: 80%; /* Ensures responsiveness */
   height: 100%;
   z-index: 1;
-  background: url('https://media.discordapp.net/attachments/1301112711278755895/1333784624517873726/image.png?ex=679a273b&is=6798d5bb&hm=c6eda748a76d0699f7a7961082ac5b7ba1de906ff7d604c72920d9381639fcd6&=&format=webp&quality=lossless&width=1320&height=1060') no-repeat center center/cover;
+  background: url('https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/form-bg?v=1738147040605') no-repeat center center/cover;
   background-size: cover;
 }
 
