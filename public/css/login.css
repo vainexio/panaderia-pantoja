@@ -8,7 +8,7 @@ body {
     font-family: "Roboto Slab", serif;
     font-weight: 400;
     line-height: 1.6;
-    background: url('https://media.discordapp.net/attachments/1301112711278755895/1333446861192826880/image.png?ex=6798eca9&is=67979b29&hm=5b2bd553569596471687a0c8e31ca9b3ae3a282a59535b57134f97b92cc5883f&=&format=webp&quality=lossless&width=1193&height=671') no-repeat center center/cover;
+    background: url('https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/login-bg?v=1738147121772') no-repeat center center/cover;
     margin: 0;
     padding: 0;
     background-color: #f9f9f9;
@@ -32,15 +32,6 @@ img.logo {
     display: block;
     width: 100%;
     height: auto;
-}
-
-body {
-    scroll-behavior: smooth;
-    font-family: "Roboto Slab", serif;
-    font-weight: 400;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
 }
 
 /* Form Container */

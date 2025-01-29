@@ -38,7 +38,7 @@ section {
     margin-left: 250px;
     padding: 10px;
     overflow-x: hidden;
-    background: url("https://media.discordapp.net/attachments/1301112711278755895/1333628898990231572/image.png?ex=67999633&is=679844b3&hm=9bb1c9efddd1196c42e74ff14842d26ed789dc1400ff194a32b25e0c8b75b3cd&=&format=webp&quality=lossless&width=1920&height=1080");
+    background: url("https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/bg1?v=1738146962221");
     background-size: cover;
     background-repeat: no-repeat;
     z-index: 1;
@@ -198,7 +198,7 @@ section h1 {
     /* Adjust sections to match the navbar size */
     section {
       margin-left: 60px;
-      background: url("https://media.discordapp.net/attachments/1301112711278755895/1333458351811727441/image.png?ex=6799a01d&is=67984e9d&hm=1b861aabfc327a3a1f2f15be4608b52b7f84b2d507115b004ec1771c6872788a&=&format=webp&quality=lossless&width=1193&height=671");
+      background: url("https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/bg2?v=1738146944212");
       background-size: cover;
     }
 
