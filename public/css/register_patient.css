@@ -13,7 +13,7 @@
   background-color: var(--blue);
 }
 .register-card {
-  width: 80%; /* Ensures responsiveness */
+  width: 80%;
   height: 100%;
   z-index: 1;
   background: url('https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/form-bg?v=1738147040605') no-repeat center center/cover;
@@ -32,7 +32,7 @@
 
 @media (max-width: 768px) {
   .register-card {
-  width: 100%; /* Ensures responsiveness */
+  width: 100%;
   height: auto;
   box-shadow: none;
 }
