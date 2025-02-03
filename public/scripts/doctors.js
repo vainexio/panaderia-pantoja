@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     'patient_registration',
     'analytics',
     'settings',
+    'navbar',
   ]
   for (let i in layouts) {
     console.log(layouts[i])
