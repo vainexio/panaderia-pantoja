@@ -11,20 +11,23 @@ function showSection(sectionId) {
 }
 
 // Show the home section by default
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
   
   let layouts = [
+    'work_schedule',
+    'appointments',
+    'patient_history',
     'patient_registration',
+    'analytics',
     'settings',
   ]
   for (let i in layouts) {
-    fetch('../layouts/'+layouts[i]+'.html')
-    .then(response => response.text())
-    .then(data => document.getElementById('content').innerHTML = data)
-    .catch(error => console.error('Error loading patient registration:', error));
+    console.log(layouts[i])
+    let response = await fetch('../layouts/'+layouts[i]+'.html')
+    let data = await response.text();
+    document.getElementById(layouts[i]+'_holder').innerHTML = data
   }
-  
-  //showSection('analytics')
+  showSection('work_schedule')
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
             document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
