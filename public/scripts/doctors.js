@@ -29,12 +29,17 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById(layouts[i]+'_holder').innerHTML = data
   }
   showSection('work_schedule')
-    document.querySelectorAll('.nav-link').forEach(link => {
+  document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
             document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
             this.classList.add('active');
         });
     });
+  
+  /* Hide loader */
+  setTimeout(() => {
+    document.getElementById("preloader").classList.add("fade-out");
+  }, 500);
   
   document.getElementById('patientForm').addEventListener('submit', async function(event) {
       event.preventDefault();
