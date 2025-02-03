@@ -12,7 +12,7 @@
     background: none;
     background-color: var(--blue);
     padding: 2rem 0;
-    display: flex;
+    display: none;
     justify-content: center;
 }
 
