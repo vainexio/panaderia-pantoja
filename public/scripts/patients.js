@@ -11,12 +11,29 @@ function showSection(sectionId) {
 }
 
 // Show the home section by default
-document.addEventListener("DOMContentLoaded", function() {
-  showSection('appointments')
+document.addEventListener("DOMContentLoaded", async function() {
+  let layouts = [
+    'clinic_hours',
+    'my_appointments',
+    'medical_records',
+    'settings',
+  ]
+  for (let i in layouts) {
+    console.log(layouts[i])
+    let response = await fetch('../patient_layouts/'+layouts[i]+'.html')
+    let data = await response.text();
+    document.getElementById(layouts[i]+'_holder').innerHTML = data
+  }
+  showSection('my_appointments')
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
             document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
             this.classList.add('active');
         });
     });
+  
+  /* Hide loader */
+  setTimeout(() => {
+    document.getElementById("preloader").classList.add("fade-out");
+  }, 500);
 });
