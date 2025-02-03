@@ -104,23 +104,9 @@
     </div>
 </section>
     
-    <section id="appointments" class="appointments section-content">
-        <div class="container m-auto">
-          <header class="mb-6 text-center">
-                <h1>Scheduled Appointments</h1>
-                <p class="text-gray-600">Subtext here</p>
-            </header>
-        </div>
-    </section>
     
-    <section id="availability" class="availability section-content">
-        <div class="container m-auto">
-          <header class="mb-6 text-center">
-                <h1>Work Schedule</h1>
-                <p class="text-gray-600">Subtext here</p>
-            </header>
-        </div>
-    </section>
+    
+    
 
     <section id="patient_history" class="patient_history section-content">
         <div class="container m-auto">
@@ -130,86 +116,14 @@
             </header>
         </div>
     </section>
-<section id="patient_registration" class="patient_registration">
-  <div class="register-card">
-    <header class="form-header">
-      <h1>Register Patient Account</h1>
-      <p>Fill in the details below to create a new patient account</p>
-    </header>
-    <form id="patientForm" class="patient-form" novalidate>
-      <div class="form-group">
-        <label for="first_name">First Name</label>
-        <input type="text" id="first_name" name="first_name" required/>
-      </div>
-      
-      <div class="form-group">
-        <label for="last_name">Last Name</label>
-        <input type="text" id="last_name" name="last_name" required/>
-      </div>
-      
-      <div class="form-group">
-        <label for="sex">Sex</label>
-        <select id="sex" name="sex" required>
-          <option value="">Select</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label for="birthdate">Birthdate</label>
-        <input type="date" id="birthdate" name="birthdate" required/>
-      </div>
-      
-      <div class="form-group">
-        <label for="contact_number">Contact Number</label>
-        <input type="tel" id="contact_number" name="contact_number" pattern="[0-9]{10}" placeholder="9XXXXXXXXX" required/>
-      </div>
-      
-      <div class="form-group">
-        <label for="patient_type">Patient Type</label>
-        <select id="patient_type" name="patient_type" required>
-          <option value="">Select</option>
-          <option value="Student">Student</option>
-          <option value="Faculty">Faculty</option>
-          <option value="NU Employee">NU Employee</option>
-          <option value="Visitor">Visitor</option>
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required/>
-      </div>
-      
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" minlength="8" required/>
-      </div>
-      
-      <div class="form-group">
-        <label for="confirm_password">Confirm Password</label>
-        <input type="password" id="confirm_password" name="confirm_password" required/>
-      </div>
-      
-      <div class="submit-container">
-        <button type="submit" class="action-button">Register Patient</button>
-      </div>
-      
-    </form>
-    <div id="notification" class="notification" role="alert"></div>
-  </div>
-</section>
-    
-    <section id="settings" class="settings section-content">
-        <div class="container m-auto">
-          <header class="mb-6 text-center">
-                <h1>Account Settings</h1>
-                <p class="text-gray-600">Subtext here</p>
-            </header>
-        </div>
-    </section>
+  
+  <main>
+    <div id="availability"></div>
+    <div id="appointments"></div>
+    <div id="patient_history"></div>
+    <div id="patient_registration"></div>
+    <div id="settings"></div>
+  </main>
   
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script src="scripts/particles.js"></script>
