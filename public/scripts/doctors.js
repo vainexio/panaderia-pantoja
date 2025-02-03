@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   ]
   for (let i in layouts) {
     console.log(layouts[i])
-    let response = await fetch('../doctor_layouts/'+layouts[i]+'.html')
+    let response = await fetch('../doctor/layouts/'+layouts[i]+'.html')
     let data = await response.text();
     document.getElementById(layouts[i]+'_holder').innerHTML = data
   }

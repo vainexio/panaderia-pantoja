@@ -11,11 +11,12 @@ const fs = require('fs');
 const app = express();
 
 // Connect to MongoDB
+if (process.env.MONGOOSE) {
 mongoose.connect(process.env.MONGOOSE, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
+}
 let doctorSchema = new mongoose.Schema({
   doctor_id: Number,
   first_name: String,
