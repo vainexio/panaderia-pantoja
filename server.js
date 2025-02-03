@@ -76,7 +76,7 @@ app.use(express.static('public', {
   }
 }));
 
-app.post('/login', async (req, res) => {
+app.get('/login', async (req, res) => {
   const { email, password, userType } = req.body;
   console.log(req.body)
   return res.status(401).json({ message: 'Invalid email or password' });
