@@ -67,7 +67,7 @@
     width: 100%;
     padding: 0.75rem;
     border-radius: 8px;
-    border: 1px solid var(--blue);
+    border: 1px solid var(--black);
     background-color: var(--white);
     font-size: 1rem;
 }
