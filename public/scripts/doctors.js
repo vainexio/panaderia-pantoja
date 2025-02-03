@@ -12,7 +12,7 @@ function showSection(sectionId) {
 
 // Show the home section by default
 document.addEventListener("DOMContentLoaded", function() {
-  showSection('dashboard')
+  showSection('analytics')
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', function() {
             document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
@@ -36,11 +36,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (response.ok) {
           notification.textContent = 'Patient account registered successfully!';
-          //notification.className = 'alert alert-success mt-4 rounded-3';
+          notification.className = 'alert alert-success mt-3 rounded-3';
         } else {
           const error = await response.json();
           notification.textContent = error.message || 'Failed to register patient.';
-          notification.className = 'alert alert-danger rounded-3';
+          notification.className = 'alert alert-danger mt-3 rounded-3';
         }
         
         setTimeout(function() {
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
         },5000)
       } catch (err) {
         notification.textContent = err//'An error occurred. Please try again later.';
-        notification.className = 'alert alert-danger rounded-3';
+        notification.className = 'alert alert-danger mt-3 rounded-3';
       } finally {
         notification.classList.remove('d-none');
       }

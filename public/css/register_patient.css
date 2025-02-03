@@ -19,7 +19,7 @@
 .register-card {
     width: 80%;
     max-width: 980px;
-    min-height: 100vh;
+    min-height: 100%;
     margin: auto;
     padding: 2rem;
     border-radius: 16px;

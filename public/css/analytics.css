@@ -112,12 +112,10 @@
 
     .card {
         height: auto;
-        /* Remove fixed height for mobile view */
     }
 
     .view-report-button {
         width: 100%;
-        /* Ensure button stretches within the card */
     }
 
     .container {
