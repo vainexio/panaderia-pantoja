@@ -11,12 +11,9 @@ const fs = require('fs');
 const app = express();
 
 // Connect to MongoDB
-if (process.env.MONGOOSE) {
 mongoose.connect(process.env.MONGOOSE, {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
 });
-}
 let doctorSchema = new mongoose.Schema({
   doctor_id: Number,
   first_name: String,
@@ -81,10 +78,10 @@ app.use(express.static('public', {
 
 app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
-  
+  console.log(req.body)
+  return res.status(401).json({ message: 'Invalid email or password' });
   // Manage login
   if (userType === 'doctor') {
-    return res.json({ redirect: '/doctors.html', message: 'Login successful as Doctor' });
     const doctor = await doctors.findOne({ email });
     if (doctor) {
       const isMatch = await bcrypt.compare(password, doctor.password);
@@ -96,7 +93,6 @@ app.post('/login', async (req, res) => {
   } 
   
   else if (userType === 'patient') {
-    return res.status(401).json({ message: 'Invalid email or password' });
     const patient = await patients.findOne({ email });
     if (patient) {
       const isMatch = await bcrypt.compare(password, patient.password);
