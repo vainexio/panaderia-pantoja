@@ -4,7 +4,7 @@
       <h1>Register Patient Account</h1>
       <p>Fill in the details below to create a new patient account</p>
     </header>
-    <form id="patientForm" class="patient-form" novalidate>
+    <form id="patientForm" class="patient-form">
       <div class="form-group">
         <label for="first_name">First Name</label>
         <input type="text" id="first_name" name="first_name" required/>
@@ -32,7 +32,7 @@
       
       <div class="form-group">
         <label for="contact_number">Contact Number</label>
-        <input type="tel" id="contact_number" name="contact_number" pattern="[0-9]{10}" placeholder="9XXXXXXXXX" required/>
+        <input type="tel" id="contact_number" name="contact_number" pattern="0[0-9]{10}" placeholder="09XXXXXXXXX" required/>
       </div>
       
       <div class="form-group">
@@ -42,7 +42,6 @@
           <option value="Student">Student</option>
           <option value="Faculty">Faculty</option>
           <option value="NU Employee">NU Employee</option>
-          <option value="Visitor">Visitor</option>
         </select>
       </div>
       
