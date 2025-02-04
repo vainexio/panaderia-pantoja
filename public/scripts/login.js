@@ -40,12 +40,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     })
         .then((response) => response.json())
         .then((data) => {
-            if (data.redirect) {
-                window.location.href = data.redirect;
-            } else {
-                errorMessageElement.textContent = data.message;
-                errorMessageElement.style.display = "block";
-            }
+            fetch("/doctors").then
             button.disabled = false;
         })
         .catch((error) => {

@@ -79,6 +79,10 @@ app.use(express.static('public', {
   }
 }));
 
+app.get('/doctors', async (req, res) => {
+  res.sendFile(__dirname + '/public/doctors.html');
+});
+
 app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
   
