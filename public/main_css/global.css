@@ -56,46 +56,40 @@ section h1 {
     color: #222222;
 }
 
-#preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--blue); /* or any color you prefer */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 60px;
+  aspect-ratio: 1;
+  background: linear-gradient(#dc1818 0 0) bottom/100% 0% no-repeat #cccccc;
+  -webkit-mask: 
+    radial-gradient(circle at 60% 65%, #000000 62%, #000000 65%) top left, 
+    radial-gradient(circle at 40% 65%, #000000 62%, #000000 65%) top right, 
+    linear-gradient(to bottom left, #000000 42%,#000000 43%) bottom left , 
+    linear-gradient(to bottom right,#000000 42%,#000000 43%) bottom right;
+  -webkit-mask-size: 50% 50%;
+  -webkit-mask-repeat: no-repeat;
+  animation: l19 2s infinite linear;
 }
 
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid transparent;
-  border-top-color: var(--yellow); /* Loader color 007bff */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 60px;
+  aspect-ratio: 1;
+  background: linear-gradient(#dc1818 0 0) bottom/100% 0% no-repeat #ccc;
+  -webkit-mask: 
+    radial-gradient(circle at 60% 65%, #000 62%, #0000 65%) top left, 
+    radial-gradient(circle at 40% 65%, #000 62%, #0000 65%) top right, 
+    linear-gradient(to bottom left, #000 42%,#0000 43%) bottom left , 
+    linear-gradient(to bottom right,#000 42%,#0000 43%) bottom right;
+  -webkit-mask-size: 50% 50%;
+  -webkit-mask-repeat: no-repeat;
+  animation: l19 2s infinite linear;
 }
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes l19 {
+    90%,100% {background-size:100% 100%}
 }
-
-/* Keyframes for Text Fade Effect */
-@keyframes fadeText {
-  from { opacity: 0.5; }
-  to { opacity: 1; }
-}
-
 /* Smooth Preloader Fade-Out */
-#preloader.fade-out {
+#loader.fade-out {
   opacity: 0;
   visibility: hidden;
 }
