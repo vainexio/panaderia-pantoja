@@ -70,14 +70,16 @@ section h1 {
   transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
-/* HTML: <div class="loader"></div> */
-.loader {    
-  --r1: 154%;
-  --r2: 68.5%;
-  width: 60px;
-  aspect-ratio: 1;
-  border-radius: 50%; 
-  background: linear-gradient(var(--yellow) 0 0) bottom/100% 0% no-repeat #cccccc00;
+img.loadingLogo {
+    width: 15%;
+    height: auto;
+  margin-right: 5px;
+}
+
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    background: linear-gradient(var(--yellow) 0 0) bottom/100% 0% no-repeat #cccccc00;
     -webkit-mask:
         radial-gradient(circle at 60% 65%, #000 62%, #0000 65%) top left,
         radial-gradient(circle at 40% 65%, #000 62%, #0000 65%) top right,
@@ -85,16 +87,17 @@ section h1 {
         linear-gradient(to bottom right, #000 42%, #0000 43%) bottom right;
     -webkit-mask-size: 50% 50%;
     -webkit-mask-repeat: no-repeat;
-  background-size: 50.5% 220%;
-  background-position: -100% 0%,0% 0%,100% 0%;
-  background-repeat:no-repeat;
-  animation: l19 3s infinite linear;
+    animation: l19 2s infinite ease-out;
 }
 @keyframes l19 {
-    33%  {background-position:    0% 33% ,100% 33% ,200% 33% }
-    66%  {background-position: -100%  66%,0%   66% ,100% 66% }
-    100% {background-position:    0% 100%,100% 100%,200% 100%}
+
+    90%,
+    100% {
+        background-size: 100% 100%
+    }
 }
+
+
 .spinner {
   width: 50px;
   height: 50px;
