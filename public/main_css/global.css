@@ -70,14 +70,8 @@ section h1 {
   transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
-img.loadingLogo {
-    width: 15%;
-    height: auto;
-  margin-right: 5px;
-}
-
 .loader {
-    width: 50px;
+    width: 60px;
     aspect-ratio: 1;
     background: linear-gradient(var(--yellow) 0 0) bottom/100% 0% no-repeat #cccccc00;
     -webkit-mask:
