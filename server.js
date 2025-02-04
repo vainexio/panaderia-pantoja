@@ -8,6 +8,9 @@ const XLSX = require('xlsx');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 
+//
+const method = require('./data/functions.js')
+const settings = require('./data/settings.js')
 const app = express();
 
 // Connect to MongoDB
@@ -67,7 +70,6 @@ let patients = mongoose.model('Patients', patientsSchema);
 let medicalRecords = mongoose.model('Medical Records', medicalRecordsSchema);
 let appointments = mongoose.model('Appointments', appointmentsSchema);
 let availableDoctors = mongoose.model('Doctor Availability', doctorAvailabilitySchema);
-
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -81,11 +83,19 @@ app.use(express.static('public', {
 
 app.post('/doctors', async (req, res) => {
   const { securityKey } = req.body;
-  res.sendFile(__dirname + '/public/doctors.html');
+  if (settings.allowedKeys.find(k => k == securityKey)) {
+    res.sendFile(__dirname + '/public/doctors.html');
+  } else {
+    return res.status(401).json({ message: 'Invalid security key.' });
+  }
 });
 app.post('/patients', async (req, res) => {
   const { securityKey } = req.body;
-  res.sendFile(__dirname + '/public/patients.html');
+  if (securityKey.find(securityKey)) {
+    res.sendFile(__dirname + '/public/patients.html');
+  } else {
+    return res.status(401).json({ message: 'Invalid security key.' });
+  }
 });
 function generateSecurityKey(length = 32) {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -118,7 +128,10 @@ app.post('/login', async (req, res) => {
       if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
-      return res.json({ redirect: '/doctors', message: 'Login successful as Doctor' });
+      
+      let key = method.generateSecurityKey()
+      settings.allowedKeys.push(key)
+      return res.json({ redirect: '/doctors', message: 'Login successful as Doctor', key });
     }
   }
   
@@ -129,7 +142,9 @@ app.post('/login', async (req, res) => {
       if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
-      return res.json({ redirect: '/patients', message: 'Login successful as Patient' });
+      let key = method.generateSecurityKey()
+      settings.allowedKeys.push(key)
+      return res.json({ redirect: '/patients', message: 'Login successful as Patient', key });
     }
   }
   
