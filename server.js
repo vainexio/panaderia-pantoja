@@ -81,7 +81,13 @@ app.use(express.static('public', {
   }
 }));
 
-app.post('/doctors', async (req, res) => {
+app.get('/doctor-dashboard', async (req, res) => {
+  res.sendFile(__dirname + '/public/doctors.html');
+});
+app.get('/patient-dashboard', async (req, res) => {
+  res.sendFile(__dirname + '/public/patients.html');
+});
+/*app.post('/doctors', async (req, res) => {
   const { securityKey } = req.body;
   if (settings.allowedKeys.find(k => k == securityKey)) {
     res.sendFile(__dirname + '/public/doctors.html');
@@ -91,12 +97,12 @@ app.post('/doctors', async (req, res) => {
 });
 app.post('/patients', async (req, res) => {
   const { securityKey } = req.body;
-  if (securityKey.find(securityKey)) {
+  if (settings.allowedKeys.find(k => k == securityKey)) {
     res.sendFile(__dirname + '/public/patients.html');
   } else {
     return res.status(401).json({ message: 'Invalid security key.' });
   }
-});
+});*/
 function generateSecurityKey(length = 32) {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let key = "";
@@ -131,7 +137,7 @@ app.post('/login', async (req, res) => {
       
       let key = method.generateSecurityKey()
       settings.allowedKeys.push(key)
-      return res.json({ redirect: '/doctors', message: 'Login successful as Doctor', key });
+      return res.json({ redirect: '/doctor-dashboard', message: 'Login successful as Doctor', key });
     }
   }
   
@@ -144,7 +150,7 @@ app.post('/login', async (req, res) => {
       }
       let key = method.generateSecurityKey()
       settings.allowedKeys.push(key)
-      return res.json({ redirect: '/patients', message: 'Login successful as Patient', key });
+      return res.json({ redirect: '/patient-dashboard', message: 'Login successful as Patient', key });
     }
   }
   
