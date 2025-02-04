@@ -144,6 +144,11 @@ section h1 {
     display: flex;
     justify-content: center;
 }
+.nav-item-custom {
+    padding: 15px 20px;
+    margin-bottom: 1vh;
+    width: calc(100% - 20px);
+}
 
 .nav-link:hover {
     background-color: #ffffff34;

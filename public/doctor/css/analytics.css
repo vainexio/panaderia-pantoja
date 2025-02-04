@@ -74,11 +74,7 @@
     margin-top: 1rem;
 }
 
-.nav-item-custom {
-    padding: 15px 20px;
-    margin-bottom: 1vh;
-    width: calc(100% - 20px);
-}
+
 
 @media (min-width: 768px) {
 

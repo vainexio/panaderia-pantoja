@@ -79,13 +79,34 @@ app.use(express.static('public', {
   }
 }));
 
-app.get('/doctors', async (req, res) => {
+app.post('/doctors', async (req, res) => {
+  const { securityKey } = req.body;
   res.sendFile(__dirname + '/public/doctors.html');
 });
-app.get('/patients', async (req, res) => {
+app.post('/patients', async (req, res) => {
+  const { securityKey } = req.body;
   res.sendFile(__dirname + '/public/patients.html');
 });
+function generateSecurityKey(length = 32) {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let key = "";
+    const cryptoObj = window.crypto || window.msCrypto; // For browser security
 
+    if (cryptoObj && cryptoObj.getRandomValues) {
+        const randomValues = new Uint8Array(length);
+        cryptoObj.getRandomValues(randomValues);
+
+        for (let i = 0; i < length; i++) {
+            key += characters[randomValues[i] % characters.length];
+        }
+    } else {
+        // Fallback if crypto API is not available
+        for (let i = 0; i < length; i++) {
+            key += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+    }
+    return key;
+}
 app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
   
@@ -99,7 +120,7 @@ app.post('/login', async (req, res) => {
       }
       return res.json({ redirect: '/doctors', message: 'Login successful as Doctor' });
     }
-  } 
+  }
   
   else if (userType === 'patient') {
     const patient = await patients.findOne({ email });
