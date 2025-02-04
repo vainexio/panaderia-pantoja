@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   
   /* Hide loader */
   setTimeout(() => {
-    document.getElementById("loader").classList.add("fade-out");
+    document.getElementById("preloader").classList.add("fade-out");
   }, 500);
   
   document.getElementById('patientForm').addEventListener('submit', async function(event) {
