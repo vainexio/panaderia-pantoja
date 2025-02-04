@@ -82,6 +82,9 @@ app.use(express.static('public', {
 app.get('/doctors', async (req, res) => {
   res.sendFile(__dirname + '/public/doctors.html');
 });
+app.get('/patients', async (req, res) => {
+  res.sendFile(__dirname + '/public/patients.html');
+});
 
 app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
@@ -94,7 +97,7 @@ app.post('/login', async (req, res) => {
       if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
-      return res.json({ redirect: '/doctors.html', message: 'Login successful as Doctor' });
+      return res.json({ redirect: '/doctors', message: 'Login successful as Doctor' });
     }
   } 
   
@@ -105,7 +108,7 @@ app.post('/login', async (req, res) => {
       if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
-      return res.json({ redirect: '/patients.html', message: 'Login successful as Patient' });
+      return res.json({ redirect: '/patients', message: 'Login successful as Patient' });
     }
   }
   
