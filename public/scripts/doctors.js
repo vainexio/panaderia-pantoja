@@ -41,7 +41,25 @@ document.addEventListener("DOMContentLoaded", async function() {
   }, 500);
   
   document.getElementById("genPassword").addEventListener("click", function() {
-    alert("Button Clicked!");
+    function generateRandomPassword(length = 12) {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return password;
+        }
+    const randomPassword = generateRandomPassword();
+    const password = document.getElementById("password")
+    const confirmPassword = document.getElementById("password")
+    password.value = randomPassword;
+    password.type = 'text';
+    confirmPassword.type = 'text';
+    confirmPassword.value = randomPassword;
+    setTimeout(function() {
+      password.type = 'password';
+      confirmPassword.type = 'password';
+    },1000)
   });
   
   document.getElementById('patientForm').addEventListener('submit', async function(event) {
