@@ -40,6 +40,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("preloader").classList.add("fade-out");
   }, 500);
   
+  document.getElementById("genPassword").addEventListener("click", function() {
+    alert("Button Clicked!");
+  });
+  
   document.getElementById('patientForm').addEventListener('submit', async function(event) {
       event.preventDefault();
 
