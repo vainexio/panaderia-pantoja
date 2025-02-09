@@ -51,15 +51,22 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     const randomPassword = generateRandomPassword();
     const password = document.getElementById("password")
-    const confirmPassword = document.getElementById("password")
+    const confirmPassword = document.getElementById("confirm_password")
+    
     password.value = randomPassword;
+    confirmPassword.value = randomPassword;
     password.type = 'text';
     confirmPassword.type = 'text';
-    confirmPassword.value = randomPassword;
+    
+    for (let i = 0; i < randomPassword.length; i++) {
+      password.value +=randomPassword[i];
+      confirmPassword.value += randomPassword[i];
+    }
+    
     setTimeout(function() {
       password.type = 'password';
       confirmPassword.type = 'password';
-    },1000)
+    },500)
   });
   
   document.getElementById('patientForm').addEventListener('submit', async function(event) {
