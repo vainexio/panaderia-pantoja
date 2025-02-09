@@ -78,6 +78,9 @@
     justify-content: end;
     margin-top: 1rem;
 }
+.submit-container #genPassword {
+    margin-right: 1rem;
+}
 .notification {
     display: none;
     padding: 1rem;
