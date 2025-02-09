@@ -1,3 +1,7 @@
+function sleep(miliseconds) {
+  var currentTime = new Date().getTime();
+  while (currentTime + miliseconds >= new Date().getTime()) { }
+}
 function showSection(sectionId) {
     // Hide all sections
     const sections = document.querySelectorAll('.section-content');
@@ -12,7 +16,7 @@ function showSection(sectionId) {
 
 // Show the home section by default
 document.addEventListener("DOMContentLoaded", async function() {
-  
+
   let layouts = [
     'work_schedule',
     'appointments',
@@ -40,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("preloader").classList.add("fade-out");
   }, 500);
   
-  document.getElementById("genPassword").addEventListener("click", function() {
+  document.getElementById("genPassword").addEventListener("click", async function() {
     function generateRandomPassword(length = 12) {
             const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             let password = "";
@@ -53,20 +57,16 @@ document.addEventListener("DOMContentLoaded", async function() {
     const password = document.getElementById("password")
     const confirmPassword = document.getElementById("confirm_password")
     
-    password.value = randomPassword;
-    confirmPassword.value = randomPassword;
     password.type = 'text';
     confirmPassword.type = 'text';
-    
-    for (let i = 0; i < randomPassword.length; i++) {
-      password.value +=randomPassword[i];
-      confirmPassword.value += randomPassword[i];
-    }
+    password.value = randomPassword;
+    confirmPassword.value = randomPassword;
     
     setTimeout(function() {
       password.type = 'password';
       confirmPassword.type = 'password';
     },500)
+    
   });
   
   document.getElementById('patientForm').addEventListener('submit', async function(event) {
