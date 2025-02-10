@@ -27,14 +27,14 @@ let doctorSchema = new mongoose.Schema({
   contact_number: String,
   email: String,
   password: String,
-})
+});
 let doctorAvailabilitySchema = new mongoose.Schema({
   availability_id: Number,
   doctor_id: Number,
   day_of_week: String,
   start_time: String,
   end_time: String,
-})
+});
 let patientsSchema = new mongoose.Schema({
   patient_id: Number,
   first_name: String,
@@ -45,7 +45,7 @@ let patientsSchema = new mongoose.Schema({
   patient_type: String,
   email: String,
   password: String,
-})
+});
 let medicalRecordsSchema = new mongoose.Schema({
   record_id: Number,
   patient_id: Number,
