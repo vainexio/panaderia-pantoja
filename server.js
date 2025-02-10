@@ -87,22 +87,7 @@ app.get('/doctor-dashboard', async (req, res) => {
 app.get('/patient-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/patients.html');
 });
-/*app.post('/doctors', async (req, res) => {
-  const { securityKey } = req.body;
-  if (settings.allowedKeys.find(k => k == securityKey)) {
-    res.sendFile(__dirname + '/public/doctors.html');
-  } else {
-    return res.status(401).json({ message: 'Invalid security key.' });
-  }
-});
-app.post('/patients', async (req, res) => {
-  const { securityKey } = req.body;
-  if (settings.allowedKeys.find(k => k == securityKey)) {
-    res.sendFile(__dirname + '/public/patients.html');
-  } else {
-    return res.status(401).json({ message: 'Invalid security key.' });
-  }
-});*/
+
 function generateSecurityKey(length = 32) {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let key = "";
