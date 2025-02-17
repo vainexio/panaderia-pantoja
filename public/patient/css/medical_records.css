@@ -19,11 +19,13 @@
     background-color: var(--blue);
 }
 .StudentInfocontainer {
-    height: 90vh;
+
     border: 1px solid green;
   display: flex;
   flex-direction: column;
-  margin: 2%
+  margin: 2%;
+  padding: 5%;
+  border-radius: 16px;
 background-color: var(--white);
 }
 
