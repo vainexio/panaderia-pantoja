@@ -3,20 +3,56 @@
   <div class="container m-auto">
     <header class="mb-6 text-center">
       <!-- Content goes below this -->
-      <h1>
-        Medical Records
-      </h1>
 
       <!-- Content goes above this -->
     </header>
 
    
   </div>
-  
+
    <div class="StudentInfocontainer">
-      <section class="studentInfoContainer-Left">
-        
-        
-      </section>
-    </div>
+              <h1>
+                Medical Records
+            </h1>
+            <div class="studentInfo">
+                <button class="medicalRecords" onclick="showContent('medRecord')"> Medical Records </button>
+                <button class="medicalCertificate" onclick="showContent('medCerf')"> Medical Certificate </button>
+
+            </div>
+
+            <div id="medRecord" class="medRecordContainer">
+                <p> Patient Information </p>
+                <div class="MedRecord_GeneralInfo">
+                    
+                    <div class="medRecordLeft" id="">
+                        
+                        <p id="MedRecord_FirstName"> First name: </p>
+                        <p id="MedRecord_LastName"> Last name: </p>
+                        <p id="MedRecord_Gender"> Gender: </p>
+                        <p id="MedRecord_BirthDate"> Birthdate: </p>
+                    </div>
+                    <div class="medRecordRight">
+                        <p> Contact Information </p>
+                        <p id="MedRecord_Program"> Program: </p>
+                        <p id="MedRecord_YearLevel"> Year Level: </p>
+                        <p id="MedRecord_ContactNo"> Contact No.: </p>
+                        <p id="MedRecord_Email"> Email: </p>
+                    </div>
+                </div>
+
+                <div class="MedRecord_MedInfo">
+                    <p> Medical Information </p>
+                    <p id="MedRecord_Allergy"> Allergies </p>
+                    <p id="MedRecord_Medications"> Medications </p>
+                    <p id="MedRecord_Contacts"> Emergency Contacts: </p>
+                    <p id="MedRecord_MedHistory"> Medical History </p>
+                    
+                </div>
+            </div>
+
+            <div id="medCerf" class="medCerf">
+
+            </div>
+        </div>
+    
 </section>

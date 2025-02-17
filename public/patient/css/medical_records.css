@@ -10,3 +10,38 @@
 /* Use this pallets */
 /* Css designs goes below this */
 
+.StudentInfocontainer {
+    height: 100vh;
+  width: 100vw;
+    border: 1px solid green;
+    margin: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: cent
+}
+
+.medRecordContainer {
+    background-color: antiquewhite;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+}
+
+.MedRecord_GeneralInfo {
+    border: 1px solid pink;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.medRecordLeft {
+    border: 2px solid black;
+    flex: 1;
+}
+
+.medRecordRight {
+    border: 2px solid chartreuse;
+    flex: 1;
+}
