@@ -9,16 +9,19 @@
 }
 /* Use this pallets */
 /* Css designs goes below this */
+.medical_records section-content {
+  background: none;
+  background-color: var(--blue);
+}
 
 .StudentInfocontainer {
     height: 100vh;
-  width: 100vw;
+
     border: 1px solid green;
     margin: 10%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: cent
+
 }
 
 .medRecordContainer {
