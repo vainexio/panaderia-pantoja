@@ -14,13 +14,17 @@
   background-color: var(--blue);
 }
 
-.StudentInfocontainer {
-    height: 100vh;
+.medical_records {
+    background: none;
+    background-color: var(--blue);
+}
 
+.StudentInfocontainer {
+    height: 90vh;
     border: 1px solid green;
-    margin: 10%;
   display: flex;
   flex-direction: column;
+  margin: 2%
 
 }
 
