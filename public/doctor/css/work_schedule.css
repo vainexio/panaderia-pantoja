@@ -81,7 +81,8 @@ th, td {
 td{
   padding: 7px; 
 }
-.sun,.sat {
+
+.sun1,.sun2,.sun3,.sun4,.sun5,.sat1,.sat2,.sat3,.sat4,.sat5 {
     background: #e6c2bf;
 }
 
@@ -90,6 +91,23 @@ th {
     color: black;
     text-align: center;
     padding: 25px; /* Reduced padding to make it more compact */
+}
+.sat4 {
+    position: relative; /* Needed for absolute positioning */
+    text-align: center; /* Centers text */
+}
+
+.sat4::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px; /* Circle size */
+    height: 20px;
+    background-color: red; /* Change to desired color */
+    border-radius: 50%;
+    transform: translate(-50%, -50%); /* Centers the circle */
+    z-index: -1; /* Places it behind the number */
 }
 
 /* Use this pallets */
