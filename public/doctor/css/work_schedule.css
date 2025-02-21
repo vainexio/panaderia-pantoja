@@ -111,11 +111,21 @@ th {
     font-weight: bold;
     text-align: center;
 }
-.today{
+
+.titles{
+  display: flex;
+    flex-direction: row; 
+}
+.today,.availability{
   display: flex;  /* Center in the middle */
-    align-items: flex-start;
-  font-size:20px;
+  align-items: flex-start;
+  font-size:26px;
+  font-weight: bold;
+}
+
+.today{
   margin-left:90px;
+  margin-right:100px;
 }
 
 
