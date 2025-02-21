@@ -243,8 +243,9 @@ th {
 
 .availability-colors {
   display: flex;
-  flex-direction: column; /* Stacks items in a column */
-  gap: 10px; /* Adds spacing between each row */
+  flex-direction: column; 
+  gap: 10px;
+  margin-top:10px;
 }
 
 .in, .weekend, .holiday {
@@ -261,14 +262,15 @@ th {
   height: 27px;
   border-radius: 50%;
   margin-left:35px;
-  margin-right: 10px; /* Adds space between the dot and text */
+  margin-right: 10px; 
   flex-shrink: 0; 
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); /* Adds a soft shadow */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); 
   border: 2px solid rgba(0, 0, 0, 0.2); 
 }
 
 .availability-dot-in{
-background:#efe3d4
+background:#efe3d4;
+  
 }
 .availability-dot-weekend{
 background:#e6c2bf
@@ -288,7 +290,7 @@ background:#c2dff6
   height:40px;
   width:300px;
   padding-top:6px;
-  padding-left:12px;/* Ensures text stays aligned to the left */
+  padding-left:12px;
 }
 
 
