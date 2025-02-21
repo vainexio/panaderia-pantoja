@@ -18,7 +18,7 @@
 }
 .work-schedule {
     background-color: #283986;
-    color: #FCFCFC; /* Fixed missing # in color */
+    color: #FCFCFC;
 }
 
 body {
@@ -26,24 +26,24 @@ body {
     text-align: center;
     background-color: #efe3d4;
     margin: 0;
-    padding: 10px; /* Reduced padding to move everything up */
+    padding: 10px; 
 }
 
 .calendar {
-    display: flex; /* Center items horizontally */
-    flex-wrap: wrap; /* Allow multiple rows */
-    justify-content: center; /* Center in the middle */
-    align-items: flex-start; /* Align items to the top */
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center;
+    align-items: flex-start; 
     gap: 10px;
     max-width: 700px;
-    margin: 70px auto 0 auto; /* Reduced top margin to move up */
+    margin: 70px auto 0 auto; 
 }
 
 .month {
     background: none;
-    width: 85%; /* Adjust width for better centering */
-    padding: 10px; /* Reduced padding for better fit */
-    text-align: center; /* Center month title */
+    width: 85%; 
+    padding: 10px; 
+    text-align: center;
     margin-left:80px;
 }
 
@@ -69,12 +69,12 @@ table {
 }
 
 th, td {
-    width: 12%; /* Ensures equal width */
-    height: 65px;  /* Reduced height to make it more compact */
-    border: 5px solid #283986; /* Reduced border size */
+    width: 12%; 
+    height: 65px;  
+    border: 5px solid #283986; 
     vertical-align: top;
-    text-align: left; /* Reduced padding for better spacing */
-    font-size: 12px; /* Slightly smaller font */
+    text-align: left; 
+    font-size: 12px; 
     position: relative;
 }
 
@@ -93,30 +93,37 @@ th {
     background: #ffd43a;
     color: black;
     text-align: center;
-    padding: 25px; /* Reduced padding to make it more compact */
+    padding: 25px; 
 }
 .fri4 {
     position: absolute;
-    top: 5px;  /* Adjust distance from top */
-    left: 5px; /* Adjust distance from left */
+    top: 5px;  
+    left: 5px; 
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30px; /* Size of the circle */
+    width: 30px; 
     height: 30px;
-    background-color: #f2bf2e; /* Circle color */
-    color: black; /* Text color */
-    border-radius: 50%; /* Makes it a circle */
+    background-color: #f2bf2e; 
+    color: black; 
+    border-radius: 50%; 
     font-size: 14px;
     font-weight: bold;
     text-align: center;
 }
+.today{
+  display: flex;  /* Center in the middle */
+    align-items: flex-start;
+  font-size:20px;
+  margin-left:90px;
+}
+
 
 .schedule-appointment-firstAM, .schedule-appointment-secAM, .schedule-appointment-firstPM, .schedule-appointment-secPM   {
   background: white; 
   height:90px;
   width: 300px;
-  padding: 5px; /* Add some spacing */
+  padding: 5px; 
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -130,11 +137,10 @@ th {
   margin-left: 90px;
 }
 
-/* Header: On-duty status & time */
 .sched-header{
   display: flex;
   align-items: center;
-  gap: 5px; /* Space between items */
+  gap: 5px; 
 }
 
 /* Status dot */
@@ -147,8 +153,6 @@ th {
   margin-left: 10px;
 }
 
-
-/* Time box */
 .onduty-time {
   background: #f2b600;
   color: black;
@@ -164,24 +168,21 @@ th {
   margin-left: 35px;
 }
 
-/* Container for doctor name and button */
 .sched-details {
   display: flex;
-  flex-direction: column; /* Stacks content vertically */
-  align-items: flex-start; /* Aligns items to the left */
-  gap: 3px; /* Reduces spacing between elements */
-  padding: 5px 0; /* Adds some padding */
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 3px; 
+  padding: 5px 0; 
 }
 
-/* Doctor's name */
 .doctor-name{
   font-size: 14px;
   font-weight: bold;
   width: 185px;
-  margin-bottom: 0; /* Adds slight spacing below */
+  margin-bottom: 0; 
 }
 
-/* Book appointment button */
 .book-appointment {
   background: #243c86;
   color: white;
@@ -191,7 +192,7 @@ th {
   cursor: pointer;
   font-weight: bold;
   width: 135px;
-  height: 25px; /* Slightly bigger */
+  height: 25px; 
   font-size: 12px;
   margin-left:142px;
 }
@@ -199,10 +200,9 @@ th {
   display: flex;
     flex-direction: row; 
 }
-/* Container for all appointments */
 .schedule-appointments {
     display: flex;
-    flex-direction: column;  /* Space between appointment slots */
+    flex-direction: column;  
 }
 
 
@@ -218,24 +218,29 @@ th {
 }
 
 
-/* Main wrapper to align AM and PM side by side */
 .schedule-wrapper {
     display: flex;
     justify-content: row;
 }
 
-/* Each column (AM on left, PM on right) */
 .schedule-appointments-AM,
 .schedule-appointments-PM {
-    width: 78%; /* Adjust if needed */
+    width: 78%; 
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 .schedule-appointment-firstPM .status-dot{
-  color:#d75e56;
+  background:#d75e56;
 }
+
+.schedule-appointment-firstPM .onduty-time{
+  background:#828bb2;
+}
+
+
+
 
 /* Use this pallets */
 /* Css designs goes below this */
