@@ -24,7 +24,7 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f4f4f4;
+    background-color: #e9ecef;
     margin: 0;
     padding: 10px; /* Reduced padding to move everything up */
 }
@@ -36,15 +36,15 @@ body {
     align-items: flex-start; /* Align items to the top */
     gap: 10px;
     max-width: 700px;
-    margin: 20px auto 0 auto; /* Reduced top margin to move up */
+    margin: 70px auto 0 auto; /* Reduced top margin to move up */
 }
 
 .month {
-    background: #efe3d4;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: none;
     width: 85%; /* Adjust width for better centering */
     padding: 10px; /* Reduced padding for better fit */
     text-align: center; /* Center month title */
+    margin-left:80px;
 }
 
 .month h2 {
@@ -54,6 +54,7 @@ body {
     color: black;
     border-radius: 5px 5px 0 0;
   font-family: "Open Sauce One Regular", sans-serif;
+  font-size:20px;
 }
 
 .february {
@@ -63,20 +64,22 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: auto; /* Ensures table is centered */
+    margin: auto;
 }
 
 th, td {
     width: 12%; /* Ensures equal width */
-    height: 50px;  /* Reduced height to make it more compact */
+    height: 70px;  /* Reduced height to make it more compact */
     border: 5px solid #283986; /* Reduced border size */
     vertical-align: top;
-    text-align: left;
-    padding: 10px; /* Reduced padding for better spacing */
+    text-align: left; /* Reduced padding for better spacing */
     font-size: 12px; /* Slightly smaller font */
     position: relative;
 }
 
+td{
+  padding: 7px; 
+}
 .sun {
     background: #e6c2bf;
 }
@@ -85,7 +88,7 @@ th {
     background: #ffd43a;
     color: black;
     text-align: center;
-    padding: 10px; /* Reduced padding to make it more compact */
+    padding: 25px; /* Reduced padding to make it more compact */
 }
 
 /* Use this pallets */
