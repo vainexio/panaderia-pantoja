@@ -112,7 +112,7 @@ th {
     text-align: center;
 }
 
-.schedule-appointment {
+.schedule-appointment-firstAM {
   background: white; 
   height:90px;
   width: 300px;
@@ -128,14 +128,14 @@ th {
 }
 
 /* Header: On-duty status & time */
-.sched-header {
+.sched-header{
   display: flex;
   align-items: center;
   gap: 5px; /* Space between items */
 }
 
 /* Status dot */
-.status-dot {
+.status-dot{
   width: 15px;
   height: 15px;
   background: #00bfb3;
@@ -171,7 +171,7 @@ th {
 }
 
 /* Doctor's name */
-.doctor-name {
+.doctor-name{
   font-size: 14px;
   font-weight: bold;
   width: 185px;
@@ -191,6 +191,28 @@ th {
   height: 25px; /* Slightly bigger */
   font-size: 12px;
   margin-left:142px;
+}
+
+/* Container for all appointments */
+.schedule-appointments {
+    display: flex;
+    flex-direction: column;  /* Space between appointment slots */
+}
+
+/* Individual appointment boxes */
+.schedule-appointment-firstAM,
+.schedule-appointment-secondAM {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure spacing between elements inside */
+.sched-onduty {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 
