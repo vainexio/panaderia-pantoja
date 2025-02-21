@@ -214,6 +214,42 @@ th {
   align-items: left;
   margin-left:10px;
 }
+/* Main wrapper to align AM and PM side by side */
+.schedule-wrapper {
+    display: flex;
+    justify-content: row;
+}
+
+/* Each column (AM on left, PM on right) */
+.schedule-appointments-AM,
+.schedule-appointments-PM {
+    width: 78%; /* Adjust if needed */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Section label (AM/PM title) */
+.schedule-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Individual appointment box */
+.schedule-appointment {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensures details are stacked properly */
+.sched-onduty {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 
 /* Use this pallets */
 /* Css designs goes below this */
