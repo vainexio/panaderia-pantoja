@@ -111,11 +111,78 @@ th {
     font-weight: bold;
     text-align: center;
 }
+
+.schedule-appointment {
+  background: white;
+  display: flex;
+  flex-direction: column;  /* Stack items vertically */
+  align-items: center;
+  justify-content: center;
+  width: 700px;  
+  height:100px;/* Ensure full width */
+  padding: 20px; /* Add some spacing */
+  border-radius: 10px; /* Optional rounded corners */
+}
+
 .today{
   text-align: left;
   margin-left:90px;
   font-size: 26px;
 }
+.sched-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
+.status-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #00C4CC;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-text {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Doctor & Time Details */
+.sched-details {
+    margin-top: 8px;
+}
+
+.onduty-time {
+    background-color: #F1B52A;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.doctor-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+/* Button */
+.book-appointment {
+    background-color: #1E2E7A;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.book-appointment:hover {
+    background-color: #16225A;
+}
 /* Use this pallets */
 /* Css designs goes below this */
