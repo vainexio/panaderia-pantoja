@@ -93,22 +93,20 @@ th {
     padding: 25px; /* Reduced padding to make it more compact */
 }
 .sat4 {
-    position: relative; /* Needed for absolute positioning */
-    text-align: center; /* Centers text */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; /* Adjust width for a perfect circle */
+    height: 30px; /* Same as width to maintain circular shape */
+    background-color: red; /* Circle color */
+    color: white; /* Text color */
+    border-radius: 50%; /* Makes it a circle */
+    font-size: 14px; 
+    font-weight: bold;
+    text-align: center;
 }
 
-.sat4::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px; /* Circle size */
-    height: 20px;
-    background-color: red; /* Change to desired color */
-    border-radius: 50%;
-    transform: translate(-50%, -50%); /* Centers the circle */
-    z-index: -1; /* Places it behind the number */
-}
 
 /* Use this pallets */
 /* Css designs goes below this */
