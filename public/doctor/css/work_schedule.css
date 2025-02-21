@@ -113,76 +113,74 @@ th {
 }
 
 .schedule-appointment {
-  background: white;
-  display: flex;
-  flex-direction: column;  /* Stack items vertically */
+  background: white;  /* Stack items vertically */
   align-items: center;
   justify-content: center;
-  width: 700px;  
-  height:100px;/* Ensure full width */
-  padding: 20px; /* Add some spacing */
-  border-radius: 10px; /* Optional rounded corners */
+  height:80px;
+  width: 300px;
+  padding: 15px; /* Add some spacing */
+  border-radius: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  margin-left: 70px;
 }
 
-.today{
-  text-align: left;
-  margin-left:90px;
-  font-size: 26px;
-}
+/* Header: On-duty status & time */
 .sched-header {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between items */
 }
 
+/* Status dot */
 .status-dot {
-    width: 12px;
-    height: 12px;
-    background-color: #00C4CC;
-    border-radius: 50%;
-    display: inline-block;
+  width: 15px;
+  height: 15px;
+  background: #00bfb3;
+  border-radius: 50%;
+  display: inline-block;
 }
 
-.status-text {
-    font-size: 14px;
-    color: #333;
-}
-
-/* Doctor & Time Details */
-.sched-details {
-    margin-top: 8px;
-}
-
+/* Time box */
 .onduty-time {
-    background-color: #F1B52A;
-    color: black;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
-    display: inline-block;
+  background: #f2b600;
+  color: black;
+  padding: 5px 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  width: 150px;
+  height: 20px;
+  font-size:12px;
 }
 
+/* Doctor name and button */
+.sched-doctorname {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Doctor's name */
 .doctor-name {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 8px 0;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-/* Button */
+/* Book appointment button */
 .book-appointment {
-    background-color: #1E2E7A;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
+  background: #243c86;
+  color: white;
+  border: none !important;
+  padding: 5px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  justify-content: right;
 }
 
-.book-appointment:hover {
-    background-color: #16225A;
-}
 /* Use this pallets */
 /* Css designs goes below this */
