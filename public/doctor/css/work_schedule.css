@@ -24,7 +24,7 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #e9ecef;
+    background-color: #efe3d4;
     margin: 0;
     padding: 10px; /* Reduced padding to move everything up */
 }
@@ -65,6 +65,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin: auto;
+  background: #efe3d4;
 }
 
 th, td {
@@ -80,7 +81,7 @@ th, td {
 td{
   padding: 7px; 
 }
-.sun {
+.sun,.sat {
     background: #e6c2bf;
 }
 
