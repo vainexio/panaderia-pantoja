@@ -70,7 +70,7 @@ table {
 
 th, td {
     width: 12%; /* Ensures equal width */
-    height: 70px;  /* Reduced height to make it more compact */
+    height: 65px;  /* Reduced height to make it more compact */
     border: 5px solid #283986; /* Reduced border size */
     vertical-align: top;
     text-align: left; /* Reduced padding for better spacing */
@@ -86,7 +86,9 @@ td{
 .sun1,.sun2,.sun3,.sun4,.sun5,.sat1,.sat2,.sat3,.sat4,.sat5 {
     background: #e6c2bf;
 }
-
+.tues5{
+  background: #c2dff6;
+}
 th {
     background: #ffd43a;
     color: black;
@@ -108,6 +110,11 @@ th {
     font-size: 14px;
     font-weight: bold;
     text-align: center;
+}
+.today{
+  text-align: left;
+  margin-left:90px;
+  font-size: 26px;
 }
 
 /* Use this pallets */
