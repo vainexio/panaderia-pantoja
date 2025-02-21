@@ -241,40 +241,52 @@ th {
     gap: 15px;
 }
 
-.schedule-appointment-firstPM .status-dot{
-  background:#d75e56;
-}
-
-.schedule-appointment-firstPM .onduty-time{
-  background:#828bb2;
-}
-
-
-
-.availability-dot-in, .availability-dot-weekend,.availability-dot-holiday{
-  width: 22px;
-  height: 22px;
-  background: #00bfb3;
-  border-radius: 50%;
-  margin-right: 15px;
-   display: flex;
-  align-items: left; 
-}
-.availability-text-in, .availability-text-weekend,.availability-text-holiday{
-  font-size: 22px;
+.availability-colors {
   display: flex;
-  align-items: left; 
-  display: inline-block;
+  flex-direction: column; /* Stacks items in a column */
+  gap: 10px; /* Adds spacing between each row */
 }
-.in{
+
+.in, .weekend, .holiday {
+  display: flex;
+  align-items: center;
   width:500px;
+  margin-bottom:15px;/* Aligns dot and text vertically */
 }
-.weekend{
-  width:500px;
+
+.availability-dot-in, 
+.availability-dot-weekend, 
+.availability-dot-holiday {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  margin-left:35px;
+  margin-right: 10px; /* Adds space between the dot and text */
+  flex-shrink: 0; 
 }
-.holiday{
-  width:400px;
-  border:solid red 2px;
+
+.availability-dot-in{
+background:#efe3d4
 }
+.availability-dot-weekend{
+background:#e6c2bf
+}
+.availability-dot-holiday{
+background:#c2dff6
+}
+
+.availability-text-in, 
+.availability-text-weekend, 
+.availability-text-holiday {
+  font-size: 14px;
+  border:3px;
+  border-radius:3px;
+  background:white;
+  text-align: left; 
+  height:40px;
+  width:300px;/* Ensures text stays aligned to the left */
+}
+
+
 /* Use this pallets */
 /* Css designs goes below this */
