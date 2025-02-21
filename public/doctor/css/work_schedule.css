@@ -7,7 +7,7 @@
     --secondary-yellow: #ffe365;
     --black: #363636;
 }
- body {
+        body {
             font-family: Arial, sans-serif;
             text-align: center;
             background-color: #f4f4f4;
@@ -39,13 +39,19 @@
             border-collapse: collapse;
         }
         th, td {
-            padding: 5px;
-            text-align: center;
+            width: 14.28%; /* Ensures equal width */
+            height: 50px;  /* Adjust for spacing */
             border: 1px solid #ddd;
+            vertical-align: top;
+            text-align: left;
+            padding: 5px;
+            font-size: 14px;
+            position: relative;
         }
         th {
             background: #007bff;
             color: white;
+            text-align: center;
         }
 /* Use this pallets */
 /* Css designs goes below this */
