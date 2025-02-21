@@ -112,7 +112,7 @@ th {
     text-align: center;
 }
 
-.schedule-appointment-firstAM, .schedule-appointment-secondAM, .schedule-appointment-firstPM   {
+.schedule-appointment-firstAM, .schedule-appointment-secAM, .schedule-appointment-firstPM, .schedule-appointment-secPM   {
   background: white; 
   height:90px;
   width: 300px;
@@ -121,11 +121,13 @@ th {
   display: flex;
   flex-direction: column;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  margin-left: 90px;
    display: flex;
   justify-content: column;
-  margin-bottom:10px;
-  margin-right:40px;
+}
+
+.schedule-appointment-firstAM,.schedule-appointment-secAM {
+  margin-right:20px;
+  margin-left: 90px;
 }
 
 /* Header: On-duty status & time */
@@ -204,7 +206,7 @@ th {
 }
 
 
-.schedule-appointment-secondAM .doctor-name{
+.schedule-appointment-secAM .doctor-name, .schedule-appointment-firstPM .doctor-name, .schedule-appointment-secPM .doctor-name{
   font-size: 14px;
   font-weight: bold;
   width: 185px;
@@ -214,6 +216,8 @@ th {
   align-items: left;
   margin-left:10px;
 }
+
+
 /* Main wrapper to align AM and PM side by side */
 .schedule-wrapper {
     display: flex;
@@ -229,26 +233,8 @@ th {
     gap: 15px;
 }
 
-/* Section label (AM/PM title) */
-.schedule-label {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-/* Individual appointment box */
-.schedule-appointment {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Ensures details are stacked properly */
-.sched-onduty {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+.schedule-appointment-firstPM .status-dot{
+  color:#d75e56;
 }
 
 /* Use this pallets */
