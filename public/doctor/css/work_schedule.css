@@ -113,18 +113,18 @@ th {
 }
 
 .schedule-appointment {
-  background: white;  /* Stack items vertically */
-  align-items: center;
-  justify-content: center;
+  background: white; 
   height:80px;
   width: 300px;
-  padding: 15px; /* Add some spacing */
+  padding: 5px; /* Add some spacing */
   border-radius: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   margin-left: 70px;
+   display: flex;
+  justify-content: column;
 }
 
 /* Header: On-duty status & time */
@@ -141,24 +141,30 @@ th {
   background: #00bfb3;
   border-radius: 50%;
   display: inline-block;
+  margin-left: 10px;
 }
+
 
 /* Time box */
 .onduty-time {
   background: #f2b600;
   color: black;
-  padding: 5px 10px;
+  padding: 8px 5px;
   font-weight: bold;
   border-radius: 5px;
   width: 150px;
   height: 20px;
   font-size:12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 30px;
 }
 
 /* Doctor name and button */
-.sched-doctorname {
-  display: flex;
-  justify-content: space-between;
+.sched-details {
+   display: flex;
+  justify-content: column;
   align-items: center;
   margin-top: 10px;
 }
@@ -167,6 +173,11 @@ th {
 .doctor-name {
   font-size: 14px;
   font-weight: bold;
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  width: 135px;
+  
 }
 
 /* Book appointment button */
@@ -174,12 +185,16 @@ th {
   background: #243c86;
   color: white;
   border: none !important;
-  padding: 5px 10px;
+  padding: auto;
   border-radius: 20px;
   cursor: pointer;
   font-weight: bold;
   display: flex;
-  justify-content: right;
+  justify-content: center;
+  width: 135px;
+  height: 25px;
+  font-size:12px;
+  align-items: right;
 }
 
 /* Use this pallets */
