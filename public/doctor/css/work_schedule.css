@@ -112,12 +112,11 @@ th {
     text-align: center;
 }
 
-.schedule-appointment-firstAM {
+.schedule-appointment-firstAM, .schedule-appointment-secondAM, .schedule-appointment-firstPM   {
   background: white; 
   height:90px;
   width: 300px;
   padding: 5px; /* Add some spacing */
-  border-radius: 10px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -125,6 +124,8 @@ th {
   margin-left: 90px;
    display: flex;
   justify-content: column;
+  margin-bottom:10px;
+  margin-right:40px;
 }
 
 /* Header: On-duty status & time */
@@ -192,29 +193,27 @@ th {
   font-size: 12px;
   margin-left:142px;
 }
-
+.schedule-of-doctor{
+  display: flex;
+    flex-direction: row; 
+}
 /* Container for all appointments */
 .schedule-appointments {
     display: flex;
     flex-direction: column;  /* Space between appointment slots */
 }
 
-/* Individual appointment boxes */
-.schedule-appointment-firstAM,
-.schedule-appointment-secondAM {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
 
-/* Ensure spacing between elements inside */
-.sched-onduty {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+.schedule-appointment-secondAM .doctor-name{
+  font-size: 14px;
+  font-weight: bold;
+  width: 185px;
+  margin-bottom: 0;
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  margin-left:10px;
 }
-
 
 /* Use this pallets */
 /* Css designs goes below this */
