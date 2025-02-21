@@ -125,7 +125,7 @@ th {
 
 .today{
   margin-left:90px;
-  margin-right:100px;
+  margin-right:580px;
 }
 
 
@@ -250,7 +250,25 @@ th {
 }
 
 
+.availability-dot-in, .availability-dot-weekend,.availability-dot-holiday{
+  width: 15px;
+  height: 15px;
+  background: #00bfb3;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 30px;
+}
+.availability-text-in, .availability-dot-weekend,.availability-dot-holiday{
 
-
+.in{
+  width:200px;
+}
+.weekend{
+  width:300px;
+}
+.holiday{
+  width:300px;
+  border:solid red 2px;
+}
 /* Use this pallets */
 /* Css designs goes below this */
