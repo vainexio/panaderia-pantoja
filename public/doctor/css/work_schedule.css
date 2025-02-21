@@ -83,20 +83,14 @@ td{
   position: relative;
 }
 
-.sun1,.sun2,.sun3,.sun4,.sun5,.sat1,.sat2,.sat3,.sat5 {
-    background: #e6c2bf;
+
+/* Apply background to the full calendar box */
+td.sun1, td.sun2, td.sun3, td.sun4, td.sun5, 
+td.sat1, td.sat2, td.sat3, td.sat5 {
+    background-color: #e6c2bf;
 }
 
-th {
-    background: #ffd43a;
-    color: black;
-    text-align: center;
-    padding: 25px; /* Reduced padding to make it more compact */
-}
-.sat4 {
-    position: absolute;
-    top: 5px;  /* Adjust distance from top */
-    left: 5px; /* Adjust distance from left */
+.day {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -108,12 +102,32 @@ th {
     font-size: 14px;
     font-weight: bold;
     text-align: center;
-  background: #e6c2bf
-}
-td {
-    position: relative; /* Allows absolute positioning inside */
+    margin: auto; /* Centers inside the cell */
 }
 
+
+th {
+    background: #ffd43a;
+    color: black;
+    text-align: center;
+    padding: 25px; /* Reduced padding to make it more compact */
+}
+.fri4 {
+    position: absolute;
+    top: 5px;  /* Adjust distance from top */
+    left: 5px; /* Adjust distance from left */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; /* Size of the circle */
+    height: 30px;
+    background-color: #f2bf2e; /* Circle color */
+    color: black; /* Text color */
+    border-radius: 50%; /* Makes it a circle */
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
 
 /* Use this pallets */
 /* Css designs goes below this */
