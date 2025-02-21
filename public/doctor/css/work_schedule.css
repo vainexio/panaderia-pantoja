@@ -7,6 +7,18 @@
     --secondary-yellow: #ffe365;
     --black: #363636;
 }
+@font-face {
+    font-family: 'Open Sauce';
+    src: url('OpenSauceSans-Regular.woff2') format('woff2'),
+         url('OpenSauceSans-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.work-schedule {
+    background-color: #283986;
+    color: 283986; /* /* Optional: Smooth edges */
+}
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -22,7 +34,7 @@
             margin: auto;
         }
         .month {
-            background: white;
+            background: #efe3d4;
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -34,23 +46,27 @@
             color: white;
             border-radius: 5px 5px 0 0;
         }
+.february h2{
+  font-family: 'Open Sauce', sans-serif;
+}
+
         table {
             width: 100%;
             border-collapse: collapse;
         }
         th, td {
             width: 14.28%; /* Ensures equal width */
-            height: 50px;  /* Adjust for spacing */
-            border: 1px solid #ddd;
+            height: 70px;  /* Adjust for spacing */
+            border: 7px solid #283986;
             vertical-align: top;
             text-align: left;
-            padding: 5px;
+            padding: 25px;
             font-size: 14px;
             position: relative;
         }
         th {
-            background: #007bff;
-            color: white;
+            background: #ffd43a;
+            color: black;
             text-align: center;
         }
 /* Use this pallets */
