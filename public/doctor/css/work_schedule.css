@@ -59,12 +59,11 @@
 .work-schedules-card th {
   padding: 12px 15px;
   text-align: left;
-  color: var(--yellow);
+  color: var(--blue);
 }
 
 .schedule-data {
   border-radius: 16px;
-  border: 2px solid white;
 }
 .schedule-data:hover {
   background-color: rgba(255, 255, 255, 0.1);

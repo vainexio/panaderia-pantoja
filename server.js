@@ -303,6 +303,16 @@ app.get('/api/clinic-schedule', async (req, res) => {
 app.post('/schedule', async (req, res) => {
   const { day_of_week, start_time, end_time } = req.body;
   try {
+    // Check if a schedule for this day already exists for the current doctor
+    const existingSchedule = await availableDoctors.findOne({
+      doctor_id: currentDoctor.doctor_id,
+      day_of_week
+    });
+    
+    if (existingSchedule) {
+      return res.status(400).json({ error: 'Schedule for this day already exists.' });
+    }
+    
     // Convert times to 12-hour format
     const startTimeFormatted = method.convertTo12Hour(start_time);
     const endTimeFormatted = method.convertTo12Hour(end_time);
@@ -321,6 +331,7 @@ app.post('/schedule', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 // GET route to fetch all schedules for the current doctor
