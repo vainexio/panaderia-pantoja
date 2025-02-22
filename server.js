@@ -7,12 +7,13 @@ const json2xls = require('json2xls');
 const XLSX = require('xlsx');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
+const cors = require('cors');
 
 //
 const method = require('./data/functions.js')
 const settings = require('./data/settings.js')
 const app = express();
-
+app.use(cors())
 // Connect to MongoDB
 if (process.env.MONGOOSE) {
 mongoose.connect(process.env.MONGOOSE, {
@@ -86,6 +87,10 @@ app.get('/doctor-dashboard', async (req, res) => {
 });
 app.get('/patient-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/patients.html');
+});
+
+app.get('/getName', async (req, res) => {
+  res.json({ firstName: "Nichole", lastName: "Quimpan"})
 });
 
 function generateSecurityKey(length = 32) {

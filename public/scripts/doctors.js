@@ -14,6 +14,7 @@ function showSection(sectionId) {
     selectedSection.style.display = 'block';
 }
 
+let ready = false
 // Show the home section by default
 document.addEventListener("DOMContentLoaded", async function() {
   let layouts = [
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     });
   
   /* */
+  ready = true
   /* Hide loader */
   setTimeout(() => {
     document.getElementById("preloader").classList.add("fade-out");
