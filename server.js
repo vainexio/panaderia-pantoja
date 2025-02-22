@@ -298,17 +298,21 @@ app.get('/api/clinic-schedule', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-// Doctor Schedule 
+
 // POST route to create a new schedule
 app.post('/schedule', async (req, res) => {
   const { day_of_week, start_time, end_time } = req.body;
   try {
+    // Convert times to 12-hour format
+    const startTimeFormatted = method.convertTo12Hour(start_time);
+    const endTimeFormatted = method.convertTo12Hour(end_time);
+
     let newSchedule = new availableDoctors({
       availability_id: Date.now(),
       doctor_id: currentDoctor.doctor_id,
       day_of_week,
-      start_time,
-      end_time,
+      start_time: startTimeFormatted,
+      end_time: endTimeFormatted,
     });
 
     await newSchedule.save();
@@ -317,6 +321,7 @@ app.post('/schedule', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // GET route to fetch all schedules for the current doctor
 app.get('/schedules', async (req, res) => {

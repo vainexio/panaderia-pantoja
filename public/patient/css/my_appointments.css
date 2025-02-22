@@ -58,15 +58,18 @@ tbody tr {
 }
 
 .status-indicator.pending {
-  background-color: #facc15; /* yellow-400 */
+  background-color: #facc15;
+  margin-left:15px;/* yellow-400 */
 }
 
 .status-indicator.cancelled {
-  background-color: #ef4444; /* red-500 */
+  background-color: #ef4444;
+   margin-left:15px;/* red-500 */
 }
 
 .status-indicator.confirmed {
-  background-color: #22c55e; /* green-500 */
+  background-color: #22c55e;
+   margin-left:15px;/* green-500 */
 }
 
 /* Status legend */

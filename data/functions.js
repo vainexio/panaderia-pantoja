@@ -42,6 +42,19 @@ function parseTimeTo24(timeStr) {
 
   return hour + minute / 60;
 }
+function convertTo12Hour(time) {
+  const [hourStr, minute] = time.split(':');
+  let hour = parseInt(hourStr, 10);
+  const period = hour >= 12 ? 'PM' : 'AM';
+  
+  if (hour === 0) {
+    hour = 12;
+  } else if (hour > 12) {
+    hour = hour - 12;
+  }
+  
+  return `${hour}:${minute} ${period}`;
+}
 function getCurrentTime24() {
   const timezone = timezone();
   const hours = timezone.getHours();
@@ -95,5 +108,6 @@ module.exports = {
   sleep,
   generateSecurityKey,
   checkIfOnDuty,
-  computeCalendarWeeks
+  computeCalendarWeeks,
+  convertTo12Hour
 }
