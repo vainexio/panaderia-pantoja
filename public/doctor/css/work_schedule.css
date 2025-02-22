@@ -54,14 +54,39 @@
     flex: 1 1 calc(33.333% - 1rem);
     min-width: 250px;
   display: flex;
-justify-content: center; 
+justify-content: center;
   
 }
+
+.date-section {
+  display: flex;
+  flex-direction: column; /* Stack label on top, input below */
+  align-items: flex-start; /* Align content to the left */
+  justify-content: flex-start;
+  width: fit-content; /* Forces it to the left */
+  left: 20px; /* Adjust as needed */
+  top: 10px; /* Aligns with top of the container */
+}
+
+.date-section label {
+  margin-bottom: 5px;         /* Space between label and input */
+  font-weight: bold;          /* Example styling */
+}
+
+.date-section input {
+  width: 200px;               /* Control input width */
+  height: 30px;               /* Example height */
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
 
 
 .name-section {
   display: flex;
   flex-direction: column; 
+  margin-bottom:30px;
  
 }
 
