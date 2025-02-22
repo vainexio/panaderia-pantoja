@@ -1,9 +1,66 @@
 <section id="patient_history" class="patient_history section-content"> <!-- Don't change the id and class -->
   <div class="container m-auto">
     <header class="mb-6 text-center"></header>
-      <!-- Content goes below this -->
+    <!-- Content goes below this -->
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Patient History</title>
+      <link rel="stylesheet" href="../css/patient_history.css">
+  </head>
+  <body>
+      <div class="container">
+          <!-- Left Section -->
+          <div class="PHsidebar">
+              <h2>Patient History</h2>
+              <input type="text" placeholder="Search">
+            <div class="PatientListWrapper">
+              <ul class="PatientList">
+                  <li id="PatientHistory_ListName" class="PatientName">Film Rachanun</li>
+              </ul>
+          </div>
+        </div>
 
-      
-      <!-- Content goes above this -->
+          <!-- Right Section -->
+      <div class="PHInfo">
+      <!-- Patient info card -->
+      <div class="PHGeneralInfoCard">
+          <img src="https://cdn.glitch.global/42a5e57d-0a83-4a22-88a5-729dd34deca5/d0e9f2c6-6e78-449a-a263-fda680a6a6a9.image.png?v=1681135273904" 
+               alt="Patient Photo" class="PHProfile" id= "PatientHistory_Profile">
+          <div class="PHCardLeft">
+              <h2 id="PatientHistory_Name">Film Rachanun</h2>
+              <p id="PatientHistory_Gender">Gender: Female</p>
+              <p id="PatientHistory_Birthdate">Birthdate: January, 67, 90009 </p>
+          </div>
+        <div class="PHCardRight">
+          <p id="PatientHistory_Program"> Program: </p>
+          <p id="PatientHistory_YearLevel"> Year Level: </p>
+          <p id="PatientHistory_ContactNo"> Contact No.: </p>
+          <p id="PatientHistory_Email"> Email: </p>
+        </div>
+      </div>
+
+      <!-- DetailedInfo-->
+      <div class="PHDetailedInfo">
+        <h3>Detailed Diagnosis</h3>
+          <div class="PHdiagnosis">
+              <p id="PatientHistory_Diagnosis"></p>
+          </div>
+        <h3>Treatment</h3>
+          <div class="PHtreatment">
+                  <p id="PatientHistory_Treatment"></p>
+          </div>
+        <h3>Tests</h3>
+          <div class="PHtests"> 
+            <p id="PatientHistory_Tests"></p>
+          </div>
+      </div>
+  </div>
+      </div>
+  </body>
+  </html>
+<!-- Content goes above this -->
     </div>
-</section>
+</section> 

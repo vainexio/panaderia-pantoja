@@ -118,8 +118,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  flex-grow: 1; /* Allows this element to expand to fill available space */
-  justify-content: flex-end; /* Pushes its content to the bottom */
+  flex-grow: 1; 
+  justify-content: flex-end;
 }
 #statusSlot {
   display: flex;
@@ -138,15 +138,15 @@
 .off-duty {
   width: 15px;
   height: 15px;
-  background: #ccc;
+  background: #cccccc;
   border-radius: 50%;
   display: inline-block;
 }
 
 /* Time Range Styling */
 #timeRange {
-  display: inline-block;  /* Allow width to be applied */
-  width: 150px;           /* Fixed width (adjust as needed) */
+  display: inline-block;
+  width: 150px;
   background: #f2b600;
   color: var(--black);
   padding: 5px 8px;
@@ -185,7 +185,7 @@
   width: 100%;
   height: 40px;
   display: block;
-  margin-left: auto;    /* Push it to the right */
+  margin-left: auto;
 }
 
 #bookAppointment:hover {
@@ -201,7 +201,6 @@
   margin-bottom: 20px;
 }
 
-/* Give the header a bit of styling */
 #scheduleHeader h2 {
   margin: 0;
   font-size: 1.5rem;
@@ -227,16 +226,15 @@
 
 .availability-dot-in {
   
-  background-color: #efe3d4;  /* Doctor is Available */
+  background-color: #efe3d4;
   border: 1px solid black;
 }
 
 .availability-dot-weekend {
-  background-color: #e6c2bf; /* Weekend (Clinic is Unavailable) */
+  background-color: #e6c2bf;
   border: 1px solid black;
 }
 
-/* Optional: style the text next to the dot */
 .availability-text-in,
 .availability-text-weekend {
   font-weight: 500;

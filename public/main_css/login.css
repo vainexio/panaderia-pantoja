@@ -1,9 +1,7 @@
-/* Universal box-sizing fix */
 * {
     box-sizing: border-box;
 }
 
-/* Body Styling */
 body {
     font-family: "Roboto Slab", serif;
     font-weight: 400;
@@ -20,7 +18,7 @@ body {
 }
 
 #particles-js {
-  position: absolute; /* Make particles background fill the screen */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -41,11 +39,9 @@ form {
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), inset 0 3px 6px rgba(255, 255, 255, 0.5);
     border-radius: 8px;
     padding: 30px 20px;
-    /* Adjust padding for better responsiveness */
     width: 350px;
     text-align: center;
     overflow: hidden;
-    /* Prevent content overflow */
 }
 
 h2 {
@@ -58,7 +54,6 @@ h2 {
 input {
     z-index: 1;
     width: 100%;
-    /* Ensure inputs take up the full form width */
     padding: 12px 15px;
     margin-bottom: 15px;
     border: 1px solid #dddddd;

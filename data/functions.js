@@ -66,9 +66,35 @@ function sleep(miliseconds) {
     var currentTime = new Date().getTime();
     while (currentTime + miliseconds >= new Date().getTime()) { }
 }
+function computeCalendarWeeks(date) {
+  const year = date.getFullYear();
+  const month = date.getMonth(); // 0-indexed
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const weeks = [];
+  let week = new Array(7).fill('');
+  let startDay = firstDay.getDay();
+  let dayCounter = 1;
 
+  // Fill first week
+  for (let i = startDay; i < 7; i++) {
+    week[i] = dayCounter++;
+  }
+  weeks.push(week);
+
+  // Fill remaining weeks
+  while (dayCounter <= lastDay.getDate()) {
+    week = new Array(7).fill('');
+    for (let i = 0; i < 7 && dayCounter <= lastDay.getDate(); i++) {
+      week[i] = dayCounter++;
+    }
+    weeks.push(week);
+  }
+  return weeks;
+}
 module.exports = {
   sleep,
   generateSecurityKey,
-  checkIfOnDuty
+  checkIfOnDuty,
+  computeCalendarWeeks
 }

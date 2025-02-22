@@ -137,26 +137,6 @@ app.get('/patient-dashboard', async (req, res) => {
   }
 });*/
 
-function generateSecurityKey(length = 32) {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let key = "";
-    const cryptoObj = window.crypto || window.msCrypto; // For browser security
-
-    if (cryptoObj && cryptoObj.getRandomValues) {
-        const randomValues = new Uint8Array(length);
-        cryptoObj.getRandomValues(randomValues);
-
-        for (let i = 0; i < length; i++) {
-            key += characters[randomValues[i] % characters.length];
-        }
-    } else {
-        // Fallback if crypto API is not available
-        for (let i = 0; i < length; i++) {
-            key += characters.charAt(Math.floor(Math.random() * characters.length));
-        }
-    }
-    return key;
-}
 app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
   
@@ -262,27 +242,18 @@ app.post('/registerPatient', async (req, res) => {
 
 app.get('/api/clinic-schedule', async (req, res) => {
   try {
-    // Get current date info
     const now = new Date();
     const currentMonth = now.toLocaleString('default', { month: 'long' });
     const currentYear = now.getFullYear();
 
-    // Compute calendar weeks for the current month
-    const weeks = computeCalendarWeeks(now);
-
-    // Retrieve all availability records (could be multiple per doctor)
+    const weeks = method.computeCalendarWeeks(now);
     const availabilities = await availableDoctors.find({});
-
-    // Group availabilities by doctor_id to avoid duplicates
     const doctorAvailMap = {};
 
     for (const availability of availabilities) {
-      // Get the doctor details from your doctors collection
       const doctor = await doctors.findOne({ doctor_id: availability.doctor_id });
-      // Determine onDuty status using your method
       const onDuty = method.checkIfOnDuty(availability);
 
-      // Initialize an entry in the map if this doctor hasn't been added yet
       if (!doctorAvailMap[doctor.doctor_id]) {
         doctorAvailMap[doctor.doctor_id] = {
           doctor_id: doctor.doctor_id,
@@ -291,7 +262,6 @@ app.get('/api/clinic-schedule', async (req, res) => {
         };
       }
 
-      // Push this availability record to the doctor's array
       doctorAvailMap[doctor.doctor_id].availabilities.push({
         availability_id: availability.availability_id,
         start_time: availability.start_time,
@@ -300,8 +270,6 @@ app.get('/api/clinic-schedule', async (req, res) => {
         onDuty: onDuty,
       });
     }
-
-    // Define custom day order: Monday first, Sunday last
     const dayOrder = {
       Monday: 1,
       Tuesday: 2,
@@ -312,14 +280,12 @@ app.get('/api/clinic-schedule', async (req, res) => {
       Sunday: 7
     };
 
-    // Sort each doctor's availabilities by day of week (Monday first, Sunday last)
     for (const key in doctorAvailMap) {
       doctorAvailMap[key].availabilities.sort((a, b) => {
         return dayOrder[a.day_of_week] - dayOrder[b.day_of_week];
       });
     }
 
-    // Convert the map into an array of doctor availabilities
     const doctorAvailabilities = Object.values(doctorAvailMap);
 
     res.json({ currentMonth, currentYear, weeks, doctorAvailabilities });
@@ -328,37 +294,6 @@ app.get('/api/clinic-schedule', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-
-
-
-// Helper function to compute calendar weeks for the current month
-function computeCalendarWeeks(date) {
-  const year = date.getFullYear();
-  const month = date.getMonth(); // 0-indexed
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const weeks = [];
-  let week = new Array(7).fill('');
-  let startDay = firstDay.getDay();
-  let dayCounter = 1;
-
-  // Fill first week
-  for (let i = startDay; i < 7; i++) {
-    week[i] = dayCounter++;
-  }
-  weeks.push(week);
-
-  // Fill remaining weeks
-  while (dayCounter <= lastDay.getDate()) {
-    week = new Array(7).fill('');
-    for (let i = 0; i < 7 && dayCounter <= lastDay.getDate(); i++) {
-      week[i] = dayCounter++;
-    }
-    weeks.push(week);
-  }
-  return weeks;
-}
 //
 // Start the server
 const PORT = process.env.PORT || 3000;
