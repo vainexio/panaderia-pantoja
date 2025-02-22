@@ -223,32 +223,33 @@ app.post('/registerPatient', async (req, res) => {
   }
 });
 
+/* Clinic hours */
 app.get('/api/clinic-schedule', async (req, res) => {
   try {
+    // Get current date info
     const now = new Date();
     const currentMonth = now.toLocaleString('default', { month: 'long' });
     const currentYear = now.getFullYear();
+
+    // Compute calendar weeks for the current month
     const weeks = computeCalendarWeeks(now);
 
-    // Fetch availability & join with doctor info
-    const allAvailabilities = await doctorAvailabilitySchema.find({});
+    // Retrieve doctor availabilities
+    const availabilities = await availableDoctors.find({});
     const doctorAvailabilities = [];
-    for (const availability of allAvailabilities) {
-      const doctor = await Doctor.findOne({ doctor_id: availability.doctor_id });
-      // We won’t set onDuty here; the client will determine it
+    for (const availability of availabilities) {
+      const doctor = await doctors.findOne({ doctor_id: availability.doctor_id });
+      const onDuty = method.checkIfOnDuty(availability); // Replace with your own logic if needed
       doctorAvailabilities.push({
         availability_id: availability.availability_id,
         doctor_id: doctor.doctor_id,
         start_time: availability.start_time,
         end_time: availability.end_time,
         day_of_week: availability.day_of_week,
-        doctor: {
-          first_name: doctor.first_name,
-          last_name: doctor.last_name
-        }
+        doctor: doctor,
+        onDuty: onDuty,
       });
     }
-
     res.json({ currentMonth, currentYear, weeks, doctorAvailabilities });
   } catch (err) {
     console.error(err);
@@ -256,38 +257,32 @@ app.get('/api/clinic-schedule', async (req, res) => {
   }
 });
 
-// Helper to compute calendar weeks
+// Helper function to compute calendar weeks for the current month
 function computeCalendarWeeks(date) {
   const year = date.getFullYear();
-  const month = date.getMonth(); // 0-based
+  const month = date.getMonth(); // 0-indexed
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
-
   const weeks = [];
-  let week = new Array(7).fill(0);
+  let week = new Array(7).fill('');
   let startDay = firstDay.getDay();
   let dayCounter = 1;
 
-  // Fill first row
+  // Fill first week
   for (let i = startDay; i < 7; i++) {
     week[i] = dayCounter++;
   }
   weeks.push(week);
 
-  // Fill remaining rows
+  // Fill remaining weeks
   while (dayCounter <= lastDay.getDate()) {
-    week = new Array(7).fill(0);
+    week = new Array(7).fill('');
     for (let i = 0; i < 7 && dayCounter <= lastDay.getDate(); i++) {
       week[i] = dayCounter++;
     }
     weeks.push(week);
   }
   return weeks;
-}
-// Dummy function for onDuty logic (modify as needed)
-function checkIfOnDuty(availability) {
-  // Add logic based on current time, day_of_week, etc.
-  return true;
 }
 //
 // Start the server
