@@ -26,7 +26,6 @@
   width: 80%;
   max-width: 980px;
   min-height: 100%;
-  padding: 2rem;
   display: flex;
   flex-direction: column;
 }
