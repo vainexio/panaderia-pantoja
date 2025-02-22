@@ -364,9 +364,13 @@ app.delete('/schedule/:id', async (req, res) => {
 app.put('/schedule/:id', async (req, res) => {
   const { day_of_week, start_time, end_time } = req.body;
   try {
+    // Convert times to 12-hour format
+    const updatedStartTime = method.convertTo12Hour(start_time);
+    const updatedEndTime = method.convertTo12Hour(end_time);
+
     let updatedSchedule = await availableDoctors.findByIdAndUpdate(
       req.params.id,
-      { day_of_week, start_time, end_time },
+      { day_of_week, start_time: updatedStartTime, end_time: updatedEndTime },
       { new: true }
     );
     res.json(updatedSchedule);
