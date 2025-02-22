@@ -229,7 +229,6 @@ section h1 {
   background: #bebebe;      /* Change to a disabled background color */
   color: var(--white);      /* Change to a disabled text color */
   cursor: not-allowed;           /* Indicates not clickable */
-  opacity: 0.9;                  /* Optionally fade the button */
 }
 
 @media (max-width: 768px) {

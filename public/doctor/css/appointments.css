@@ -58,15 +58,16 @@ justify-content: left;
   margin-bottom:30px;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
 .date-section-appoint label {
   margin-bottom: 5px;         /* Space between label and input */
   font-weight: bold;
   font-size:20px;
-   color: black;/* Example styling */
+   color: black;
+  display: block;
 }
-
 .date-section-appoint input {
   width: 260px;               /* Control input width */
   height: 40px;               /* Example height */
@@ -74,6 +75,14 @@ justify-content: left;
   border: 1px solid black;
   border-radius: 10px;
 }
+
+
+/* Style the calendar icon */
+.date-section-appoint::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+    cursor: pointer;
+}
+
 
 .appointment-table {
     width: 100%;
@@ -131,6 +140,7 @@ margin-left:290px;
 .time-design{
   width:160px;
 }
+
 
 
 
