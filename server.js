@@ -234,28 +234,48 @@ app.get('/api/clinic-schedule', async (req, res) => {
     // Compute calendar weeks for the current month
     const weeks = computeCalendarWeeks(now);
 
-    // Retrieve doctor availabilities
+    // Retrieve all availability records (could be multiple per doctor)
     const availabilities = await availableDoctors.find({});
-    const doctorAvailabilities = [];
+
+    // Group availabilities by doctor_id to avoid duplicates
+    const doctorAvailMap = {};
+
     for (const availability of availabilities) {
+      // Get the doctor details from your doctors collection
       const doctor = await doctors.findOne({ doctor_id: availability.doctor_id });
-      const onDuty = method.checkIfOnDuty(availability); // Replace with your own logic if needed
-      doctorAvailabilities.push({
+      // Determine onDuty status using your method
+      const onDuty = method.checkIfOnDuty(availability);
+
+      // Initialize an entry in the map if this doctor hasn't been added yet
+      if (!doctorAvailMap[doctor.doctor_id]) {
+        doctorAvailMap[doctor.doctor_id] = {
+          doctor_id: doctor.doctor_id,
+          doctor: doctor,
+          availabilities: []
+        };
+      }
+
+      // Push this availability record to the doctor's array
+      doctorAvailMap[doctor.doctor_id].availabilities.push({
         availability_id: availability.availability_id,
-        doctor_id: doctor.doctor_id,
         start_time: availability.start_time,
         end_time: availability.end_time,
         day_of_week: availability.day_of_week,
-        doctor: doctor,
         onDuty: onDuty,
       });
     }
+
+    // Convert the map into an array of doctor availabilities
+    const doctorAvailabilities = Object.values(doctorAvailMap);
+
     res.json({ currentMonth, currentYear, weeks, doctorAvailabilities });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
 
 // Helper function to compute calendar weeks for the current month
 function computeCalendarWeeks(date) {
