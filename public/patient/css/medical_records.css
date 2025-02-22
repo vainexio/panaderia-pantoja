@@ -73,47 +73,6 @@ background-color: var(--white);
     gap: 10px;
 }
 
-.button-ui {
-    background: linear-gradient(145deg, #007bff, #0056b3);
-    color: rgb(255, 255, 255);
-    font-size: 16px;
-    padding: 12px 15px;
-    width: 100%;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
-    font-family: "Roboto Slab", serif;
-}
-
-.button-ui.loading span {
-    display: none;
-}
-
-.button-ui:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-} 
-
-.button-ui:hover {
-    transition: unset;
-    background: linear-gradient(145deg, #007bff, #0069d9);
-    color: white;
-}
-
-.button-ui:active {
-    box-shadow: 0 2px #202020;
-    transform: translateY(3px);
-    font-weight: bold;
-}
-
-.inactive {
-    background: unset;
-    background-color: #cccccc;
-    color: #202020;
-}
-
 .medHistoryContainer {
     display: flex;
     justify-content: center;

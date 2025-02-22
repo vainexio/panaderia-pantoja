@@ -193,7 +193,12 @@
   height: 40px;
   margin-left: auto;
 }
-
+#bookAppointment.disabled {
+  background: var(--gray);      /* Change to a disabled background color */
+  color: var(--light-gray);      /* Change to a disabled text color */
+  cursor: not-allowed;           /* Indicates not clickable */
+  opacity: 0.6;                  /* Optionally fade the button */
+}
 #bookAppointment:hover {
   background: #212f70;
 }

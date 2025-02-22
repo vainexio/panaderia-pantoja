@@ -20,7 +20,7 @@
 #work_schedulecard {
     width: 80%;
     max-width: 980px;
-    min-height: 800px;
+    min-height: 600px;
     margin: auto;
     padding: 2rem;
     border-radius: 16px;
@@ -55,6 +55,7 @@
     min-width: 250px;
   display: flex;
 justify-content: center;
+  gap:120px;
   
 }
 
@@ -64,21 +65,24 @@ justify-content: center;
   align-items: flex-start; /* Align content to the left */
   justify-content: flex-start;
   width: fit-content; /* Forces it to the left */
-  left: 20px; /* Adjust as needed */
-  top: 10px; /* Aligns with top of the container */
+  margin-left: -450px; /* Adjust as needed */
+  top: 10px;
+  margin-bottom:20px/* Aligns with top of the container */
 }
 
 .date-section label {
   margin-bottom: 5px;         /* Space between label and input */
-  font-weight: bold;          /* Example styling */
+  font-weight: bold;
+  font-size:20px;
+   color: black;/* Example styling */
 }
 
 .date-section input {
-  width: 200px;               /* Control input width */
-  height: 30px;               /* Example height */
+  width: 340px;               /* Control input width */
+  height: 45px;               /* Example height */
   padding: 5px;
   border: 1px solid black;
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 
@@ -92,20 +96,63 @@ justify-content: center;
 
 .name-section label {
   font-weight: bold;
-  font-size: 16px;
-  color: #000040; /* Dark navy color */
+  font-size: 18px;
+  color: black; /* Dark navy color */
   margin-bottom: 5px; /* Spacing between label and input */
 }
 
 .name-section input {
-  width: 250px; /* Control input size */
-  height: 35px;
+  width: 340px; /* Control input size */
+  height: 45px;
   padding: 8px;
-  border: 1px solid #000040; /* Dark navy border */
+  border: 1px solid black; /* Dark navy border */
   border-radius: 10px; /* Rounded edges */
   background: white;
 }
 
+.working-hours-box {
+  border: 2px solid black; /* Box border */
+  padding: 15px;
+  border-radius: 10px;
+  background: white;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.working-hours-label {
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.time-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Spacing between time-in and time-out */
+}
+
+.time-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-box label {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.time-box input {
+  width: 200px;
+  height: 35px;
+  border-radius: 8px;
+  border: 1px solid black;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
 
 
 

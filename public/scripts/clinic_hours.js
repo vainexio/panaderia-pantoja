@@ -89,6 +89,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                     const bookButton = document.createElement('button');
                     bookButton.id = 'bookAppointment';
                     bookButton.textContent = 'Book Appointment';
+                  
+                  if (!overallOnDuty) bookButton.classList.add('disabled')
                     bookButton.addEventListener('click', function () {
                         bookAppointment(item.doctor_id);
                     });
