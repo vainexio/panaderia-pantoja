@@ -20,14 +20,14 @@
                     </div>
 
                     <div id="medRecord" class="medRecordContainer">
-                        <p class="textCenter"> Patient Information </p>
+                        <p class="textCenter bold"> Patient Information </p>
                         <div class="MedRecord_GeneralInfo">
 
                             <div class="medRecordLeft" id="">
 
                                 <p class="layoutRow"> Name:&nbsp
-                                <span id="MedRecord_FirstName"> </span>
-                                <span id="MedRecord_LastName"> </span>
+                                    <span id="MedRecord_FirstName"> </span>
+                                    <span id="MedRecord_LastName"> </span>
                                 </p>
 
                                 <p id="MedRecord_Gender"> Gender: </p>
@@ -41,24 +41,55 @@
                             </div>
                         </div>
                         <br>
-     
-                            <p class="textCenter"> Medical Information </p>
-                            <div class="MedRecord_MedInfo">
+
+                        <p class="textCenter bold"> Medical Information </p>
+                        <div class="MedRecord_MedInfo">
 
                             <p id="MedRecord_Allergy"> Allergies: </p>
                             <p id="MedRecord_Medications"> Medications: </p>
                             <p id="MedRecord_Contacts"> Emergency Contacts: </p>
-                            
-        
+
+
 
                         </div>
-                      <button class="medicalCertificate-btn button-ui inactive"> Request an Update
-                            </button>
-                        <p id="MedRecord_MedHistory"> Medical History: </p>
+                        <button class="medicalCertificate-btn button-ui inactive"> Request an Update
+                        </button><br>
+
+                        <p class="textCenter bold" id="MedRecord_MedHistory"> Medical History </p>
+
+                        <div class="medHistoryContainer">
+                            <div class="medHistoryContainer_dfText">
+                                <p class="No_MedHistory"> No medical history yet!
+                                    &#128578;
+                                </p>
+                            </div>
+
+                            <div class="medHistoryContainer_table" id="Yes_MedHistory">
+                                <table class="medHistoryTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Diagnosis</th>
+                                            <th>Treatment</th>
+                                            <th>Doctor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="medHistoryBody">
+                                        <td id="MedHistory_Date"> Loading... </td>
+                                        <td id="MedHistory_Diagnosis"> Loading... </td>
+                                        <td id="MedHistory_Treatment"> Loading... </td>
+                                        <td id="MedHistory_Doctor"> Loading... </td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div id="medCerf" class="medCerf">
+                        <div class="medCerfContainer">
 
+                        </div>
                     </div>
                 </div>
             </div>
