@@ -60,7 +60,6 @@ background-color: var(--white);
 }
 
 .MedRecord_MedInfo {
-    background-color: var(--light-gray);
     border-radius: 10px;
     margin: auto;
     width: 100%;
@@ -163,10 +162,14 @@ background-color: var(--white);
 
 .medRecordTable {
     width: 100%;
+    background-color: var(--light-gray);
+}
+
+.medHistoryTableNames {
+  background-color: var(--light-gray);
 }
 
 .medRecordTable th {
-    width: 100%;
     text-align: start;
     background-color: var(--blue);
     color: var(--light-gray);
@@ -174,7 +177,9 @@ background-color: var(--white);
 
 
 .textBlueContainer {
-    background-color: var(--light-gray);
+    background-color: #e3e5e7;
+    padding: 10px;
+    font-size: 1.2em;
 }
 
 .layoutRow {

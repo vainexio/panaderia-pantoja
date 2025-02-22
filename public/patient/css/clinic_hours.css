@@ -147,13 +147,19 @@
 #timeRange {
   display: inline-block;
   width: 150px;
-  background: #f2b600;
   color: var(--black);
   padding: 5px 8px;
   font-weight: bold;
   border-radius: 5px;
   font-size: 12px;
   text-align: center;
+}
+.time-today {
+  background: var(--blue);
+  color: white;
+}
+.time-color {
+  background: #f2b600;
 }
 
 
