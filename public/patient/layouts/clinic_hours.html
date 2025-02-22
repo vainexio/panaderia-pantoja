@@ -1,39 +1,42 @@
 <section id="clinic_hours" class="clinic_hours section-content">
-    <div id="container">
-      <!-- Calendar Header -->
-      <header id="calendarHeader">
-        <h2 id="monthDisplay"></h2>
-      </header>
-      
-      <!-- Dynamic Calendar -->
-      <div id="calendar">
-        <table id="calendarTable">
-          <thead>
-            <tr>
-              <th id="day-sunday">Sunday</th>
-              <th id="day-monday">Monday</th>
-              <th id="day-tuesday">Tuesday</th>
-              <th id="day-wednesday">Wednesday</th>
-              <th id="day-thursday">Thursday</th>
-              <th id="day-friday">Friday</th>
-              <th id="day-saturday">Saturday</th>
-            </tr>
-          </thead>
-          <tbody id="calendarBody">
-            <!-- Calendar rows will be inserted here -->
-          </tbody>
-        </table>
-      </div>
-      
-      <!-- Doctor Schedule -->
-      <div id="doctorSchedule">
-        <header id="scheduleHeader">
-          <h2 id="todayLabel">Today</h2>
-          <h2 id="availabilityLabel">Availability</h2>
-        </header>
-        <div id="availabilityContainer">
-          <!-- Doctor availability items will be inserted here -->
+  <div id="container">
+    <!-- Calendar Header -->
+    <header id="calendarHeader">
+      <h2 id="monthDisplay"></h2>
+    </header>
+    
+    <!-- Dynamic Calendar -->
+    <div id="calendar">
+      <table id="calendarTable">
+        <thead>
+          <tr>
+            <th id="day-sunday">Sunday</th>
+            <th id="day-monday">Monday</th>
+            <th id="day-tuesday">Tuesday</th>
+            <th id="day-wednesday">Wednesday</th>
+            <th id="day-thursday">Thursday</th>
+            <th id="day-friday">Friday</th>
+            <th id="day-saturday">Saturday</th>
+          </tr>
+        </thead>
+        <tbody id="calendarBody">
+          <!-- Calendar rows will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Doctor Schedule -->
+    <div id="doctorSchedule">
+      <!-- Color coding legend -->
+      <div id="availabilityColors">
+        <div class="in">
+          <span class="availability-dot-in"></span>
+          <span class="availability-text-in">Doctor is Available</span>
+        </div>
+        <div class="weekend">
+          <span class="availability-dot-weekend"></span>
+          <span class="availability-text-weekend">Weekend (Clinic is Unavailable)</span>
         </div>
       </div>
-    </div>
-  </section>
+  </div>
+</section>

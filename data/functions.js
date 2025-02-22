@@ -12,7 +12,6 @@ const dayOfWeekMap = {
 function timezone() {
   return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Shanghai" }));
 }
-
 function parseTimeTo24(timeStr) {
   const [timePart, ampm] = timeStr.split(' ');
   const [hourStr, minuteStr] = timePart.split(':');
@@ -29,28 +28,13 @@ function parseTimeTo24(timeStr) {
 
   return hour + minute / 60;
 }
-
 function getCurrentTime24() {
   const timezone = timezone();
   const hours = timezone.getHours();
   const minutes = timezone.getMinutes();
   return hours + minutes / 60;
 }
-module.exports = {
-  sleep: function (miliseconds) {
-    var currentTime = new Date().getTime();
-    while (currentTime + miliseconds >= new Date().getTime()) { }
-  },
-  generateSecurityKey: function (length = 32) {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let key = "";
-
-    for (let i = 0; i < length; i++) {
-        key += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return key;
-  },
-  checkIfOnDuty: function (availability) {
+function checkIfOnDuty(availability) {
   const availDayIndex = dayOfWeekMap[availability.day_of_week];
 
   const dateNow = timezone();
@@ -69,5 +53,22 @@ module.exports = {
 
   return isSameDay && isInTimeRange;
 }
+function generateSecurityKey(length = 32) {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let key = "";
 
+    for (let i = 0; i < length; i++) {
+        key += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return key;
+}
+function sleep(miliseconds) {
+    var currentTime = new Date().getTime();
+    while (currentTime + miliseconds >= new Date().getTime()) { }
+}
+
+module.exports = {
+  sleep,
+  generateSecurityKey,
+  checkIfOnDuty
 }
