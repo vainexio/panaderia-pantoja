@@ -17,10 +17,10 @@
     justify-content: center;
 }
 
-.work_schedule-card {
+#work_schedulecard {
     width: 80%;
     max-width: 980px;
-    min-height: 100%;
+    min-height: 800px;
     margin: auto;
     padding: 2rem;
     border-radius: 16px;
@@ -29,7 +29,76 @@
     display: flex;
     flex-direction: column;
 }
+.schedule-header{
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
 
+.schedule-header h1 {
+    font-weight: bold;
+    color: var(--black);
+}
+
+.schedule-header p {
+    color: var(--black);
+}
+
+.patientinfo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.form-info {
+    flex: 1 1 calc(33.333% - 1rem);
+    min-width: 250px;
+}
+
+.form-info label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--black);
+}
+
+.form-info input,
+.form-info select {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--black);
+    background-color: var(--white);
+    font-size: 1rem;
+}
+
+
+.save-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-top: 1rem;
+}
+.submit-container #save-info {
+    margin-right: 1rem;
+}
+
+@media (max-width: 768px) {
+    .work_schedulecard {
+        width: 100%;
+        padding: 1.5rem;
+        box-shadow: none;
+        min-height: auto;
+    }
+
+    .form-info {
+        flex: 1 1 100%;
+    }
+
+    .save-container  {
+        width: 100%;
+    }
+}
 
 /* Use this pallets */
 /* Css designs goes below this */

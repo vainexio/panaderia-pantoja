@@ -10,44 +10,38 @@
                     </h1><br>
                     <div class="studentInfo">
                         <div class="buttonContainer">
-                            <button class="medicalRecords-btn button-ui" onclick="showContent('medRecord')"> Medical
-                                Records </button>
-                            <button class="medicalCertificate-btn button-ui inactive" onclick="showContent('medCerf')">
-                                Medical Certificate
-                            </button>
-                        </div> <br>
+                        </div>
 
                     </div>
 
                     <div id="medRecord" class="medRecordContainer">
-                        <p class="textCenter bold"> Patient Information </p>
-                        <div class="MedRecord_GeneralInfo">
 
-                            <div class="medRecordLeft" id="">
-
-                                <p class="layoutRow"> Name:&nbsp
-                                    <span id="MedRecord_FirstName"> </span>
-                                    <span id="MedRecord_LastName"> </span>
-                                </p>
-
-                                <p id="MedRecord_Gender"> Gender: </p>
-                                <p id="MedRecord_BirthDate"> Birthdate: </p>
-                            </div>
-                            <div class="medRecordRight">
-                                <p id="MedRecord_Program"> Program: </p>
-                                <p id="MedRecord_YearLevel"> Year Level: </p>
-                                <p id="MedRecord_ContactNo"> Contact No.: </p>
-                                <p id="MedRecord_Email"> Email: </p>
-                            </div>
-                        </div>
-                        <br>
-
-                        <p class="textCenter bold"> Medical Information </p>
+                        <p class="textCenter bold textBlueContainer"> Medical Information </p>
                         <div class="MedRecord_MedInfo">
-
-                            <p id="MedRecord_Allergy"> Allergies: </p>
-                            <p id="MedRecord_Medications"> Medications: </p>
-                            <p id="MedRecord_Contacts"> Emergency Contacts: </p>
+                            <table class="medRecordTable">
+                                <thead>
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Allergies</td>
+                                        <td id="MedRecord_Allergy"> None </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Medications</td>
+                                        <td id="MedRecord_Medications"> None </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Emergency Contacts</td>
+                                        <td id="MedRecord_Contacts"> None </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
 
 
 
@@ -55,7 +49,7 @@
                         <button class="medicalCertificate-btn button-ui inactive"> Request an Update
                         </button><br>
 
-                        <p class="textCenter bold" id="MedRecord_MedHistory"> Medical History </p>
+                        <p class="textCenter bold textBlueContainer" id="MedRecord_MedHistory"> Medical History </p>
 
                         <div class="medHistoryContainer">
                             <div class="medHistoryContainer_dfText" id="No_MedHistory">

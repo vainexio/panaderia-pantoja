@@ -161,6 +161,22 @@ background-color: var(--white);
     flex: 1;
 }
 
+.medRecordTable {
+    width: 100%;
+}
+
+.medRecordTable th {
+    width: 100%;
+    text-align: start;
+    background-color: var(--blue);
+    color: var(--light-gray);
+}
+
+
+.textBlueContainer {
+    background-color: var(--light-gray);
+}
+
 .layoutRow {
     width: 98%;
     display: flex;
