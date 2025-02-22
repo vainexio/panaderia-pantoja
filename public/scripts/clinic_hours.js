@@ -9,7 +9,6 @@ const dayOfWeekMap = {
 };
 
 
-
 document.addEventListener("DOMContentLoaded", async function() {
   function isReady() {
     fetch('/api/clinic-schedule')
@@ -96,6 +95,5 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 // Separate function for booking an appointment
 function bookAppointment(doctorId) {
-  // Handle booking logic here (e.g., redirecting to a booking page or opening a modal)
-  alert('Booking appointment for doctor with ID: ' + doctorId);
+  showSection('my_appointments')
 }

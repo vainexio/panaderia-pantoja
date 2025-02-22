@@ -14,7 +14,7 @@ function showSection(sectionId) {
     });
 
     // Show the selected section
-    const selectedSection = document.getElementById(sectionId);
+  const selectedSection = document.getElementById(sectionId);
     selectedSection.style.display = 'block';
 }
 
