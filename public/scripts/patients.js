@@ -1,3 +1,11 @@
+let ready = false
+function waitUntilReady(callback) {
+  if (ready === true) {
+    callback();
+  } else {
+    setTimeout(() => waitUntilReady(callback), 100);
+  }
+}
 function showSection(sectionId) {
     // Hide all sections
     const sections = document.querySelectorAll('.section-content');
@@ -31,7 +39,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             this.classList.add('active');
         });
     });
-  
+  /* */
+  ready = true
   /* Hide loader */
   setTimeout(() => {
     document.getElementById("preloader").classList.add("fade-out");

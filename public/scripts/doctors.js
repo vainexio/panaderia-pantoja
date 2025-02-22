@@ -1,3 +1,5 @@
+let ready = false
+
 function sleep(miliseconds) {
   var currentTime = new Date().getTime();
   while (currentTime + miliseconds >= new Date().getTime()) { }
@@ -14,7 +16,6 @@ function showSection(sectionId) {
     selectedSection.style.display = 'block';
 }
 
-let ready = false
 // Show the home section by default
 document.addEventListener("DOMContentLoaded", async function() {
   let layouts = [

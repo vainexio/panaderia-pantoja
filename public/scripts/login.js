@@ -1,4 +1,5 @@
 let selectedUserType = "";
+document.addEventListener("DOMContentLoaded", async function() {
 
 const doctorButton = document.getElementById("doctorButton");
 const patientButton = document.getElementById("patientButton");
@@ -65,3 +66,4 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
         button.disabled = false;
     }
 });
+})
