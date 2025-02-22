@@ -310,7 +310,7 @@ app.post('/schedule', async (req, res) => {
     });
     
     if (existingSchedule) {
-      return res.status(400).json({ error: 'Schedule for this day already exists.' });
+      return res.status(400).json({ message: 'Schedule for this day already exists.' });
     }
     
     // Convert times to 12-hour format

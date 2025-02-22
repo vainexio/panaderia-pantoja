@@ -18,16 +18,36 @@ function fetchSchedules() {
       const end_time = document.getElementById('end_time').value;
   
       fetch('/schedule', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ day_of_week, start_time, end_time })
-      })
-      .then(response => response.json())
-      .then(data => {
-        fetchSchedules(); // Refresh the schedule table
-        document.getElementById('scheduleForm').reset();
-      })
-      .catch(err => console.error('Error creating schedule:', err));
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ day_of_week, start_time, end_time })
+})
+.then(async response => {
+  const notification = document.getElementById('notification');
+  // Hide the notification initially
+  notification.classList.add('d-none');
+
+  if (response.ok) {
+    notification.textContent = 'Work schedule created!';
+    notification.className = 'alert alert-success mt-3 rounded-3';
+    notification.classList.remove('d-none');
+    fetchSchedules(); // Refresh the schedule table
+    document.getElementById('scheduleForm').reset();
+  } else {
+    const error = await response.json();
+    notification.textContent = error.message || 'Failed to create work schedule.';
+    notification.className = 'alert alert-danger mt-3 rounded-3';
+    notification.classList.remove('d-none');
+  }
+})
+.catch(err => {
+  const notification = document.getElementById('notification');
+  notification.textContent = 'Error creating schedule: ' + err.message;
+  notification.className = 'alert alert-danger mt-3 rounded-3';
+  notification.classList.remove('d-none');
+  console.error('Error creating schedule:', err);
+});
+
     });
     
     // Attach event listener for delete and edit buttons on the schedule table
@@ -73,7 +93,7 @@ function fetchSchedules() {
     .then(response => response.json())
     .then(schedules => {
       let tableHTML = `
-        <table class="table table-light table-striped w-100">
+        <table class="table table-l table-striped w-100">
           <thead>
             <tr>
               <th>Day</th>
