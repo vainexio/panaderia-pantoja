@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       
       const doctorName = document.createElement('h3');
       doctorName.id = 'doctorName';
-      doctorName.textContent = item.doctor.first_name + " " + item.doctor.last_name;
+      doctorName.textContent = "Dr. "+item.doctor.first_name + " " + item.doctor.last_name;
       statusSlot.appendChild(doctorName);
 
       const statusText = document.createElement('span');
@@ -54,11 +54,9 @@ document.addEventListener("DOMContentLoaded", async function() {
       statusText.textContent = overallOnDuty ? '• On-duty' : '• Off-duty';
       statusSlot.appendChild(statusText);
 
-      // For each availability slot, append its details (day, time range)
       item.availabilities.forEach(slot => {
         const slotInfo = document.createElement('div');
-        // We do not change the element ids here, so you might reuse same ids
-        // but it's recommended to use unique ids or classes for multiple entries.
+        
         slotInfo.innerHTML = `<span id="timeRange">${slot.start_time} - ${slot.end_time}</span> 
                               <span id="dayAvailable">${slot.day_of_week}</span>`;
         timeSlot.appendChild(slotInfo);

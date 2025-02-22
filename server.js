@@ -89,16 +89,53 @@ app.get('/patient-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/patients.html');
 });
 
-app.get('/getName', async (req, res) => {
-  let query = req.query
-  let id = query.id
-  
-  if (id == 1) {
-    res.json({ firstName: "Nichole", lastName: "Quimpan"})
-  } else {
-    res.json({ error: "Invalid ID"})
+/*app.get('/addData', async (req, res) => {
+  try {
+    // Sample data to insert into availableDoctors collection
+    const sampleData = [
+      {
+        availability_id: 1,
+        doctor_id: 1,
+        day_of_week: 'Monday',
+        start_time: '7:00 AM',
+        end_time: '10:00 AM'
+      },
+      {
+        availability_id: 2,
+        doctor_id: 2,
+        day_of_week: 'Tuesday',
+        start_time: '10:00 AM',
+        end_time: '12:00 PM'
+      },
+      {
+        availability_id: 3,
+        doctor_id: 3,
+        day_of_week: 'Wednesday',
+        start_time: '2:00 PM',
+        end_time: '5:00 PM'
+      },
+      {
+        availability_id: 4,
+        doctor_id: 1,
+        day_of_week: 'Friday',
+        start_time: '1:00 PM',
+        end_time: '3:00 PM'
+      }
+    ];
+
+    // Insert the sample data into the collection
+    const result = await availableDoctors.insertMany(sampleData);
+
+    // Respond with a success message and the inserted documents
+    res.status(200).json({
+      message: 'Data added successfully',
+      data: result
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to add data' });
   }
-});
+});*/
 
 function generateSecurityKey(length = 32) {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
