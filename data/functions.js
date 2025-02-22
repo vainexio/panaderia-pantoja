@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-// Map day_of_week strings to numeric indexes (Sunday = 0, Monday = 1, etc.)
+
 const dayOfWeekMap = {
   Sunday: 0,
   Monday: 1,
@@ -9,6 +9,9 @@ const dayOfWeekMap = {
   Friday: 5,
   Saturday: 6
 };
+function timezone() {
+  return new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Shanghai" }));
+}
 
 function parseTimeTo24(timeStr) {
   const [timePart, ampm] = timeStr.split(' ');
@@ -28,9 +31,9 @@ function parseTimeTo24(timeStr) {
 }
 
 function getCurrentTime24() {
-  const now = new Date();
-  const hours = now.getHours();     // 0..23
-  const minutes = now.getMinutes(); // 0..59
+  const timezone = timezone();
+  const hours = timezone.getHours();
+  const minutes = timezone.getMinutes();
   return hours + minutes / 60;
 }
 module.exports = {
@@ -48,23 +51,23 @@ module.exports = {
     return key;
   },
   checkIfOnDuty: function (availability) {
-  // Determine the numeric index for the availability’s day_of_week (e.g., Monday => 1)
   const availDayIndex = dayOfWeekMap[availability.day_of_week];
 
-  // Get the current server day/time in decimal hour format
-  const now = new Date();
-  const currentDayIndex = now.getDay(); // Sunday=0, Monday=1, etc.
-  const currentTime24 = getCurrentTime24();
+  const dateNow = timezone();
+  const currentDayIndex = dateNow.getDay();
+  const currentTime24 = dateNow.getHours() + dateNow.getMinutes() / 60;
 
-  // Parse the availability’s start and end times into decimal hour format
-  const start = parseTimeTo24(availability.start_time); // e.g., "7:00 AM" => 7
-  const end = parseTimeTo24(availability.end_time);     // e.g., "10:00 AM" => 10
+  const start = parseTimeTo24(availability.start_time); // e.g. "7:00 AM" => 7
+  const end = parseTimeTo24(availability.end_time);     // e.g. "10:00 PM" => 22
 
-  // Doctor is on duty if today is the availability’s day_of_week
-  // and the current time is within [start, end)
+  // Logging for debugging
+  console.log(`Shanghai Now: dayIndex=${currentDayIndex}, time=${currentTime24}`);
+  console.log(`Availability: dayIndex=${availDayIndex}, start=${start}, end=${end}`);
+
   const isSameDay = currentDayIndex === availDayIndex;
-  const isInTimeRange = currentTime24 >= start && currentTime24 < end;
+  const isInTimeRange = currentTime24 >= start && currentTime24 <= end;
 
   return isSameDay && isInTimeRange;
 }
+
 }
