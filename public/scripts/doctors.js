@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     });
   
-  /* */
   ready = true
   /* Hide loader */
   setTimeout(() => {
@@ -72,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     
   });
   
-  document.getElementById('patientForm').addEventListener('submit', async function(event) {
+  document.getElementById("patientForm").addEventListener("submit", async function(event) {
       event.preventDefault();
 
       const formData = Object.fromEntries(new FormData(event.target).entries());

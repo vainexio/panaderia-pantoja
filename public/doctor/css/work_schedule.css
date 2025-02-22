@@ -1,202 +1,38 @@
 :root {
-    --white: #FCFCFC;
-    --light-gray: #e9ecef;
-    --blue: #283986;
-    --secondary-blue: #91b2ff;
-    --yellow: #FFD41C;
-    --secondary-yellow: #ffe365;
-    --black: #363636;
+  --white: #fcfcfc;
+  --light-gray: #e9ecef;
+  --blue: #283986;
+  --secondary-blue: #91b2ff;
+  --yellow: #ffd41c;
+  --secondary-yellow: #ffe365;
+  --black: #363636;
 }
 
-
-#work_schedule{
-    background: none;
-    background-color: var(--blue);
-    padding: 2rem 0;
-    display: none;
-    justify-content: center;
+.work_schedule {
+  background: none;
+  background-color: var(--blue);
+  padding: 2rem 0;
+  display: none;
+  justify-content: center;
 }
 
-#work_schedulecard {
-    width: 80%;
-    max-width: 980px;
-    min-height: 600px;
-    margin: auto;
-    padding: 2rem;
-    border-radius: 16px;
-    background-color: var(--light-gray);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-}
-.schedule-header{
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.schedule-header h1 {
-    font-weight: bold;
-    color: var(--black);
-}
-
-.schedule-header p {
-    color: var(--black);
-}
-
-.patientinfo {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-}
-
-.form-info {
-    flex: 1 1 calc(33.333% - 1rem);
-    min-width: 250px;
-  display: flex;
-justify-content: center;
-  gap:120px;
-  
-}
-
-.date-section {
+.create-schedule-card {
+  width: 80%;
+  max-width: 980px;
+  min-height: 100%;
+  margin: auto;
+  padding: 2rem;
+  border-radius: 16px;
+  background-color: var(--light-gray);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: start; 
-  justify-content: start;
-  width: fit-content; 
-  margin-left: -450px;
-  top: 10px;
-  margin-bottom:30px
-}
-
-.date-section label {
-  margin-bottom: 5px;         /* Space between label and input */
-  font-weight: bold;
-  font-size:20px;
-   color: black;/* Example styling */
-}
-
-.date-section input {
-  width: 340px;               /* Control input width */
-  height: 45px;               /* Example height */
-  padding: 5px;
-  border: 1px solid black;
-  border-radius: 10px;
-}
-
-.date-section::-webkit-calendar-picker-indicator {
-    filter: invert(0.5);
-    cursor: pointer;
-}
-
-.name-section {
-  display: flex;
-  flex-direction: column; 
-  margin-bottom:30px;
- 
-}
-
-.name-section label {
-  font-weight: bold;
-  font-size: 18px;
-  color: black; /* Dark navy color */
-  margin-bottom: 5px; /* Spacing between label and input */
-}
-
-.name-section input {
-  width: 340px; /* Control input size */
-  height: 45px;
-  padding: 8px;
-  border: 1px solid black; /* Dark navy border */
-  border-radius: 10px; /* Rounded edges */
-  background: white;
-}
-
-.working-hours-box {
-  border: 1px solid black; /* Box border */
-  padding: 15px;
-  border-radius: 10px;
-  background: white;
-  width: 500px;
-  display: flex;
-  flex-direction: column;
-  margin-left:-290px;
   margin-bottom: 20px;
 }
 
-.working-hours-label {
-  font-weight: bold;
-  font-size: 21px;
-  margin-bottom: 5px;
-}
-
-.time-container {
+.schedule-form {
   display: flex;
-  justify-content: space-between;
-  gap: 20px; /* Spacing between time-in and time-out */
-}
-
-.time-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.time-box label {
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-.time-box input {
-  width: 200px;
-  height: 35px;
-  border-radius: 8px;
-  border: 1px solid black;
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.save-container {
-    width: 90px;
-  height: 40px;
-    display: flex;
-    justify-content: center;
-    border-radius: 25px;
-    background: #f2bf2e;
-    padding: 2px; 
-  margin-left:420px;/* Ensures proper spacing inside */
-}
-
-.save-button-schedule {
-    border: none; /* Removes extra border */
-    outline: none;
-  background: #f2bf2e;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.save-button-schedule:hover {
-    background: #f2bf2e; /* Slightly darker yellow on hover */
-}
-
-
-@media (max-width: 768px) {
-    .work_schedulecard {
-        width: 100%;
-        padding: 1.5rem;
-        box-shadow: none;
-        min-height: auto;
-    }
-
-    .form-info {
-        flex: 1 1 100%;
-    }
-
-    .save-container  {
-        width: 100%;
-    }
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
