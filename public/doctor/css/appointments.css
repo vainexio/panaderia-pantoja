@@ -75,30 +75,29 @@ justify-content: center;
 }
 
 
-
-.date-info-appoint {
-    flex: 1 1 calc(33.333% - 1rem);
+.dateandtime-info{
+  flex: 1 1 calc(33.333% - 1rem);
     min-width: 250px;
   display: flex;
-justify-content: left;
-  
+justify-content: center;
+  gap:120px;
 }
 
-.date-section-appoint {/* Adjust as needed */
+.datetime-appoint {/* Adjust as needed */
   top: 10px;
   margin-bottom:30px;
   display: flex;
   flex-direction: column;
 }
 
-.date-section-appoint label {
+.datetime-appoint label {
   margin-bottom: 5px;         /* Space between label and input */
   font-weight: bold;
   font-size:20px;
    color: black;/* Example styling */
 }
 
-.date-section-appoint input {
+.datetime-appoint input {
   width: 140px;               /* Control input width */
   height: 45px;               /* Example height */
   padding: 5px;
@@ -107,7 +106,88 @@ justify-content: left;
 }
 
 
+.doctorname-info{
+   flex: 1 1 calc(33.333% - 1rem);
+    min-width: 250px;
+  display: flex;
+justify-content: left;
+  gap:120px;
+}
+.doctorname-section{/* Adjust as needed */
+  top: 10px;
+  margin-bottom:30px;
+  display: flex;
+  flex-direction: column;
+}
 
+.doctorname-section label {
+  margin-bottom: 5px;         /* Space between label and input */
+  font-weight: bold;
+  font-size:20px;
+   color: black;/* Example styling */
+}
+
+.doctorname-section input {
+  width: 140px;               /* Control input width */
+  height: 45px;               /* Example height */
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+
+.reason-info{
+   flex: 1 1 calc(33.333% - 1rem);
+    min-width: 250px;
+  display: flex;
+justify-content: left;
+  gap:120px;
+}
+.reason-section{/* Adjust as needed */
+  top: 10px;
+  margin-bottom:30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.reason-section label {
+  margin-bottom: 5px;         /* Space between label and input */
+  font-weight: bold;
+  font-size:20px;
+   color: black;/* Example styling */
+}
+
+.reason-section input {
+  width: 140px;               /* Control input width */
+  height: 45px;               /* Example height */
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.appoint-container {
+    width: 90px;
+  height: 40px;
+    display: flex;
+    justify-content: center;
+    border-radius: 25px;
+    background: #f2bf2e;
+    padding: 2px; 
+  margin-left:420px;/* Ensures proper spacing inside */
+}
+
+.appoint-button-schedule {
+    border: none; /* Removes extra border */
+    outline: none;
+  background: #f2bf2e;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.appoint-button-schedule:hover {
+    background: #f2bf2e; /* Slightly darker yellow on hover */
+}
 
 /* Use this pallets */
 /* Css designs goes below this */
