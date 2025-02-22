@@ -260,7 +260,6 @@ app.post('/registerPatient', async (req, res) => {
   }
 });
 
-/* Clinic hours */
 app.get('/api/clinic-schedule', async (req, res) => {
   try {
     // Get current date info
@@ -302,6 +301,24 @@ app.get('/api/clinic-schedule', async (req, res) => {
       });
     }
 
+    // Define custom day order: Monday first, Sunday last
+    const dayOrder = {
+      Monday: 1,
+      Tuesday: 2,
+      Wednesday: 3,
+      Thursday: 4,
+      Friday: 5,
+      Saturday: 6,
+      Sunday: 7
+    };
+
+    // Sort each doctor's availabilities by day of week (Monday first, Sunday last)
+    for (const key in doctorAvailMap) {
+      doctorAvailMap[key].availabilities.sort((a, b) => {
+        return dayOrder[a.day_of_week] - dayOrder[b.day_of_week];
+      });
+    }
+
     // Convert the map into an array of doctor availabilities
     const doctorAvailabilities = Object.values(doctorAvailMap);
 
@@ -311,6 +328,7 @@ app.get('/api/clinic-schedule', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 

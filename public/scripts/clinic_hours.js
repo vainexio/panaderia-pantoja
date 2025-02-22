@@ -63,15 +63,19 @@ document.addEventListener("DOMContentLoaded", async function() {
       });
       
       // Book Appointment button
+      const actionsSlot = document.createElement('div');
+      actionsSlot.id = 'actionsSlot';
+      
       const bookButton = document.createElement('button');
       bookButton.id = 'bookAppointment';
       bookButton.textContent = 'Book Appointment';
       bookButton.addEventListener('click', function() {
         bookAppointment(item.doctor_id);
       });
-      timeSlot.appendChild(bookButton);
-      
+      actionsSlot.appendChild(bookButton)
       doctorDiv.appendChild(timeSlot);
+      doctorDiv.appendChild(actionsSlot);
+      
       availabilityContainer.appendChild(doctorDiv);
     });
   })
