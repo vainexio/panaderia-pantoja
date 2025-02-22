@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async function() {
   }
   
   // Wait for content load
-  //waitUntilReady(isReady)
+  waitUntilReady(isReady)
 })
 
 // Separate function for booking an appointment
