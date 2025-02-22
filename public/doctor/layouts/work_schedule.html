@@ -1,56 +1,52 @@
-<section id="work_schedule" class="work_schedule section-content"> <!-- Don't change the id and class -->
+<section id="work_schedule" class="work_schedule section-content">
+  <!-- Don't change the id and class -->
   <div class="container m-auto">
-    
     <div id="work_schedulecard">
-    <header class="schedule-header">
-      <h1>Work Schedule</h1>
-      <p>Input your schedule  for patients to see if your on-duty</p>
-    </header>
-   <form id="patientinfo" class="patient-info">
-  <div class="form-info">
-    
-    <div class="name-section">
-      <label for="first_name">First Name:</label>
-      <input type="text" id="first_name" name="first_name" required />
-    </div>
-
-    <div class="name-section">
-      <label for="last_name">Last Name:</label>
-      <input type="text" id="last_name" name="last_name" required />
-    </div>
-  </div>
-
+      <header class="schedule-header">
+        <h1>Work Schedule</h1>
+        <p>Input your schedule for patients to see if your on-duty</p>
+      </header>
       
-    <div class="form-info">
-      <div class="date-section">
-        <label for="date">Date</label>
-        <input type="date" id="date-id" name="date-name" required/>
+      <form id="patientinfo" class="patient-info">
+        <div class="form-info">
+          <div class="name-section">
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required />
+          </div>
+          
+          <div class="name-section">
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required />
+          </div>
         </div>
-      </div>
-      
-      
-      <div class="form-info">
-        <div class="working-hours-box">
-  <label class="working-hours-label">Working Hours:</label>
-  <div class="time-container">
-    <div class="time-box">
-      <label for="time-in">Time-in:</label>
-      <input type="text" id="time-in" name="time-in" required />
-    </div>
-    <div class="time-box">
-      <label for="time-out">Time-out:</label>
-      <input type="text" id="time-out" name="time-out" required />
-    </div>
-  </div>
-</div>
 
-      </div>
-      
-      <div class="save-container">
-        <button id="save-info" class="save-button-schedule">Save</button>
-      </div>
-      
+        <div class="form-info">
+          <div class="date-section">
+            <label for="date">Date</label>
+            <input type="date" id="date-id" name="date-name" required />
+          </div>
+        </div>
+
+        <div class="form-info">
+          <div class="working-hours-box">
+            <label class="working-hours-label">Working Hours:</label>
+            <div class="time-container">
+              <div class="time-box">
+                <label for="time-in">Time-in:</label>
+                <input type="text" id="time-in" name="time-in" required />
+              </div>
+              <div class="time-box">
+                <label for="time-out">Time-out:</label>
+                <input type="text" id="time-out" name="time-out" required />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="save-container">
+          <button id="action-button" class="save-button-schedule">Save</button>
+        </div>
       </form>
     </div>
-      </div>
+  </div>
 </section>

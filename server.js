@@ -14,8 +14,8 @@ const app = express();
 app.use(cors())
 
 //
-let patientAccount = null
-let doctorAccount = null
+let currentPatient = null
+let currentDoctor = null
 // Connect to MongoDB
 if (process.env.MONGOOSE) {
 mongoose.connect(process.env.MONGOOSE, {
@@ -153,7 +153,7 @@ app.post('/login', async (req, res) => {
       
       let key = method.generateSecurityKey()
       settings.allowedKeys.push(key)
-      doctorAccount = doctor
+      currentDoctor = doctor
       return res.json({ redirect: '/doctor-dashboard', message: 'Login successful as Doctor', key });
     }
   }
@@ -167,7 +167,7 @@ app.post('/login', async (req, res) => {
       }
       let key = method.generateSecurityKey()
       settings.allowedKeys.push(key)
-      patientAccount = patient
+      currentPatient = patient
       return res.json({ redirect: '/patient-dashboard', message: 'Login successful as Patient', key });
     }
   }
