@@ -44,5 +44,72 @@
 }
 
 
+
+.date-info{
+  flex: 1 1 calc(33.333% - 1rem);
+    min-width: 250px;
+  display: flex;
+justify-content: center;
+  gap:120px;
+}
+
+.date-section {/* Adjust as needed */
+  top: 10px;
+  margin-bottom:30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-section label {
+  margin-bottom: 5px;         /* Space between label and input */
+  font-weight: bold;
+  font-size:20px;
+   color: black;/* Example styling */
+}
+
+.date-section input {
+  width: 140px;               /* Control input width */
+  height: 45px;               /* Example height */
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: Arial, sans-serif;
+}
+
+.appointment-table th, .appointment-table td {
+    border: 2px solid black;
+    padding: 10px;
+}
+
+.appointment-table thead th {
+    background: #f2bf2e;
+    font-weight: bold;
+}
+
+.appointment-table tbody td {
+    vertical-align: middle;
+}
+
+.view-appointment {
+    background: #2d4fad;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.view-appointment:hover {
+    background: #1c3575;
+}
+
+
 /* Use this pallets */
 /* Css designs goes below this */
