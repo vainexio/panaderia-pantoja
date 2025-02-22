@@ -16,7 +16,6 @@ function showSection(sectionId) {
 
 // Show the home section by default
 document.addEventListener("DOMContentLoaded", async function() {
-
   let layouts = [
     'work_schedule',
     'appointments',
@@ -39,6 +38,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     });
   
+  /* */
   /* Hide loader */
   setTimeout(() => {
     document.getElementById("preloader").classList.add("fade-out");
