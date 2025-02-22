@@ -100,15 +100,35 @@ justify-content: center;
     background: #2d4fad;
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 10px;
+    padding: 3px 8px;
+    border-radius: 25px;
     font-weight: bold;
     cursor: pointer;
+  width:140px;
+    height:30px;
+  font-size:12px;
+
 }
 
 .view-appointment:hover {
     background: #1c3575;
 }
+.reason-design{
+  width:500px;
+}
+.name-design{
+  width:200px;
+}
+.date-design{
+  width:160px;
+}
+.patientno-design{
+  width:200px;
+}
+.time-design{
+  width:160px;
+}
+
 
 
 /* Use this pallets */
