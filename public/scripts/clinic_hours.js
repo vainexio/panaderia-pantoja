@@ -1,109 +1,116 @@
-document.addEventListener("DOMContentLoaded", async function() {
-  function isReady() {
-    fetch('/api/clinic-schedule')
-  .then(response => response.json())
-  .then(data => {
-    let monthDisplay = document.getElementById('monthDisplay');
-    monthDisplay.textContent = data.currentMonth + " " + data.currentYear;
-    
-    const calendarBody = document.getElementById('calendarBody');
-    // Get today's date number (assumes calendar is for the current month)
-    const todayDate = new Date().getDate();
-    
-    data.weeks.forEach(week => {
-      const tr = document.createElement('tr');
-      week.forEach(day => {
-        const td = document.createElement('td');
-        td.id = 'day-' + day;
-        td.textContent = day > 0 ? day : '';
-        // If there's a valid day, check if it matches today's date
-        if(day > 0 && day === todayDate) {
-          td.classList.add('today');
-        }
-        tr.appendChild(td);
-      });
-      calendarBody.appendChild(tr);
-    });
+document.addEventListener("DOMContentLoaded", async function () {
+    function isReady() {
+        fetch('/api/clinic-schedule')
+            .then(response => response.json())
+            .then(data => {
+                let monthDisplay = document.getElementById('monthDisplay');
+                monthDisplay.textContent = data.currentMonth + " " + data.currentYear;
 
-    // Process grouped doctor availabilities
-    const availabilityContainer = document.getElementById('availabilityContainer');
-    availabilityContainer.innerHTML = '';
+                const calendarBody = document.getElementById('calendarBody');
+                // Get today's date number (assumes calendar is for the current month)
+                const todayDate = new Date().getDate();
 
-    data.doctorAvailabilities.forEach(item => {
-      const doctorDiv = document.createElement('div');
-      doctorDiv.className = 'availabilityItem';
-      doctorDiv.id = 'availability-' + item.doctor_id;
+                data.weeks.forEach(week => {
+                    const tr = document.createElement('tr');
+                    week.forEach(day => {
+                        const td = document.createElement('td');
+                        td.id = 'day-' + day;
+                        if (day > 0) {
+                          const div = document.createElement('div');
+                                div.classList.add('day');
+                            if (day === todayDate) {
+                              div.classList.add('today');
+                                div.textContent = day;
+                                td.appendChild(div);
+                            } else {
+                                div.textContent = day;
+                                td.appendChild(div);
+                            }
+                        }
+                        tr.appendChild(td);
+                    });
+                    calendarBody.appendChild(tr);
+                });
 
-      // Create the time slot container (same id as before)
-      const timeSlot = document.createElement('div');
-      timeSlot.id = 'timeSlot';
-      const statusSlot = document.createElement('div');
-      statusSlot.id = 'statusSlot';
-      timeSlot.appendChild(statusSlot);
-      
-      //Dot
-      const overallOnDuty = item.availabilities.some(slot => slot.onDuty);
-      const statusDot = document.createElement('span');
-      statusDot.id = 'statusDot';
-      statusDot.className = overallOnDuty ? 'on-duty' : 'off-duty';
-      statusSlot.appendChild(statusDot);
-      
-      const doctorName = document.createElement('h3');
-      doctorName.id = 'doctorName';
-      doctorName.textContent = "Dr. "+item.doctor.first_name + " " + item.doctor.last_name;
-      statusSlot.appendChild(doctorName);
+                // Process grouped doctor availabilities
+                const availabilityContainer = document.getElementById('availabilityContainer');
+                availabilityContainer.innerHTML = '';
 
-      const statusText = document.createElement('span');
-      statusText.id = 'statusText';
-      statusText.textContent = overallOnDuty ? '• On-duty' : '• Off-duty';
-      statusSlot.appendChild(statusText);
+                data.doctorAvailabilities.forEach(item => {
+                    const doctorDiv = document.createElement('div');
+                    doctorDiv.className = 'availabilityItem';
+                    doctorDiv.id = 'availability-' + item.doctor_id;
 
-      item.availabilities.forEach(slot => {
-        const slotInfo = document.createElement('div');
-        
-        slotInfo.innerHTML = `<span id="timeRange">${slot.start_time} - ${slot.end_time}</span> 
-                              <span id="dayAvailable">${slot.day_of_week}</span>`;
-        timeSlot.appendChild(slotInfo);
-      });
-      
-      // Book Appointment button
-      const actionsSlot = document.createElement('div');
-      actionsSlot.id = 'actionsSlot';
-      
-      const bookButton = document.createElement('button');
-      bookButton.id = 'bookAppointment';
-      bookButton.textContent = 'Book Appointment';
-      bookButton.addEventListener('click', function() {
-        bookAppointment(item.doctor_id);
-      });
-      actionsSlot.appendChild(bookButton)
-      doctorDiv.appendChild(timeSlot);
-      doctorDiv.appendChild(actionsSlot);
-      
-      availabilityContainer.appendChild(doctorDiv);
-    });
-  })
-  .catch(error => {
-    console.error('Error fetching schedule data:', error);
-  });
+                    // Create the time slot container (same id as before)
+                    const timeSlot = document.createElement('div');
+                    timeSlot.id = 'timeSlot';
+                    const statusSlot = document.createElement('div');
+                    statusSlot.id = 'statusSlot';
+                    timeSlot.appendChild(statusSlot);
 
-  }
-  
-  // Wait for content load
-  waitUntilReady(isReady)
+                    //Dot
+                    const overallOnDuty = item.availabilities.some(slot => slot.onDuty);
+                    const statusDot = document.createElement('span');
+                    statusDot.id = 'statusDot';
+                    statusDot.className = overallOnDuty ? 'on-duty' : 'off-duty';
+                    statusSlot.appendChild(statusDot);
+
+                    const doctorName = document.createElement('h3');
+                    doctorName.id = 'doctorName';
+                    doctorName.textContent = "Dr. " + item.doctor.first_name + " " + item.doctor.last_name;
+                    statusSlot.appendChild(doctorName);
+
+                    const statusText = document.createElement('span');
+                    statusText.id = 'statusText';
+                    statusText.textContent = overallOnDuty ? '• On-duty' : '• Off-duty';
+                    statusSlot.appendChild(statusText);
+
+                    item.availabilities.forEach(slot => {
+                        const slotInfo = document.createElement('div');
+
+                        slotInfo.innerHTML = `<span id="timeRange">${slot.start_time} - ${slot.end_time}</span> 
+                                <span id="dayAvailable">${slot.day_of_week}</span>`;
+                        timeSlot.appendChild(slotInfo);
+                    });
+
+                    // Book Appointment button
+                    const actionsSlot = document.createElement('div');
+                    actionsSlot.id = 'actionsSlot';
+
+                    const bookButton = document.createElement('button');
+                    bookButton.id = 'bookAppointment';
+                    bookButton.textContent = 'Book Appointment';
+                    bookButton.addEventListener('click', function () {
+                        bookAppointment(item.doctor_id);
+                    });
+                    actionsSlot.appendChild(bookButton)
+                    doctorDiv.appendChild(timeSlot);
+                    doctorDiv.appendChild(actionsSlot);
+
+                    availabilityContainer.appendChild(doctorDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching schedule data:', error);
+            });
+
+    }
+
+    // Wait for content load
+    waitUntilReady(isReady)
 });
 const dayOfWeekMap = {
-  Sunday: 0,
-  Monday: 1,
-  Tuesday: 2,
-  Wednesday: 3,
-  Thursday: 4,
-  Friday: 5,
-  Saturday: 6
+    Sunday: 0,
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6
 };
 
 
 // Separate function for booking an appointment
 function bookAppointment(doctorId) {
-  showSection('my_appointments')
+    showSection('my_appointments')
 }
