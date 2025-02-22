@@ -90,7 +90,14 @@ app.get('/patient-dashboard', async (req, res) => {
 });
 
 app.get('/getName', async (req, res) => {
-  res.json({ firstName: "Nichole", lastName: "Quimpan"})
+  let query = req.query
+  let id = query.id
+  
+  if (id == 1) {
+    res.json({ firstName: "Nichole", lastName: "Quimpan"})
+  } else {
+    res.json({ error: "Invalid ID"})
+  }
 });
 
 function generateSecurityKey(length = 32) {
