@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BULLDOGS CARE CENTER</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {},
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body class="bg-gradient-to-r from-blue-900 to-gray-900 text-white min-h-screen flex">
+    
+    <!-- Sidebar -->
+    <div class="w-1/4 bg-blue-800 p-6 flex flex-col justify-between min-h-screen">
+        <div>
+            <div class="flex items-center mb-8">
+                <img src="image/bulldoglogo.png" alt="BULLDOGS CARE CENTER Logo" width="50" height="50" class="mr-3">
+                <div>
+                    <h1 class="text-2xl font-bold">BULLDOGS</h1>
+                    <h2 class="text-lg font-semibold text-yellow-400">CARE CENTER</h2>
+                </div>
+            </div>
+            <nav>
+                <a href="patientpersonalinformation.html" class="flex items-center mb-4 p-2 text-gray-200 hover:bg-blue-700 rounded">
+                    <i class="fas fa-user mr-2"></i> Personal Information
+                </a>
+                <a href="patientaccount.html" class="flex items-center mb-4 p-2 text-gray-200 hover:bg-blue-700 rounded">
+                    <i class="fas fa-user-md mr-2"></i> Doctor Account
+                </a>
+                <a href="patienttransaction.html" class="flex items-center mb-4 p-2 bg-yellow-400 text-blue-800 rounded">
+                    <i class="fas fa-calendar-alt mr-2"></i> Transaction
+                </a>
+            </nav>
+        </div>
+        <div class="flex items-center cursor-pointer text-gray-200 hover:text-gray-400">
+            <i class="fas fa-cog mr-2"></i> Settings
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="w-3/4 p-8">
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center space-x-4 ml-auto dropdown-container relative">
+                <i class="fas fa-search text-xl cursor-pointer"></i>
+                <i class="fas fa-bell text-xl cursor-pointer"></i>
+
+                <!-- Profile Section with Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleDropdown()" class="flex items-center space-x-2 focus:outline-none">
+                        <img src="image/profile.png" alt="Profile picture" class="w-10 h-10 rounded-full cursor-pointer">
+                    </button>
+                    <div id="dropdownMenu" class="absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-lg hidden">
+                        <a href="bulldogmainmenu.html" class="block px-4 py-2 text-gray-300 hover:text-gray-400">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient View Section -->
+        <div class="p-6">
+            <h1 class="text-2xl font-bold mb-4">Doctor Name</h1>
+            <div class="bg-gray-300 p-6 rounded-lg shadow-lg">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-blue-900 text-white">
+                            <th class="py-2 px-4">Date & Time</th>
+                            <th class="py-2 px-4">Doctor Name</th>
+                            <th class="py-2 px-4">Department</th>
+                            <th class="py-2 px-4">Type</th>
+                            <th class="py-2 px-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-400 text-black">
+                            <td class="py-2 px-4">Nov 30, 2020 12:00 PM</td>
+                            <td class="py-2 px-4">Dr. Juan Miguel</td>
+                            <td class="py-2 px-4">Neurology</td>
+                            <td class="py-2 px-4">Follow-up</td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                <span class="bg-yellow-400 h-4 w-4 rounded-full inline-block" title="Pending"></span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-400 text-black">
+                            <td class="py-2 px-4">Sept 30, 2020 9:00 AM</td>
+                            <td class="py-2 px-4">Dr. Nicole Evangelista</td>
+                            <td class="py-2 px-4">Orthopedics</td>
+                            <td class="py-2 px-4">Consultation</td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                <span class="bg-yellow-400 h-4 w-4 rounded-full inline-block" title="Pending"></span>
+                            </td>
+                        </tr>
+                        <tr class="text-black">
+                            <td class="py-2 px-4">Oct 5, 2020 5:30 PM</td>
+                            <td class="py-2 px-4">Dr. Avril Phoebe</td>
+                            <td class="py-2 px-4">Gastroenterology</td>
+                            <td class="py-2 px-4">Follow-up</td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                <span class="bg-yellow-400 h-4 w-4 rounded-full inline-block" title="Pending"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="text-black">
+                            <td colspan="5">
+                                <div class="mt-4 flex space-x-4">
+                                    <div class="flex items-center">
+                                        <span class="bg-yellow-400 h-4 w-4 rounded-full inline-block mr-2"></span>
+                                        <span>Pending</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="bg-red-500 h-4 w-4 rounded-full inline-block mr-2"></span>
+                                        <span>Cancel</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="bg-green-500 h-4 w-4 rounded-full inline-block mr-2"></span>
+                                        <span>Confirm</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Dropdown -->
+    <script>
+        function toggleDropdown() {
+            let dropdown = document.getElementById("dropdownMenu");
+            dropdown.classList.toggle("hidden");
+        }
+
+        document.addEventListener("click", function (event) {
+            let dropdown = document.getElementById("dropdownMenu");
+            let button = document.querySelector("button[onclick='toggleDropdown()']");
+
+            if (dropdown && button && !dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.add("hidden");
+            }
+        });
+    </script>
+
+</body>
+</html>

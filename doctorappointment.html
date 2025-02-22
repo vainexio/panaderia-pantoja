@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BULLDOGS CARE CENTER</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body class="bg-gradient-to-r from-blue-900 to-gray-900 text-white min-h-screen flex">
+    
+    <!-- Sidebar -->
+    <div class="w-1/4 bg-blue-800 p-6 flex flex-col justify-between min-h-screen">
+        <div>
+            <div class="flex items-center mb-8">
+                <img src="image/bulldoglogo.png" alt="BULLDOGS CARE CENTER Logo" width="50" height="50" class="mr-3">
+                <div>
+                    <h1 class="text-2xl font-bold">BULLDOGS</h1>
+                    <h2 class="text-lg font-semibold text-yellow-400">CARE CENTER</h2>
+                </div>
+            </div>
+            <nav>
+                <a href="doctorpersonalinformation.html" class="flex items-center mb-4 p-2">
+                    <i class="fas fa-user-md mr-2"></i> Personal Information
+                </a>
+                <a href="doctorpatientaccount.html" class="flex items-center mb-4 p-2">
+                    <i class="fas fa-user mr-2"></i> Patient Account
+                </a>
+                <a href="doctortransaction.html" class="flex items-center mb-4 p-2 bg-yellow-400 text-blue-800 rounded">
+                    <i class="fas fa-calendar-alt mr-2"></i> Transaction
+                </a>
+            </nav>
+        </div>
+        <div class="flex items-center cursor-pointer">
+            <i class="fas fa-cog mr-2"></i> Settings
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="w-3/4 p-8">
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center space-x-4 ml-auto dropdown-container relative">
+                <i class="fas fa-search text-xl cursor-pointer"></i>
+                <i class="fas fa-bell text-xl cursor-pointer"></i>
+
+                <!-- Profile Section with Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleDropdown()" class="flex items-center space-x-2 focus:outline-none">
+                        <img src="image/profile.png" alt="Profile picture" class="w-10 h-10 rounded-full cursor-pointer">
+                    </button>
+                    <div id="dropdownMenu" class="absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-lg hidden">
+                        <a href="bulldogmainmenu.html" class="block px-4 py-2 text-gray-300 hover:text-gray-400">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Doctors View Section -->
+        <div class="p-6">
+            <h1 class="text-2xl font-bold mb-4">Doctors View</h1>
+            <div class="bg-gray-300 p-6 rounded-lg shadow-lg">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-blue-900 text-white">
+                            <th class="py-2 px-4">Date & Time</th>
+                            <th class="py-2 px-4">Patient Name</th>
+                            <th class="py-2 px-4">Type</th>
+                            <th class="py-2 px-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-400 text-black">
+                            <td class="py-2 px-4">Sept 25, 2:00 PM</td>
+                            <td class="py-2 px-4">Emerald Dane</td>
+                            <td class="py-2 px-4">Follow-up</td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                <span class="bg-green-500 h-4 w-4 rounded-full inline-block"></span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-400 text-black">
+                            <td class="py-2 px-4">Sept 28, 2010 10:00 AM</td>
+                            <td class="py-2 px-4">Nicole Quimpan</td>
+                            <td class="py-2 px-4">Consultation</td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                
+                                <span class="bg-yellow-400 h-4 w-4 rounded-full inline-block"></span>
+                                
+                              
+                               
+                            </td>
+                        </tr>
+                        <tr class="text-black">
+                            <td class="py-2 px-4">Oct 1, 2010 3:30 PM</td>
+                            <td class="py-2 px-4">Avril Phoebe</td>
+                            <td class="py-2 px-4">Emergency</td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                
+                                <span class="bg-red-500 h-4 w-4 rounded-full inline-block"></span>
+                                
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-400 text-black">
+                            <td class="py-2 px-4">Sept 2,2010 2:00 PM</td>
+                            <td class="py-2 px-4">Emerald Gonzales</td>
+                            <td class="py-2 px-4">Follow-up</td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                <span class="bg-green-500 h-4 w-4 rounded-full inline-block"></span>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-400 text-black">
+                            <td class="py-2 px-4">Sept 30,2010 10:00 AM</td>
+                            <td class="py-2 px-4">Nicole Sol</td>
+                            <td class="py-2 px-4">Consultation</td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                
+                                <span class="bg-yellow-400 h-4 w-4 rounded-full inline-block"></span>
+                                
+                              
+                               
+                            </td>
+                        </tr>
+                        <tr class="text-black">
+                            <td class="py-2 px-4">Oct 1,2010 3:30 PM</td>
+                            <td class="py-2 px-4">Avril Fernandez</td>
+                            <td class="py-2 px-4">Emergency</td>
+                            <td class="py-2 px-4 flex space-x-2">
+                                
+                                <span class="bg-red-500 h-4 w-4 rounded-full inline-block"></span>
+                                
+                            </td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <tr class="text-black">
+                            <td colspan="4">
+                                <div class="mt-4 flex space-x-4">
+                                    <div class="flex items-center">
+                                        <span class="bg-yellow-400 h-4 w-4 rounded-full inline-block mr-2"></span>
+                                        <span>Pending</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="bg-red-500 h-4 w-4 rounded-full inline-block mr-2"></span>
+                                        <span>Cancel</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="bg-green-500 h-4 w-4 rounded-full inline-block mr-2"></span>
+                                        <span>Confirm</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Section -->
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdownMenu");
+            dropdown.classList.toggle("hidden");
+        }
+    </script>
+
+</body>
+</html>
