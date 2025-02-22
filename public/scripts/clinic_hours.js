@@ -3,11 +3,9 @@ document.addEventListener("DOMContentLoaded", async function() {
     fetch('/api/clinic-schedule')
   .then(response => response.json())
   .then(data => {
-    // Update the month/year header as before
-    document.getElementById('monthDisplay').textContent =
-      data.currentMonth + " " + data.currentYear;
-
-    // Build the calendar table (unchanged)
+    let monthDisplay = document.getElementById('monthDisplay')
+    monthDisplay.textContent = data.currentMonth + " " + data.currentYear;
+      
     const calendarBody = document.getElementById('calendarBody');
     data.weeks.forEach(week => {
       const tr = document.createElement('tr');
@@ -22,15 +20,13 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Process grouped doctor availabilities
     const availabilityContainer = document.getElementById('availabilityContainer');
-    availabilityContainer.innerHTML = ''; // Clear any existing content
+    availabilityContainer.innerHTML = '';
 
     data.doctorAvailabilities.forEach(item => {
-      // Create a container for this doctor (we keep the element ids as given)
       const doctorDiv = document.createElement('div');
       doctorDiv.className = 'availabilityItem';
-      doctorDiv.id = 'availability-' + item.doctor_id; // Using doctor_id here
+      doctorDiv.id = 'availability-' + item.doctor_id;
 
-      // Create the time slot container (same id as before)
       const timeSlot = document.createElement('div');
       timeSlot.id = 'timeSlot';
       const statusSlot = document.createElement('div');
