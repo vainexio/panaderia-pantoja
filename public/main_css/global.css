@@ -217,24 +217,19 @@ section h1 {
     border-radius: 12px;
     margin-top: 1rem;
 }
-.action-button:hover {
+.action-button:not(:disabled):hover {
     color: var(--yellow);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
 }
-.action-button::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: var(--yellow);
-    transition: width 0.3s ease;
-    transform: translateX(-50%);
-}
-.action-button:hover::after {
+.action-button:not(:disabled):hover::after {
     width: 87%;
+}
+.action-button:disabled {
+  background: #bebebe;      /* Change to a disabled background color */
+  color: var(--white);      /* Change to a disabled text color */
+  cursor: not-allowed;           /* Indicates not clickable */
+  opacity: 0.9;                  /* Optionally fade the button */
 }
 
 @media (max-width: 768px) {
