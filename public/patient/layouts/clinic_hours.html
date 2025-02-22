@@ -1,9 +1,62 @@
-<section id="clinic_hours" class="clinic_hours section-content"> <!-- Don't change the id and class -->
-  <div class="container m-auto">
-    <header class="mb-6 text-center"></header>
-      <!-- Content goes below this -->
-
-      
-      <!-- Content goes above this -->
+<!-- Revised Clinic Hours and Doctor Availability Template -->
+<section id="clinic_hours">
+  <div id="container">
+    <!-- Calendar Header dynamically displays current month and year -->
+    <header id="calendarHeader">
+      <h2 id="monthDisplay"><%= currentMonth %> <%= currentYear %></h2>
+    </header>
+    
+    <!-- Dynamic Calendar -->
+    <div id="calendar">
+      <table id="calendarTable">
+        <thead>
+          <tr>
+            <th id="day-sunday">Sunday</th>
+            <th id="day-monday">Monday</th>
+            <th id="day-tuesday">Tuesday</th>
+            <th id="day-wednesday">Wednesday</th>
+            <th id="day-thursday">Thursday</th>
+            <th id="day-friday">Friday</th>
+            <th id="day-saturday">Saturday</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% weeks.forEach(week => { %>
+            <tr>
+              <% week.forEach(day => { %>
+                <!-- Only render a day if there is a valid date -->
+                <td id="day-<%= day.date %>"><%= day.date > 0 ? day.date : '' %></td>
+              <% }); %>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
     </div>
+    
+    <!-- Doctor Schedule -->
+    <div id="doctorSchedule">
+      <header id="scheduleHeader">
+        <h2 id="todayLabel">Today</h2>
+        <h2 id="availabilityLabel">Availability</h2>
+      </header>
+      
+      <!-- Loop through doctor availability data from the database -->
+      <% doctorAvailabilities.forEach(availability => { %>
+      <div class="availabilityItem" id="availability-<%= availability.availability_id %>">
+        <div id="timeSlot">
+          <!-- Assume an "onDuty" boolean field is set when retrieving data -->
+          <span id="statusDot" class="<%= availability.onDuty ? 'on-duty' : 'off-duty' %>"></span>
+          <span id="statusText"><%= availability.onDuty ? 'On-duty' : 'Off-duty' %></span>
+          <span id="timeRange"><%= availability.start_time %> - <%= availability.end_time %></span>
+        </div>
+        <div id="doctorDetails">
+          <h3 id="doctorName"><%= availability.doctor.first_name %> <%= availability.doctor.last_name %></h3>
+          <button id="bookAppointment" onclick="bookAppointment(<%= availability.doctor_id %>)">
+            Book Appointment
+          </button>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </div>
 </section>
