@@ -61,13 +61,13 @@ justify-content: center;
 
 .date-section {
   display: flex;
-  flex-direction: column; /* Stack label on top, input below */
-  align-items: start; /* Align content to the left */
+  flex-direction: column;
+  align-items: start; 
   justify-content: start;
-  width: fit-content; /* Forces it to the left */
-  margin-left: -450px; /* Adjust as needed */
+  width: fit-content; 
+  margin-left: -450px;
   top: 10px;
-  margin-bottom:30px/* Aligns with top of the container */
+  margin-bottom:30px
 }
 
 .date-section label {
@@ -200,6 +200,3 @@ justify-content: center;
         width: 100%;
     }
 }
-
-/* Use this pallets */
-/* Css designs goes below this */
