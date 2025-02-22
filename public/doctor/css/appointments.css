@@ -45,7 +45,7 @@
 
 
 
-.date-info{
+.date-info-appoint{
   flex: 1 1 calc(33.333% - 1rem);
     min-width: 250px;
   display: flex;
@@ -53,21 +53,21 @@ justify-content: center;
   gap:120px;
 }
 
-.date-section {/* Adjust as needed */
+.date-section-appoint {/* Adjust as needed */
   top: 10px;
   margin-bottom:30px;
   display: flex;
   flex-direction: column;
 }
 
-.date-section label {
+.date-section-appoint label {
   margin-bottom: 5px;         /* Space between label and input */
   font-weight: bold;
   font-size:20px;
    color: black;/* Example styling */
 }
 
-.date-section input {
+.date-section-appoint input {
   width: 140px;               /* Control input width */
   height: 45px;               /* Example height */
   padding: 5px;
@@ -95,7 +95,9 @@ justify-content: center;
 .appointment-table tbody td {
     vertical-align: middle;
 }
-
+.appointment-table tr{
+  height:80px;
+}
 
 .view-appointment {
     background: #2d4fad;
@@ -108,7 +110,7 @@ justify-content: center;
   width:140px;
     height:30px;
   font-size:12px;
-margin-left:40px;
+margin-left:60px;
 }
 
 .view-appointment:hover {
@@ -116,23 +118,18 @@ margin-left:40px;
 }
 .reason-design{
   width:500px;
-  height:250px;
 }
 .name-design{
   width:200px;
-  height:250px;
 }
 .date-design{
   width:160px;
-  height:250px;
 }
 .patientno-design{
   width:200px;
-  height:250px;
 }
 .time-design{
   width:160px;
-  height:250px;
 }
 
 

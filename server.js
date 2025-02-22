@@ -1,5 +1,4 @@
 // app.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -8,12 +7,15 @@ const XLSX = require('xlsx');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const cors = require('cors');
-
 //
 const method = require('./data/functions.js')
 const settings = require('./data/settings.js')
 const app = express();
 app.use(cors())
+
+//
+let patientAccount = null
+let doctorAccount = null
 // Connect to MongoDB
 if (process.env.MONGOOSE) {
 mongoose.connect(process.env.MONGOOSE, {
@@ -151,6 +153,7 @@ app.post('/login', async (req, res) => {
       
       let key = method.generateSecurityKey()
       settings.allowedKeys.push(key)
+      doctorAccount = doctor
       return res.json({ redirect: '/doctor-dashboard', message: 'Login successful as Doctor', key });
     }
   }
@@ -164,6 +167,7 @@ app.post('/login', async (req, res) => {
       }
       let key = method.generateSecurityKey()
       settings.allowedKeys.push(key)
+      patientAccount = patient
       return res.json({ redirect: '/patient-dashboard', message: 'Login successful as Patient', key });
     }
   }
@@ -199,7 +203,6 @@ app.post('/registerPatient', async (req, res) => {
       return res.status(400).json({ message: "Password confirmation do not match." });
     }
 
-    // Check if patient with same name or email already exists
     const existingPatient = await patients.findOne({
       $or: [
         { first_name, last_name },
