@@ -21,14 +21,6 @@
     color: #FCFCFC;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #efe3d4;
-    margin: 0;
-    padding: 10px; 
-}
-
 .calendar {
     display: flex; 
     flex-wrap: wrap; 
@@ -61,14 +53,14 @@ body {
     font-family: "Open Sauce One Regular", sans-serif;
 }
 
-table {
+.clinic-calendar {
     width: 100%;
     border-collapse: collapse;
     margin: auto;
   background: #efe3d4;
 }
 
-th, td {
+.day, td {
     width: 12%; 
     height: 65px;  
     border: 5px solid #283986; 
