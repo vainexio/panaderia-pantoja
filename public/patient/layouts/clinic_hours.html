@@ -27,16 +27,26 @@
     
     <!-- Doctor Schedule -->
     <div id="doctorSchedule">
-      <!-- Color coding legend -->
-      <div id="availabilityColors">
-        <div class="in">
-          <span class="availability-dot-in"></span>
-          <span class="availability-text-in">Doctor is Available</span>
-        </div>
-        <div class="weekend">
-          <span class="availability-dot-weekend"></span>
-          <span class="availability-text-weekend">Weekend (Clinic is Unavailable)</span>
+      <!-- Put the header and color legend in one row -->
+      <div id="topRow">
+        <header id="scheduleHeader">
+          <h2 id="availabilityLabel">Availability</h2>
+        </header>
+        <div id="availabilityColors">
+          <div class="in">
+            <span class="availability-dot-in"></span>
+            <span class="availability-text-in">Doctor is Available</span>
+          </div>
+          <div class="weekend">
+            <span class="availability-dot-weekend"></span>
+            <span class="availability-text-weekend">Weekend (Clinic is Unavailable)</span>
+          </div>
         </div>
       </div>
+      
+      <div id="availabilityContainer">
+        <!-- Doctor availability items will be inserted here -->
+      </div>
+    </div>
   </div>
 </section>
