@@ -9,8 +9,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const calendarBody = document.getElementById('calendarBody');
                 // Get today's date number (assumes calendar is for the current month)
                 const todayDate = new Date().getDate();
-                const today = new Date();
-                const dayName = dayOfWeekMap[today.getDay()];
+                const reverseDayOfWeekMap = Object.entries(dayOfWeekMap).reduce((acc, [day, num]) => {
+                  acc[num] = day;
+                  return acc;
+                }, {});
+          
+          const todayName = reverseDayOfWeekMap[new Date().getDay()];
+          console.log(todayName);
+          
                 data.weeks.forEach(week => {
                     const tr = document.createElement('tr');
                     week.forEach(day => {
@@ -68,11 +74,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
                     item.availabilities.forEach(slot => {
                       let classColor = 'time-color'
-                      console.log(dayName,slot.day_of_week)
-                      if (dayName == slot.day_of_week) classColor = 'time-today'
+                      console.log(todayName,slot.day_of_week)
+                      if (todayName == slot.day_of_week) classColor = 'time-today'
                         const slotInfo = document.createElement('div');
-                        slotInfo.classList.add(classColor);
-                        slotInfo.innerHTML = `<span id="timeRange">${slot.start_time} - ${slot.end_time}</span> 
+                        slotInfo.innerHTML = `<span id="timeRange" class="${classColor}">${slot.start_time} - ${slot.end_time}</span> 
                                 <span id="dayAvailable">${slot.day_of_week}</span>`;
                         timeSlot.appendChild(slotInfo);
                     });

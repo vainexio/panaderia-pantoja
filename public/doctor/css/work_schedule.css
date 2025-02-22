@@ -54,46 +54,35 @@
     flex: 1 1 calc(33.333% - 1rem);
     min-width: 250px;
   display: flex;
-  gap: 20px; /* Adds spacing between First Name & Last Name */
-
+justify-content: center; 
+  
 }
 
 
-.form-info div {
+.name-section {
   display: flex;
-  flex-direction: column; /* Stacks label and input vertically */
+  flex-direction: column; 
+ 
+}
+
+.name-section label {
+  font-weight: bold;
+  font-size: 16px;
+  color: #000040; /* Dark navy color */
+  margin-bottom: 5px; /* Spacing between label and input */
 }
 
 .name-section input {
-  width: 150px; /* Wider input field */
-  height: 35px; /* Taller input field */
+  width: 250px; /* Control input size */
+  height: 35px;
   padding: 8px;
-  border: 1px solid black; /* Adds black border */
-  border-radius: 10px; /* Rounded corners */
-  background: white; /* White background */
+  border: 1px solid #000040; /* Dark navy border */
+  border-radius: 10px; /* Rounded edges */
+  background: white;
 }
 
 
 
-.name-section label {
-    display: block;
-    font-weight: bold;
-    color: var(--black);
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 5px; /* Adds spacing between label and input */
-}
-
-
-.name-section input,
-.name-section select {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 8px;
-    border: 1px solid var(--black);
-    background-color: var(--white);
-    font-size: 1rem;
-}
 
 
 .save-container {

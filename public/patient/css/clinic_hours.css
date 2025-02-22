@@ -6,6 +6,7 @@
     --yellow: #FFD41C;
     --secondary-yellow: #ffe365;
     --black: #363636;
+  --graty: #868686;
 }
 /* Css designs goes below this */
 
@@ -147,7 +148,6 @@
 #timeRange {
   display: inline-block;
   width: 150px;
-  color: var(--black);
   padding: 5px 8px;
   font-weight: bold;
   border-radius: 5px;
@@ -159,8 +159,10 @@
   color: white;
 }
 .time-color {
-  background: #f2b600;
-}
+    background: #ffed9d;
+    color: var(--gray);
+    text-decoration: line-through;
+  }
 
 
 /* Doctor Details */

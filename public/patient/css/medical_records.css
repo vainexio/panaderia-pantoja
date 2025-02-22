@@ -133,6 +133,7 @@ background-color: var(--white);
 
 .No_MedHistory {
     text-align: center;
+    color: #757575;
 }
 
 .medHistoryContainer_table {
@@ -160,7 +161,7 @@ background-color: var(--white);
     flex: 1;
 }
 
-.medRecordTable {
+.medRecordTable, .medHistoryTable {
     width: 100%;
     background-color: var(--light-gray);
 }
@@ -174,7 +175,12 @@ background-color: var(--white);
     background-color: var(--blue);
     color: var(--light-gray);
 }
-
+ 
+.medHistoryTable th {
+    text-align: start;
+    background-color: var(--blue);
+    color: var(--light-gray);
+}
 
 .textBlueContainer {
     background-color: #e3e5e7;
