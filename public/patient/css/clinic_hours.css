@@ -7,30 +7,20 @@
     --secondary-yellow: #ffe365;
     --black: #363636;
 }
-/* Use this pallets */
 /* Css designs goes below this */
-@font-face {
-    font-family: "Open Sauce One Regular";
-    src: url("https://db.onlinewebfonts.com/t/cdf9e1a785f6767291f7e12174be6174.eot");
-    src: url("https://db.onlinewebfonts.com/t/cdf9e1a785f6767291f7e12174be6174.eot?#iefix")format("embedded-opentype"),
-    url("https://db.onlinewebfonts.com/t/cdf9e1a785f6767291f7e12174be6174.woff2")format("woff2"),
-    url("https://db.onlinewebfonts.com/t/cdf9e1a785f6767291f7e12174be6174.woff")format("woff"),
-    url("https://db.onlinewebfonts.com/t/cdf9e1a785f6767291f7e12174be6174.ttf")format("truetype"),
-    url("https://db.onlinewebfonts.com/t/cdf9e1a785f6767291f7e12174be6174.svg#Open Sauce One Regular")format("svg");
-}
-/* Clinic Hours Container */
+
 #clinic_hours {
   background-color: var(--blue);
   color: var(--black);
   padding: 20px;
 }
 
-/* General Content Container */
 #container {
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 /* Calendar Header */
 #calendarHeader {
   text-align: center;
@@ -74,15 +64,16 @@
   font-size: 14px;
 }
 
-/* Optional: Highlight weekends using nth-child selectors */
 #calendarTable td:nth-child(1),
 #calendarTable td:nth-child(7) {
   background: #e6c2bf;
 }
 
-/* Doctor Schedule */
 #doctorSchedule {
-  max-width: 900px;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0 auto;
 }
 
@@ -106,16 +97,16 @@
   margin-bottom: 15px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   display: flex;
-  width: 80%;
   flex-direction: column;
+  width: 100%;
 }
 #availabilityContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 80%;
 }
 
-/* Time Slot within Availability */
 #timeSlot {
   display: flex;
   align-items: center;
@@ -123,7 +114,6 @@
   margin-bottom: 8px;
 }
 
-/* Status Dot: on-duty and off-duty */
 .on-duty {
   width: 15px;
   height: 15px;
@@ -181,6 +171,7 @@
 
 /* a*/
 #topRow {
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
