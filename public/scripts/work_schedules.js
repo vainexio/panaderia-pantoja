@@ -16,16 +16,16 @@ function fetchSchedules() {
       `;
       schedules.forEach(schedule => {
         tableHTML += `
-          <tr data-id="${schedule._id}">
+          <tr class="schedule-data" data-id="${schedule._id}">
             <td>${schedule.day_of_week}</td>
             <td>${schedule.start_time}</td>
             <td>${schedule.end_time}</td>
             <td>
-              <button class="edit-btn" title="Edit Schedule">
-                <i class="fa fa-pencil"></i>
+              <button class="edit-btn btn btn-sm btn-outline-light" title="Edit Schedule">
+                <i class="bi bi-pencil-fill"></i>
               </button>
-              <button class="delete-btn" title="Delete Schedule">
-                <i class="fa fa-trash"></i>
+              <button class="delete-btn btn btn-sm btn-outline-light" title="Delete Schedule">
+                <i class="bi bi-trash-fill"></i>
               </button>
             </td>
           </tr>
@@ -36,9 +36,7 @@ function fetchSchedules() {
     })
     .catch(err => console.error('Error fetching schedules:', err));
   
-  ////
   
-
 // Handle form submission to create a new schedule
 document.getElementById('scheduleForm').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -105,9 +103,9 @@ document.querySelector('.work-schedules-card').addEventListener('click', functio
 // Load the schedule list when the page loads
 document.addEventListener("DOMContentLoaded", async function () {
   function isReady() {
-    fetchSchedules()
+    fetchSchedules();
   }
   
-  // Wait for content load
-  waitUntilReady(isReady)
-})
+  // Wait for content load (ensure waitUntilReady is defined or replace with your own ready check)
+  waitUntilReady(isReady);
+});

@@ -39,9 +39,10 @@
 
 /* Card */
 .work-schedules-card {
+  margin: auto;
   background-color: transparent;
   color: white;
-  width: 100%;
+  width: 80%;
   padding: 20px; /* optional: adjust padding as needed */
 }
 
@@ -50,18 +51,22 @@
   border-collapse: collapse;
 }
 
-.work-schedules-card th,
 .work-schedules-card td {
   padding: 12px 15px;
   text-align: left;
   color: inherit;
 }
-
 .work-schedules-card th {
-  border-bottom: 2px solid #fff;
+  padding: 12px 15px;
+  text-align: left;
+  color: var(--yellow);
 }
 
-.work-schedules-card tr:hover {
+.schedule-data {
+  
+  border: 2px solid white;
+}
+.schedule-data:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
