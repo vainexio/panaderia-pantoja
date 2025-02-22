@@ -96,6 +96,7 @@ justify-content: center;
     vertical-align: middle;
 }
 
+
 .view-appointment {
     background: #2d4fad;
     color: white;
@@ -107,7 +108,7 @@ justify-content: center;
   width:140px;
     height:30px;
   font-size:12px;
-
+margin-left:40px;
 }
 
 .view-appointment:hover {
@@ -115,18 +116,23 @@ justify-content: center;
 }
 .reason-design{
   width:500px;
+  height:250px;
 }
 .name-design{
   width:200px;
+  height:250px;
 }
 .date-design{
   width:160px;
+  height:250px;
 }
 .patientno-design{
   width:200px;
+  height:250px;
 }
 .time-design{
   width:160px;
+  height:250px;
 }
 
 
