@@ -9,6 +9,7 @@
 }
 /* Use this pallets */
 /* Css designs goes below this */
+
 .medical_records section-content {
   background: none;
   background-color: var(--blue);
@@ -18,8 +19,12 @@
     background: none;
     background-color: var(--blue);
 }
-.StudentInfocontainer {
 
+.bold {
+    font-weight: bold;
+}
+
+.StudentInfocontainer {
     border: 1px solid green;
   display: flex;
   flex-direction: column;
@@ -60,6 +65,7 @@ background-color: var(--white);
     margin: auto;
     width: 100%;
     padding: 0px 30px;
+    margin-bottom: 4px;
 }
 
 .buttonContainer  {
@@ -107,6 +113,40 @@ background-color: var(--white);
     background: unset;
     background-color: #cccccc;
     color: #202020;
+}
+
+.medHistoryContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 100%;
+    min-height: 100px; 
+    background-color: var(--light-gray);
+    border-radius: 16px;
+}
+
+.medHistoryContainer_dfText {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: 100%; 
+}
+
+.No_MedHistory {
+    text-align: center;
+}
+
+.medHistoryContainer_table {
+    display: none;
+}
+
+.medHistoryTable {
+    justify-content: center;
+    width: 100%;
+}
+
+.medHistoryTable th {
+    border: 1px solid black;
 }
 
 .textCenter {
