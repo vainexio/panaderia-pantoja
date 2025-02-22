@@ -36,17 +36,22 @@ document.addEventListener("DOMContentLoaded", async function() {
       const statusSlot = document.createElement('div');
       statusSlot.id = 'statusSlot';
       timeSlot.appendChild(statusSlot);
-      // Optionally, you could show an overall on-duty status if needed. 
-      // For example, if any of the availabilities are onDuty, mark as "On-duty" overall.
+      
+      //Dot
       const overallOnDuty = item.availabilities.some(slot => slot.onDuty);
       const statusDot = document.createElement('span');
       statusDot.id = 'statusDot';
       statusDot.className = overallOnDuty ? 'on-duty' : 'off-duty';
       statusSlot.appendChild(statusDot);
+      
+      const doctorName = document.createElement('h3');
+      doctorName.id = 'doctorName';
+      doctorName.textContent = item.doctor.first_name + " " + item.doctor.last_name;
+      statusSlot.appendChild(doctorName);
 
       const statusText = document.createElement('span');
       statusText.id = 'statusText';
-      statusText.textContent = overallOnDuty ? 'On-duty' : 'Off-duty';
+      statusText.textContent = overallOnDuty ? '• On-duty' : '• Off-duty';
       statusSlot.appendChild(statusText);
 
       // For each availability slot, append its details (day, time range)
@@ -55,21 +60,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         // We do not change the element ids here, so you might reuse same ids
         // but it's recommended to use unique ids or classes for multiple entries.
         slotInfo.innerHTML = `<span id="timeRange">${slot.start_time} - ${slot.end_time}</span> 
-                              <span id="dayAvailable">Available on: ${slot.day_of_week}</span>`;
+                              <span id="dayAvailable">${slot.day_of_week}</span>`;
         timeSlot.appendChild(slotInfo);
       });
-
-      doctorDiv.appendChild(timeSlot);
-
-      // Doctor details container remains the same
-      const doctorDetails = document.createElement('div');
-      doctorDetails.id = 'doctorDetails';
-
-      const doctorName = document.createElement('h3');
-      doctorName.id = 'doctorName';
-      doctorName.textContent = item.doctor.first_name + " " + item.doctor.last_name;
-      doctorDetails.appendChild(doctorName);
-
+      
       // Book Appointment button
       const bookButton = document.createElement('button');
       bookButton.id = 'bookAppointment';
@@ -77,9 +71,9 @@ document.addEventListener("DOMContentLoaded", async function() {
       bookButton.addEventListener('click', function() {
         bookAppointment(item.doctor_id);
       });
-      doctorDetails.appendChild(bookButton);
-
-      doctorDiv.appendChild(doctorDetails);
+      timeSlot.appendChild(bookButton);
+      
+      doctorDiv.appendChild(timeSlot);
       availabilityContainer.appendChild(doctorDiv);
     });
   })
