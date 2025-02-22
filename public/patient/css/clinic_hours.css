@@ -56,13 +56,13 @@ background: var(--yellow);
 color: var(--black);
 text-align: center;
 padding: 15px;
-border: 2px solid var(--blue);
+border: 2px solid var(--black);
 }
 
 #calendarTable td {
 width: 14.28%;
 height: 65px;
-border: 2px solid var(--blue);
+border: 2px solid var(--black);
 vertical-align: top;
 padding: 7px;
 font-size: 14px;
@@ -224,17 +224,17 @@ width: 50%
 }*/
 .availability-dot-today {
 background-color: var(--blue);
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .availability-dot-in {
 background-color: var(--avail);
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .availability-dot-weekend {
 background-color: var(--unavail);
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .availability-text-in,

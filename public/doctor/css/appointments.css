@@ -49,7 +49,7 @@
   flex: 1 1 calc(33.333% - 1rem);
     min-width: 250px;
   display: flex;
-justify-content: center;
+justify-content: left;
   gap:120px;
 }
 
@@ -68,8 +68,8 @@ justify-content: center;
 }
 
 .date-section-appoint input {
-  width: 140px;               /* Control input width */
-  height: 45px;               /* Example height */
+  width: 260px;               /* Control input width */
+  height: 40px;               /* Example height */
   padding: 5px;
   border: 1px solid black;
   border-radius: 10px;
@@ -99,7 +99,7 @@ justify-content: center;
   height:80px;
 }
 
-.view-appointment {
+.view-appointment1,.view-appointment2 {
     background: #2d4fad;
     color: white;
     border: none;
@@ -110,10 +110,10 @@ justify-content: center;
   width:140px;
     height:30px;
   font-size:12px;
-margin-left:60px;
+margin-left:290px;
 }
 
-.view-appointment:hover {
+.view-appointment1:hover, .view-appointment2:hover {
     background: #1c3575;
 }
 .reason-design{
