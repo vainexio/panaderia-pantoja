@@ -93,7 +93,7 @@ function fetchSchedules() {
     .then(response => response.json())
     .then(schedules => {
       let tableHTML = `
-        <table class="table table-l table-striped w-100">
+        <table class="table table-light table-striped w-100">
           <thead>
             <tr>
               <th>Day</th>

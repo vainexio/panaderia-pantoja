@@ -310,7 +310,7 @@ app.post('/schedule', async (req, res) => {
     });
     
     if (existingSchedule) {
-      return res.status(400).json({ message: 'Schedule for this day already exists.' });
+      return res.status(400).json({ message: 'Schedule for '+day_of_week+' already exists! Please try a different day.' });
     }
     
     // Convert times to 12-hour format
@@ -338,6 +338,12 @@ app.post('/schedule', async (req, res) => {
 app.get('/schedules', async (req, res) => {
   try {
     let schedules = await availableDoctors.find({ doctor_id: currentDoctor.doctor_id });
+    const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    
+    schedules.sort((a, b) => {
+      return daysOrder.indexOf(a.day_of_week) - daysOrder.indexOf(b.day_of_week);
+    });
+    
     res.json(schedules);
   } catch (err) {
     res.status(500).json({ error: err.message });

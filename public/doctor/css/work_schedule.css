@@ -8,26 +8,34 @@
   --black: #363636;
 }
 
+
 .work_schedule {
-  background: none;
-  background-color: var(--blue);
   padding: 2rem 0;
   display: none;
   justify-content: center;
 }
 
+.work-sched-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .create-schedule-card {
+  background-color: transparent;
   width: 80%;
   max-width: 980px;
   min-height: 100%;
-  margin: auto;
   padding: 2rem;
-  border-radius: 16px;
-  background-color: var(--light-gray);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  margin-bottom: 60px;
+}
+/* Card */
+.work-schedules-card {
+  background-color: transparent;
+  color: var(--light-gray);
+  width: 80%;
+  max-width: 980px;
 }
 
 .schedule-form {
@@ -37,14 +45,7 @@
   justify-content: center;
 }
 
-/* Card */
-.work-schedules-card {
-  margin: auto;
-  background-color: transparent;
-  color: white;
-  width: 80%;
-  padding: 20px; /* optional: adjust padding as needed */
-}
+
 
 .work-schedules-card table {
   width: 100%;
