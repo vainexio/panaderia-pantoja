@@ -7,5 +7,72 @@
     --secondary-yellow: #ffe365;
     --black: #363636;
 }
+.patient_registration {
+    background: none;
+    background-color: var(--blue);
+    padding: 2rem 0;
+    display: none;
+    justify-content: center;
+}
+
+.register-card {
+    width: 80%;
+    max-width: 980px;
+    min-height: 100%;
+    margin: auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background-color: var(--light-gray);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-header h1 {
+    font-weight: bold;
+    color: var(--black);
+}
+
+.form-header p {
+    color: var(--black);
+}
+
+.form-info {
+    flex: 1 1 calc(33.333% - 1rem);
+    min-width: 250px;
+  display: flex;
+justify-content: center;
+  gap:120px;
+  
+}
+.name-section {
+  display: flex;
+  flex-direction: column; 
+  margin-bottom:30px;
+ 
+}
+
+.name-section label {
+  font-weight: bold;
+  font-size: 18px;
+  color: black; /* Dark navy color */
+  margin-bottom: 5px; /* Spacing between label and input */
+}
+
+.name-section input {
+  width: 340px; /* Control input size */
+  height: 45px;
+  padding: 8px;
+  border: 1px solid black; /* Dark navy border */
+  border-radius: 10px; /* Rounded edges */
+  background: white;
+}
+
+
 /* Use this pallets */
 /* Css designs goes below this */

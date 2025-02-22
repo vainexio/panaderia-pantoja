@@ -119,6 +119,7 @@ justify-content: center;
   display: flex;
   flex-direction: column;
   margin-left:-290px;
+  margin-bottom: 20px;
 }
 
 .working-hours-label {
@@ -141,7 +142,7 @@ justify-content: center;
 
 .time-box label {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
   margin-bottom: 5px;
 }
 
@@ -155,25 +156,21 @@ justify-content: center;
   font-weight: bold;
 }
 
-
-
-
 .save-container {
     width: 90px;
   height: 40px;
     display: flex;
     justify-content: center;
-    margin-top: 1rem;
     border-radius: 25px;
     background: #f2bf2e;
-    padding: 10px; /* Ensures proper spacing inside */
+    padding: 2px; 
+  margin-left:420px;/* Ensures proper spacing inside */
 }
 
 .save-button-schedule {
     border: none; /* Removes extra border */
     outline: none;
   background: #f2bf2e;
-    padding-bottom:2px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
