@@ -15,7 +15,8 @@ app.use(cors())
 
 //
 let currentPatient = null
-let currentDoctor = null
+let currentDoctor = { doctor_id: 1 };
+
 // Connect to MongoDB
 if (process.env.MONGOOSE) {
 mongoose.connect(process.env.MONGOOSE, {
@@ -297,7 +298,60 @@ app.get('/api/clinic-schedule', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-//
+// Doctor Schedule 
+// POST route to create a new schedule
+app.post('/schedule', async (req, res) => {
+  const { day_of_week, start_time, end_time } = req.body;
+  try {
+    let newSchedule = new availableDoctors({
+      availability_id: Date.now(),
+      doctor_id: currentDoctor.doctor_id,
+      day_of_week,
+      start_time,
+      end_time,
+    });
+
+    await newSchedule.save();
+    res.status(201).json(newSchedule);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET route to fetch all schedules for the current doctor
+app.get('/schedules', async (req, res) => {
+  try {
+    let schedules = await availableDoctors.find({ doctor_id: currentDoctor.doctor_id });
+    res.json(schedules);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE route to remove a schedule by its MongoDB _id
+app.delete('/schedule/:id', async (req, res) => {
+  try {
+    await availableDoctors.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Schedule deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT route to update (modify) an existing schedule
+app.put('/schedule/:id', async (req, res) => {
+  const { day_of_week, start_time, end_time } = req.body;
+  try {
+    let updatedSchedule = await availableDoctors.findByIdAndUpdate(
+      req.params.id,
+      { day_of_week, start_time, end_time },
+      { new: true }
+    );
+    res.json(updatedSchedule);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

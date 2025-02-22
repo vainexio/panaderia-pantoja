@@ -9,3 +9,82 @@
 }
 /* Use this pallets */
 /* Css designs goes below this */
+
+/* Container styles */
+.container {
+  margin: auto;
+}
+/* Patient view section */
+.patient-view {
+  padding: 1.5rem;
+}
+
+.patient-view h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Appointment table container */
+.appointment-table-container {
+  background-color: #d1d5db; /* gray-300 */
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  text-align: left;
+}
+
+thead tr {
+  background-color: #1e3a8a; /* blue-900 */
+  color: white;
+}
+
+th, td {
+  padding: 0.5rem 1rem;
+}
+
+tbody tr {
+  border-bottom: 1px solid #9ca3af; /* gray-400 */
+  color: black;
+}
+
+/* Status indicators */
+.status-indicator {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.status-indicator.pending {
+  background-color: #facc15; /* yellow-400 */
+}
+
+.status-indicator.cancelled {
+  background-color: #ef4444; /* red-500 */
+}
+
+.status-indicator.confirmed {
+  background-color: #22c55e; /* green-500 */
+}
+
+/* Status legend */
+.status-legend {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+}
+
+.status-item .status-indicator {
+  margin-right: 0.5rem;
+}

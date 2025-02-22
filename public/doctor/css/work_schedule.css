@@ -36,3 +36,38 @@
   gap: 1rem;
   justify-content: center;
 }
+
+/* Card */
+.work-schedules-card {
+  background-color: transparent;
+  color: white;
+  width: 100%;
+  padding: 20px; /* optional: adjust padding as needed */
+}
+
+.work-schedules-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.work-schedules-card th,
+.work-schedules-card td {
+  padding: 12px 15px;
+  text-align: left;
+  color: inherit;
+}
+
+.work-schedules-card th {
+  border-bottom: 2px solid #fff;
+}
+
+.work-schedules-card tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.work-schedules-card button {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+}
