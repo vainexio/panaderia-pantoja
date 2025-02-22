@@ -1,5 +1,20 @@
 const fetch = require('node-fetch');
 
+
+function generateSecurityKey(length = 32) {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let key = "";
+
+    for (let i = 0; i < length; i++) {
+        key += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return key;
+}
+function sleep(miliseconds) {
+    var currentTime = new Date().getTime();
+    while (currentTime + miliseconds >= new Date().getTime()) { }
+}
+
 const dayOfWeekMap = {
   Sunday: 0,
   Monday: 1,
@@ -19,7 +34,6 @@ function parseTimeTo24(timeStr) {
   let hour = parseInt(hourStr, 10);
   let minute = parseInt(minuteStr, 10) || 0;
 
-  // Convert to 24-hour
   if (ampm.toUpperCase() === 'PM' && hour !== 12) {
     hour += 12;
   } else if (ampm.toUpperCase() === 'AM' && hour === 12) {
@@ -41,11 +55,10 @@ function checkIfOnDuty(availability) {
   const currentDayIndex = dateNow.getDay();
   const currentTime24 = dateNow.getHours() + dateNow.getMinutes() / 60;
 
-  const start = parseTimeTo24(availability.start_time); // e.g. "7:00 AM" => 7
-  const end = parseTimeTo24(availability.end_time);     // e.g. "10:00 PM" => 22
+  const start = parseTimeTo24(availability.start_time); // "7:00 AM" is 7
+  const end = parseTimeTo24(availability.end_time);     // "10:00 PM" is 22
 
-  // Logging for debugging
-  console.log(`Shanghai Now: dayIndex=${currentDayIndex}, time=${currentTime24}`);
+  console.log(`Date Now: dayIndex=${currentDayIndex}, time=${currentTime24}`);
   console.log(`Availability: dayIndex=${availDayIndex}, start=${start}, end=${end}`);
 
   const isSameDay = currentDayIndex === availDayIndex;
@@ -53,22 +66,10 @@ function checkIfOnDuty(availability) {
 
   return isSameDay && isInTimeRange;
 }
-function generateSecurityKey(length = 32) {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let key = "";
 
-    for (let i = 0; i < length; i++) {
-        key += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return key;
-}
-function sleep(miliseconds) {
-    var currentTime = new Date().getTime();
-    while (currentTime + miliseconds >= new Date().getTime()) { }
-}
 function computeCalendarWeeks(date) {
   const year = date.getFullYear();
-  const month = date.getMonth(); // 0-indexed
+  const month = date.getMonth();
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
   const weeks = [];
@@ -76,13 +77,11 @@ function computeCalendarWeeks(date) {
   let startDay = firstDay.getDay();
   let dayCounter = 1;
 
-  // Fill first week
   for (let i = startDay; i < 7; i++) {
     week[i] = dayCounter++;
   }
   weeks.push(week);
 
-  // Fill remaining weeks
   while (dayCounter <= lastDay.getDate()) {
     week = new Array(7).fill('');
     for (let i = 0; i < 7 && dayCounter <= lastDay.getDate(); i++) {

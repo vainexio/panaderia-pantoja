@@ -7,7 +7,8 @@
     --secondary-yellow: #ffe365;
     --black: #363636;
 }
-.patient_registration {
+
+#appointments{
     background: none;
     background-color: var(--blue);
     padding: 2rem 0;
@@ -15,7 +16,7 @@
     justify-content: center;
 }
 
-.register-card {
+.appointment-card {
     width: 80%;
     max-width: 980px;
     min-height: 100%;
@@ -28,21 +29,21 @@
     flex-direction: column;
 }
 
-.form-header {
+.mb-6 text-center {
     text-align: center;
     margin-bottom: 1.5rem;
 }
 
-.form-header h1 {
+.mb-6 text-center h1 {
     font-weight: bold;
     color: var(--black);
 }
 
-.form-header p {
+.mb-6 text-center p {
     color: var(--black);
 }
 
-.form-info {
+.name-info {
     flex: 1 1 calc(33.333% - 1rem);
     min-width: 250px;
   display: flex;
@@ -72,6 +73,40 @@ justify-content: center;
   border-radius: 10px; /* Rounded edges */
   background: white;
 }
+
+
+
+.date-info-appoint {
+    flex: 1 1 calc(33.333% - 1rem);
+    min-width: 250px;
+  display: flex;
+justify-content: left;
+  
+}
+
+.date-section-appoint {/* Adjust as needed */
+  top: 10px;
+  margin-bottom:30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.date-section-appoint label {
+  margin-bottom: 5px;         /* Space between label and input */
+  font-weight: bold;
+  font-size:20px;
+   color: black;/* Example styling */
+}
+
+.date-section-appoint input {
+  width: 140px;               /* Control input width */
+  height: 45px;               /* Example height */
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+
 
 
 /* Use this pallets */
