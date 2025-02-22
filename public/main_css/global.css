@@ -40,10 +40,12 @@ section {
     padding: 10px;
     overflow-x: hidden;
     background: url("https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/bg1?v=1738146962221");
-    background-size: cover;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
+    background-position: center;
     z-index: 1;
 }
+
 
 section header {
     margin-bottom: 1.5rem;
