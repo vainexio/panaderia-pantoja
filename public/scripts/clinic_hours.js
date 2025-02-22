@@ -3,16 +3,23 @@ document.addEventListener("DOMContentLoaded", async function() {
     fetch('/api/clinic-schedule')
   .then(response => response.json())
   .then(data => {
-    let monthDisplay = document.getElementById('monthDisplay')
+    let monthDisplay = document.getElementById('monthDisplay');
     monthDisplay.textContent = data.currentMonth + " " + data.currentYear;
-      
+    
     const calendarBody = document.getElementById('calendarBody');
+    // Get today's date number (assumes calendar is for the current month)
+    const todayDate = new Date().getDate();
+    
     data.weeks.forEach(week => {
       const tr = document.createElement('tr');
       week.forEach(day => {
         const td = document.createElement('td');
         td.id = 'day-' + day;
         td.textContent = day > 0 ? day : '';
+        // If there's a valid day, check if it matches today's date
+        if(day > 0 && day === todayDate) {
+          td.classList.add('today');
+        }
         tr.appendChild(td);
       });
       calendarBody.appendChild(tr);
@@ -27,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async function() {
       doctorDiv.className = 'availabilityItem';
       doctorDiv.id = 'availability-' + item.doctor_id;
 
+      // Create the time slot container (same id as before)
       const timeSlot = document.createElement('div');
       timeSlot.id = 'timeSlot';
       const statusSlot = document.createElement('div');

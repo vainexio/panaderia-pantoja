@@ -103,7 +103,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 10%;
+  width: 100%;
 }
 
 #timeSlot {
@@ -214,6 +214,7 @@
 }
 
 /* Circle indicators */
+.availability-dot-today,
 .availability-dot-in,
 .availability-dot-weekend {
   display: inline-block;
@@ -223,8 +224,12 @@
   margin-right: 5px;
 }
 
+.availability-dot-today {
+  background-color: #adc0ff;
+  border: 1px solid black;
+}
+
 .availability-dot-in {
-  
   background-color: #efe3d4;
   border: 1px solid black;
 }
@@ -237,4 +242,20 @@
 .availability-text-in,
 .availability-text-weekend {
   font-weight: 500;
+}
+.today {
+  position: relative; /* Needed so the pseudo-element positions relative to this cell */
+}
+
+/* Create a diagonal overlay that mixes the current background with #adc0ff */
+.today::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 50%, #adc0ff 50%);
+  opacity: 0.7; /* Adjust opacity for the mix effect */
+  pointer-events: none; /* Allows clicks to pass through */
 }
