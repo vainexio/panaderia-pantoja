@@ -1,129 +1,99 @@
-/* Main Layout */
-.main-content {
-    width: 75%;
-    padding: 2rem;
+:root {
+  --white: #fcfcfc;
+  --light-gray: #e9ecef;
+  --blue: #283986;
+  --secondary-blue: #91b2ff;
+  --yellow: #ffd41c;
+  --secondary-yellow: #ffe365;
+  --black: #363636;
 }
 
-/* Header Styles */
-.header {
+.settings {
+    padding: 2rem 0;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+    justify-content: center;
 }
-
-.header-icons {
+.login-sessions-card {
+  width: 90%;
+  max-width: 1000px;
+    margin: auto;
+}
+.patient-settings-card {
+    width: 90%;
+    max-width: 1000px;
+    min-height: 100%;
+    margin: auto;
+    border-radius: 16px;
+    background-color: transparent;
     display: flex;
-    align-items: center;
-    margin-left: auto;
-    gap: 1rem;
+    flex-direction: column;
 }
 
-/* Icon Styles */
-.icon {
-    font-size: 1.25rem;
-    cursor: pointer;
+.settings-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+.settings-form .editable-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.delete-icon {
-    color: #ef4444;
+.settings-form .editable-field input {
+  flex: 1;
+  margin-right: 10px;
 }
 
-/* Profile and Dropdown Styles */
-.profile-img-small {
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 9999px;
-    cursor: pointer;
+.form-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
-.profile-img-large {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 9999px;
-    margin-right: 1rem;
+.form-header h1 {
+  font-weight: bold;
+  color: var(--black);
 }
 
-.profile-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border: none;
-    background: none;
-    cursor: pointer;
+.form-header p {
+  color: var(--black);
 }
 
-.profile-button:focus {
-    outline: none;
+.form-group {
+  flex: 1 1 calc(33.333% - 1rem);
+  min-width: 250px;
 }
 
-.dropdown {
-    position: relative;
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--black);
 }
 
-.dropdown-menu {
-    position: absolute;
-    right: 0;
-    margin-top: 0.5rem;
-    width: 10rem;
-    background-color: #1f2937;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    display: none;
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--black);
+  background-color: var(--white);
+  font-size: 1rem;
 }
 
-.dropdown-menu.show {
-    display: block;
+.submit-container {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-top: 1rem;
 }
-
-.dropdown-link {
-    display: block;
-    padding: 0.5rem 1rem;
-    color: #d1d5db;
-    text-decoration: none;
+.submit-container #genPassword {
+  margin-right: 1rem;
 }
-
-.dropdown-link:hover {
-    color: #9ca3af;
+.notification {
+  display: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
 }
-
-/* Info Container Styles */
-.info-container {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    color: black;
-}
-
-.section-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-}
-
-/* Profile Section Styles */
-.profile-section {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-.profile-upload {
-    font-size: 0.875rem;
-}
-
-.profile-actions {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.upload-label {
-    cursor: pointer;
-}
-
-.hidden {
-    display: none;
-}
-
-/* Form Styles */

@@ -139,6 +139,7 @@ app.get('/currentAccount', async (req, res) => {
     let queryField = type + "_id";
     console.log("Searching: ",queryField,sessionData.target_id,deviceId)
     let account = await accountHolder.findOne({ [queryField]: Number(sessionData.target_id) });
+    account.unhashedPassword = /* Use bcrypt to decrypt */
     if (account) return res.status(200).json(account);
     
     return res.status(404).json({ message: type+" not found.", redirect: "/" });
@@ -200,7 +201,6 @@ app.post('/getAllSessions', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-
 app.delete('/removeSession', async (req, res) => {
   try {
     const { sessionId } = req.body;
@@ -218,8 +218,6 @@ app.delete('/removeSession', async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-// Endpoint to remove all sessions for a given doctorId
 app.delete('/removeOtherSessions', async (req, res) => {
   try {
     let deviceId = req.cookies.deviceId;
@@ -227,7 +225,6 @@ app.delete('/removeOtherSessions', async (req, res) => {
     if (!accountId || !type) {
       return res.status(400).json({ error: "accountId & type is required" });
     }
-    // Delete sessions where device_id is not equal to the current deviceId.
     const result = await loginSession.deleteMany({ 
       target_id: accountId, 
       type, 
