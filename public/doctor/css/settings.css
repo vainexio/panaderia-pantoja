@@ -10,10 +10,20 @@
 
 .settings {
     padding: 2rem 0;
-    display: none;
+    display: flex;
+  flex-direction: column;
     justify-content: center;
 }
+.settings .container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
+.login-sessions-card {
+  width: 90%;
+  max-width: 1000px;
+}
 .doctor-settings-card {
     width: 90%;
     max-width: 1000px;
