@@ -84,34 +84,28 @@ document.addEventListener("DOMContentLoaded", async function () {
       event.preventDefault();
 
       const formData = Object.fromEntries(new FormData(event.target).entries());
-      const notification = document.getElementById("notification");
-      notification.classList.add("d-none");
+      const notification = document.getElementById("patient_regis_notif");
 
-      try {
-        const response = await fetch("/registerPatient", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
+      const response = await fetch("/registerPatient", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-        if (response.ok) {
-          notification.textContent = "Patient account registered successfully!";
-          notification.className = "alert alert-success mt-3 rounded-3";
-        } else {
-          const error = await response.json();
-          notification.textContent =
-            error.message || "Failed to register patient.";
-          notification.className = "alert alert-danger mt-3 rounded-3";
-        }
-
-        setTimeout(function () {
-          notification.classList.add("d-none");
-        }, 5000);
-      } catch (err) {
-        notification.textContent = err;
+      if (response.ok) {
+        notification.textContent = "Patient account registered successfully!";
+        notification.className = "alert alert-success mt-3 rounded-3";
+      } else {
+        const error = await response.json();
+        notification.textContent = error.message || "Failed to register patient.";
         notification.className = "alert alert-danger mt-3 rounded-3";
-      } finally {
-        notification.classList.remove("d-none");
       }
+
+      setTimeout(function () {
+          if (notification.textContent.length > 0) {
+            notification.textContent = "";
+            notification.className = "";
+          }
+        }, 3000);
     });
 });
