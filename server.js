@@ -285,21 +285,23 @@ app.delete('/removeOtherSessions', async (req, res) => {
 });*/
 app.post('/updateAccount', async (req, res) => {
   const { accountData, formData } = req.body;
-  if (formData.password !== formData.confirm_password) res.status(401).json({ message: 'New password conirmation did not match.' });
+  let accountHolder = formData.account_type == 'Doctor' ? doctors : formData.account_type == 'Patient' ? patients : null
+  if (!accountHolder) return res.status(404).json({ message: "Invalid account type" });
   
-  let accountHolder = formData.account_type == 'doctor' ? doctors : body.account_type == 'patient' ? patients : null
-  if (accountHolder) return res.status(404).json({ message: "Invalid account type" });
-  
-  let account = await accountHolder.findOne({ email: body.email })
+  let account = await accountHolder.findOne({ email: accountData.email })
   if (!account) return res.status(404).json({ message: "No account found" });
   
-  const isMatch = await bcrypt.compare(account.password, body.old_password);
-  if (!isMatch) return res.status(401).json({ message: 'Old password did not match' });
+  const isMatch = await bcrypt.compare(account.password, formData.old_password);
+  if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
   
-  const hashedPassword = await bcrypt.hash(body.password, 10);
-  account.email = body.email
-  account.email = body.email
+  if (formData.password !== formData.confirm_password) res.status(401).json({ message: 'New password conirmation did not match.' });
+  const hashedPassword = await bcrypt.hash(formData.password, 10);
+  account.email = formData.email
+  account.contact_number = formData.contact_number
   account.password = hashedPassword
+  await account.save()
+  
+  return res.status(200).json({ message: 'Account updated successfully' });
 });
 app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;

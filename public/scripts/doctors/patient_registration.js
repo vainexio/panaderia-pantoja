@@ -59,7 +59,7 @@ async function patientRegistration() {
             notification.textContent = "";
             notification.className = "";
           }
-        }, 3000);
+        }, 2000);
       });
   }
 }

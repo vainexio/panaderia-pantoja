@@ -48,13 +48,25 @@ async function mainSettings() {
           : formData.account_type == "Patient"
           ? currentPatient
           : null;
-      const notification = document.getElementById("doc_settings_notif");
+      const notification = document.getElementById(
+        formData.account_type + "_settings_notif"
+      );
 
       const response = await fetch("/updateAccount", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ accountData, formData }),
       });
+
+      if (response.ok) {
+        notification.textContent = "Successfully updated account details.";
+        notification.className = "alert alert-success mt-3 rounded-3";
+      } else {
+        const error = await response.json();
+        notification.textContent =
+          error.message || "Failed to update account details.";
+        notification.className = "alert alert-danger mt-3 rounded-3";
+      }
 
       setTimeout(function () {
         if (notification.textContent.length > 0) {
