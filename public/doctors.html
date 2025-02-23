@@ -1,97 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="description"
-        content="Bulldogs Care Center: An online appointment system">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Bulldogs Care Center: An online appointment system"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bulldogs Care Center</title>
 
     <!-- Styles -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
 
-    <link href="main_css/global.css" rel="stylesheet">
-    <link href="main_css/settings.css" rel="stylesheet">
-  
-    <link href="doctor/css/work_schedule.css" rel="stylesheet">
-    <link href="doctor/css/appointments.css" rel="stylesheet">
-    <link href="doctor/css/patient_history.css" rel="stylesheet">
-    <link href="doctor/css/register_patient.css" rel="stylesheet">
-    <link href="doctor/css/analytics.css" rel="stylesheet">
-    
-</head>
+    <link href="main_css/global.css" rel="stylesheet" />
+    <link href="main_css/settings.css" rel="stylesheet" />
 
-<body>
-  <div id="preloader">
-    <div class="loader"></div>
-  </div>
+    <link href="doctor/css/work_schedule.css" rel="stylesheet" />
+    <link href="doctor/css/appointments.css" rel="stylesheet" />
+    <link href="doctor/css/patient_history.css" rel="stylesheet" />
+    <link href="doctor/css/register_patient.css" rel="stylesheet" />
+    <link href="doctor/css/analytics.css" rel="stylesheet" />
+    <link href="doctor/css/settings.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="preloader">
+      <div class="loader"></div>
+    </div>
     <script src="scripts/doctors/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  
-  
-  <nav class="navbar position-fixed h-100 d-flex flex-column">
-  <div id="particles-js"></div>
-        <div>
-          <img class="logo" src="https://cdn.glitch.global/469b5432-393a-4587-825e-60e83c1d6ea8/logo1?v=1739078620575" alt="Logo">
-        </div>
-        <ul class="navbar-nav flex-grow-1 w-100">
-          <li class="nav-item">
-    <a class="nav-link align-items-center nav-item-custom active" href="#" onclick="showSection('work_schedule')">
-        <i class="bi bi-clock-history me-2"></i>
-        <span>Work Schedule</span>
-    </a>
-</li>
-          <li class="nav-item">
-                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('appointments')">
-                    <i class="bi bi-calendar-check me-2"></i>
-                    <span>Appointments</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('patient_history')">
-                    <i class="bi bi-people me-2"></i>
-                    <span>Patients History</span>
-                </a>
-            </li>
-          <li class="nav-item">
-                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('patient_registration')">
-                    <i class="bi bi-person-add me-2"></i>
-                    <span>Register Patient</span>
-                </a>
-            </li>
-          <li class="nav-item">
-                <a class="nav-link align-items-center nav-item-custom" href="#" onclick="showSection('analytics')">
-                    <i class="bi bi-clipboard2-data me-2"></i>
-                    <span>Analytics</span>
-                </a>
-            </li>
-        </ul>
-      
-        <ul class="navbar-nav w-100">
-            <li class="nav-item">
-                <a class="nav-link d-flex align-items-center nav-item-custom" href="#" onclick="showSection('settings')">
-                    <i class="bi bi-gear me-2"></i>
-                    <span>Settings</span>
-                </a>
-            </li>
-        </ul>
+
+    <nav class="navbar position-fixed h-100 d-flex flex-column">
+      <div id="particles-js"></div>
+      <div>
+        <img
+          class="logo"
+          src="https://cdn.glitch.global/469b5432-393a-4587-825e-60e83c1d6ea8/logo1?v=1739078620575"
+          alt="Logo"
+        />
+      </div>
+      <ul class="navbar-nav flex-grow-1 w-100">
+        <li class="nav-item">
+          <a
+            class="nav-link align-items-center nav-item-custom active"
+            href="#"
+            onclick="showSection('work_schedule')"
+          >
+            <i class="bi bi-clock-history me-2"></i>
+            <span>Work Schedule</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link align-items-center nav-item-custom"
+            href="#"
+            onclick="showSection('appointments')"
+          >
+            <i class="bi bi-calendar-check me-2"></i>
+            <span>Appointments</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link align-items-center nav-item-custom"
+            href="#"
+            onclick="showSection('patient_history')"
+          >
+            <i class="bi bi-people me-2"></i>
+            <span>Patients History</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link align-items-center nav-item-custom"
+            href="#"
+            onclick="showSection('patient_registration')"
+          >
+            <i class="bi bi-person-add me-2"></i>
+            <span>Register Patient</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link align-items-center nav-item-custom"
+            href="#"
+            onclick="showSection('analytics')"
+          >
+            <i class="bi bi-clipboard2-data me-2"></i>
+            <span>Analytics</span>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav w-100">
+        <li class="nav-item">
+          <a
+            class="nav-link d-flex align-items-center nav-item-custom"
+            href="#"
+            onclick="showSection('settings')"
+          >
+            <i class="bi bi-gear me-2"></i>
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
     </nav>
-  
-  <main>
-    <div id="work_schedule_holder"></div>
-    <div id="appointments_holder"></div>
-    <div id="patient_history_holder"></div>
-    <div id="patient_registration_holder"></div>
-    <div id="analytics_holder"></div>
-    <div id="settings_holder"></div>
-  </main>
-      <!-- Content goes above this -->
-  <script src="scripts/global/particles.js"></script>
-  <script src="scripts/doctors/work_schedules.js"></script>
-  <script src="scripts/doctors/patient_registration.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-</body>
-  
+
+    <main>
+      <div id="work_schedule_holder"></div>
+      <div id="appointments_holder"></div>
+      <div id="patient_history_holder"></div>
+      <div id="patient_registration_holder"></div>
+      <div id="analytics_holder"></div>
+      <div id="settings_holder"></div>
+    </main>
+    <!-- Content goes above this -->
+    <script src="scripts/global/particles.js"></script>
+    <script src="scripts/doctors/work_schedules.js"></script>
+    <script src="scripts/doctors/patient_registration.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  </body>
 </html>

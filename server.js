@@ -223,7 +223,7 @@ app.post('/login', async (req, res) => {
           session_id: method.generateSecurityKey(),
           ip_address: ip,
           target_id: doctor.doctor_id,
-          type: 'Doctor',
+          type: 'doctor',
           device_id: deviceId,
         });
         
@@ -256,7 +256,7 @@ app.post('/login', async (req, res) => {
           session_id: method.generateSecurityKey(),
           ip_address: ip,
           target_id: patient.patient_id,
-          type: 'Patient',
+          type: 'patient',
           device_id: deviceId,
         });
         
