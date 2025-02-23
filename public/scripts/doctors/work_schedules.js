@@ -20,7 +20,6 @@ function fetchSchedules() {
     setTimeout(fetchSchedules, 100);
     return;
   }
-
   if (!window.scheduleFormAttached) {
     window.scheduleFormAttached = true;
 

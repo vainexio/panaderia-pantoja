@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       this.classList.add("active");
     });
   });
-  /* */
   ready = true;
   /* Hide loader */
   setTimeout(() => {
