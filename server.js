@@ -147,6 +147,43 @@ app.get('/currentAccount', async (req, res) => {
     return res.status(404).json({ message: "No login session was found.", redirect: "/" });
   }
 });
+app.post('/getSession', async (req, res) => {
+  try {
+    // Expecting the doctor's id in the request body
+    const { doctorId } = req.body;
+    if (!doctorId) {
+      return res.status(400).json({ error: 'Doctor ID is required' });
+    }
+
+    const sessions = await loginSession.find({ target_id: doctorId });
+
+    const sessionsWithLocation = await Promise.all(
+      sessions.map(async (session) => {
+        try {
+          const ipResponse = await fetch(`http://ip-api.com/json/${session.ip_address}`);
+          const ipData = await ipResponse.json();
+          return {
+            ip_address: session.ip_address,
+            location: `${ipData.city || 'N/A'}, ${ipData.country || 'N/A'}`,
+            device_id: session.device_id,
+          };
+        } catch (err) {
+          console.error(`Error fetching location for IP ${session.ip_address}:`, err);
+          return {
+            ip_address: session.ip_address,
+            location: 'Unknown',
+            device_id: session.device_id,
+          };
+        }
+      })
+    );
+
+    res.json({ loginSessions: sessionsWithLocation });
+  } catch (error) {
+    console.error('Error in /getSession:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 app.get('/doctor-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/doctors.html');
 });
