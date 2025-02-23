@@ -33,3 +33,31 @@ async function removeOtherSessions(accountId, type, callback) {
     console.error("Error removing other sessions:", error);
   }
 }
+
+async function mainSettings() {
+  document.getElementById("settingsForm").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const formData = Object.fromEntries(
+          new FormData(event.target).entries()
+        );
+        const notification = document.getElementById("doc_settings_notif");
+
+        const response = await fetch("/updateAccount", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+
+        setTimeout(function () {
+          if (notification.textContent.length > 0) {
+            notification.textContent = "";
+            notification.className = "";
+          }
+        }, 3000);
+      });
+}
+document.addEventListener("DOMContentLoaded", async function () {
+  waitUntilReady(mainSettings);
+});

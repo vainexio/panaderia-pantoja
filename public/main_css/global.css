@@ -202,7 +202,7 @@ section h1 {
     margin-top: 10px;
 }
 
-.form-group input:disabled {
+.form-group input readonly {
   background-color: transparent;
 }
 /* Action Buttons */

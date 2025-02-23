@@ -6,7 +6,7 @@
       </header>
       <div id="settings_notif" class="notification" role="alert"></div>
 
-      <form class="settings-form">
+      <form id="settingsForm" class="settings-form">
         <div class="form-group">
           <label for="first_name">First Name</label>
           <input type="text" id="doc_settings_first_name" name="first_name" value="" readonly/>
@@ -17,7 +17,7 @@
         </div>
         <div class="form-group">
           <label for="account_type">Account Type</label>
-          <input type="text" id="doc_settings_account_type" name="account_type" value="" disabled/>
+          <input type="text" id="doc_settings_account_type" name="account_type" value="" readonly/>
         </div>
         <div class="form-group">
           <label for="contact_number">Contact Number</label>
@@ -31,7 +31,7 @@
           <label for="password">Change Password</label>
             <input type="password" id="doc_settings_old_password" name="old_password" value="" placeholder="Old Password" />
             <input class="mt-1"  type="password" id="doc_settings_new_password" name="password" value="" placeholder="New Password"/>
-            <input class="mt-1" type="password" id="doc_settings_confirm_password" name="password" value="" placeholder="Confirm Password"/>
+            <input class="mt-1" type="password" id="doc_settings_confirm_password" name="confirm_password" value="" placeholder="Confirm Password"/>
         </div>
         <div class="submit-container">
           <button type="submit" class="action-button">

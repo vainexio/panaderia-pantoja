@@ -283,7 +283,11 @@ app.delete('/removeOtherSessions', async (req, res) => {
     res.status(500).json({ error: 'Failed to add data' });
   }
 });*/
-
+app.post('/updateAccount', async (req, res) => {
+  const body = req.body;
+  let accountHolder = body.account_type == 'doctor' ? doctors : body.account_type == 'patient' ? patients : null
+  if (accountHolder)
+});
 app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
   
