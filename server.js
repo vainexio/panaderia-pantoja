@@ -147,8 +147,17 @@ app.get('/currentAccount', async (req, res) => {
     return res.status(404).json({ message: "No login session was found.", redirect: "/" });
   }
 });
+app.get('/doctor-dashboard', async (req, res) => {
+  res.sendFile(__dirname + '/public/doctors.html');
+});
+app.get('/patient-dashboard', async (req, res) => {
+  res.sendFile(__dirname + '/public/patients.html');
+});
+
+/* Sessions */
 app.post('/getSession', async (req, res) => {
   try {
+    let deviceId = req.cookies.deviceId;
     // Expecting the doctor's id in the request body
     const { doctorId } = req.body;
     if (!doctorId) {
@@ -163,6 +172,8 @@ app.post('/getSession', async (req, res) => {
           const ipResponse = await fetch(`http://ip-api.com/json/${session.ip_address}`);
           const ipData = await ipResponse.json();
           return {
+            currentSession: deviceId == session.device_id,
+            session_id: session.session_id,
             ip_address: session.ip_address,
             location: `${ipData.city || 'N/A'}, ${ipData.country || 'N/A'}`,
             device_id: session.device_id,
@@ -170,6 +181,8 @@ app.post('/getSession', async (req, res) => {
         } catch (err) {
           console.error(`Error fetching location for IP ${session.ip_address}:`, err);
           return {
+            currentSession: deviceId == session.device_id,
+            session_id: session.session_id,
             ip_address: session.ip_address,
             location: 'Unknown',
             device_id: session.device_id,
@@ -184,13 +197,38 @@ app.post('/getSession', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-app.get('/doctor-dashboard', async (req, res) => {
-  res.sendFile(__dirname + '/public/doctors.html');
-});
-app.get('/patient-dashboard', async (req, res) => {
-  res.sendFile(__dirname + '/public/patients.html');
+app.delete('/removeSession', async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+    if (!sessionId) {
+      return res.status(400).json({ error: "sessionId is required" });
+    }
+    const result = await loginSession.deleteOne({ session_id: sessionId });
+    if (result.deletedCount > 0) {
+      return res.json({ message: "Session removed" });
+    } else {
+      return res.status(404).json({ error: "Session not found" });
+    }
+  } catch (error) {
+    console.error("Error in /removeSession:", error);
+    res.status(500).json({ error: "Server error" });
+  }
 });
 
+// Endpoint to remove all sessions for a given doctorId
+app.delete('/removeAllSessions', async (req, res) => {
+  try {
+    const { accountId, type } = req.body;
+    if (!accountId || !type) {
+      return res.status(400).json({ error: "accountId & type is required" });
+    }
+    const result = await loginSession.deleteMany({ target_id: accountId, type });
+    return res.json({ message: `${result.deletedCount} session(s) removed` });
+  } catch (error) {
+    console.error("Error in /removeAllSessions:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
 /*app.get('/addData', async (req, res) => {
   try {
     // Sample data to insert into availableDoctors collection
