@@ -113,6 +113,16 @@ app.get('/currentAccount', async (req, res) => {
   let type = req.query.type;
   if (!type) return res.status(404).json({ message: "Invalid query type", redirect: "/" });
   
+  // Device id
+  let deviceId = req.cookies.deviceId;
+  if (!deviceId) {
+    deviceId = uuidv4();
+    res.cookie('deviceId', deviceId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+  }
+  
   let currentSession = await fetch("https://bulldogs-care-center.glitch.me/session", {
     headers: {
       cookie: req.headers.cookie || ""
@@ -127,7 +137,7 @@ app.get('/currentAccount', async (req, res) => {
     if (!accountHolder) return res.status(404).json({ message: "Invalid account type", redirect: "/" });
     
     let queryField = type + "_id";
-    let account = await accountHolder.findOne({ [queryField]: sessionData.target_id });
+    let account = await accountHolder.findOne({ [queryField]: sessionData.target_id, device_id: deviceId });
     if (account) return res.status(200).json(account);
     
     return res.status(404).json({ message: type+" not found.", redirect: "/" });
@@ -205,7 +215,7 @@ app.post('/login', async (req, res) => {
   }
   let ip = req.ip;
   if (ip.startsWith("::ffff:")) ip = ip.substring(7);
-  const existingSession = await loginSession.findOne({ device_id: deviceId });
+  const existingSession = await loginSession.findOne({ device_id: deviceId, type: userType });
   // Manage login
   if (userType === 'doctor') {
     const doctor = await doctors.findOne({ email });
@@ -232,6 +242,7 @@ app.post('/login', async (req, res) => {
         existingSession.target_id = doctor.doctor_id
         existingSession.ip_address = ip
         existingSession.device_id = deviceId
+        existingSession.type = "doctor"
         existingSession.session_id = method.generateSecurityKey()
         
         await existingSession.save();
@@ -265,6 +276,7 @@ app.post('/login', async (req, res) => {
         existingSession.target_id = patient.patient_id
         existingSession.ip_address = ip
         existingSession.device_id = deviceId
+        existingSession.type = "patient"
         existingSession.session_id = method.generateSecurityKey()
         
         await existingSession.save();
