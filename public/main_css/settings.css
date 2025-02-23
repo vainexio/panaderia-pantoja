@@ -1,11 +1,47 @@
 :root {
-    --white: #FCFCFC;
-    --light-gray: #e9ecef;
-    --blue: #283986;
-    --secondary-blue: #91b2ff;
-    --yellow: #FFD41C;
-    --secondary-yellow: #ffe365;
-    --black: #363636;
+  --white: #fcfcfc;
+  --light-gray: #e9ecef;
+  --blue: #283986;
+  --secondary-blue: #91b2ff;
+  --yellow: #ffd41c;
+  --secondary-yellow: #ffe365;
+  --black: #363636;
 }
-/* Use this pallets */
-/* Css designs goes below this */
+
+.settings {
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+}
+.login-sessions-card {
+  width: 90%;
+  max-width: 1000px;
+    margin: auto;
+}
+.doctor-settings-card {
+    width: 90%;
+    max-width: 1000px;
+    min-height: 100%;
+    margin: auto;
+    border-radius: 16px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+.settings-form .editable-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-form .editable-field input {
+  flex: 1;
+  margin-right: 10px;
+}

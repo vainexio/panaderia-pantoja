@@ -220,20 +220,26 @@ app.delete('/removeSession', async (req, res) => {
 });
 
 // Endpoint to remove all sessions for a given doctorId
-app.delete('/removeAllSessions', async (req, res) => {
+app.delete('/removeOtherSessions', async (req, res) => {
   try {
     let deviceId = req.cookies.deviceId;
     const { accountId, type } = req.body;
     if (!accountId || !type) {
       return res.status(400).json({ error: "accountId & type is required" });
     }
-    const result = await loginSession.deleteMany({ target_id: accountId, type });
+    // Delete sessions where device_id is not equal to the current deviceId.
+    const result = await loginSession.deleteMany({ 
+      target_id: accountId, 
+      type, 
+      device_id: { $ne: deviceId } 
+    });
     return res.json({ message: `${result.deletedCount} session(s) removed` });
   } catch (error) {
-    console.error("Error in /removeAllSessions:", error);
+    console.error("Error in /removeOtherSessions:", error);
     res.status(500).json({ error: "Server error" });
   }
 });
+
 /*app.get('/addData', async (req, res) => {
   try {
     // Sample data to insert into availableDoctors collection

@@ -1,23 +1,20 @@
-async function doctorSettings() {
+async function patientSettings() {
   try {
-    document.getElementById("doc_settings_first_name").value =
-currentDoctor.first_name || "";
-    document.getElementById("doc_settings_last_name").value =
-      currentDoctor.last_name || "";
-    document.getElementById("doc_settings_account_type").value = "Doctor";
-    document.getElementById("doc_settings_contact_number").value =
-      currentDoctor.contact_number || "";
-    document.getElementById("doc_settings_email").value =
-      currentDoctor.email || "";
-    document.getElementById("doc_settings_password").value =
-      currentDoctor.password || "";
+    document.getElementById("patient_settings_first_name").value = currentPatient.first_name;
+    document.getElementById("patient_settings_last_name").value = currentPatient.last_name;
+    document.getElementById("patient_settings_sex").value = currentPatient.sex;
+    document.getElementById("patient_settings_birthdate").value = currentPatient.birthdate;
+    document.getElementById("patient_settings_account_type").value = "Patient";
+    document.getElementById("patient_settings_contact_number").value = currentPatient.contact_number;
+    document.getElementById("patient_settings_email").value = currentPatient.email;
+    document.getElementById("patient_settings_password").value = currentPatient.password;
 
     const sessionResponse = await fetch("/getAllSessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        accountId: currentDoctor.doctor_id,
-        type: "doctor",
+        accountId: currentPatient.patient_id,
+        type: "patient",
       }),
     });
     if (!sessionResponse.ok) {
@@ -72,7 +69,7 @@ currentDoctor.first_name || "";
     document.querySelectorAll(".remove-session-btn").forEach((button) => {
       button.addEventListener("click", async function () {
         const sessionId = this.getAttribute("data-session-id");
-        await removeSession(sessionId,doctorSettings);
+        await removeSession(sessionId,patientSettings);
       });
     });
 
@@ -80,7 +77,7 @@ currentDoctor.first_name || "";
     const removeAllBtn = document.getElementById("remove-other-sessions");
     if (removeAllBtn) {
       removeAllBtn.addEventListener("click", async function () {
-        await removeOtherSessions(currentDoctor.doctor_id, "doctor", doctorSettings)
+        await removeOtherSessions(currentPatient.patient_id, "patient", patientSettings)
       });
     }
   } catch (error) {
@@ -90,5 +87,5 @@ currentDoctor.first_name || "";
 
 
 document.addEventListener("DOMContentLoaded", async function () {
-  waitUntilReady(doctorSettings);
+  waitUntilReady(patientSettings);
 });

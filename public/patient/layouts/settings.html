@@ -1,50 +1,62 @@
-<section id="settings" class="settings section-content"> <!-- Don't change the id and class -->
+<section id="settings" class="settings section-content">
   <div class="container m-auto">
-    <header class="mb-6 text-center"></header>
-      <!-- Content goes below this -->         
+    <div class="patient-settings-card">
+      <header class="form-header">
+        <h1>Account Settings</h1>
+      </header>
+      <div id="settings_notif" class="notification" role="alert"></div>
 
-        <!-- User Info Section -->
-        <div class="info-container">
-            <h2 class="section-title">Patient Information</h2>
-            <div class="profile-section">
-                <img id="profile-pic" src="profile.png" alt="Profile picture" class="profile-img-large">
-                <div class="profile-upload">
-                    <p>Profile photo upload</p>
-                    <div class="profile-actions">
-                        <label for="file-upload" class="upload-label">
-                            <i class="fas fa-edit icon"></i>
-                        </label>
-                        <input id="file-upload" type="file" class="hidden" accept="image/*" onchange="previewImage(event)">
-                        <i class="fas fa-times icon delete-icon" onclick="resetImage()"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- User Details Form -->
-            <div class="form-container">
-                <div class="settongs-form-group">
-                    <label for="nameInput">Name:</label>
-                    <input id="nameInput" type="text" oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '')" />
-                </div>
-                
-                <div class="settongs-form-group">
-                    <label for="addressInput">Address:</label>
-                    <input id="addressInput" type="text" />
-                </div>
-
-                <div class="settongs-form-group">
-                    <label for="emailInput">Email:</label>
-                    <input id="emailInput" type="email" />
-                </div>
-
-                <div class="settongs-form-group">
-                    <label for="phoneInput">Phone:</label>
-                    <input id="phoneInput" type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-                </div>
+      <form class="settings-form">
+        <div class="form-group">
+          <label for="first_name">First Name</label>
+          <input type="text" id="doc_settings_first_name" name="first_name" value="" readonly/>
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name</label>
+          <input type="text" id="doc_settings_last_name" name="last_name" value="" readonly/>
+        </div>
+        <div class="form-group">
+          <label for="account_type">Account Type</label>
+          <input type="text" id="doc_settings_account_type" name="account_type" value="" readonly/>
+        </div>
+        <div class="form-group">
+          <label for="contact_number">Contact Number</label>
+          <div class="editable-field">
+          <input type="text" id="doc_settings_contact_number" name="contact_number" value="" readonly/>
+            <button type="button" class="action-button">Edit</button>
             </div>
         </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="editable-field">
+            <input type="email" id="doc_settings_email" name="email" value="" readonly />
+            <button type="button" class="action-button">Edit</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="editable-field">
+            <input
+              type="password"
+              id="doc_settings_password"
+              name="password"
+              value=""
+              readonly
+            />
+            <button type="button" class="action-button">Edit</button>
+          </div>
+        </div>
+        <div class="submit-container">
+          <button type="submit" class="action-button">
+            Save Changes
+          </button>
+        </div>
+      </form>
     </div>
-
-      <!-- Content goes above this -->
-    
+    <header class="form-header">
+      <h1>Where You're Logged In</h1>
+      <p>These are all the places you're currently logged into your account.</p>
+    </header>
+    <div class="login-sessions-card"></div>
+  </div>
 </section>
