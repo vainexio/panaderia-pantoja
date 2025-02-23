@@ -1,4 +1,3 @@
-// app.js
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -15,7 +14,14 @@ app.use(cors())
 
 //
 let currentPatient = null
-let currentDoctor = { doctor_id: 1 };
+let currentDoctor = {
+  doctor_id: 1,
+  first_name: "Juan",
+  last_name: "Cruz",
+  contact_number: "123-456-7890",
+  email: "juancruz@gmail.com",
+  password: "password1",
+};
 
 // Connect to MongoDB
 if (process.env.MONGOOSE) {
