@@ -139,7 +139,6 @@ app.get('/currentAccount', async (req, res) => {
     let queryField = type + "_id";
     console.log("Searching: ",queryField,sessionData.target_id,deviceId)
     let account = await accountHolder.findOne({ [queryField]: Number(sessionData.target_id) });
-    account.unhashedPassword = /* Use bcrypt to decrypt */
     if (account) return res.status(200).json(account);
     
     return res.status(404).json({ message: type+" not found.", redirect: "/" });
