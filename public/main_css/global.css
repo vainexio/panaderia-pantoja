@@ -201,6 +201,10 @@ section h1 {
 .nav-item-custom:first-child {
     margin-top: 10px;
 }
+
+.form-group input:disabled {
+  background-color: transparent;
+}
 /* Action Buttons */
 .action-button {
     display: inline-block;

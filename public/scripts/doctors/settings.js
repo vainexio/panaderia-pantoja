@@ -1,16 +1,10 @@
 async function doctorSettings() {
   try {
-    document.getElementById("doc_settings_first_name").value =
-currentDoctor.first_name || "";
-    document.getElementById("doc_settings_last_name").value =
-      currentDoctor.last_name || "";
+    document.getElementById("doc_settings_first_name").value = currentDoctor.first_name;
+    document.getElementById("doc_settings_last_name").value = currentDoctor.last_name;
     document.getElementById("doc_settings_account_type").value = "Doctor";
-    document.getElementById("doc_settings_contact_number").value =
-      currentDoctor.contact_number || "";
-    document.getElementById("doc_settings_email").value =
-      currentDoctor.email || "";
-    document.getElementById("doc_settings_password").value =
-      currentDoctor.password || "";
+    document.getElementById("doc_settings_contact_number").value = currentDoctor.contact_number;
+    document.getElementById("doc_settings_email").value = currentDoctor.email;
 
     const sessionResponse = await fetch("/getAllSessions", {
       method: "POST",
@@ -65,10 +59,8 @@ currentDoctor.first_name || "";
         </table>
       </div>
     `;
-    // Update the login sessions container.
     document.querySelector(".login-sessions-card").innerHTML = tableHTML;
 
-    // Attach event listeners for each remove button.
     document.querySelectorAll(".remove-session-btn").forEach((button) => {
       button.addEventListener("click", async function () {
         const sessionId = this.getAttribute("data-session-id");
@@ -76,7 +68,6 @@ currentDoctor.first_name || "";
       });
     });
 
-    // Attach event listener for the "Remove All Sessions" button.
     const removeAllBtn = document.getElementById("remove-other-sessions");
     if (removeAllBtn) {
       removeAllBtn.addEventListener("click", async function () {
