@@ -23,6 +23,16 @@ function showSection(sectionId) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+  // Get current doctor
+  currentDoctor = await fetch("/currentDoctor")
+  if (currentDoctor.ok) currentDoctor = await currentDoctor.json()
+  else {
+    let error = await currentDoctor.json()
+    alert("No login session was found. Please login!");
+    window.location.href = error.redirect;
+    return;
+  }
+  
   let layouts = [
     "work_schedule",
     "appointments",
@@ -52,14 +62,4 @@ document.addEventListener("DOMContentLoaded", async function () {
   setTimeout(() => {
     document.getElementById("preloader").classList.add("fade-out");
   }, 500);
-  
-  // Get current doctor
-  currentDoctor = await fetch("/currentDoctor")
-  if (currentDoctor.ok) currentDoctor = await currentDoctor.json()
-  else {
-    let error = await currentDoctor.json()
-    alert("No login session was found. Please login!");
-    window.location.href = error.redirect;
-    return;
-  }
 });

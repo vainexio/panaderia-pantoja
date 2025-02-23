@@ -114,16 +114,23 @@ app.get('/doctor-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/doctors.html');
 });
 app.get('/currentDoctor', async (req, res) => {
-  let currentSession = await fetch("https://bulldogs-care-center.glitch.me/session")
+  let currentSession = await fetch("https://bulldogs-care-center.glitch.me/session", {
+    headers: {
+      cookie: req.headers.cookie || ""
+    }
+  });
+  
   if (currentSession.ok) {
     currentSession = await currentSession.json();
     let sessionData = currentSession.session;
     
-    let doctor = await doctors.findOne({doctor_id: sessionData.target_id})
-    if (doctor) res.status(200).json(doctor);
+    let doctor = await doctors.findOne({ doctor_id: sessionData.target_id });
+    if (doctor) return res.status(200).json(doctor);
     
+    return res.status(404).json({ message: "Doctor not found." });
   } else {
-    res.status(404).json({ message: "No login session was found.", redirect: "/"});
+    console.log(currentSession);
+    return res.status(404).json({ message: "No login session was found.", redirect: "/" });
   }
 });
 app.get('/patient-dashboard', async (req, res) => {
@@ -198,7 +205,6 @@ app.post('/login', async (req, res) => {
       settings.allowedKeys.push(key)
       currentDoctor = doctor
       
-      // Check for the deviceId cookie
       let deviceId = req.cookies.deviceId;
       if (!deviceId) {
         deviceId = uuidv4();
@@ -210,16 +216,26 @@ app.post('/login', async (req, res) => {
   
       let ip = req.ip;
       if (ip.startsWith("::ffff:")) ip = ip.substring(7);
-
-      const session = new loginSession({
-        session_id: method.generateSecurityKey(),
-        ip_address: ip,
-        target_id: doctor.doctor_id,
-        type: 'Doctor',
-        device_id: deviceId,
-      });
-
-      await session.save();
+      const existingSession = await loginSession.findOne({ device_id: deviceId });
+      
+      if (!existingSession) {
+        const session = new loginSession({
+          session_id: method.generateSecurityKey(),
+          ip_address: ip,
+          target_id: doctor.doctor_id,
+          type: 'Doctor',
+          device_id: deviceId,
+        });
+        
+        await session.save();
+      } else if (existingSession) {
+        existingSession.target_id = doctor.doctor_id
+        existingSession.ip_address = ip
+        existingSession.device_id = deviceId
+        existingSession.session_id = method.generateSecurityKey()
+        
+        await existingSession.save();
+      }
       return res.json({ redirect: '/doctor-dashboard', message: 'Login successful as Doctor', key });
     }
   }

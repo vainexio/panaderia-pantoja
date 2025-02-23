@@ -1,4 +1,6 @@
 let ready = false;
+let currentPatient;
+
 function waitUntilReady(callback) {
   if (ready === true) {
     callback();
@@ -17,6 +19,15 @@ function showSection(sectionId) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+  // Get current doctor
+  currentPatient = await fetch("/currentAccount")
+  if (currentPatient.ok) currentPatient = await currentPatient.json()
+  else {
+    let error = await currentPatient.json()
+    alert("No login session was found. Please login!");
+    window.location.href = error.redirect;
+    return;
+  }
   let layouts = [
     "clinic_hours",
     "my_appointments",
