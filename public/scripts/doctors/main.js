@@ -1,4 +1,6 @@
 let ready = false;
+let currentDoctor;
+
 function waitUntilReady(callback) {
   if (ready === true) {
     callback();
@@ -44,7 +46,14 @@ document.addEventListener("DOMContentLoaded", async function () {
       this.classList.add("active");
     });
   });
-
+  
+  // Get current doctor
+  currentDoctor = await fetch("/currentDoctor")
+  if (currentDoctor.ok) currentDoctor = await currentDoctor.json()
+  else {
+    console.log('Current doctor was not found!')
+  }
+  
   ready = true;
   /* Hide loader */
   setTimeout(() => {

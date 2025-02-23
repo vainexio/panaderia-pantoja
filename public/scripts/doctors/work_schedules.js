@@ -20,6 +20,9 @@ function fetchSchedules() {
     setTimeout(fetchSchedules, 100);
     return;
   }
+  
+  let docName = document.getElementById("docName")
+  docName.innerText = "Doctor "+currentDoctor.first_name+" "+currentDoctor.last_name
   if (!window.scheduleFormAttached) {
     window.scheduleFormAttached = true;
 

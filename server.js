@@ -74,6 +74,14 @@ let appointmentsSchema = new mongoose.Schema({
   reason: String,
   status: String,
 })
+let appointmentsSchema = new mongoose.Schema({
+  appointment_id: Number,
+  patient_id: Number,
+  doctor_id: Number,
+  appointment_date: String,
+  reason: String,
+  status: String,
+})
 
 let doctors = mongoose.model('Doctors', doctorSchema);
 let patients = mongoose.model('Patients', patientsSchema);
@@ -94,8 +102,16 @@ app.use(express.static('public', {
 app.get('/doctor-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/doctors.html');
 });
+app.get('/currentDoctor', async (req, res) => {
+  if (currentDoctor) res.status(200).json(currentDoctor);
+  else res.status(404).json({ message: "No logged in doctor was found."});
+});
 app.get('/patient-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/patients.html');
+});
+app.get('/currentPatient', async (req, res) => {
+  if (currentPatient) res.status(200).json(currentPatient);
+  else res.status(404).json({ message: "No logged in patient was found."});
 });
 
 /*app.get('/addData', async (req, res) => {
