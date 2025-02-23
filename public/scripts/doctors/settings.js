@@ -9,10 +9,10 @@ async function doctorSettings() {
     document.getElementById('doc_settings_password').value = currentDoctor.password || '';
 
     // Fetch login sessions for the current doctor.
-    const sessionResponse = await fetch('/getSession', {
+    const sessionResponse = await fetch('/getAllSessions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ doctorId: currentDoctor.doctor_id })
+      body: JSON.stringify({ accountId: currentDoctor.doctor_id, type: "doctor" })
     });
     if (!sessionResponse.ok) {
       console.error("Failed to fetch login sessions");
@@ -36,17 +36,19 @@ async function doctorSettings() {
           </thead>
           <tbody>
     `;
-    // Note: Although we don't display session_id, we include it as a data attribute for deletion.
+    // Iterate through each session and highlight the current session if applicable.
     loginSessions.forEach(session => {
+      // If session.currentSession is true, add a Bootstrap class to highlight the row.
+      const rowClass = session.currentSession ? 'table-primary' : '';
+      const button = !session.currentSession ? `<button class="btn btn-sm btn-danger remove-session-btn" data-session-id="${session.session_id}">Remove</button>`
+      : `<p>Current Session</p>`
       tableHTML += `
-            <tr data-session-id="${session.session_id}">
+            <tr data-session-id="${session.session_id}" class="${rowClass}">
               <td>${session.ip_address}</td>
               <td>${session.location}</td>
               <td>${session.device_id}</td>
               <td>
-                <button class="btn btn-sm btn-danger remove-session-btn" data-session-id="${session.session_id}">
-                  Remove
-                </button>
+                ${button}
               </td>
             </tr>
       `;
@@ -71,7 +73,7 @@ async function doctorSettings() {
     const removeAllBtn = document.getElementById('remove-all-sessions');
     if (removeAllBtn) {
       removeAllBtn.addEventListener('click', async function () {
-        await removeAllSessions(currentDoctor.doctor_id,'doctor');
+        await removeAllSessions(currentDoctor.doctor_id, 'doctor');
       });
     }
   } catch (error) {

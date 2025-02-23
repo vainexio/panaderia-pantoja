@@ -155,16 +155,16 @@ app.get('/patient-dashboard', async (req, res) => {
 });
 
 /* Sessions */
-app.post('/getSession', async (req, res) => {
+app.post('/getAllSessions', async (req, res) => {
   try {
     let deviceId = req.cookies.deviceId;
     // Expecting the doctor's id in the request body
-    const { doctorId } = req.body;
-    if (!doctorId) {
-      return res.status(400).json({ error: 'Doctor ID is required' });
+    const { accountId, type } = req.body;
+    if (!accountId || !type) {
+      return res.status(400).json({ error: 'Account ID & type is required' });
     }
 
-    const sessions = await loginSession.find({ target_id: doctorId });
+    const sessions = await loginSession.find({ target_id: accountId, type: type });
 
     const sessionsWithLocation = await Promise.all(
       sessions.map(async (session) => {
@@ -191,12 +191,16 @@ app.post('/getSession', async (req, res) => {
       })
     );
 
+    // Sort sessions so that the current session appears first
+    sessionsWithLocation.sort((a, b) => b.currentSession - a.currentSession);
+
     res.json({ loginSessions: sessionsWithLocation });
   } catch (error) {
-    console.error('Error in /getSession:', error);
+    console.error('Error in /getAllSessions:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 app.delete('/removeSession', async (req, res) => {
   try {
     const { sessionId } = req.body;
@@ -218,6 +222,7 @@ app.delete('/removeSession', async (req, res) => {
 // Endpoint to remove all sessions for a given doctorId
 app.delete('/removeAllSessions', async (req, res) => {
   try {
+    let deviceId = req.cookies.deviceId;
     const { accountId, type } = req.body;
     if (!accountId || !type) {
       return res.status(400).json({ error: "accountId & type is required" });
