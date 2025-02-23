@@ -6,6 +6,9 @@ const XLSX = require('xlsx');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const cors = require('cors');
+
+const cookieParser = require('cookie-parser');
+const { v4: uuidv4 } = require('uuid');
 //
 const method = require('./data/functions.js')
 const settings = require('./data/settings.js')
@@ -74,18 +77,19 @@ let appointmentsSchema = new mongoose.Schema({
   reason: String,
   status: String,
 })
-let loginSessionSchema = new mongoose.Schema({
+const loginSessionSchema = new mongoose.Schema({
   session_id: Number,
   ip_address: String,
   target_id: String,
   type: String,
-})
-
-let doctors = mongoose.model('Doctors', doctorSchema);
-let patients = mongoose.model('Patients', patientsSchema);
-let medicalRecords = mongoose.model('Medical Records', medicalRecordsSchema);
-let appointments = mongoose.model('Appointments', appointmentsSchema);
-let availableDoctors = mongoose.model('Doctor Availability', doctorAvailabilitySchema);
+  device_id: String, // Unique device identifier
+});
+const loginSession = mongoose.model('LoginSession', loginSessionSchema);
+const doctors = mongoose.model('Doctors', doctorSchema);
+const patients = mongoose.model('Patients', patientsSchema);
+const medicalRecords = mongoose.model('Medical Records', medicalRecordsSchema);
+const appointments = mongoose.model('Appointments', appointmentsSchema);
+const availableDoctors = mongoose.model('Doctor Availability', doctorAvailabilitySchema);
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -101,6 +105,9 @@ app.use((req, res, next) => {
   next();
 });
 app.set('trust proxy', true);
+app.use(cookieParser());
+//
+
 
 app.get('/doctor-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/doctors.html');
@@ -166,12 +173,6 @@ app.get('/currentPatient', async (req, res) => {
 });*/
 
 app.post('/login', async (req, res) => {
-  const ip = req.ip
-  // Optionally normalize IPv6-mapped IPv4 addresses
-  if (ip.startsWith("::ffff:")) {
-    ip = ip.substring(7);
-  }
-  console.log(ip,'for login')
   const { email, password, userType } = req.body;
   
   // Manage login
@@ -186,6 +187,29 @@ app.post('/login', async (req, res) => {
       let key = method.generateSecurityKey()
       settings.allowedKeys.push(key)
       currentDoctor = doctor
+      
+      // Check for the deviceId cookie
+      let deviceId = req.cookies.deviceId;
+      if (!deviceId) {
+        deviceId = uuidv4();
+        res.cookie('deviceId', deviceId, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+        });
+      }
+  
+      let ip = req.ip;
+      if (ip.startsWith("::ffff:")) ip = ip.substring(7);
+
+      const loginSession = new loginSession({
+        session_id: method.generateSecurityKey(),
+        ip_address: ip,
+        target_id: doctor.doctor_id,
+        type: 'Doctor',
+        device_id: deviceId,
+      });
+
+      loginSession.save().then(() => res.send('Logged in')).catch(err => res.status(500).send(err));
       return res.json({ redirect: '/doctor-dashboard', message: 'Login successful as Doctor', key });
     }
   }
@@ -206,7 +230,25 @@ app.post('/login', async (req, res) => {
   
   return res.status(401).json({ message: 'Invalid email or password' });
 });
-
+app.get('/session', async (req, res) => {
+  let deviceId = req.cookies.deviceId;
+  if (!deviceId) {
+    return res.status(401).json({ error: 'No device identifier found. Please log in.' });
+  }
+  
+  try {
+    // Look for a valid login session matching the stored deviceId
+    const session = await loginSession.findOne({ device_id: deviceId,});
+    
+    if (!session) {
+      return res.status(401).json({ error: 'Session not found. Please log in again.' });
+    }
+    
+    res.json({ message: 'Session valid', session });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 const generatePatientId = async () => {
   let patientId;
   let isUnique = false;
