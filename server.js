@@ -74,13 +74,11 @@ let appointmentsSchema = new mongoose.Schema({
   reason: String,
   status: String,
 })
-let appointmentsSchema = new mongoose.Schema({
-  appointment_id: Number,
-  patient_id: Number,
-  doctor_id: Number,
-  appointment_date: String,
-  reason: String,
-  status: String,
+let loginSessionSchema = new mongoose.Schema({
+  session_id: Number,
+  ip_address: String,
+  target_id: String,
+  type: String,
 })
 
 let doctors = mongoose.model('Doctors', doctorSchema);
@@ -98,6 +96,11 @@ app.use(express.static('public', {
     }
   }
 }));
+app.use((req, res, next) => {
+  req.clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  next();
+});
+app.set('trust proxy', true);
 
 app.get('/doctor-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/doctors.html');
@@ -163,6 +166,12 @@ app.get('/currentPatient', async (req, res) => {
 });*/
 
 app.post('/login', async (req, res) => {
+  const ip = req.ip
+  // Optionally normalize IPv6-mapped IPv4 addresses
+  if (ip.startsWith("::ffff:")) {
+    ip = ip.substring(7);
+  }
+  console.log(ip,'for login')
   const { email, password, userType } = req.body;
   
   // Manage login
@@ -267,6 +276,12 @@ app.post('/registerPatient', async (req, res) => {
 });
 
 app.get('/api/clinic-schedule', async (req, res) => {
+  const ip = req.ip
+  // Optionally normalize IPv6-mapped IPv4 addresses
+  if (ip.startsWith("::ffff:")) {
+    ip = ip.substring(7);
+  }
+  console.log(ip,'for csched')
   try {
     const now = new Date();
     const currentMonth = now.toLocaleString('default', { month: 'long' });
@@ -355,9 +370,14 @@ app.post('/schedule', async (req, res) => {
 });
 
 
-
 // GET route to fetch all schedules for the current doctor
 app.get('/schedules', async (req, res) => {
+  const ip = req.ip
+  // Optionally normalize IPv6-mapped IPv4 addresses
+  if (ip.startsWith("::ffff:")) {
+    ip = ip.substring(7);
+  }
+  console.log(ip,'for sched')
   try {
     let schedules = await availableDoctors.find({ doctor_id: currentDoctor.doctor_id });
     const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
