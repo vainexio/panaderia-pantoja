@@ -26,45 +26,33 @@ function fetchSchedules() {
 
     document
       .getElementById("scheduleForm")
-      .addEventListener("submit", function (e) {
+      .addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const day_of_week = document.getElementById("day_of_week").value;
         const start_time = document.getElementById("start_time").value;
         const end_time = document.getElementById("end_time").value;
-
-        fetch("/schedule", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ day_of_week, start_time, end_time }),
-        })
-          .then(async (response) => {
-            const notification = document.getElementById("notification");
-            // Hide the notification initially
-            notification.classList.add("d-none");
-
-            if (response.ok) {
-              notification.textContent = "Work schedule created!";
-              notification.className = "alert alert-success mt-3 rounded-3";
-              notification.classList.remove("d-none");
-              fetchSchedules(); // Refresh the schedule table
-              document.getElementById("scheduleForm").reset();
-            } else {
-              const error = await response.json();
-              notification.textContent =
-                error.message || "Failed to create work schedule.";
-              notification.className = "alert alert-danger mt-3 rounded-3";
-              notification.classList.remove("d-none");
-            }
-          })
-          .catch((err) => {
-            const notification = document.getElementById("notification");
-            notification.textContent =
-              "Error creating schedule: " + err.message;
-            notification.className = "alert alert-danger mt-3 rounded-3";
-            notification.classList.remove("d-none");
-            console.error("Error creating schedule:", err);
-          });
+      const notification = document.getElementById("notification");
+      
+        let response = await fetch("/schedule", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ day_of_week, start_time, end_time }) })
+        if (response.ok) {
+          response = await response.json();
+          notification.textContent = "Work schedule created!";
+          notification.className = "alert alert-success mt-3 rounded-3";
+          fetchSchedules(); // Refresh the schedule table
+          document.getElementById("scheduleForm").reset();
+        } else {
+          response = await response.json();
+          notification.textContent = response.message || "Failed to create work schedule.";
+          notification.className = "alert alert-danger mt-3 rounded-3";
+        }
+      
+      setTimeout(function() {
+        if (notification.textContent.length > 0) {
+          notification.textContent = ""
+          notification.className = ""
+        }
+      }, 3000)
       });
 
     document
