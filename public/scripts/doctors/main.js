@@ -51,7 +51,8 @@ document.addEventListener("DOMContentLoaded", async function () {
   currentDoctor = await fetch("/currentDoctor")
   if (currentDoctor.ok) currentDoctor = await currentDoctor.json()
   else {
-    console.log('Current doctor was not found!')
+    window.location.href = "/"
+    alert("No login session was found. Please login!")
   }
   
   ready = true;

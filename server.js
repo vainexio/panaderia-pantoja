@@ -78,7 +78,7 @@ let appointmentsSchema = new mongoose.Schema({
   status: String,
 })
 const loginSessionSchema = new mongoose.Schema({
-  session_id: Number,
+  session_id: String,
   ip_address: String,
   target_id: String,
   type: String,
@@ -113,8 +113,17 @@ app.get('/doctor-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/doctors.html');
 });
 app.get('/currentDoctor', async (req, res) => {
-  if (currentDoctor) res.status(200).json(currentDoctor);
-  else res.status(404).json({ message: "No logged in doctor was found."});
+  let currentSession = await fetch("/session")
+  if (currentSession.ok) {
+    currentSession = await currentSession.json();
+    let sessionData = currentSession.session;
+    
+    let doctor = await doctors.findOne({doctor_id: sessionData.target_id})
+    if (doctor) res.status(200).json(doctor);
+    
+  } else {
+    res.status(404).json({ message: "No login session was found."});
+  }
 });
 app.get('/patient-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/patients.html');
@@ -201,7 +210,7 @@ app.post('/login', async (req, res) => {
       let ip = req.ip;
       if (ip.startsWith("::ffff:")) ip = ip.substring(7);
 
-      const loginSession = new loginSession({
+      const session = new loginSession({
         session_id: method.generateSecurityKey(),
         ip_address: ip,
         target_id: doctor.doctor_id,
@@ -209,7 +218,7 @@ app.post('/login', async (req, res) => {
         device_id: deviceId,
       });
 
-      loginSession.save().then(() => res.send('Logged in')).catch(err => res.status(500).send(err));
+      await session.save();
       return res.json({ redirect: '/doctor-dashboard', message: 'Login successful as Doctor', key });
     }
   }
@@ -233,20 +242,16 @@ app.post('/login', async (req, res) => {
 app.get('/session', async (req, res) => {
   let deviceId = req.cookies.deviceId;
   if (!deviceId) {
-    return res.status(401).json({ error: 'No device identifier found. Please log in.' });
+    return res.status(401).json({ message: 'No device identifier found. Please log in.' });
   }
   
   try {
-    // Look for a valid login session matching the stored deviceId
-    const session = await loginSession.findOne({ device_id: deviceId,});
-    
-    if (!session) {
-      return res.status(401).json({ error: 'Session not found. Please log in again.' });
-    }
+    const session = await loginSession.findOne({ device_id: deviceId });
+    if (!session) return res.status(401).json({ message: 'Session not found. Please log in again.' });
     
     res.json({ message: 'Session valid', session });
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 const generatePatientId = async () => {
