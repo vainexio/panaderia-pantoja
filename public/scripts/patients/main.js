@@ -20,7 +20,7 @@ function showSection(sectionId) {
 
 document.addEventListener("DOMContentLoaded", async function () {
   // Get current doctor
-  currentPatient = await fetch("/currentAccount")
+  currentPatient = await fetch("/currentAccount?type=patient")
   if (currentPatient.ok) currentPatient = await currentPatient.json()
   else {
     let error = await currentPatient.json()

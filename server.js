@@ -109,11 +109,10 @@ app.set('trust proxy', true);
 app.use(cookieParser());
 //
 
-
-app.get('/doctor-dashboard', async (req, res) => {
-  res.sendFile(__dirname + '/public/doctors.html');
-});
-app.get('/currentDoctor', async (req, res) => {
+app.get('/currentAccount', async (req, res) => {
+  let type = req.query.type;
+  if (!type) return res.status(404).json({ message: "Invalid query type", redirect: "/" });
+  
   let currentSession = await fetch("https://bulldogs-care-center.glitch.me/session", {
     headers: {
       cookie: req.headers.cookie || ""
@@ -124,21 +123,24 @@ app.get('/currentDoctor', async (req, res) => {
     currentSession = await currentSession.json();
     let sessionData = currentSession.session;
     
-    let doctor = await doctors.findOne({ doctor_id: sessionData.target_id });
-    if (doctor) return res.status(200).json(doctor);
+    let accountHolder = type == "doctor" ? doctors : type == "patient" ? patients : null
+    if (!accountHolder) return res.status(404).json({ message: "Invalid account type", redirect: "/" });
     
-    return res.status(404).json({ message: "Doctor not found." });
+    let queryField = type + "_id";
+    let account = await accountHolder.findOne({ [queryField]: sessionData.target_id });
+    if (account) return res.status(200).json(account);
+    
+    return res.status(404).json({ message: type+" not found.", redirect: "/" });
   } else {
     console.log(currentSession);
     return res.status(404).json({ message: "No login session was found.", redirect: "/" });
   }
 });
+app.get('/doctor-dashboard', async (req, res) => {
+  res.sendFile(__dirname + '/public/doctors.html');
+});
 app.get('/patient-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/patients.html');
-});
-app.get('/currentPatient', async (req, res) => {
-  if (currentPatient) res.status(200).json(currentPatient);
-  else res.status(404).json({ message: "No logged in patient was found."});
 });
 
 /*app.get('/addData', async (req, res) => {
@@ -192,6 +194,18 @@ app.get('/currentPatient', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { email, password, userType } = req.body;
   
+  // Device id
+  let deviceId = req.cookies.deviceId;
+  if (!deviceId) {
+    deviceId = uuidv4();
+    res.cookie('deviceId', deviceId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+  }
+  let ip = req.ip;
+  if (ip.startsWith("::ffff:")) ip = ip.substring(7);
+  const existingSession = await loginSession.findOne({ device_id: deviceId });
   // Manage login
   if (userType === 'doctor') {
     const doctor = await doctors.findOne({ email });
@@ -203,20 +217,6 @@ app.post('/login', async (req, res) => {
       
       let key = method.generateSecurityKey()
       settings.allowedKeys.push(key)
-      currentDoctor = doctor
-      
-      let deviceId = req.cookies.deviceId;
-      if (!deviceId) {
-        deviceId = uuidv4();
-        res.cookie('deviceId', deviceId, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-        });
-      }
-  
-      let ip = req.ip;
-      if (ip.startsWith("::ffff:")) ip = ip.substring(7);
-      const existingSession = await loginSession.findOne({ device_id: deviceId });
       
       if (!existingSession) {
         const session = new loginSession({
@@ -247,9 +247,29 @@ app.post('/login', async (req, res) => {
       if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
+      
       let key = method.generateSecurityKey()
       settings.allowedKeys.push(key)
-      currentPatient = patient
+      
+       if (!existingSession) {
+        const session = new loginSession({
+          session_id: method.generateSecurityKey(),
+          ip_address: ip,
+          target_id: patient.patient_id,
+          type: 'Patient',
+          device_id: deviceId,
+        });
+        
+        await session.save();
+      } else if (existingSession) {
+        existingSession.target_id = patient.patient_id
+        existingSession.ip_address = ip
+        existingSession.device_id = deviceId
+        existingSession.session_id = method.generateSecurityKey()
+        
+        await existingSession.save();
+      }
+      
       return res.json({ redirect: '/patient-dashboard', message: 'Login successful as Patient', key });
     }
   }
