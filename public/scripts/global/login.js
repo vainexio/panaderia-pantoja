@@ -44,16 +44,6 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 
         if (response.ok) {
            window.location.href = data.redirect
-            /*const redirectResponse = await fetch(data.redirect, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ securityKey: data.key }),
-            });
-
-            const htmlContent = await redirectResponse.text();
-            document.open();
-            document.write(htmlContent);
-            document.close();*/
         } else {
             errorMessageElement.textContent = data.error || "Invalid credentials.";
             errorMessageElement.style.display = "block";

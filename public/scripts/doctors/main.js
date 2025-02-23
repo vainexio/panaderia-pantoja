@@ -2,7 +2,7 @@ let ready = false;
 let currentDoctor;
 
 function waitUntilReady(callback) {
-  if (ready === true) {
+  if (ready === true && currentDoctor) {
     callback();
   } else {
     setTimeout(() => waitUntilReady(callback), 100);
@@ -47,17 +47,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
   });
   
-  // Get current doctor
-  currentDoctor = await fetch("/currentDoctor")
-  if (currentDoctor.ok) currentDoctor = await currentDoctor.json()
-  else {
-    window.location.href = "/"
-    alert("No login session was found. Please login!")
-  }
-  
   ready = true;
   /* Hide loader */
   setTimeout(() => {
     document.getElementById("preloader").classList.add("fade-out");
   }, 500);
+  
+  // Get current doctor
+  currentDoctor = await fetch("/currentDoctor")
+  if (currentDoctor.ok) currentDoctor = await currentDoctor.json()
+  else {
+    let error = await currentDoctor.json()
+    alert("No login session was found. Please login!");
+    window.location.href = error.redirect;
+    return;
+  }
 });

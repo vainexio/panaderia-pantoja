@@ -6,6 +6,7 @@ const XLSX = require('xlsx');
 const bcrypt = require('bcrypt');
 const fs = require('fs');
 const cors = require('cors');
+const fetch = require('node-fetch');
 
 const cookieParser = require('cookie-parser');
 const { v4: uuidv4 } = require('uuid');
@@ -113,7 +114,7 @@ app.get('/doctor-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/doctors.html');
 });
 app.get('/currentDoctor', async (req, res) => {
-  let currentSession = await fetch("/session")
+  let currentSession = await fetch("https://bulldogs-care-center.glitch.me/session")
   if (currentSession.ok) {
     currentSession = await currentSession.json();
     let sessionData = currentSession.session;
@@ -122,7 +123,7 @@ app.get('/currentDoctor', async (req, res) => {
     if (doctor) res.status(200).json(doctor);
     
   } else {
-    res.status(404).json({ message: "No login session was found."});
+    res.status(404).json({ message: "No login session was found.", redirect: "/"});
   }
 });
 app.get('/patient-dashboard', async (req, res) => {
