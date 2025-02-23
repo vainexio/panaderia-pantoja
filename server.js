@@ -294,10 +294,17 @@ app.post('/updateAccount', async (req, res) => {
   const isMatch = await bcrypt.compare(account.password, formData.old_password);
   if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
   
-  if (formData.password !== formData.confirm_password) res.status(401).json({ message: 'New password conirmation did not match.' });
-  const hashedPassword = await bcrypt.hash(formData.password, 10);
   account.email = formData.email
   account.contact_number = formData.contact_number
+  
+  if (formData.password.length == 0) {
+    await account.save()
+    return res.status(200).json({ message: 'Account updated successfully' });
+  }
+  
+  if (formData.password !== formData.confirm_password) res.status(401).json({ message: 'New password conirmation did not match.' });
+  
+  const hashedPassword = await bcrypt.hash(formData.password, 10);
   account.password = hashedPassword
   await account.save()
   
