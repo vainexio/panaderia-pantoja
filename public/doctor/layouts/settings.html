@@ -1,102 +1,41 @@
 <section id="settings" class="settings section-content"> <!-- Don't change the id and class -->
   <div class="container m-auto">
-    <header class="mb-6 text-center"></header>
-      <!-- Content goes below this -->
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="header">
-            <div class="header-icons">
-                <i class="fas fa-search icon"></i>
-                <i class="fas fa-bell icon"></i>
-                
-                <!-- Profile Section with Dropdown -->
-                <div class="dropdown">
-                    <button id="dropdownButton" class="profile-button">
-                        <img src="profile.png" alt="Profile picture" class="profile-img-small">
-                    </button>
-                    <div id="profileDropdownMenu" class="dropdown-menu">
-                        <a href="bulldogmainmenu.html" class="dropdown-link">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- User Info Section -->
-        <div class="info-container">
-            <!-- Title and Save Button Row -->
-            <div class="header-row">
-                <h2 class="section-title">Basic Info</h2>
-                <button onclick="saveData()" class="save-button">
-                    <i class="fas fa-save"></i> Save
-                </button>
-            </div>
-
-            <!-- Profile Picture Section -->
-            <div class="profile-section">
-                <img id="profile-pic" src="profile.png" alt="Profile picture" class="profile-img-large">
-                <div class="profile-upload">
-                    <p>Profile photo upload</p>
-                    <div class="profile-actions">
-                        <label for="file-upload" class="upload-label">
-                            <i class="fas fa-edit icon"></i>
-                        </label>
-                        <input id="file-upload" type="file" class="hidden" accept="image/*" onchange="previewImage(event)">
-                        <i class="fas fa-times icon delete-icon" onclick="resetImage()"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- User Details Form -->
-            <div class="form-container">
-                <div class="form-group">
-                    <label for="nameInput">Name:</label>
-                    <input id="nameInput" type="text" oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '')" />
-                </div>
-
-                <div class="form-group">
-                    <label for="addressInput">Contract Information:</label>
-                    <input id="addressInput" type="text" />
-                </div>
-
-                <div class="form-group">
-                    <label for="emailInput">Email:</label>
-                    <input id="emailInput" type="text" />
-                </div>
-
-                <div class="form-group">
-                    <label for="emergencyInput">Specialization:</label>
-                    <input id="emergencyInput" type="text" onkeypress="return onlyNumbers(event)" />
-                </div>
-
-                <div class="form-group">
-                    <label for="clinicDate">Clinic Date:</label>
-                    <input id="clinicDate" type="date" />
-                </div>
-
-                <div class="form-group">
-                    <label for="clinicTime">Clinic Time:</label>
-                    <input id="clinicTime" type="time" />
-                </div>
-
-                <!-- Security Section -->
-                <div class="security-section">
-                    <h3>Security</h3>
-                    <p><span>Password Reset:</span> <span class="password-dots">************</span></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>          
-      <!-- Content goes above this -->
+      <div class="doctor-settings-card">
+    <header class="form-header">
+      <h1>Account Settings</h1>
+      <p>Input your schedule for patients to see if you're on-duty</p>
+    </header>
+    <form id="scheduleForm" class="schedule-form">
+      <div class="form-group">
+        <label for="start_time">Time In</label>
+        <input type="time" id="start_time" name="start_time" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="end_time">Time Out</label>
+        <input type="time" id="end_time" name="end_time" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="day_of_week">Day of Week</label>
+        <select id="day_of_week" name="day_of_week" required>
+          <option value="">Select</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
+      </div>
+      
+      <div class="submit-container">
+        <button type="submit" class="action-button">Create Schedule</button>
+      </div>
+      
+    </form>
+    <div id="work_sched_notif" class="notification" role="alert"></div>
+  </div>
     </div>
 </section>

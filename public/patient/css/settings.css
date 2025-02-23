@@ -127,26 +127,3 @@
 }
 
 /* Form Styles */
-.form-container {
-    font-size: 1.125rem;
-}
-
-.form-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.form-group label {
-    font-weight: bold;
-}
-
-.form-group input {
-    width: 100%;
-    background-color: white;
-    color: black;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    border: 1px solid #e5e7eb;
-}

@@ -123,7 +123,7 @@ app.get('/currentAccount', async (req, res) => {
     });
   }
   
-  let currentSession = await fetch("https://bulldogs-care-center.glitch.me/session", {
+  let currentSession = await fetch("https://bulldogs-care-center.glitch.me/session?type="+type, {
     headers: {
       cookie: req.headers.cookie || ""
     }
@@ -137,7 +137,8 @@ app.get('/currentAccount', async (req, res) => {
     if (!accountHolder) return res.status(404).json({ message: "Invalid account type", redirect: "/" });
     
     let queryField = type + "_id";
-    let account = await accountHolder.findOne({ [queryField]: sessionData.target_id, device_id: deviceId });
+    console.log("Searching: ",queryField,sessionData.target_id,deviceId)
+    let account = await accountHolder.findOne({ [queryField]: Number(sessionData.target_id) });
     if (account) return res.status(200).json(account);
     
     return res.status(404).json({ message: type+" not found.", redirect: "/" });
@@ -295,7 +296,7 @@ app.get('/session', async (req, res) => {
   }
   
   try {
-    const session = await loginSession.findOne({ device_id: deviceId });
+    const session = await loginSession.findOne({ device_id: deviceId, type: req.query.type });
     if (!session) return res.status(401).json({ message: 'Session not found. Please log in again.' });
     
     res.json({ message: 'Session valid', session });
