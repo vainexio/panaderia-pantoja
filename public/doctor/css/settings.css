@@ -15,11 +15,10 @@
 }
 
 .doctor-settings-card {
-    width: 80%;
-    max-width: 500px;
+    width: 90%;
+    max-width: 1000px;
     min-height: 100%;
     margin: auto;
-    padding: 2rem;
     border-radius: 16px;
     background-color: transparent;
     display: flex;
@@ -28,7 +27,7 @@
 
 .settings-form {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
 }
