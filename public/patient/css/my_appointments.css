@@ -9,10 +9,43 @@
 }
 /* Use this pallets */
 /* Css designs goes below this */
+.my_appointments {
+  padding: 2rem 0;
+  display: none;
+  justify-content: center;
+}
+
+.create-appointments-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-appointments-card {
+  background-color: transparent;
+  width: 80%;
+  max-width: 980px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+/* Card */
+.appointments-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+.form-group {
+  flex: 1 1 calc(33.333% - 1rem);
+  min-width: 250px;
+}
+
 
 /* Patient view section */
 .patient-view {
   padding: 1.5rem;
+  width: 80%;
 }
 
 .patient-view h1 {
@@ -24,7 +57,6 @@
 /* Appointment table container */
 .appointment-table-container {
   background-color: #d1d5db; /* gray-300 */
-  padding: 1.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }

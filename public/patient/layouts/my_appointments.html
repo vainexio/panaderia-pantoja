@@ -5,7 +5,26 @@
     <header class="form-header">
       <h1>Create Appointment</h1>
     </header>
-    <form id="createAppointmentsForm" class="schedule-form">
+    <form id="createAppointmentsForm" class="appointments-form">
+      
+      <div class="form-group">
+        <label for="first_name">First Name</label>
+        <input type="text" id="create_appointments_first_name" name="first_name" readonly/>
+      </div>
+      <div class="form-group">
+        <label for="last_name">Last Name</label>
+        <input type="text" id="create_appointments_last_name" name="last_name" readonly/>
+      </div>
+      <div class="form-group">
+        <label for="contact_num">Contact Number</label>
+        <input type="text" id="create_appointments_contact_num" name="contact_num" readonly/>
+      </div>
+      <div class="form-group">
+        <label for="sex">Sex</label>
+        <input type="text" id="create_appointments_sex" name="sex" readonly/>
+      </div>
+      
+      
       <div class="form-group">
         <label for="start_time">Time In</label>
         <input type="time" id="start_time" name="start_time" required/>
@@ -14,6 +33,23 @@
       <div class="form-group">
         <label for="end_time">Time Out</label>
         <input type="time" id="end_time" name="end_time" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="reason">Reason for Appointment</label>
+        <input type="text" id="reason" name="reason" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="assigned_doctor">Doctor</label>
+        <select id="assigned_doctor" name="assigned_doctor" required>
+          <option value="">Select</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+        </select>
       </div>
       
       <div class="form-group">
@@ -29,11 +65,11 @@
       </div>
       
       <div class="submit-container">
-        <button type="submit" class="action-button">Create Schedule</button>
+        <button type="submit" class="action-button">Create Appointment</button>
       </div>
       
     </form>
-    <div id="work_sched_notif" class="notification" role="alert"></div>
+    <div id="my_appointments_notif" class="notification" role="alert"></div>
   </div>
     <header class="form-header">
       <h1>My Appointments</h1>
