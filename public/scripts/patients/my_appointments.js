@@ -31,12 +31,12 @@ async function myAppointments() {
           <td>Dr. ${app.doctor_name}</td>
           <td>${app.reason}</td>
           <td>${app.status}</td>
-          <td>${app.status === "Pending Confirmation" ? `<button class="btn btn-sm btn-danger cancel-btn" data-id="${app.appointment_id}">Cancel</button>` : ''}</td>
+          <td>${app.status === "Pending" ? `<button class="btn btn-sm btn-danger cancel-btn" data-id="${app.appointment_id}">Cancel</button>` : ''}</td>
         `;
         tableBody.appendChild(row);
 
         // Attach cancel button event if present
-        if (app.status === "Pending Confirmation") {
+        if (app.status === "Pending") {
           const cancelBtn = row.querySelector(".cancel-btn");
           cancelBtn.addEventListener("click", async () => {
             const confirmation = confirm("Are you sure you want to cancel this appointment?");
@@ -47,7 +47,7 @@ async function myAppointments() {
                 method: "DELETE"
               });
               if (cancelResponse.ok) {
-                alert("Appointment cancelled successfully.");
+                //alert("Appointment cancelled successfully.");
                 myAppointments(); // Refresh appointments list
               } else {
                 const errorData = await cancelResponse.json();
