@@ -67,16 +67,17 @@ async function mainSettings() {
   });
 
   document.getElementById("settingsForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
     if (toggleDebounce) return
     toggleDebounce = true
-      event.preventDefault();
 
       const formData = Object.fromEntries(new FormData(event.target).entries());
     
     let accountData = await fetch("/currentAccount?type="+formData.account_type.toLowerCase())
     if (accountData.ok) {
-      if (formData.account_type == "Doctor") currentDoctor = await accountData.json()
-      else if (formData.account_type == "Patient") currentPatient = await accountData.json()
+      accountData = await accountData.json()
+      if (formData.account_type == "Doctor") currentDoctor = accountData
+      else if (formData.account_type == "Patient") currentPatient = accountData
     } else return
     
       const notification = document.getElementById(

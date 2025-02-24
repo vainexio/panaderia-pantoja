@@ -4,9 +4,8 @@
       <header class="form-header">
         <h1>Account Settings</h1>
       </header>
-      <div id="settings_notif" class="notification" role="alert"></div>
 
-      <form class="settings-form">
+      <form id="settingsForm" class="settings-form">
         <div class="form-group">
           <label for="first_name">First Name</label>
           <input type="text" id="patient_settings_first_name" name="first_name" value="" readonly/>
@@ -34,9 +33,9 @@
         <div class="form-group">
           <label for="password">Password</label>
         <div id="password-fields" style="display: none;">
-            <input type="text" id="patient_settings_old_password" name="old_password" placeholder="Old Password" required/>
-            <input class="mt-1" type="text" id="patient_settings_new_password" name="password" placeholder="New Password" required/>
-            <input class="mt-1" type="text" id="patient_settings_confirm_password" name="confirm_password" placeholder="Confirm Password" required/>
+            <input type="text" id="patient_settings_old_password" name="old_password" placeholder="Old Password" disabled required/>
+            <input class="mt-1" type="text" id="patient_settings_new_password" name="password" placeholder="New Password" disabled required/>
+            <input class="mt-1" type="text" id="patient_settings_confirm_password" name="confirm_password" placeholder="Confirm Password" disabled required/>
           </div>
           <button class="action-button mt-1" id="toggle-password-btn" type="button">Change Password</button>
           </div>
@@ -50,6 +49,7 @@
           </button>
         </div>
       </form>
+    <div id="Patient_settings_notif" class="notification" role="alert"></div>
     </div>
     <header class="form-header">
       <h1>Where You're Logged In</h1>
