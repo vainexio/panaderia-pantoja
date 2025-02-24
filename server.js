@@ -644,6 +644,115 @@ app.post('/getDoctorAppointments', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+// 1. Update Appointment Status
+app.post('/updateAppointmentStatus', async (req, res) => {
+  try {
+    const { appointment_id, newStatus } = req.body;
+    const allowedStatuses = ["Pending Confirmation", "Confirmed", "Completed", "Cancelled"];
+    if (!appointment_id || !newStatus || !allowedStatuses.includes(newStatus)) {
+      return res.status(400).json({ message: "Invalid input" });
+    }
+    const updated = await appointments.findOneAndUpdate(
+      { appointment_id },
+      { status: newStatus },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+    res.status(200).json({ message: "Appointment status updated", appointment: updated });
+  } catch (err) {
+    console.error("Error updating appointment status:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// 2. Start Appointment
+app.post('/startAppointment', async (req, res) => {
+  try {
+    const { appointment_id } = req.body;
+    if (!appointment_id) {
+      return res.status(400).json({ message: "Appointment ID is required" });
+    }
+    // Fetch appointment details along with patient info from the "patients" collection.
+    const appointmentDetail = await appointments.aggregate([
+      { $match: { appointment_id: appointment_id } },
+      {
+        $lookup: {
+          from: "patients",  // Ensure your collection name is correct.
+          localField: "patient_id",
+          foreignField: "patient_id",
+          as: "patient_info"
+        }
+      },
+      { $unwind: "$patient_info" }
+    ]);
+    
+    if (!appointmentDetail || appointmentDetail.length === 0) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+    
+    const appointment = appointmentDetail[0];
+    
+    // Look for an existing medical record for this appointment.
+    let record = await medicalRecords.findOne({ appointment_id: appointment_id });
+    
+    res.status(200).json({
+      message: "Appointment started",
+      appointment: {
+        appointment_id: appointment.appointment_id,
+        patient_id: appointment.patient_id,
+        patient_name: `${appointment.patient_info.first_name} ${appointment.patient_info.last_name}`,
+        contact_number: appointment.patient_info.contact_number,
+        email: appointment.patient_info.email,
+        // Include other patient details if needed.
+      },
+      medicalRecord: record || null
+    });
+  } catch (err) {
+    console.error("Error starting appointment:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// 3. Save Medical Record
+app.post('/saveMedicalRecord', async (req, res) => {
+  try {
+    const { appointment_id, patient_id, doctor_id, diagnosis, treatment_plan, allergies, medical_history } = req.body;
+    if (!appointment_id || !patient_id || !doctor_id) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+    // Check if a record exists for this appointment.
+    let record = await medicalRecords.findOne({ appointment_id: appointment_id });
+    if (record) {
+      // Update the existing record.
+      record.diagnosis = diagnosis;
+      record.treatment_plan = treatment_plan;
+      record.allergies = allergies;
+      record.medical_history = medical_history;
+      await record.save();
+      res.status(200).json({ message: "Medical record updated", record });
+    } else {
+      // Create a new record.
+      const record_id = Math.floor(Math.random() * 900000) + 100000; // Example: 6-digit random number.
+      const newRecord = new medicalRecords({
+        record_id,
+        appointment_id,
+        patient_id,
+        doctor_id,
+        diagnosis,
+        treatment_plan,
+        allergies,
+        medical_history
+      });
+      await newRecord.save();
+      res.status(201).json({ message: "Medical record created", record: newRecord });
+    }
+  } catch (err) {
+    console.error("Error saving medical record:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
 /* Patient Backend */
