@@ -49,17 +49,14 @@
       </div>
       <ul class="navbar-nav flex-grow-1 w-100">
         <li class="nav-item">
-          <a
-            class="nav-link align-items-center nav-item-custom active"
-            href="#"
-            onclick="showSection('my_appointments')"
-          >
+          <a id="my_appointments_nav" class="nav-link align-items-center nav-item-custom active" href="#" onclick="showSection('my_appointments')">
             <i class="bi bi-calendar-check me-2"></i>
             <span>My Appointments</span>
           </a>
         </li>
         <li class="nav-item">
           <a
+            id="clinic_hours_nav"
             class="nav-link align-items-center nav-item-custom"
             href="#"
             onclick="showSection('clinic_hours')"
@@ -70,6 +67,7 @@
         </li>
         <li class="nav-item">
           <a
+             id="medical_records_nav"
             class="nav-link align-items-center nav-item-custom"
             href="#"
             onclick="showSection('medical_records')"
@@ -83,6 +81,7 @@
       <ul class="navbar-nav w-100">
         <li class="nav-item">
           <a
+             id="settings_nav"
             class="nav-link d-flex align-items-center nav-item-custom"
             href="#"
             onclick="showSection('settings')"

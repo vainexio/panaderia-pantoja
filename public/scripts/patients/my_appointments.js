@@ -24,7 +24,7 @@ async function myAppointments() {
 
       appointmentsData.forEach((app) => {
         // Create a new table row with a cancel button if status is Pending Confirmation
-        const statusColor = app.status === "Pending" ? "🟡" : app.status === "Completed" ? "🔵" : app.status === "Cancelled" ? "🔴" : "❓"
+        const statusColor = app.status === "Pending" ? "🟠" : app.status === "Completed" ? "🟢" : app.status === "Cancelled" ? "🔴" : "❓"
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${app.exact_date} (${app.appointment_day})</td>
