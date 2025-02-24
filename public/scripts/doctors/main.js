@@ -16,10 +16,15 @@ function showSection(sectionId) {
   const sections = document.querySelectorAll(".section-content");
   sections.forEach((section) => {
     section.style.display = "none";
+    const selectedSectionNav = document.getElementById(section.id+"_nav");
+    selectedSectionNav.classList.remove("active")
   });
 
   const selectedSection = document.getElementById(sectionId);
   selectedSection.style.display = "block";
+  
+  const selectedSectionNav = document.getElementById(sectionId+"_nav");
+  selectedSectionNav.classList.add("active")
 }
 
 document.addEventListener("DOMContentLoaded", async function () {

@@ -12,8 +12,8 @@ function showSection(sectionId) {
   const sections = document.querySelectorAll(".section-content");
   sections.forEach((section) => {
     section.style.display = "none";
-    const selectedSectionNav = document.getElementById(sectionId+"_nav");
-  selectedSectionNav.classList.remove("active")
+    const selectedSectionNav = document.getElementById(section.id+"_nav");
+    selectedSectionNav.classList.remove("active")
   });
 
   const selectedSection = document.getElementById(sectionId);
