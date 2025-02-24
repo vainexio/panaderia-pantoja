@@ -69,10 +69,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             "Dr. " + item.doctor.first_name + " " + item.doctor.last_name;
           statusSlot.appendChild(doctorName);
 
-          const statusText = document.createElement("span");
+          /*const statusText = document.createElement("span");
           statusText.id = "statusText";
           statusText.textContent = overallOnDuty ? "• On-duty" : "• Off-duty";
-          statusSlot.appendChild(statusText);
+          statusSlot.appendChild(statusText);*/
 
           item.availabilities.forEach((slot) => {
             let classColor = "time-color";
@@ -90,9 +90,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
           const bookButton = document.createElement("button");
           bookButton.id = "bookAppointment";
-          bookButton.textContent = "Book Appointment";
+          bookButton.textContent = "On-duty";
           bookButton.classList.add("action-button");
-          if (!overallOnDuty) bookButton.disabled = true;
+          if (!overallOnDuty) {
+            bookButton.disabled = true;
+            bookButton.textContent = "Off-duty";
+          }
           bookButton.addEventListener("click", function () {
             bookAppointment(item.doctor_id);
           });

@@ -85,7 +85,7 @@ const loginSessionSchema = new mongoose.Schema({
   ip_address: String,
   target_id: String,
   type: String,
-  device_id: String, // Unique device identifier
+  device_id: String,
 });
 const loginSession = mongoose.model('LoginSession', loginSessionSchema);
 const doctors = mongoose.model('Doctors', doctorSchema);
@@ -111,6 +111,14 @@ app.set('trust proxy', true);
 app.use(cookieParser());
 //
 
+app.get('/doctor-dashboard', async (req, res) => {
+  res.sendFile(__dirname + '/public/doctors.html');
+});
+app.get('/patient-dashboard', async (req, res) => {
+  res.sendFile(__dirname + '/public/patients.html');
+});
+
+/* Global Backend */
 app.get('/currentAccount', async (req, res) => {
   let type = req.query.type;
   if (!type) return res.status(404).json({ message: "Invalid query type", redirect: "/" });
@@ -149,14 +157,6 @@ app.get('/currentAccount', async (req, res) => {
     return res.status(404).json({ message: "No login session was found.", redirect: "/" });
   }
 });
-app.get('/doctor-dashboard', async (req, res) => {
-  res.sendFile(__dirname + '/public/doctors.html');
-});
-app.get('/patient-dashboard', async (req, res) => {
-  res.sendFile(__dirname + '/public/patients.html');
-});
-
-/* Sessions */
 app.post('/getAllSessions', async (req, res) => {
   try {
     let deviceId = req.cookies.deviceId;
@@ -237,54 +237,6 @@ app.delete('/removeOtherSessions', async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-/*app.get('/addData', async (req, res) => {
-  try {
-    // Sample data to insert into availableDoctors collection
-    const sampleData = [
-      {
-        availability_id: 1,
-        doctor_id: 1,
-        day_of_week: 'Monday',
-        start_time: '7:00 AM',
-        end_time: '10:00 AM'
-      },
-      {
-        availability_id: 2,
-        doctor_id: 2,
-        day_of_week: 'Tuesday',
-        start_time: '10:00 AM',
-        end_time: '12:00 PM'
-      },
-      {
-        availability_id: 3,
-        doctor_id: 3,
-        day_of_week: 'Wednesday',
-        start_time: '2:00 PM',
-        end_time: '5:00 PM'
-      },
-      {
-        availability_id: 4,
-        doctor_id: 1,
-        day_of_week: 'Friday',
-        start_time: '1:00 PM',
-        end_time: '3:00 PM'
-      }
-    ];
-
-    // Insert the sample data into the collection
-    const result = await availableDoctors.insertMany(sampleData);
-
-    // Respond with a success message and the inserted documents
-    res.status(200).json({
-      message: 'Data added successfully',
-      data: result
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Failed to add data' });
-  }
-});*/
 app.post('/updateAccount', async (req, res) => {
   const { accountData, formData } = req.body;
   let accountHolder = formData.account_type == 'Doctor' ? doctors : formData.account_type == 'Patient' ? patients : null
@@ -430,6 +382,7 @@ const generatePatientId = async () => {
   return patientId;
 };
 
+/* Doctor Backend */
 app.post('/registerPatient', async (req, res) => {
   try {
     const { first_name, last_name, email, password, sex, birthdate, contact_number, patient_type, confirm_password } = req.body;
@@ -480,7 +433,6 @@ app.post('/registerPatient', async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 });
-
 app.get('/api/clinic-schedule', async (req, res) => {
   const ip = req.ip
   // Optionally normalize IPv6-mapped IPv4 addresses
@@ -541,8 +493,6 @@ app.get('/api/clinic-schedule', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-// POST route to create a new schedule
 app.post('/schedule', async (req, res) => {
   const { day_of_week, start_time, end_time } = req.body;
   try {
@@ -574,9 +524,6 @@ app.post('/schedule', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-
-// GET route to fetch all schedules for the current doctor
 app.get('/schedules', async (req, res) => {
   const ip = req.ip
   // Optionally normalize IPv6-mapped IPv4 addresses
@@ -597,8 +544,6 @@ app.get('/schedules', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-// DELETE route to remove a schedule by its MongoDB _id
 app.delete('/schedule/:id', async (req, res) => {
   try {
     await availableDoctors.findByIdAndDelete(req.params.id);
@@ -607,8 +552,6 @@ app.delete('/schedule/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-// PUT route to update (modify) an existing schedule
 app.put('/schedule/:id', async (req, res) => {
   const { day_of_week, start_time, end_time } = req.body;
   try {
@@ -625,6 +568,11 @@ app.put('/schedule/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+/* Patient Backend */
+app.post('/createAppointment', async (req, res) => {
+  
 });
 // Start the server
 const PORT = process.env.PORT || 3000;
