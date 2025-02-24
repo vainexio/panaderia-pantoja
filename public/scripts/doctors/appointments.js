@@ -91,30 +91,20 @@ async function appointments() {
               body: JSON.stringify({ appointment_id }),
             });
             const startData = await startRes.json();
-            // Display appointment and patient details in the modal
-            const detailsDiv = document.getElementById("appointmentDetails");
-            detailsDiv.innerHTML = `
-              <p><strong>Patient:</strong> ${startData.appointment.patient_name}</p>
-              <p><strong>Contact:</strong> ${startData.appointment.contact_number}</p>
-              <p><strong>Email:</strong> ${startData.appointment.email}</p>
-            `;
             // Set hidden fields for the medical record form
-            document.getElementById("mr_appointment_id").value =
-              startData.appointment.appointment_id;
-            document.getElementById("mr_patient_id").value =
-              startData.appointment.patient_id;
-            document.getElementById("mr_doctor_id").value =
-              currentDoctor.doctor_id;
+            document.getElementById("mr_appointment_id").value = startData.appointment.appointment_id;
+            document.getElementById("mr_patient_id").value = startData.appointment.patient_id;
+            document.getElementById("mr_doctor_id").value = currentDoctor.doctor_id;
+            
+            document.getElementById("app_patient_name").value = startData.appointment.patient_name;
+              document.getElementById("app_patient_contact").value = startData.appointment.contact_number;
+              document.getElementById("app_patient_email").value = startData.appointment.email;
             // Pre-fill form if record exists
             if (startData.medicalRecord) {
-              document.getElementById("mr_diagnosis").value =
-                startData.medicalRecord.diagnosis;
-              document.getElementById("mr_treatment_plan").value =
-                startData.medicalRecord.treatment_plan;
-              document.getElementById("mr_allergies").value =
-                startData.medicalRecord.allergies;
-              document.getElementById("mr_medical_history").value =
-                startData.medicalRecord.medical_history;
+              document.getElementById("mr_diagnosis").value = startData.medicalRecord.diagnosis;
+              document.getElementById("mr_treatment_plan").value = startData.medicalRecord.treatment_plan;
+              document.getElementById("mr_allergies").value = startData.medicalRecord.allergies;
+              document.getElementById("mr_medical_history").value = startData.medicalRecord.medical_history;
             } else {
               // Clear fields if no record exists
               document.getElementById("mr_diagnosis").value = "";

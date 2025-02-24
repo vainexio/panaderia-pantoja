@@ -20,23 +20,24 @@
 
 .appointmentModal {
   width: 80%;
-  min-height: 100%;
+  height: 100%;
   border-radius: 16px;
   background-color: transparent;
   display: flex;
   flex-direction: column;
+  margin: auto;
 }
 
 .appointment-card {
   width: 90%;
-  height: 100%;
+  min-height: 100%;
   padding: 2rem;
   border-radius: 16px;
   background-color: var(--light-gray);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin: auto;
 }
 
 .medical-record-form {
@@ -73,4 +74,13 @@
 
 .submit-container #saveMedRecord {
   margin-right: 1rem;
+}
+
+@media (max-width: 768px) {
+  .appointment-card {
+    width: 100%;
+    padding: 1.5rem;
+    box-shadow: none;
+    min-height: auto;
+  }
 }

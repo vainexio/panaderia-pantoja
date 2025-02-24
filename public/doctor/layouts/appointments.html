@@ -21,9 +21,26 @@
         </table>
       </form>
       <!-- Place the modal outside the overwritten container -->
-      <div id="appointmentModal" style=" display: none; background: #fff; border: 1px solid #ccc; padding: 20px; " >
-        <h2>Appointment Details</h2>
-        <div id="appointmentDetails"></div>
+      <div id="appointmentModal" style="display: none;" >
+        <header class="form-header">
+      <h1>Register Patient Account</h1>
+    </header>
+        <div id="appointmentDetails">
+          <form class="medical-record-form">
+          <div class="form-group">
+            <label for="app_patient_name">Patient Name</label>
+            <input type="text" id="app_patient_name" name="app_patient_name" required/>
+          </div>
+        <div class="form-group">
+            <label for="app_patient_contact">Contact</label>
+            <input type="text" id="app_patient_contact" name="app_patient_contact" required/>
+          </div>
+      <div class="form-group">
+            <label for="app_patient_email">Email</label>
+            <input type="text" id="app_patient_email" name="app_patient_email" required/>
+          </div>
+          </form>
+        </div>
         <h3>Medical Record</h3>
         <form id="medicalRecordForm" class="medical-record-form">
           <input type="hidden" name="appointment_id" id="mr_appointment_id" />
