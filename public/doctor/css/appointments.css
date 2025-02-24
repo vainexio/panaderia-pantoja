@@ -46,6 +46,20 @@
   gap: 1rem;
   justify-content: center;
 }
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 80%;
+  max-width: 500px;
+  justify-content: flex-end;
+  margin: auto;
+  margin-bottom: 1rem;
+}
+.search-form .form-group {
+  flex: 1 1 calc(50% - 0.5rem); /* Two items per row */
+  min-width: 200px;
+}
 #medicalRecordForm .form-group {
   flex: 1 1 calc(50% - 0.5rem); /* Two items per row */
   min-width: 250px;
@@ -102,7 +116,7 @@
 .filter-container {
   display: flex;
   gap: 1rem;
-  width: 50%;
+  width: 80%;
 }
 
 @media (max-width: 768px) {

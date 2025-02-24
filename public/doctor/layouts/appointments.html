@@ -5,26 +5,29 @@
       <h1>Appointments</h1>
     </header>
     <div class="appoint-card">
-      
-      <div class="filter-container" style="margin-bottom: 1rem;">
+      <div class="search-form">
         <div class="form-group">
-            <label for="patientSearchInput">Search Patient Name</label>
-            <input type="text" id="patientSearchInput" name="patientSearchInput"/>
-          </div>
+          <label for="patientSearchInput">Search Patient Name</label>
+          <input
+            type="text"
+            id="patientSearchInput"
+            name="patientSearchInput"
+          />
+        </div>
         <div class="form-group">
-            <label for="patientSearchInput">Appointment Status</label>
-            <select id="statusFilterSelect">
-      <option value="All">All</option>
-      <option value="Pending">Pending</option>
-      <option value="Completed">Completed</option>
-      <option value="Cancelled">Cancelled</option>
-    </select>
-          </div>
-        <div class="submit-container">
-        <button id="applyFiltersBtn" class="action-button">Apply Filters</button>
+          <label for="patientSearchInput">Appointment Status</label>
+          <select id="statusFilterSelect">
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+        </div>
+        <button id="applyFiltersBtn" class="action-button">
+            Apply Filters
+          </button>
       </div>
-  </div>
-      
+
       <form id="appointmentinfo" class="appoint-info">
         <table class="table table-light table-striped w-100">
           <thead>
@@ -41,41 +44,71 @@
         </table>
       </form>
       <!-- Place the modal outside the overwritten container -->
-      <div id="appointmentModal" style="display: none;" >
+      <div id="appointmentModal" style="display: none">
         <header class="form-header mt-5">
-      <h1>Patient Details</h1>
-    </header>
+          <h1>Patient Details</h1>
+        </header>
         <div id="appointmentDetails">
           <form class="medical-record-form">
-          <div class="form-group">
-            <label for="app_patient_name">Patient Name</label>
-            <input type="text" id="app_patient_name" name="app_patient_name" readonly/>
-          </div>
             <div class="form-group">
-            <label for="app_patient_birthdate">Birthdate</label>
-            <input type="text" id="app_patient_birthdate" name="app_patient_birthdate" readonly/>
-          </div>
+              <label for="app_patient_name">Patient Name</label>
+              <input
+                type="text"
+                id="app_patient_name"
+                name="app_patient_name"
+                readonly
+              />
+            </div>
             <div class="form-group">
-            <label for="app_patient_sex">Sex</label>
-            <input type="text" id="app_patient_sex" name="app_patient_sex" readonly/>
-          </div>
-        <div class="form-group">
-            <label for="app_patient_contact">Contact</label>
-            <input type="text" id="app_patient_contact" name="app_patient_contact" readonly/>
-          </div>
+              <label for="app_patient_birthdate">Birthdate</label>
+              <input
+                type="text"
+                id="app_patient_birthdate"
+                name="app_patient_birthdate"
+                readonly
+              />
+            </div>
             <div class="form-group">
-            <label for="app_patient_er_contact">Emergency Contact</label>
-            <input type="text" id="app_patient_er_contact" name="app_patient_er_contact" readonly/>
-          </div>
-      <div class="form-group">
-            <label for="app_patient_email">Email</label>
-            <input type="text" id="app_patient_email" name="app_patient_email" readonly/>
-          </div>
+              <label for="app_patient_sex">Sex</label>
+              <input
+                type="text"
+                id="app_patient_sex"
+                name="app_patient_sex"
+                readonly
+              />
+            </div>
+            <div class="form-group">
+              <label for="app_patient_contact">Contact</label>
+              <input
+                type="text"
+                id="app_patient_contact"
+                name="app_patient_contact"
+                readonly
+              />
+            </div>
+            <div class="form-group">
+              <label for="app_patient_er_contact">Emergency Contact</label>
+              <input
+                type="text"
+                id="app_patient_er_contact"
+                name="app_patient_er_contact"
+                readonly
+              />
+            </div>
+            <div class="form-group">
+              <label for="app_patient_email">Email</label>
+              <input
+                type="text"
+                id="app_patient_email"
+                name="app_patient_email"
+                readonly
+              />
+            </div>
           </form>
         </div>
         <header class="form-header mt-5">
-      <h1>Medical Record</h1>
-    </header>
+          <h1>Medical Record</h1>
+        </header>
         <form id="medicalRecordForm" class="medical-record-form">
           <input type="hidden" name="appointment_id" id="mr_appointment_id" />
           <input type="hidden" name="patient_id" id="mr_patient_id" />
@@ -83,33 +116,27 @@
 
           <div class="form-group">
             <label for="diagnosis">Diagnosis</label>
-            <input type="text" id="mr_diagnosis" name="diagnosis"/>
+            <input type="text" id="mr_diagnosis" name="diagnosis" />
           </div>
           <div class="form-group">
             <label for="treatment_plan">Treatment Plan</label>
-            <input
-              type="text"
-              id="mr_treatment_plan"
-              name="treatment_plan"
-              
-            />
+            <input type="text" id="mr_treatment_plan" name="treatment_plan" />
           </div>
           <div class="form-group">
             <label for="allergies">Allergies</label>
-            <input type="text" id="mr_allergies" name="allergies"/>
+            <input type="text" id="mr_allergies" name="allergies" />
           </div>
           <div class="form-group">
             <label for="medical_history">Medical History</label>
-            <input
-              type="text"
-              id="mr_medical_history"
-              name="medical_history"
-              
-            />
+            <input type="text" id="mr_medical_history" name="medical_history" />
           </div>
           <div class="submit-container">
-            <button id="saveMedRecord" type="submit" class="action-button">Save &amp; Complete</button>
-          <button type="button" onclick="closeModal()" class="action-button">Close</button>
+            <button id="saveMedRecord" type="submit" class="action-button">
+              Save &amp; Complete
+            </button>
+            <button type="button" onclick="closeModal()" class="action-button">
+              Close
+            </button>
           </div>
         </form>
       </div>
