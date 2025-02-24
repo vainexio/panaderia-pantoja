@@ -479,7 +479,7 @@ app.get('/api/clinic-schedule', async (req, res) => {
   }
 });
 app.post('/schedule', async (req, res) => {
-  const { day_of_week, start_time, end_time } = req.body;
+  const { currentDoctor, day_of_week, start_time, end_time } = req.body;
   try {
     // Check if a schedule for this day already exists for the current doctor
     const existingSchedule = await availableDoctors.findOne({
