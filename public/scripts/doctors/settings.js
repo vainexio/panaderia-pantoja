@@ -42,7 +42,7 @@ async function doctorSettings() {
       // If session.currentSession is true, add a Bootstrap class to highlight the row.
       const rowClass = session.currentSession ? "table-primary" : "";
       const button = !session.currentSession
-        ? `<button class="btn btn-sm btn-danger remove-session-btn" data-session-id="${session.session_id}">Remove</button>`
+        ? `<button class="btn btn-sm btn-danger remove-session-btn" data-session-id="${session.session_id}">Logout</button>`
         : `<p>Current Session</p>`;
       tableHTML += `
             <tr data-session-id="${session.session_id}" class="${rowClass}">

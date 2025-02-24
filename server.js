@@ -576,12 +576,15 @@ app.post('/createAppointment', async (req, res) => {
   try {
     const { currentPatient, formData } = req.body;
 
-    // Validate required information
     if (!currentPatient || !formData) {
       return res.status(400).json({ message: 'Missing required information' });
     }
 
-    // Check appointment limit for morning and afternoon (limit: 10 per day)
+    const existingAppointment = await appointments.findOne({ patient_id: currentPatient.patient_id, status: "Pending Confirmation" });
+    if (existingAppointment) {
+      return res.status(400).json({ message: 'You already have a pending appointment.' });
+    }
+
     const scheduleLower = formData.schedule.toLowerCase();
     if (scheduleLower === 'morning' || scheduleLower === 'afternoon') {
       const count = await appointments.countDocuments({
@@ -595,16 +598,12 @@ app.post('/createAppointment', async (req, res) => {
       }
     }
 
-    // Find a doctor available on the selected day (using day_of_week)
     const availableDoctor = await availableDoctors.findOne({ day_of_week: formData.day });
     if (!availableDoctor) {
       return res.status(400).json({ message: 'No available doctor for this day' });
     }
 
-    // Generate a random appointment_id (e.g., a 6-digit number)
     const appointmentId = Math.floor(Math.random() * 900000) + 100000;
-
-    // Create new appointment document
     const newAppointment = new appointments({
       appointment_id: appointmentId,
       patient_id: currentPatient.patient_id,
@@ -614,8 +613,6 @@ app.post('/createAppointment', async (req, res) => {
       reason: formData.reason,
       status: 'Pending Confirmation'
     });
-
-    // Save the appointment to the database
     await newAppointment.save();
 
     res.status(201).json({
@@ -627,14 +624,12 @@ app.post('/createAppointment', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-// Express endpoint to list appointments
 app.get('/appointments', async (req, res) => {
   try {
-    // Aggregate appointments with the corresponding doctor info
     const appointmentList = await appointments.aggregate([
       {
         $lookup: {
-          from: "doctors",           // Make sure the collection name matches your DB
+          from: "doctors",
           localField: "doctor_id",
           foreignField: "doctor_id",
           as: "doctor_info"
@@ -645,29 +640,22 @@ app.get('/appointments', async (req, res) => {
       }
     ]);
 
-    // Helper function to compute the exact date for the current week based on the day name.
     function getAppointmentDate(dayName) {
-      // Map day names to an offset (assuming week starts on Monday)
       const daysMapping = { 'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4 };
       if (!(dayName in daysMapping)) return null;
       const now = new Date();
       let monday;
-      // Determine the Monday of the current week.
-      // If today is Sunday (getDay() returns 0), treat Monday as tomorrow.
       if (now.getDay() === 0) {
         monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
       } else {
-        // For other days, subtract (current day index - 1) to get Monday.
         const diff = now.getDay() - 1;
         monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - diff);
       }
-      // Add the offset for the target day.
       const appointmentDate = new Date(monday);
       appointmentDate.setDate(monday.getDate() + daysMapping[dayName]);
       return appointmentDate;
     }
 
-    // Map appointments to include the doctor's full name and the computed appointment date.
     const formattedAppointments = appointmentList.map(app => {
       const exactDate = getAppointmentDate(app.appointment_day);
       return {
@@ -679,7 +667,6 @@ app.get('/appointments', async (req, res) => {
         appointment_time_schedule: app.appointment_time_schedule,
         reason: app.reason,
         status: app.status,
-        // Format the date (using locale string; adjust as needed)
         exact_date: exactDate ? exactDate.toLocaleDateString() : "N/A"
       };
     });
@@ -690,6 +677,24 @@ app.get('/appointments', async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+app.delete('/cancelAppointment/:appointmentId', async (req, res) => {
+  try {
+    const appointmentId = parseInt(req.params.appointmentId);
+    const appointment = await appointments.findOne({ appointment_id: appointmentId });
+    if (!appointment) {
+      return res.status(404).json({ message: 'Appointment not found' });
+    }
+    if (appointment.status !== 'Pending Confirmation') {
+      return res.status(400).json({ message: 'Only appointments pending confirmation can be cancelled' });
+    }
+    await appointments.deleteOne({ appointment_id: appointmentId });
+    res.status(200).json({ message: 'Appointment cancelled successfully' });
+  } catch (err) {
+    console.error('Error cancelling appointment:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 
 
 // Start the server
