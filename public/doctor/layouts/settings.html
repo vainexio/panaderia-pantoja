@@ -23,17 +23,14 @@
           <input type="text" id="doc_settings_contact_number" name="contact_number" value="" required/>
         </div>
         <div class="form-group">
-  <label for="password">Password</label>
-  
-  <!-- Container for password inputs, hidden by default -->
-  <div id="password-fields" style="display: none;">
-    <input type="password" id="doc_settings_old_password" name="old_password" placeholder="Old Password"/>
-    <input class="mt-1" type="password" id="doc_settings_new_password" name="password" placeholder="New Password"/>
-    <input class="mt-1" type="password" id="doc_settings_confirm_password" name="confirm_password" placeholder="Confirm Password"/>
-  </div>
-          
+          <label for="password">Password</label>
+          <div id="password-fields" style="display: none;">
+            <input type="password" id="doc_settings_old_password" name="old_password" placeholder="Old Password" required/>
+            <input class="mt-1" type="password" id="doc_settings_new_password" name="password" placeholder="New Password" required/>
+            <input class="mt-1" type="password" id="doc_settings_confirm_password" name="confirm_password" placeholder="Confirm Password" required/>
+          </div>
           <button class="action-button mt-1" id="toggle-password-btn" type="button">Change Password</button>
-</div>
+        </div>
         <div class="form-group">
           <label for="email">Email</label>
             <input type="email" id="doc_settings_email" name="email" value="" required/>

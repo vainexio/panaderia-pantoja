@@ -35,9 +35,18 @@ async function removeOtherSessions(accountId, type, callback) {
 }
 
 async function mainSettings() {
-  document
-    .getElementById("settingsForm")
-    .addEventListener("submit", async function (event) {
+  document.getElementById('toggle-password-btn').addEventListener('click', function() {
+    var passwordFields = document.getElementById('password-fields');
+    
+    if (passwordFields.style.display === "none" || passwordFields.style.display === "") {
+      passwordFields.style.display = "block";
+      this.innerText = "Cancel";
+    } else {
+      passwordFields.style.display = "none";
+      this.innerText = "Change Password";
+    }
+  });
+  document.getElementById("settingsForm").addEventListener("submit", async function (event) {
       event.preventDefault();
 
       const formData = Object.fromEntries(new FormData(event.target).entries());

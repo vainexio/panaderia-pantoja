@@ -1,15 +1,4 @@
 async function doctorSettings() {
-  document.getElementById('toggle-password-btn').addEventListener('click', function() {
-    var passwordFields = document.getElementById('password-fields');
-    
-    if (passwordFields.style.display === "none" || passwordFields.style.display === "") {
-      passwordFields.style.display = "block";
-      this.innerText = "Cancel";
-    } else {
-      passwordFields.style.display = "none";
-      this.innerText = "Change Password";
-    }
-  });
   
   try {
     document.getElementById("doc_settings_first_name").value = currentDoctor.first_name;
