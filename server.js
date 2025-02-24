@@ -76,7 +76,8 @@ let appointmentsSchema = new mongoose.Schema({
   appointment_id: Number,
   patient_id: Number,
   doctor_id: Number,
-  appointment_date: String,
+  appointment_day: String,
+  appointment_time_schedule: String,
   reason: String,
   status: String,
 })
