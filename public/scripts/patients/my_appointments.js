@@ -24,19 +24,20 @@ async function myAppointments() {
 
       appointmentsData.forEach((app) => {
         // Create a new table row with a cancel button if status is Pending Confirmation
+        const statusColor = app.status === "Pending" ? "🟡" : app.status === "Completed" ? "🔵" : app.status === "Cancelled" ? "🔴" : "❓"
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${app.exact_date} (${app.appointment_day})</td>
           <td>${app.appointment_time_schedule}</td>
           <td>Dr. ${app.doctor_name}</td>
           <td>${app.reason}</td>
-          <td>${app.status}</td>
-          <td>${app.status === "Pending" ? `<button class="btn btn-sm btn-danger cancel-btn" data-id="${app.appointment_id}">Cancel</button>` : ''}</td>
+          <td>${statusColor} ${app.status}</td>
+          <td>${app.status === "Pending" || app.status === "Cancelled" ? `<button class="btn btn-sm btn-danger cancel-btn" data-id="${app.appointment_id}">Cancel</button>` : ''}</td>
         `;
         tableBody.appendChild(row);
 
         // Attach cancel button event if present
-        if (app.status === "Pending") {
+        if (app.status === "Pending" || app.status === "Cancelled") {
           const cancelBtn = row.querySelector(".cancel-btn");
           cancelBtn.addEventListener("click", async () => {
             const confirmation = confirm("Are you sure you want to cancel this appointment?");
