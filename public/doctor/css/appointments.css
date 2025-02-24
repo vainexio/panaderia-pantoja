@@ -75,7 +75,7 @@
 .appointment-table th,
 .appointment-table td {
   border: 2px solid black;
-  padding: 10px;
+  padding: 0px 10px;
 }
 #appointmentinfo table {
   border: 1px solid black;
