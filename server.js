@@ -572,7 +572,7 @@ app.put('/schedule/:id', async (req, res) => {
 
 /* Patient Backend */
 app.post('/createAppointment', async (req, res) => {
-  
+  console.log(req.body)
 });
 // Start the server
 const PORT = process.env.PORT || 3000;

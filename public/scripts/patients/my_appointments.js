@@ -4,38 +4,32 @@ async function myAppointments() {
   if (myAppointmentsInitialized) return
   myAppointmentsInitialized = true
   
+  document.getElementById("create_app_first_name").value = currentPatient.first_name;
+  document.getElementById("create_app_last_name").value = currentPatient.last_name;
+  document.getElementById("create_app_contact_num").value = currentPatient.contact_number;
+  document.getElementById("create_app_sex").value = currentPatient.sex;
   let formDebounce = false
   document.getElementById("createAppointmentsForm").addEventListener("submit", async function (event) {
       event.preventDefault();
     if (formDebounce) return
     formDebounce = true
-
-      const formData = Object.fromEntries(new FormData(event.target).entries());
     
-    let accountData = await fetch("/currentAccount?type="+formData.account_type.toLowerCase())
-    if (accountData.ok) {
-      accountData = await accountData.json()
-      if (formData.account_type == "Doctor") currentDoctor = accountData
-      else if (formData.account_type == "Patient") currentPatient = accountData
-    } else return
+    const formData = Object.fromEntries(new FormData(event.target).entries());
+    const notification = document.getElementById("my_appointments_notif");
     
-      const notification = document.getElementById(
-        formData.account_type + "_settings_notif"
-      );
-
-      const response = await fetch("/updateAccount", {
+      const response = await fetch("/createAppointment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ accountData, formData }),
+        body: JSON.stringify({ currentPatient, formData }),
       });
 
       if (response.ok) {
-        notification.textContent = "Successfully updated account details.";
+        notification.textContent = "Successfully created appointment.";
         notification.className = "alert alert-success mt-3 rounded-3";
       } else {
         const error = await response.json();
         notification.textContent =
-          error.message || "Failed to update account details.";
+          error.message || "Failed to create appointment.";
         notification.className = "alert alert-danger mt-3 rounded-3";
       }
 
