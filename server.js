@@ -61,7 +61,6 @@ let patientsSchema = new mongoose.Schema({
   password: String,
   emergency_contact_name: String,
   emergency_contact_number: String,
-  emergency_contact_relation: String,
 });
 let medicalRecordsSchema = new mongoose.Schema({
   record_id: Number,
@@ -296,7 +295,8 @@ app.post('/updateAccount', async (req, res) => {
   
   account.email = formData.email
   account.contact_number = formData.contact_number
-  
+  account.emergency_contact_name = formData.ec_name || ""
+  account.emergency_contact_number = formData.ec_num || ""
   if (!formData.password) {
     await account.save()
     return res.status(200).json({ message: 'Account updated successfully' });

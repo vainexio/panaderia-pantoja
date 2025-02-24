@@ -24,16 +24,10 @@
         <input type="text" id="create_app_sex" name="sex" readonly/>
       </div>
       
-      
-      <div class="form-group">
-        <label for="start_time">Appointment Date</label>
-        <input type="date" id="start_time" name="start_time" required/>
-      </div>
-      
       <div class="form-group">
     <label for="reason">Reason for Appointment</label>
     <select id="create_app_reason" name="reason" required>
-        <option value="">Select</option>
+        <option value="">Select Reason</option>
         <option value="medical_consultation">Medical Consultation</option>
         <option value="health_assessment">Health Assessment</option>
         <option value="follow_up_checkup">Follow-up Checkup</option>
@@ -42,6 +36,18 @@
         <option value="prescription_refill">Prescription Refill</option>
     </select>
 </div>
+      
+      <div class="form-group">
+        <label for="day">Appointment Date (this week)</label>
+        <select id="create_app_day" name="day" required>
+        <option value="">Select Day</option>
+        <option value="Monday">This Monday</option>
+        <option value="Tuesday">This Tuesday</option>
+        <option value="Wednesday">This Wednesday</option>
+        <option value="Thursday">This Thursday</option>
+        <option value="Friday">This Friday</option>
+        </select>
+      </div>
       
       <div class="submit-container">
         <button type="submit" class="action-button">Create Appointment</button>
