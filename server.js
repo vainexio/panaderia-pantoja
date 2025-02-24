@@ -59,6 +59,9 @@ let patientsSchema = new mongoose.Schema({
   patient_type: String,
   email: String,
   password: String,
+  emergency_contact_name: String,
+  emergency_contact_number: String,
+  emergency_contact_relation: String,
 });
 let medicalRecordsSchema = new mongoose.Schema({
   record_id: Number,

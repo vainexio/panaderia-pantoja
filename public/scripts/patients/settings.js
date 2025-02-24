@@ -7,6 +7,8 @@ async function patientSettings() {
     document.getElementById("patient_settings_account_type").value = "Patient";
     document.getElementById("patient_settings_contact_number").value = currentPatient.contact_number;
     document.getElementById("patient_settings_email").value = currentPatient.email;
+    document.getElementById("patient_settings_ec_name").value = currentPatient.emergency_contact_name || "";
+    document.getElementById("patient_settings_ec_num").value = currentPatient.emergency_contact_number || "";
 
     const sessionResponse = await fetch("/getAllSessions", {
       method: "POST",
