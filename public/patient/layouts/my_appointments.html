@@ -64,59 +64,42 @@
     <header class="form-header">
       <h1>My Appointments</h1>
     </header>
-    <!-- Sidebar -->
+    <!-- Bottom -->
     <div class="patient-view">
         <h1>My Appointment</h1>
         <div class="appointment-table-container">
           <table>
             <thead>
               <tr>
-                <th id= "datetime">Date Time</th>
-                <th id= "DoctorName"> DoctorName</th>
-                <th id= "Status">Status</th>
-                <th id= "Actions">Actions</th>
+                <th id= "appointment_day">Appointment Day</th>
+                <th id= "appointment_sched">Time Schedule</th>
+                <th id= "assigned_doctor">Assigned Doctor</th>
+                <th id= "appointment_status">Status</th>
+                <th id= "appointment_cctions">Actions</th>
                 
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Nov 30, 2020 12:00 PM</td>
+                <td>Monday (add specific date here)</td>
+                <td>Morning Schedule</td>
                 <td>Dr. Juan Miguel</td>
-                <td><span class="status-indicator pending" title="Pending"></span></td>
-                <td>Follow-up</td>
+                <td>Pending Confirmation</td>
               </tr>
               <tr>
-                <td>Sept 30, 2020 9:00 AM</td>
+                <td>Tuesday (add specific date here)</td>
+                <td>Afternoon Schedule</td>
                 <td>Dr. Nicole Evangelista</td>
-                <td><span class="status-indicator pending" title="Pending"></span></td>
-                <td>Consultation</td>
+                <td>Confirmed</td>
               </tr>
               <tr>
-                <td>Oct 5, 2020 5:30 PM</td>
+                <td>Friday (add specific date here)</td>
+                <td>Morning Schedule</td>
                 <td>Dr. Avril Phoebe</td>
-                <td><span class="status-indicator pending" title="Pending"></span></td>
-                <td>Follow-up</td>
+                <td>Completed</td>
               </tr>
             </tbody>
             <tfoot>
-              <tr>
-                <td colspan="5">
-                  <div class="status-legend">
-                    <div class="status-item">
-                      <span class="status-indicator pending"></span>
-                      <span>Pending</span>
-                    </div>
-                    <div class="status-item">
-                      <span class="status-indicator cancelled"></span>
-                      <span>Cancel</span>
-                    </div>
-                    <div class="status-item">
-                      <span class="status-indicator confirmed"></span>
-                      <span>Confirm</span>
-                    </div>
-                  </div>
-                </td>
-              </tr>
             </tfoot>
           </table>
         </div>

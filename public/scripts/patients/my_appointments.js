@@ -17,7 +17,7 @@ async function myAppointments() {
     const formData = Object.fromEntries(new FormData(event.target).entries());
     const notification = document.getElementById("my_appointments_notif");
     
-      const response = await fetch("/createAppointment", {
+      let response = await fetch("/createAppointment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ currentPatient, formData }),
@@ -25,12 +25,11 @@ async function myAppointments() {
 
       if (response.ok) {
         response = await response.json();
-        notification.textContent = "Successfully created appointment.";
+        notification.textContent = response.message;
         notification.className = "alert alert-success mt-3 rounded-3";
       } else {
         const error = await response.json();
-        notification.textContent =
-          error.message || "Failed to create appointment.";
+        notification.textContent = error.message || "Failed to create appointment.";
         notification.className = "alert alert-danger mt-3 rounded-3";
       }
 
