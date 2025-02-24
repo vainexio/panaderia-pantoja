@@ -97,8 +97,11 @@ async function appointments() {
             document.getElementById("mr_doctor_id").value = currentDoctor.doctor_id;
             
             document.getElementById("app_patient_name").value = startData.appointment.patient_name;
-              document.getElementById("app_patient_contact").value = startData.appointment.contact_number;
-              document.getElementById("app_patient_email").value = startData.appointment.email;
+            document.getElementById("app_patient_contact").value = startData.appointment.contact_number;
+            document.getElementById("app_patient_email").value = startData.appointment.email;
+            document.getElementById("app_patient_birthdate").value = startData.appointment.birthdate;
+            document.getElementById("app_patient_sex").value = startData.appointment.sex;
+            document.getElementById("app_patient_er_contact").value = startData.appointment.emergency_contact;
             // Pre-fill form if record exists
             if (startData.medicalRecord) {
               document.getElementById("mr_diagnosis").value = startData.medicalRecord.diagnosis;

@@ -22,26 +22,40 @@
       </form>
       <!-- Place the modal outside the overwritten container -->
       <div id="appointmentModal" style="display: none;" >
-        <header class="form-header">
-      <h1>Register Patient Account</h1>
+        <header class="form-header mt-5">
+      <h1>Patient Details</h1>
     </header>
         <div id="appointmentDetails">
           <form class="medical-record-form">
           <div class="form-group">
             <label for="app_patient_name">Patient Name</label>
-            <input type="text" id="app_patient_name" name="app_patient_name" required/>
+            <input type="text" id="app_patient_name" name="app_patient_name" readonly/>
+          </div>
+            <div class="form-group">
+            <label for="app_patient_birthdate">Birthdate</label>
+            <input type="text" id="app_patient_birthdate" name="app_patient_birthdate" readonly/>
+          </div>
+            <div class="form-group">
+            <label for="app_patient_sex">Sex</label>
+            <input type="text" id="app_patient_sex" name="app_patient_sex" readonly/>
           </div>
         <div class="form-group">
             <label for="app_patient_contact">Contact</label>
-            <input type="text" id="app_patient_contact" name="app_patient_contact" required/>
+            <input type="text" id="app_patient_contact" name="app_patient_contact" readonly/>
+          </div>
+            <div class="form-group">
+            <label for="app_patient_er_contact">Emergency Contact</label>
+            <input type="text" id="app_patient_er_contact" name="app_patient_er_contact" readonly/>
           </div>
       <div class="form-group">
             <label for="app_patient_email">Email</label>
-            <input type="text" id="app_patient_email" name="app_patient_email" required/>
+            <input type="text" id="app_patient_email" name="app_patient_email" readonly/>
           </div>
           </form>
         </div>
-        <h3>Medical Record</h3>
+        <header class="form-header mt-5">
+      <h1>Medical Record</h1>
+    </header>
         <form id="medicalRecordForm" class="medical-record-form">
           <input type="hidden" name="appointment_id" id="mr_appointment_id" />
           <input type="hidden" name="patient_id" id="mr_patient_id" />

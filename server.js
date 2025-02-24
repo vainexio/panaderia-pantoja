@@ -703,6 +703,9 @@ app.post('/startAppointment', async (req, res) => {
         appointment_id: appointment.appointment_id,
         patient_id: appointment.patient_id,
         patient_name: `${appointment.patient_info.first_name} ${appointment.patient_info.last_name}`,
+        sex: appointment.patient_info.sex,
+        birthdate: appointment.patient_info.birthdate,
+        emergency_contact: `${appointment.patient_info.emergency_contact_name || "None"} - ${appointment.patient_info.emergency_contact_number || "None"}`,
         contact_number: appointment.patient_info.contact_number,
         email: appointment.patient_info.email,
         // Include other patient details if needed.
