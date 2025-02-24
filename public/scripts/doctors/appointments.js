@@ -30,17 +30,19 @@ async function appointments() {
           <td>${app.patient_name}</td>
           <td>${app.reason}</td>
           <td>
-            ${app.status}
+            <div class="form-group2">
+          <label for="app_status">${app.status}</label>
             <select class="status-select" data-id="${app.appointment_id}">
-              <option value="">Change Status</option>
-              <option value="Pending Confirmation">Pending Confirmation</option>
+              <option value="">Change</option>
+              <option value="Pending">Pending</option>
               <option value="Confirmed">Confirmed</option>
               <option value="Completed">Completed</option>
               <option value="Cancelled">Cancelled</option>
             </select>
+            </div>
           </td>
           <td>
-            <button class="start-btn" data-id="${app.appointment_id}">Start Appointment</button>
+            <button class="action-button start-btn" data-id="${app.appointment_id}">Start Appointment</button>
           </td>
         `;
         tableBody.appendChild(row);

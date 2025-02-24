@@ -648,7 +648,7 @@ app.post('/getDoctorAppointments', async (req, res) => {
 app.post('/updateAppointmentStatus', async (req, res) => {
   try {
     const { appointment_id, newStatus } = req.body;
-    const allowedStatuses = ["Pending Confirmation", "Confirmed", "Completed", "Cancelled"];
+    const allowedStatuses = ["Pending", "Confirmed", "Completed", "Cancelled"];
     if (!appointment_id || !newStatus || !allowedStatuses.includes(newStatus)) {
       return res.status(400).json({ message: "Invalid input" });
     }
@@ -767,7 +767,7 @@ app.post('/createAppointment', async (req, res) => {
       return res.status(400).json({ message: 'Missing required information' });
     }
 
-    const existingAppointment = await appointments.findOne({ patient_id: currentPatient.patient_id, status: "Pending Confirmation" });
+    const existingAppointment = await appointments.findOne({ patient_id: currentPatient.patient_id, status: "Pending" });
     if (existingAppointment) {
       return res.status(400).json({ message: 'You already have a pending appointment.' });
     }
@@ -798,7 +798,7 @@ app.post('/createAppointment', async (req, res) => {
       appointment_day: formData.day,
       appointment_time_schedule: formData.schedule,
       reason: formData.reason,
-      status: 'Pending Confirmation'
+      status: 'Pending'
     });
     await newAppointment.save();
 
@@ -880,7 +880,7 @@ app.delete('/cancelAppointment/:appointmentId', async (req, res) => {
     if (!appointment) {
       return res.status(404).json({ message: 'Appointment not found' });
     }
-    if (appointment.status !== 'Pending Confirmation') {
+    if (appointment.status !== 'Pending') {
       return res.status(400).json({ message: 'Only appointments pending confirmation can be cancelled' });
     }
     await appointments.deleteOne({ appointment_id: appointmentId });
