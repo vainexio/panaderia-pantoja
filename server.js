@@ -551,15 +551,21 @@ app.put('/schedule/:id', async (req, res) => {
 });
 app.post('/getDoctorAppointments', async (req, res) => {
   const currentDoctor = req.body.currentDoctor;
+  const statusFilter = req.body.statusFilter; // Optional filter for status
+
   if (!currentDoctor || !currentDoctor.doctor_id) {
     return res.status(400).json({ message: "Invalid doctor data." });
   }
 
   try {
+    // Build the match query
+    const matchQuery = { doctor_id: currentDoctor.doctor_id };
+    if (statusFilter && statusFilter !== 'All') {
+      matchQuery.status = statusFilter;
+    }
+
     const appointmentList = await appointments.aggregate([
-      {
-        $match: { doctor_id: currentDoctor.doctor_id } // Filter for this doctor
-      },
+      { $match: matchQuery },
       {
         $lookup: {
           from: "patients",           // Assumes a "patients" collection exists
@@ -605,7 +611,7 @@ app.post('/getDoctorAppointments', async (req, res) => {
       }
     ]);
 
-    // Helper to compute the exact date for the current week from the appointment day
+    // Helper to compute the exact date for the current week based on the day name
     function getAppointmentDate(dayName) {
       const daysMapping = { 'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4 };
       if (!(dayName in daysMapping)) return null;
@@ -623,7 +629,7 @@ app.post('/getDoctorAppointments', async (req, res) => {
       return appointmentDate;
     }
 
-    // Format the appointments
+    // Format the appointments with computed exact date
     const formattedAppointments = appointmentList.map(app => {
       const exactDate = getAppointmentDate(app.appointment_day);
       return {
@@ -644,11 +650,12 @@ app.post('/getDoctorAppointments', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 // 1. Update Appointment Status
 app.post('/updateAppointmentStatus', async (req, res) => {
   try {
     const { appointment_id, newStatus } = req.body;
-    const allowedStatuses = ["Pending", "Confirmed", "Completed", "Cancelled"];
+    const allowedStatuses = ["Pending", "Completed", "Cancelled"];
     if (!appointment_id || !newStatus || !allowedStatuses.includes(newStatus)) {
       return res.status(400).json({ message: "Invalid input" });
     }
