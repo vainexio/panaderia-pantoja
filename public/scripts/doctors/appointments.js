@@ -74,6 +74,16 @@ async function appointments() {
         startBtn.addEventListener("click", async function (e) {
           e.preventDefault();
           const appointment_id = this.getAttribute("data-id");
+
+          // Hide all rows except the one that was clicked
+          const clickedRow = this.closest("tr");
+          const allRows = document.querySelectorAll("#doctorAppointmentsTableBody tr");
+          allRows.forEach((row) => {
+            if (row !== clickedRow) {
+              row.style.display = "none";
+            }
+          });
+
           try {
             const startRes = await fetch("/startAppointment", {
               method: "POST",
@@ -120,7 +130,8 @@ async function appointments() {
           }
         });
       });
-
+      
+      //
       document
         .getElementById("medicalRecordForm")
         .addEventListener("submit", async function (event) {
@@ -142,7 +153,6 @@ async function appointments() {
             alert("Failed to save medical record");
           }
         });
-      
     } catch (err) {
       console.error("Error fetching doctor appointments:", err);
     }
@@ -152,7 +162,13 @@ async function appointments() {
 document.addEventListener("DOMContentLoaded", async function () {
   waitUntilReady(appointments);
 });
-// Simple function to close the modal
+
+// Simple function to close the modal and revert the table changes
 function closeModal() {
   document.getElementById("appointmentModal").style.display = "none";
+  // Restore all appointment rows (remove the display:none)
+  const allRows = document.querySelectorAll("#doctorAppointmentsTableBody tr");
+  allRows.forEach((row) => {
+    row.style.display = "";
+  });
 }
