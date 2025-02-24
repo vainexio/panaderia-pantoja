@@ -71,7 +71,8 @@ async function appointments() {
 
         // Handle start appointment action
         const startBtn = row.querySelector(".start-btn");
-        startBtn.addEventListener("click", async function () {
+        startBtn.addEventListener("click", async function (e) {
+          e.preventDefault()
           const appointment_id = this.getAttribute("data-id");
           try {
             const startRes = await fetch("/startAppointment", {

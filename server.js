@@ -676,7 +676,7 @@ app.post('/startAppointment', async (req, res) => {
     }
     // Fetch appointment details along with patient info from the "patients" collection.
     const appointmentDetail = await appointments.aggregate([
-      { $match: { appointment_id: appointment_id } },
+      { $match: { appointment_id: Number(appointment_id) } },
       {
         $lookup: {
           from: "patients",  // Ensure your collection name is correct.
@@ -687,7 +687,7 @@ app.post('/startAppointment', async (req, res) => {
       },
       { $unwind: "$patient_info" }
     ]);
-    
+    console.log(appointmentDetail)
     if (!appointmentDetail || appointmentDetail.length === 0) {
       return res.status(404).json({ message: "Appointment not found" });
     }
