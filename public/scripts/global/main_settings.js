@@ -68,8 +68,8 @@ async function mainSettings() {
 
   document.getElementById("settingsForm").addEventListener("submit", async function (event) {
       event.preventDefault();
-    if (toggleDebounce) return
-    toggleDebounce = true
+    if (formDebounce) return
+    formDebounce = true
 
       const formData = Object.fromEntries(new FormData(event.target).entries());
     
@@ -104,7 +104,7 @@ async function mainSettings() {
         if (notification.textContent.length > 0) {
           notification.textContent = "";
           notification.className = "";
-          toggleDebounce = false
+          formDebounce = false
         }
       }, 3000);
     });
