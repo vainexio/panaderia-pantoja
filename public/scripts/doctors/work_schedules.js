@@ -135,10 +135,10 @@ function fetchSchedules() {
                 <option value="Friday" ${
                   schedule.day_of_week === "Friday" ? "selected" : ""
                 }>Friday</option>
-                <option value="Friday" ${
+                <option value="Saturday" ${
                   schedule.day_of_week === "Saturday" ? "selected" : ""
                 }>Saturday</option>
-                <option value="Friday" ${
+                <option value="Sunday" ${
                   schedule.day_of_week === "Sunday" ? "selected" : ""
                 }>Sunday</option>
               </select>
