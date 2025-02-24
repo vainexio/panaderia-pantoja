@@ -40,8 +40,12 @@ async function mainSettings() {
   // Prevent duplicate listener registration
   if (mainSettingsInitialized) return;
   mainSettingsInitialized = true;
-
+  
+  let toggleDebounce = false
+  let formDebounce = false
   document.getElementById('toggle-password-btn').addEventListener('click', function() {
+    if (toggleDebounce) return
+    toggleDebounce = true
     var passwordFields = document.getElementById('password-fields');
     var inputs = passwordFields.querySelectorAll('input');
     
@@ -50,24 +54,31 @@ async function mainSettings() {
       passwordFields.style.display = "block";
       this.innerText = "Cancel";
       inputs.forEach(input => input.disabled = false);
-    } else {
+    }
+    else {
       passwordFields.style.display = "none";
       this.innerText = "Change Password";
       inputs.forEach(input => input.disabled = true);
     }
+    
+    setTimeout(function() {
+      toggleDebounce = false
+    },500)
   });
 
   document.getElementById("settingsForm").addEventListener("submit", async function (event) {
+    if (toggleDebounce) return
+    toggleDebounce = true
       event.preventDefault();
 
       const formData = Object.fromEntries(new FormData(event.target).entries());
-
-      let accountData =
-        formData.account_type == "Doctor"
-          ? currentDoctor
-          : formData.account_type == "Patient"
-          ? currentPatient
-          : null;
+    
+    let accountData = await fetch("/currentAccount?type="+formData.account_type.toLowerCase())
+    if (accountData.ok) {
+      if (formData.account_type == "Doctor") currentDoctor = await accountData.json()
+      else if (formData.account_type == "Patient") currentPatient = await accountData.json()
+    } else return
+    
       const notification = document.getElementById(
         formData.account_type + "_settings_notif"
       );
@@ -92,6 +103,7 @@ async function mainSettings() {
         if (notification.textContent.length > 0) {
           notification.textContent = "";
           notification.className = "";
+          toggleDebounce = false
         }
       }, 3000);
     });

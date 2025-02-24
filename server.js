@@ -298,7 +298,7 @@ app.post('/updateAccount', async (req, res) => {
     await account.save()
     return res.status(200).json({ message: 'Account updated successfully' });
   }
-  console.log(formData)
+  console.log(formData,await bcrypt.hash(formData.old_password, 10))
   const isMatch = await bcrypt.compare(formData.old_password, account.password);
   if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
   
@@ -329,7 +329,7 @@ app.post('/login', async (req, res) => {
   if (userType === 'doctor') {
     const doctor = await doctors.findOne({ email });
     if (doctor) {
-      const isMatch = await bcrypt.compare(password, doctor.password) || password == doctor.password;
+      const isMatch = await bcrypt.compare(password, doctor.password);
       if (!isMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
