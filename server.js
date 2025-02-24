@@ -549,6 +549,102 @@ app.put('/schedule/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+app.post('/getDoctorAppointments', async (req, res) => {
+  const currentDoctor = req.body.currentDoctor;
+  if (!currentDoctor || !currentDoctor.doctor_id) {
+    return res.status(400).json({ message: "Invalid doctor data." });
+  }
+
+  try {
+    const appointmentList = await appointments.aggregate([
+      {
+        $match: { doctor_id: currentDoctor.doctor_id } // Filter for this doctor
+      },
+      {
+        $lookup: {
+          from: "patients",           // Assumes a "patients" collection exists
+          localField: "patient_id",
+          foreignField: "patient_id",
+          as: "patient_info"
+        }
+      },
+      { $unwind: "$patient_info" },
+      // Add numeric fields for sorting
+      {
+        $addFields: {
+          daySort: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$appointment_day", "Monday"] }, then: 1 },
+                { case: { $eq: ["$appointment_day", "Tuesday"] }, then: 2 },
+                { case: { $eq: ["$appointment_day", "Wednesday"] }, then: 3 },
+                { case: { $eq: ["$appointment_day", "Thursday"] }, then: 4 },
+                { case: { $eq: ["$appointment_day", "Friday"] }, then: 5 }
+              ],
+              default: 6
+            }
+          },
+          scheduleSort: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$appointment_time_schedule", "Morning"] }, then: 1 },
+                { case: { $eq: ["$appointment_time_schedule", "Afternoon"] }, then: 2 }
+              ],
+              default: 3
+            }
+          }
+        }
+      },
+      // Sort first by the appointment day, then by the schedule (Morning before Afternoon)
+      {
+        $sort: { daySort: 1, scheduleSort: 1 }
+      },
+      // Remove the temporary sort fields
+      {
+        $project: { daySort: 0, scheduleSort: 0 }
+      }
+    ]);
+
+    // Helper to compute the exact date for the current week from the appointment day
+    function getAppointmentDate(dayName) {
+      const daysMapping = { 'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4 };
+      if (!(dayName in daysMapping)) return null;
+      const now = new Date();
+      let monday;
+      // Determine the Monday of the current week
+      if (now.getDay() === 0) {
+        monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      } else {
+        const diff = now.getDay() - 1;
+        monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - diff);
+      }
+      const appointmentDate = new Date(monday);
+      appointmentDate.setDate(monday.getDate() + daysMapping[dayName]);
+      return appointmentDate;
+    }
+
+    // Format the appointments
+    const formattedAppointments = appointmentList.map(app => {
+      const exactDate = getAppointmentDate(app.appointment_day);
+      return {
+        appointment_id: app.appointment_id,
+        patient_id: app.patient_id,
+        patient_name: `${app.patient_info.first_name} ${app.patient_info.last_name}`,
+        appointment_day: app.appointment_day,
+        appointment_time_schedule: app.appointment_time_schedule,
+        reason: app.reason,
+        status: app.status,
+        exact_date: exactDate ? exactDate.toLocaleDateString() : "N/A"
+      };
+    });
+
+    res.status(200).json({ appointments: formattedAppointments });
+  } catch (err) {
+    console.error("Error fetching doctor appointments", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 /* Patient Backend */
 app.post('/createAppointment', async (req, res) => {

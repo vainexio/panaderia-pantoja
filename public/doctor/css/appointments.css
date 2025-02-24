@@ -17,8 +17,7 @@
 }
 
 .appointment-card {
-    width: 80%;
-    max-width: 980px;
+    width: 90%;
     min-height: 100%;
     margin: auto;
     padding: 2rem;
