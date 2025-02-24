@@ -9,7 +9,13 @@ async function myAppointments() {
   let formDebounce = false;
   
   // Fetch and render appointments
-  fetch("/appointments")
+  fetch("/appointments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        currentPatient
+      }),
+    })
     .then((response) => response.json())
     .then((data) => {
       const appointmentsData = data.appointments;

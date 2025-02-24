@@ -39,7 +39,7 @@ function fetchSchedules() {
         let response = await fetch("/schedule", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ day_of_week, start_time, end_time }),
+          body: JSON.stringify({ currentDoctor, day_of_week, start_time, end_time }),
         });
         if (response.ok) {
           response = await response.json();
@@ -100,7 +100,13 @@ function fetchSchedules() {
       });
   }
 
-  fetch("/schedules")
+  fetch("/schedules", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        currentDoctor,
+      }),
+    })
     .then((response) => response.json())
     .then((schedules) => {
       let tableHTML = `

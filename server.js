@@ -16,16 +16,6 @@ const settings = require('./data/settings.js')
 const app = express();
 app.use(cors())
 
-//
-let currentPatient = null
-let currentDoctor = {
-  doctor_id: 1,
-  first_name: "Juan",
-  last_name: "Cruz",
-  contact_number: "123-456-7890",
-  email: "juancruz@gmail.com",
-  password: "password1",
-};
 
 // Connect to MongoDB
 if (process.env.MONGOOSE) {
@@ -435,12 +425,6 @@ app.post('/registerPatient', async (req, res) => {
   }
 });
 app.get('/api/clinic-schedule', async (req, res) => {
-  const ip = req.ip
-  // Optionally normalize IPv6-mapped IPv4 addresses
-  if (ip.startsWith("::ffff:")) {
-    ip = ip.substring(7);
-  }
-  console.log(ip,'for csched')
   try {
     const now = new Date();
     const currentMonth = now.toLocaleString('default', { month: 'long' });
@@ -525,13 +509,8 @@ app.post('/schedule', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-app.get('/schedules', async (req, res) => {
-  const ip = req.ip
-  // Optionally normalize IPv6-mapped IPv4 addresses
-  if (ip.startsWith("::ffff:")) {
-    ip = ip.substring(7);
-  }
-  console.log(ip,'for sched')
+app.post('/schedules', async (req, res) => {
+  let currentDoctor = req.body.currentDoctor
   try {
     let schedules = await availableDoctors.find({ doctor_id: currentDoctor.doctor_id });
     const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -624,9 +603,18 @@ app.post('/createAppointment', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-app.get('/appointments', async (req, res) => {
+app.post('/appointments', async (req, res) => {
+  const currentPatient = req.body.currentPatient;
+
+  if (!currentPatient || !currentPatient.patient_id) {
+    return res.status(400).json({ error: "Invalid patient data." });
+  }
+
   try {
     const appointmentList = await appointments.aggregate([
+      {
+        $match: { patient_id: currentPatient.patient_id } // Filter by current patient's ID
+      },
       {
         $lookup: {
           from: "doctors",
