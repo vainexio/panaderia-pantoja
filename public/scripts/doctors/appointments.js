@@ -124,6 +124,7 @@ async function appointments() {
             }
             // Show the modal
             document.getElementById("appointmentModal").style.display = "block";
+            document.getElementById("appointmentModal").classList.add('appointmentModal')
           } catch (err) {
             console.error("Error starting appointment:", err);
             alert("Failed to start appointment");
