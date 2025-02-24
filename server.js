@@ -89,10 +89,10 @@ const loginSessionSchema = new mongoose.Schema({
   device_id: String,
 });
 const loginSession = mongoose.model('LoginSession', loginSessionSchema);
-const doctors = mongoose.model('Doctors', doctorSchema);
 const patients = mongoose.model('Patients', patientsSchema);
 const medicalRecords = mongoose.model('Medical Records', medicalRecordsSchema);
 const appointments = mongoose.model('Appointments', appointmentsSchema);
+const doctors = mongoose.model('Doctors', doctorSchema);
 const availableDoctors = mongoose.model('Doctor Availability', doctorAvailabilitySchema);
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -573,8 +573,61 @@ app.put('/schedule/:id', async (req, res) => {
 
 /* Patient Backend */
 app.post('/createAppointment', async (req, res) => {
-  console.log(req.body)
+  try {
+    const { currentPatient, formData } = req.body;
+
+    // Validate required information
+    if (!currentPatient || !formData) {
+      return res.status(400).json({ message: 'Missing required information' });
+    }
+
+    // Check appointment limit for morning and afternoon (limit: 10 per day)
+    const scheduleLower = formData.schedule.toLowerCase();
+    if (scheduleLower === 'morning' || scheduleLower === 'afternoon') {
+      const count = await appointments.countDocuments({
+        appointment_day: formData.day,
+        appointment_time_schedule: formData.schedule
+      });
+      if (count >= 10) {
+        return res.status(400).json({
+          message: `Appointments fully booked for ${formData.schedule} on ${formData.day}`
+        });
+      }
+    }
+
+    // Find a doctor available on the selected day (using day_of_week)
+    const availableDoctor = await availableDoctors.findOne({ day_of_week: formData.day });
+    if (!availableDoctor) {
+      return res.status(400).json({ message: 'No available doctor for this day' });
+    }
+
+    // Generate a random appointment_id (e.g., a 6-digit number)
+    const appointmentId = Math.floor(Math.random() * 900000) + 100000;
+
+    // Create new appointment document
+    const newAppointment = new appointments({
+      appointment_id: appointmentId,
+      patient_id: currentPatient.patient_id,
+      doctor_id: availableDoctor.doctor_id,
+      appointment_day: formData.day,
+      appointment_time_schedule: formData.schedule,
+      reason: formData.reason,
+      status: 'Pending Confirmation'
+    });
+
+    // Save the appointment to the database
+    await newAppointment.save();
+
+    res.status(201).json({
+      message: 'Appointment created successfully',
+      appointment: newAppointment
+    });
+  } catch (err) {
+    console.error('Error creating appointment:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 });
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

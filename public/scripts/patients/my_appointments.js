@@ -7,8 +7,8 @@ async function myAppointments() {
   document.getElementById("create_app_first_name").value = currentPatient.first_name;
   document.getElementById("create_app_last_name").value = currentPatient.last_name;
   document.getElementById("create_app_contact_num").value = currentPatient.contact_number;
-  document.getElementById("create_app_sex").value = currentPatient.sex;
   let formDebounce = false
+  
   document.getElementById("createAppointmentsForm").addEventListener("submit", async function (event) {
       event.preventDefault();
     if (formDebounce) return
@@ -24,6 +24,7 @@ async function myAppointments() {
       });
 
       if (response.ok) {
+        response = await response.json();
         notification.textContent = "Successfully created appointment.";
         notification.className = "alert alert-success mt-3 rounded-3";
       } else {
