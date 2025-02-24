@@ -77,9 +77,12 @@
   border: 2px solid black;
   padding: 10px;
 }
-
-.appointment-table thead th {
-  background: #f2bf2e;
+#appointmentinfo table {
+  border: 1px solid black;
+}
+#appointmentinfo table thead tr th {
+  background: var(--yellow);
+  padding: 15px;
   font-weight: bold;
 }
 
