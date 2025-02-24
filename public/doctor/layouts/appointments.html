@@ -5,6 +5,26 @@
       <h1>Appointments</h1>
     </header>
     <div class="appoint-card">
+      
+      <div class="filter-container" style="margin-bottom: 1rem;">
+        <div class="form-group">
+            <label for="patientSearchInput">Search Patient Name</label>
+            <input type="text" id="patientSearchInput" name="patientSearchInput"/>
+          </div>
+        <div class="form-group">
+            <label for="patientSearchInput">Appointment Status</label>
+            <select id="statusFilterSelect">
+      <option value="All">All</option>
+      <option value="Pending">Pending</option>
+      <option value="Completed">Completed</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+          </div>
+        <div class="submit-container">
+        <button id="applyFiltersBtn" class="action-button">Apply Filters</button>
+      </div>
+  </div>
+      
       <form id="appointmentinfo" class="appoint-info">
         <table class="table table-light table-striped w-100">
           <thead>

@@ -551,65 +551,72 @@ app.put('/schedule/:id', async (req, res) => {
 });
 app.post('/getDoctorAppointments', async (req, res) => {
   const currentDoctor = req.body.currentDoctor;
-  const statusFilter = req.body.statusFilter; // Optional filter for status
+  const statusFilter = req.body.statusFilter; // Optional status filter (e.g., "Pending", "Completed", etc.)
+  const patientSearch = req.body.patientSearch; // Optional patient name search string
 
   if (!currentDoctor || !currentDoctor.doctor_id) {
     return res.status(400).json({ message: "Invalid doctor data." });
   }
 
   try {
-    // Build the match query
+    // Build the initial match query for doctor_id and optional status filter
     const matchQuery = { doctor_id: currentDoctor.doctor_id };
     if (statusFilter && statusFilter !== 'All') {
       matchQuery.status = statusFilter;
     }
 
-    const appointmentList = await appointments.aggregate([
-      { $match: matchQuery },
-      {
-        $lookup: {
-          from: "patients",           // Assumes a "patients" collection exists
-          localField: "patient_id",
-          foreignField: "patient_id",
-          as: "patient_info"
+    // Build the aggregation pipeline
+    const pipeline = [];
+    pipeline.push({ $match: matchQuery });
+    pipeline.push({
+      $lookup: {
+        from: "patients", // Actual collection name (lowercase)
+        localField: "patient_id",
+        foreignField: "patient_id",
+        as: "patient_info"
+      }
+    });
+    pipeline.push({ $unwind: "$patient_info" });
+    if (patientSearch && patientSearch.trim() !== "") {
+      pipeline.push({
+        $match: {
+          $or: [
+            { "patient_info.first_name": { $regex: patientSearch, $options: "i" } },
+            { "patient_info.last_name": { $regex: patientSearch, $options: "i" } }
+          ]
         }
-      },
-      { $unwind: "$patient_info" },
-      // Add numeric fields for sorting
-      {
-        $addFields: {
-          daySort: {
-            $switch: {
-              branches: [
-                { case: { $eq: ["$appointment_day", "Monday"] }, then: 1 },
-                { case: { $eq: ["$appointment_day", "Tuesday"] }, then: 2 },
-                { case: { $eq: ["$appointment_day", "Wednesday"] }, then: 3 },
-                { case: { $eq: ["$appointment_day", "Thursday"] }, then: 4 },
-                { case: { $eq: ["$appointment_day", "Friday"] }, then: 5 }
-              ],
-              default: 6
-            }
-          },
-          scheduleSort: {
-            $switch: {
-              branches: [
-                { case: { $eq: ["$appointment_time_schedule", "Morning"] }, then: 1 },
-                { case: { $eq: ["$appointment_time_schedule", "Afternoon"] }, then: 2 }
-              ],
-              default: 3
-            }
+      });
+    }
+    // Add numeric fields for sorting by day and schedule
+    pipeline.push({
+      $addFields: {
+        daySort: {
+          $switch: {
+            branches: [
+              { case: { $eq: ["$appointment_day", "Monday"] }, then: 1 },
+              { case: { $eq: ["$appointment_day", "Tuesday"] }, then: 2 },
+              { case: { $eq: ["$appointment_day", "Wednesday"] }, then: 3 },
+              { case: { $eq: ["$appointment_day", "Thursday"] }, then: 4 },
+              { case: { $eq: ["$appointment_day", "Friday"] }, then: 5 }
+            ],
+            default: 6
+          }
+        },
+        scheduleSort: {
+          $switch: {
+            branches: [
+              { case: { $eq: ["$appointment_time_schedule", "Morning"] }, then: 1 },
+              { case: { $eq: ["$appointment_time_schedule", "Afternoon"] }, then: 2 }
+            ],
+            default: 3
           }
         }
-      },
-      // Sort first by the appointment day, then by the schedule (Morning before Afternoon)
-      {
-        $sort: { daySort: 1, scheduleSort: 1 }
-      },
-      // Remove the temporary sort fields
-      {
-        $project: { daySort: 0, scheduleSort: 0 }
       }
-    ]);
+    });
+    pipeline.push({ $sort: { daySort: 1, scheduleSort: 1 } });
+    pipeline.push({ $project: { daySort: 0, scheduleSort: 0 } });
+
+    const appointmentList = await appointments.aggregate(pipeline);
 
     // Helper to compute the exact date for the current week based on the day name
     function getAppointmentDate(dayName) {
@@ -617,7 +624,7 @@ app.post('/getDoctorAppointments', async (req, res) => {
       if (!(dayName in daysMapping)) return null;
       const now = new Date();
       let monday;
-      // Determine the Monday of the current week
+      // Determine Monday of the current week (special handling for Sunday)
       if (now.getDay() === 0) {
         monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
       } else {
@@ -629,7 +636,7 @@ app.post('/getDoctorAppointments', async (req, res) => {
       return appointmentDate;
     }
 
-    // Format the appointments with computed exact date
+    // Format the appointments to include computed exact date
     const formattedAppointments = appointmentList.map(app => {
       const exactDate = getAppointmentDate(app.appointment_day);
       return {

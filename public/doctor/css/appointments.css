@@ -99,6 +99,11 @@
   background-color: var(--white);
   font-size: 1rem;
 }
+.filter-container {
+  display: flex;
+  gap: 1rem;
+  width: 50%;
+}
 
 @media (max-width: 768px) {
   .appointment-card {
