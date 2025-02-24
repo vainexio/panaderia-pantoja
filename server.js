@@ -291,16 +291,16 @@ app.post('/updateAccount', async (req, res) => {
   let account = await accountHolder.findOne({ email: accountData.email })
   if (!account) return res.status(404).json({ message: "No account found" });
   
-  const isMatch = await bcrypt.compare(account.password, formData.old_password);
-  if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
-  
   account.email = formData.email
   account.contact_number = formData.contact_number
   
-  if (formData.password.length == 0) {
+  if (!formData.password) {
     await account.save()
     return res.status(200).json({ message: 'Account updated successfully' });
   }
+  console.log(formData)
+  const isMatch = await bcrypt.compare(formData.old_password, account.password);
+  if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
   
   if (formData.password !== formData.confirm_password) res.status(401).json({ message: 'New password conirmation did not match.' });
   

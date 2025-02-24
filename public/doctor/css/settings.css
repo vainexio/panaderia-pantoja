@@ -28,7 +28,7 @@
     display: flex;
     flex-direction: column;
 }
-.form-group {
+#settingsForm .form-group {
   flex: 1 1 calc(50% - 0.5rem); /* Two items per row */
   min-width: 250px;
 }

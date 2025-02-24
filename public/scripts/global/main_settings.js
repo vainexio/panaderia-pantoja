@@ -34,18 +34,29 @@ async function removeOtherSessions(accountId, type, callback) {
   }
 }
 
+let mainSettingsInitialized = false;
+
 async function mainSettings() {
+  // Prevent duplicate listener registration
+  if (mainSettingsInitialized) return;
+  mainSettingsInitialized = true;
+
   document.getElementById('toggle-password-btn').addEventListener('click', function() {
     var passwordFields = document.getElementById('password-fields');
+    var inputs = passwordFields.querySelectorAll('input');
     
+    // Toggle display and disabled attribute
     if (passwordFields.style.display === "none" || passwordFields.style.display === "") {
       passwordFields.style.display = "block";
       this.innerText = "Cancel";
+      inputs.forEach(input => input.disabled = false);
     } else {
       passwordFields.style.display = "none";
       this.innerText = "Change Password";
+      inputs.forEach(input => input.disabled = true);
     }
   });
+
   document.getElementById("settingsForm").addEventListener("submit", async function (event) {
       event.preventDefault();
 
@@ -85,6 +96,7 @@ async function mainSettings() {
       }, 3000);
     });
 }
+
 document.addEventListener("DOMContentLoaded", async function () {
   waitUntilReady(mainSettings);
 });
