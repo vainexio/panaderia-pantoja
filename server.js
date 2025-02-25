@@ -894,8 +894,8 @@ app.delete('/cancelAppointment/:appointmentId', async (req, res) => {
     if (!appointment) {
       return res.status(404).json({ message: 'Appointment not found' });
     }
-    if (appointment.status !== 'Pending') {
-      return res.status(400).json({ message: 'Only appointments pending confirmation can be cancelled' });
+    if (appointment.status !== 'Pending' && appointment.status !== 'Cancelled') {
+      return res.status(400).json({ message: 'Only pending/cancelled appointments can be deleted' });
     }
     await appointments.deleteOne({ appointment_id: appointmentId });
     res.status(200).json({ message: 'Appointment cancelled successfully' });
