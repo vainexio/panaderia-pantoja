@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           const overallOnDuty = item.availabilities.some((slot) => slot.onDuty);
           const statusDot = document.createElement("span");
           statusDot.id = "statusDot";
-          statusDot.className = overallOnDuty ? "on-duty" : "off-duty";
+          statusDot.className = overallOnDuty ? "Create Appointment" : "off-duty";
           statusSlot.appendChild(statusDot);
 
           const doctorName = document.createElement("h3");
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
           const bookButton = document.createElement("button");
           bookButton.id = "bookAppointment";
-          bookButton.textContent = "On-duty";
+          bookButton.textContent = "Create Appointment";
           bookButton.classList.add("action-button");
           if (!overallOnDuty) {
             bookButton.disabled = true;

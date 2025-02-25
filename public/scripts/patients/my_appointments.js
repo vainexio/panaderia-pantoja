@@ -28,7 +28,7 @@ async function myAppointments() {
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${app.exact_date} (${app.appointment_day})</td>
-          <td>${app.appointment_time_schedule}</td>
+          <td>${app.appointment_time_schedule + (app.appointment_time_schedule == "Morning" ? " (7AM - 12PM)" : app.appointment_time_schedule == "Afternoon" ?  " (1PM - 4PM)" : "" )}</td>
           <td>Dr. ${app.doctor_name}</td>
           <td>${app.reason}</td>
           <td>${statusColor} ${app.status}</td>
