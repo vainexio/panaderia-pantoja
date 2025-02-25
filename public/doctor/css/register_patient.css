@@ -73,6 +73,12 @@
   font-size: 1rem;
 }
 
+.form-group input[readonly],
+.form-group input:read-only {
+  background-color: transparent;
+  cursor: default;
+}
+
 .submit-container {
   width: 100%;
   display: flex;

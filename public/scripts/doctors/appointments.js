@@ -1,4 +1,4 @@
-let appointmentsInitialized = false;
+ let appointmentsInitialized = false;
 
 async function appointments() {
   // Read filter values from the controls
@@ -44,7 +44,7 @@ async function appointments() {
             </div>
           </td>
           <td>
-            <button class="action-button start-btn" data-id="${app.appointment_id}">View More</button>
+            <button class="action-button start-btn" data-id="${app.appointment_id}">View Appointment</button>
           </td>
         `;
       tableBody.appendChild(row);
