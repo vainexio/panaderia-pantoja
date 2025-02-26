@@ -658,7 +658,6 @@ app.post('/getDoctorAppointments', async (req, res) => {
   }
 });
 
-// 1. Update Appointment Status
 app.post('/updateAppointmentStatus', async (req, res) => {
   try {
     const { appointment_id, newStatus } = req.body;
@@ -680,8 +679,6 @@ app.post('/updateAppointmentStatus', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-// 2. Start Appointment
 app.post('/startAppointment', async (req, res) => {
   try {
     const { appointment_id } = req.body;
@@ -731,8 +728,6 @@ app.post('/startAppointment', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-// 3. Save Medical Record
 app.post('/saveMedicalRecord', async (req, res) => {
   try {
     const { appointment_id, patient_id, doctor_id, diagnosis, treatment_plan, allergies, medical_history } = req.body;
@@ -770,7 +765,6 @@ app.post('/saveMedicalRecord', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 /* Patient Backend */
 app.post('/createAppointment', async (req, res) => {
