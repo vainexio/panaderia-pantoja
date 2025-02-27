@@ -7,20 +7,16 @@
   --secondary-yellow: #ffe365;
   --black: #363636;
 }
-
-
 .work_schedule {
   padding: 2rem 0;
   display: none;
   justify-content: center;
 }
-
 .work-sched-container {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 .create-schedule-card {
   background-color: transparent;
   width: 80%;
