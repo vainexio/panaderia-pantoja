@@ -67,7 +67,7 @@ let appointmentsSchema = new mongoose.Schema({
   patient_id: Number,
   doctor_id: Number,
   appointment_day: String,
-  appintment_date: String,
+  appointment_date: String,
   appointment_time_schedule: String,
   reason: String,
   status: String,
@@ -789,6 +789,7 @@ app.post('/getPatientHistory', async (req, res) => {
               appointment_id: "$appointment_id",
               appointment_day: "$appointment_day",
               appointment_time_schedule: "$appointment_time_schedule",
+              appointment_date: "$appointment_date",
               reason: "$reason",
               status: "$status",
               // Use the first medical record if available (assumes one record per appointment)
@@ -937,7 +938,7 @@ app.post('/createAppointment', async (req, res) => {
       patient_id: currentPatient.patient_id,
       doctor_id: availableDoctor.doctor_id,
       appointment_day: formData.day,
-      appintment_date: formattedDate,  // New field storing the exact date
+      appointment_date: formattedDate,  // New field storing the exact date
       appointment_time_schedule: formData.schedule,
       reason: formData.reason,
       status: 'Pending'

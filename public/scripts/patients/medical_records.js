@@ -38,11 +38,11 @@ async function loadPatientMedicalHistory() {
 
     // For each appointment, add a main row with date, doctor's name, and reason.
     appointments.forEach((app) => {
-      const exactDate = getAppointmentDate(app.appointment_day);
+      const exactDate = app.appointment_date//getAppointmentDate(app.appointment_day);
       const row = document.createElement("tr");
       row.classList.add("MH_RowLabel");
       row.innerHTML = `
-        <td>${exactDate ? exactDate.toLocaleDateString() : "N/A"}</td>
+        <td>${exactDate ? exactDate : "N/A"}</td>
         <td>${app.appointment_time_schedule}</td>
         <td>Dr. ${app.doctor_info.first_name} ${app.doctor_info.last_name}</td>
         <td>${app.reason}</td>

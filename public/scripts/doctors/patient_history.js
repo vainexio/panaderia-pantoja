@@ -147,7 +147,7 @@ function showPatientDetails(patient) {
   if (patient.appointments && patient.appointments.length > 0) {
     patient.appointments.forEach(app => {
       // Compute the exact appointment date using your helper function
-      const exactDate = getAppointmentDate(app.appointment_day);
+      const exactDate = app.appointment_date //getAppointmentDate(app.appointment_day);
 
       // Create a table for appointment data
       const appointmentTable = document.createElement("table");
@@ -159,7 +159,7 @@ function showPatientDetails(patient) {
       appointmentTable.innerHTML = `
         <thead class="thead-light">
         <tr>
-        <th style="background-color: #283986 !important; color: white !important;" colspan="3" class="text-center">Appointment on ${exactDate ? exactDate.toLocaleDateString() : "N/A"} (${app.appointment_day})</th>
+        <th style="background-color: #283986 !important; color: white !important;" colspan="3" class="text-center">Appointment on ${exactDate ? exactDate : "N/A"} (${app.appointment_day})</th>
         </tr>
 
           <tr>
