@@ -151,12 +151,13 @@ function showPatientDetails(patient) {
 
       // Create a table for appointment data
       const appointmentTable = document.createElement("table");
-      appointmentTable.className = "table table-bordered table-striped w-100 mb-3";
+      appointmentTable.style.setProperty("border", "2px solid #283986", "important");
+      appointmentTable.className = "table table-bordered table-striped w-100 mb-0 mt-5";
       appointmentTable.innerHTML = `
-        <thead class="thead-dark">
-  <tr>
-    <th style="background-color: black !important;" colspan="3" class="text-center">Appointment on ${exactDate ? exactDate.toLocaleDateString() : "N/A"} (${app.appointment_day})</th>
-  </tr>
+        <thead class="thead-light">
+        <tr>
+        <th style="background-color: #283986 !important; color: white !important;" colspan="3" class="text-center">Appointment on ${exactDate ? exactDate.toLocaleDateString() : "N/A"} (${app.appointment_day})</th>
+        </tr>
 
           <tr>
             <th>Time Schedule</th>
@@ -176,9 +177,10 @@ function showPatientDetails(patient) {
 
       // Create a separate table for the medical record for this appointment
       const mrTable = document.createElement("table");
-      mrTable.className = "table table-bordered table-striped w-100 mb-3";
+      mrTable.style.setProperty("border", "2px solid #283986", "important");
+      mrTable.className = "table table-bordered table-striped w-100 mb-8";
       
-      let mrContent = "";
+      let mrContent = ``;
       // Check if there are multiple records or a single record
       if (Array.isArray(app.medicalRecords) && app.medicalRecords.length > 0) {
         app.medicalRecords.forEach(rec => {
@@ -192,7 +194,7 @@ function showPatientDetails(patient) {
           `;
         });
       } else if (app.medicalRecord) {
-        mrContent = `
+        mrContent += `
           <tr>
             <td>${app.medicalRecord.diagnosis || "N/A"}</td>
             <td>${app.medicalRecord.treatment_plan || "N/A"}</td>
@@ -206,6 +208,9 @@ function showPatientDetails(patient) {
       
       mrTable.innerHTML = `
         <thead class="thead-light">
+        <tr>
+        <th colspan="4" class="text-center">Medical Record</th>
+        </tr>
           <tr>
             <th>Diagnosis</th>
             <th>Treatment Plan</th>
