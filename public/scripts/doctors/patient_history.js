@@ -30,10 +30,46 @@ async function loadPatientHistory() {
       `;
       // When the row is clicked, hide others and show detailed view
       row.addEventListener("click", function () {
-        const allRows = document.querySelectorAll(".PH_TableInput .PH_TableRow");
-        allRows.forEach(r => { if (r !== row) r.style.display = "none"; });
-        showPatientDetails(patient);
-      });
+  // Check if another row is already expanded
+  const expandedRow = document.querySelector(".PH_TableInput .PH_TableRow.expanded");
+  if (expandedRow && expandedRow !== row) {
+    // Collapse the previously expanded row
+    expandedRow.classList.remove("expanded");
+    const detailsContainer = document.getElementById("patientDetailsExpanded");
+    if (detailsContainer) {
+      detailsContainer.remove();
+    }
+    // Restore display for all rows before expanding the clicked row
+    const allRows = document.querySelectorAll(".PH_TableInput .PH_TableRow");
+    allRows.forEach(r => (r.style.display = ""));
+  }
+
+  // Toggle the clicked row
+  if (row.classList.contains("expanded")) {
+    // If clicked row is already expanded, collapse it
+    row.classList.remove("expanded");
+    const detailsContainer = document.getElementById("patientDetailsExpanded");
+    if (detailsContainer) {
+      detailsContainer.remove();
+    }
+    // Restore all rows
+    const allRows = document.querySelectorAll(".PH_TableInput .PH_TableRow");
+    allRows.forEach(r => (r.style.display = ""));
+  } else {
+    // Expand the clicked row
+    row.classList.add("expanded");
+    // Hide all other rows
+    const allRows = document.querySelectorAll(".PH_TableInput .PH_TableRow");
+    allRows.forEach(r => {
+      if (r !== row) {
+        r.style.display = "none";
+      }
+    });
+    // Show detailed information for the clicked patient
+    showPatientDetails(patient);
+  }
+});
+
       tableBody.appendChild(row);
     });
   } catch (err) {
@@ -47,7 +83,9 @@ function showPatientDetails(patient) {
   const detailsContainer = document.createElement("div");
   detailsContainer.id = "patientDetailsExpanded";
   detailsContainer.innerHTML = `
-    <h2>Patient Details</h2>
+    <header class="form-header mt-5">
+          <h1>Patient Details</h1>
+        </header>
     <form class="medical-record-form">
     <div class="form-group">
       <label>Name:</label>
@@ -71,14 +109,16 @@ function showPatientDetails(patient) {
     </div>
     <div class="form-group">
       <label>Emergency Contact:</label>
-      <input type="text" value="${patient.emergency_contact_name}" readonly />
+      <input type="text" value="${patient.emergency_contact_name || "None"}" readonly />
     </div>
     <div class="form-group">
       <label>Emergency Contact Number:</label>
-      <input type="text" value="${patient.emergency_contact_number}" readonly />
+      <input type="text" value="${patient.emergency_contact_number || "None"}" readonly />
     </div>
     </form>
-    <h2>Appointment History</h2>
+    <header class="form-header mt-5">
+          <h1>Appointment History</h1>
+        </header>
     <div id="appointmentsHistoryContainer"></div>
     <div class="submit-container">
     <button id="backToListBtn" type="submit" class="action-button">Back to Patient List</button>
@@ -98,7 +138,9 @@ function showPatientDetails(patient) {
       const appDiv = document.createElement("div");
       appDiv.classList.add("appointment-details");
       appDiv.innerHTML = `
-        <h3>Appointment on ${exactDate ? exactDate.toLocaleDateString() : "N/A"} (${app.appointment_day})</h3>
+      <header class="form-header mb-0 mt-4">
+          <p>Appointment on ${exactDate ? exactDate.toLocaleDateString() : "N/A"} (${app.appointment_day})</p>
+        </header>
         <form class="medical-record-form">
         <div class="form-group">
           <label>Time Schedule:</label>
@@ -116,7 +158,9 @@ function showPatientDetails(patient) {
       `;
       if (app.medicalRecord) {
         appDiv.innerHTML += `
-          <h4>Medical Record</h4>
+          <header class="form-header mt-5">
+          <h1>Medical Record</h1>
+        </header>
           <form class="medical-record-form">
           <div class="form-group">
             <label>Diagnosis:</label>
