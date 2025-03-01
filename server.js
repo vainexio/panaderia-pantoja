@@ -976,7 +976,10 @@ app.post('/getPatientMedicalHistory', async (req, res) => {
   }
   try {
     const appointmentsHistory = await appointments.aggregate([
-      { $match: { patient_id: currentPatient.patient_id } },
+      { $match: { 
+        patient_id: currentPatient.patient_id ,
+        status: "Completed"
+      } },
       {
         $lookup: {
           from: "doctors", // actual collection name (usually lowercase)

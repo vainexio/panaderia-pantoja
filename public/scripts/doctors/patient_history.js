@@ -111,12 +111,6 @@ function showPatientDetails(patient) {
         </div>
       </div>
       <div class="form-group row mb-1">
-        <label class="col-sm-3 col-form-label">Email:</label>
-        <div class="col-sm-9">
-          <input type="text" class="form-control" value="${patient.email}" readonly />
-        </div>
-      </div>
-      <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label">Emergency Contact:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" value="${patient.emergency_contact_name || "None"}" readonly />
@@ -126,6 +120,12 @@ function showPatientDetails(patient) {
         <label class="col-sm-3 col-form-label">Emergency Contact Number:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" value="${patient.emergency_contact_number || "None"}" readonly />
+        </div>
+      </div>
+      <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label">Email:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" value="${patient.email}" readonly />
         </div>
       </div>
     </div>

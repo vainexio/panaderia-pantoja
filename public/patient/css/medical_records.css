@@ -97,6 +97,7 @@
     display: table-row;
     width: 100%;
     cursor: pointer;
+  background: white;
 }
 .MH_RowLabel:hover {
     background: var(--light-gray) !important;
@@ -120,7 +121,7 @@
 }
 
 .medHistoryTableNames {
-  background-color: white;
+  background-color: var(--light-gray);
 }
 
 .medRecordTable th {
@@ -128,7 +129,9 @@
   background-color: var(--blue);
   color: var(--light-gray);
 }
-
+.MH_RowLabel td {
+  background-color: transparent;
+}
 .medRecordTable tr:hover {
   cursor: pointer;
   background-color: var(--light-gray);
@@ -155,4 +158,8 @@
 
 .layoutRow p {
   flex: 3;
+}
+
+.read-only-container {
+  padding: 20px;
 }

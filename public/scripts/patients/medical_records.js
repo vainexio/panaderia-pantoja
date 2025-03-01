@@ -1,5 +1,11 @@
 function getAppointmentDate(dayName) {
-  const daysMapping = { 'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4 };
+  const daysMapping = {
+    Monday: 0,
+    Tuesday: 1,
+    Wednesday: 2,
+    Thursday: 3,
+    Friday: 4,
+  };
   if (!(dayName in daysMapping)) return null;
   const now = new Date();
   let monday;
@@ -19,7 +25,7 @@ async function loadPatientMedicalHistory() {
     const response = await fetch("/getPatientMedicalHistory", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ currentPatient })
+      body: JSON.stringify({ currentPatient }),
     });
     if (!response.ok) {
       throw new Error("Failed to fetch medical history.");
@@ -31,12 +37,13 @@ async function loadPatientMedicalHistory() {
     medHistoryBody.innerHTML = ""; // Clear any previous rows
 
     // For each appointment, add a main row with date, doctor's name, and reason.
-    appointments.forEach(app => {
+    appointments.forEach((app) => {
       const exactDate = getAppointmentDate(app.appointment_day);
       const row = document.createElement("tr");
-      row.classList.add("MH_RowLabel")
+      row.classList.add("MH_RowLabel");
       row.innerHTML = `
         <td>${exactDate ? exactDate.toLocaleDateString() : "N/A"}</td>
+        <td></td>
         <td>Dr. ${app.doctor_info.first_name} ${app.doctor_info.last_name}</td>
         <td>${app.reason}</td>
       `;
@@ -53,10 +60,12 @@ async function loadPatientMedicalHistory() {
           }
           // Restore display for any other rows if needed
           const allRows = document.querySelectorAll("#medHistoryBody tr");
-          allRows.forEach(r => r.style.display = "");
+          allRows.forEach((r) => (r.style.display = ""));
         } else {
           // Collapse any other expanded row first
-          const expandedRow = document.querySelector("#medHistoryBody tr.expanded");
+          const expandedRow = document.querySelector(
+            "#medHistoryBody tr.expanded"
+          );
           if (expandedRow) {
             expandedRow.classList.remove("expanded");
             const nextRow = expandedRow.nextElementSibling;
@@ -64,62 +73,92 @@ async function loadPatientMedicalHistory() {
               nextRow.remove();
             }
             const allRows = document.querySelectorAll("#medHistoryBody tr");
-            allRows.forEach(r => r.style.display = "");
+            allRows.forEach((r) => (r.style.display = ""));
           }
           // Mark the clicked row as expanded and hide others
           row.classList.add("expanded");
           const allRows = document.querySelectorAll("#medHistoryBody tr");
-          allRows.forEach(r => {
+          allRows.forEach((r) => {
             if (r !== row) {
               r.style.display = "none";
             }
           });
-          // Create an expanded details row
+          // Create an expanded details row using form-group structure
           const detailsRow = document.createElement("tr");
           detailsRow.classList.add("expanded-details");
           detailsRow.innerHTML = `
-            <td colspan="3" style="padding: 0px; !important">
-                <table class="table table-bordered table-striped w-100">
-                  <thead class="thead-light">
-                    <tr>
-                      <th>Time Schedule</th>
-                      <th>Status</th>
-                      <th>Diagnosis</th>
-                      <th>Treatment Plan</th>
-                      <th>Allergies</th>
-                      <th>Medical History</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>${app.appointment_time_schedule || "N/A"}</td>
-                      <td>${app.status || "N/A"}</td>
-                      <td>${(app.medicalRecord && app.medicalRecord.diagnosis) || "N/A"}</td>
-                      <td>${(app.medicalRecord && app.medicalRecord.treatment_plan) || "N/A"}</td>
-                      <td>${(app.medicalRecord && app.medicalRecord.allergies) || "N/A"}</td>
-                      <td>${(app.medicalRecord && app.medicalRecord.medical_history) || "N/A"}</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div class="text-center mt-2">
-                  <button class="btn btn-secondary btn-sm close-details">Close</button>
+            <td colspan="3" style="padding: 0;">
+              <div class="read-only-container">
+              <header class="form-header">
+              <h1>Medical Record</h1>
+              </header>
+                <div class="form-group row mb-1">
+                  <label class="col-sm-3 col-form-label">Status:</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" value="${
+                      app.status || "N/A"
+                    }" readonly />
+                  </div>
                 </div>
+                <div class="form-group row mb-1">
+                  <label class="col-sm-3 col-form-label">Diagnosis:</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" value="${
+                      (app.medicalRecord && app.medicalRecord.diagnosis) ||
+                      "N/A"
+                    }" readonly />
+                  </div>
+                </div>
+                <div class="form-group row mb-1">
+                  <label class="col-sm-3 col-form-label">Treatment Plan:</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" value="${
+                      (app.medicalRecord && app.medicalRecord.treatment_plan) ||
+                      "N/A"
+                    }" readonly />
+                  </div>
+                </div>
+                <div class="form-group row mb-1">
+                  <label class="col-sm-3 col-form-label">Allergies:</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" value="${
+                      (app.medicalRecord && app.medicalRecord.allergies) ||
+                      "N/A"
+                    }" readonly />
+                  </div>
+                </div>
+                <div class="form-group row mb-1">
+                  <label class="col-sm-3 col-form-label">Medical History:</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control" value="${
+                      (app.medicalRecord &&
+                        app.medicalRecord.medical_history) ||
+                      "N/A"
+                    }" readonly />
+                  </div>
+                </div>
+                <div class="text-center mt-2">
+                  <button class="action-button close-details">Close</button>
+                </div>
+              </div>
             </td>
           `;
           // Insert the details row immediately after the clicked row
           row.parentNode.insertBefore(detailsRow, row.nextSibling);
           // Attach event to the Close button
-          detailsRow.querySelector(".close-details").addEventListener("click", function (e) {
-            e.stopPropagation();
-            row.classList.remove("expanded");
-            detailsRow.remove();
-            const allRows = document.querySelectorAll("#medHistoryBody tr");
-            allRows.forEach(r => r.style.display = "");
-          });
+          detailsRow
+            .querySelector(".close-details")
+            .addEventListener("click", function (e) {
+              e.stopPropagation();
+              row.classList.remove("expanded");
+              detailsRow.remove();
+              const allRows = document.querySelectorAll("#medHistoryBody tr");
+              allRows.forEach((r) => (r.style.display = ""));
+            });
         }
       });
     });
-    
+
     // If no appointments exist, show a "No medical history" message
     if (appointments.length === 0) {
       medHistoryBody.innerHTML = `<tr><td colspan="3" class="text-center">No medical history yet! &#128578;</td></tr>`;
