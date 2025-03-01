@@ -1,11 +1,11 @@
 :root {
-    --white: #FCFCFC;
-    --light-gray: #e9ecef;
-    --blue: #283986;
-    --secondary-blue: #91b2ff;
-    --yellow: #FFD41C;
-    --secondary-yellow: #ffe365;
-    --black: #363636;
+  --white: #fcfcfc;
+  --light-gray: #e9ecef;
+  --blue: #283986;
+  --secondary-blue: #91b2ff;
+  --yellow: #ffd41c;
+  --secondary-yellow: #ffe365;
+  --black: #363636;
 }
 /* Use this pallets */
 /* Css designs goes below this */
@@ -16,109 +16,105 @@
 }
 
 .medical_records {
-    background: none;
-    background-color: var(--blue);
+  background: none;
+  background-color: var(--blue);
 }
 
 .bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .StudentInfocontainer {
-    border: 1px solid green;
+  border: 1px solid green;
   display: flex;
   flex-direction: column;
   margin: 2%;
-  padding: 5%;
+  width: 90%;
+  max-width: 1500px;
   border-radius: 16px;
-background-color: var(--white);
+  background-color: var(--white);
 }
 
 .medRecordContainer {
-    display: flex;
-    flex-direction: column;
-    
+  display: flex;
+  flex-direction: column;
 }
 
 .MedRecord_GeneralInfo {
-    background-color: var(--light-gray);
-    border-radius: 10px;
-    margin: auto;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    padding: 0px 30px;
-
+  background-color: var(--light-gray);
+  border-radius: 10px;
+  margin: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 0px 30px;
 }
 
 .medRecordLeft {
-    flex: 1;
+  flex: 1;
 }
 
 .medRecordRight {
-    flex: 1;
+  flex: 1;
 }
 
 .MedRecord_MedInfo {
-    border-radius: 10px;
-    margin: auto;
-    width: 100%;
-    padding: 0px 30px;
-    margin-bottom: 4px;
+  border-radius: 10px;
+  margin: auto;
+  width: 100%;
+  padding: 0px 30px;
+  margin-bottom: 4px;
 }
 
-.buttonContainer  {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 .medHistoryContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    width: 100%;
-    min-height: 100px; 
-    background-color: var(--light-gray);
-    border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100px;
+  background-color: var(--light-gray);
+  border-radius: 16px;
 }
 
 .medHistoryContainer_dfText {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    width: 100%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .No_MedHistory {
-    text-align: center;
-    color: #757575;
-}
-
-.medHistoryContainer_table {
-    display: none;
+  text-align: center;
+  color: #757575;
 }
 
 .medHistoryTable {
-    justify-content: center;
-    width: 100%;
+  justify-content: center;
+  width: 100%;
 }
 
 .textCenter {
-    text-align: center;
+  text-align: center;
 }
 
 .medicalRecords-btn {
-    flex: 1;
+  flex: 1;
 }
 
 .medicalCertificate-btn {
-    flex: 1;
+  flex: 1;
 }
 
-.medRecordTable, .medHistoryTable {
-    width: 100%;
-    background-color: var(--white);
+.medRecordTable,
+.medHistoryTable {
+  width: 100%;
+  background-color: var(--white);
 }
 
 .medHistoryTableNames {
@@ -126,36 +122,35 @@ background-color: var(--white);
 }
 
 .medRecordTable th {
-    text-align: start;
-    background-color: var(--blue);
-    color: var(--light-gray);
-
+  text-align: start;
+  background-color: var(--blue);
+  color: var(--light-gray);
 }
- 
+
 .medRecordTable tr:hover {
   cursor: pointer;
   background-color: var(--light-gray);
 }
 
 .medHistoryTable th {
-    text-align: start;
-    background-color: var(--blue);
-    color: var(--light-gray);
-    border: 1px solid black;
+  text-align: start;
+  background-color: var(--blue);
+  color: var(--light-gray);
+  border: 1px solid black;
 }
 
 .textBlueContainer {
-    background-color: #e3e5e7;
-    padding: 10px;
-    font-size: 1.2em;
+  background-color: #e3e5e7;
+  padding: 10px;
+  font-size: 1.2em;
 }
 
 .layoutRow {
-    width: 98%;
-    display: flex;
-    flex-direction: row;
+  width: 98%;
+  display: flex;
+  flex-direction: row;
 }
 
-.layoutRow p  {
-    flex: 3;
+.layoutRow p {
+  flex: 3;
 }

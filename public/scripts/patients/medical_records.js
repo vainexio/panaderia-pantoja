@@ -14,7 +14,6 @@ function getAppointmentDate(dayName) {
   return appointmentDate;
 }
 
-// Load the patient medical history and populate the table
 async function loadPatientMedicalHistory() {
   try {
     const response = await fetch("/getPatientMedicalHistory", {
