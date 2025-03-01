@@ -12,13 +12,8 @@
 }
 
 .PHContainer {
-    width: 95%;
-    max-width: 1400px;
-    margin: 5% auto;
-    padding: 20px;
-    background: var(--white);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: auto;
 }
 
 .PH_TitleHeader {
@@ -27,7 +22,6 @@
 }
 
 .PH_TableWrapper {
-    max-height: 500px;
     overflow: hidden;
     border-radius: 10px;
     border: 1px solid var(--gray-border);

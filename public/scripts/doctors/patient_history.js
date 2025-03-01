@@ -1,8 +1,8 @@
 let patientHistoryInitialized = false
 
 async function loadPatientHistory() {
-  if (patientHistoryInitialized) return
-  patientHistoryInitialized = true
+  //if (patientHistoryInitialized) return
+  //patientHistoryInitialized = true
   try {
     const response = await fetch("/getPatientHistory", {
       method: "POST",
@@ -86,43 +86,43 @@ function showPatientDetails(patient) {
       <h1>Patient Details</h1>
     </header>
     <div class="read-only-container mb-4">
-      <div class="form-group row">
+      <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label">Name:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" value="${patient.name}" readonly />
         </div>
       </div>
-      <div class="form-group row">
+      <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label">Sex:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" value="${patient.sex}" readonly />
         </div>
       </div>
-      <div class="form-group row">
+      <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label">Birthdate:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" value="${patient.birthdate}" readonly />
         </div>
       </div>
-      <div class="form-group row">
+      <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label">Contact Number:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" value="${patient.contact_number}" readonly />
         </div>
       </div>
-      <div class="form-group row">
+      <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label">Email:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" value="${patient.email}" readonly />
         </div>
       </div>
-      <div class="form-group row">
+      <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label">Emergency Contact:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" value="${patient.emergency_contact_name || "None"}" readonly />
         </div>
       </div>
-      <div class="form-group row">
+      <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label">Emergency Contact Number:</label>
         <div class="col-sm-9">
           <input type="text" class="form-control" value="${patient.emergency_contact_number || "None"}" readonly />
@@ -134,7 +134,7 @@ function showPatientDetails(patient) {
     </header>
     <div id="appointmentsHistoryContainer" class="mb-4"></div>
     <div class="text-center">
-      <button id="backToListBtn" type="button" class="btn btn-primary">Back to Patient List</button>
+      <button id="backToListBtn" type="button" class="action-button">Back to Patient List</button>
     </div>
   `;
 
@@ -151,7 +151,10 @@ function showPatientDetails(patient) {
 
       // Create a table for appointment data
       const appointmentTable = document.createElement("table");
-      appointmentTable.style.setProperty("border", "2px solid #283986", "important");
+      appointmentTable.style.setProperty("border-top", "2px solid #283986", "important");
+      appointmentTable.style.setProperty("border-left", "2px solid #283986", "important");
+      appointmentTable.style.setProperty("border-right", "2px solid #283986", "important");
+      appointmentTable.style.setProperty("border-bottom", "none", "important");
       appointmentTable.className = "table table-bordered table-striped w-100 mb-0 mt-5";
       appointmentTable.innerHTML = `
         <thead class="thead-light">
@@ -177,7 +180,10 @@ function showPatientDetails(patient) {
 
       // Create a separate table for the medical record for this appointment
       const mrTable = document.createElement("table");
-      mrTable.style.setProperty("border", "2px solid #283986", "important");
+      mrTable.style.setProperty("border-bottom", "2px solid #283986", "important");
+      mrTable.style.setProperty("border-left", "2px solid #283986", "important");
+      mrTable.style.setProperty("border-right", "2px solid #283986", "important");
+      mrTable.style.setProperty("border-top", "none", "important");
       mrTable.className = "table table-bordered table-striped w-100 mb-8";
       
       let mrContent = ``;

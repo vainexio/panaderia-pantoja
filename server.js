@@ -773,7 +773,12 @@ app.post('/getPatientHistory', async (req, res) => {
 
   try {
     const history = await appointments.aggregate([
-      { $match: { doctor_id: currentDoctor.doctor_id } },
+      { 
+        $match: { 
+          doctor_id: currentDoctor.doctor_id, 
+          status: "Completed"
+        } 
+      },
       {
         $lookup: {
           from: "patients", // actual collection name is lowercase by default
@@ -830,6 +835,7 @@ app.post('/getPatientHistory', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 /* Patient Backend */
 app.post('/createAppointment', async (req, res) => {

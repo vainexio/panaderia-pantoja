@@ -64,6 +64,7 @@ async function appointments() {
             const updateData = await updateRes.json();
             // Reload appointments to reflect changes
             appointments();
+            loadPatientHistory();
           } catch (err) {
             console.error("Error updating status:", err);
             alert("Failed to update status");
@@ -160,6 +161,7 @@ async function appointments() {
 
         closeModal();
         appointments();
+        loadPatientHistory();
       } catch (err) {
         console.error("Error saving medical record:", err);
         alert("Failed to save medical record");
