@@ -765,6 +765,71 @@ app.post('/saveMedicalRecord', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+app.post('/getPatientHistory', async (req, res) => {
+  const currentDoctor = req.body.currentDoctor;
+  if (!currentDoctor || !currentDoctor.doctor_id) {
+    return res.status(400).json({ message: "Invalid doctor data." });
+  }
+
+  try {
+    const history = await appointments.aggregate([
+      { $match: { doctor_id: currentDoctor.doctor_id } },
+      {
+        $lookup: {
+          from: "patients", // actual collection name is lowercase by default
+          localField: "patient_id",
+          foreignField: "patient_id",
+          as: "patient_info"
+        }
+      },
+      { $unwind: "$patient_info" },
+      {
+        $lookup: {
+          from: "medical records", // ensure this matches your collection name
+          localField: "appointment_id",
+          foreignField: "appointment_id",
+          as: "medicalRecord"
+        }
+      },
+      // Group by patient so that each patient appears only once
+      {
+        $group: {
+          _id: "$patient_id",
+          patient: { $first: "$patient_info" },
+          appointments: {
+            $push: {
+              appointment_id: "$appointment_id",
+              appointment_day: "$appointment_day",
+              appointment_time_schedule: "$appointment_time_schedule",
+              reason: "$reason",
+              status: "$status",
+              // Use the first medical record if available (assumes one record per appointment)
+              medicalRecord: { $arrayElemAt: ["$medicalRecord", 0] }
+            }
+          }
+        }
+      }
+    ]);
+
+    // Format the data so the client gets flat patient fields and an array of appointments
+    const formattedHistory = history.map(item => ({
+      patient_id: item._id,
+      name: `${item.patient.first_name} ${item.patient.last_name}`,
+      sex: item.patient.sex,
+      birthdate: item.patient.birthdate,
+      contact_number: item.patient.contact_number,
+      email: item.patient.email,
+      emergency_contact_name: item.patient.emergency_contact_name,
+      emergency_contact_number: item.patient.emergency_contact_number,
+      appointments: item.appointments
+    }));
+
+    res.status(200).json({ patients: formattedHistory });
+  } catch (err) {
+    console.error("Error fetching patient history", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 /* Patient Backend */
 app.post('/createAppointment', async (req, res) => {
