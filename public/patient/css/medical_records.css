@@ -25,10 +25,10 @@
 }
 
 .StudentInfocontainer {
-  border: 1px solid green;
   display: flex;
   flex-direction: column;
   margin: 2%;
+  padding: 5%;
   width: 90%;
   max-width: 1500px;
   border-radius: 16px;
@@ -93,7 +93,15 @@
   text-align: center;
   color: #757575;
 }
-
+.MH_RowLabel {
+    display: table-row;
+    width: 100%;
+    cursor: pointer;
+}
+.MH_RowLabel:hover {
+    background: var(--light-gray) !important;
+    cursor: pointer;
+}
 .medHistoryTable {
   justify-content: center;
   width: 100%;
@@ -111,14 +119,8 @@
   flex: 1;
 }
 
-.medRecordTable,
-.medHistoryTable {
-  width: 100%;
-  background-color: var(--white);
-}
-
 .medHistoryTableNames {
-  background-color: var(--light-gray);
+  background-color: white;
 }
 
 .medRecordTable th {

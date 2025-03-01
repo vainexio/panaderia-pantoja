@@ -34,9 +34,10 @@ async function loadPatientMedicalHistory() {
     appointments.forEach(app => {
       const exactDate = getAppointmentDate(app.appointment_day);
       const row = document.createElement("tr");
+      row.classList.add("MH_RowLabel")
       row.innerHTML = `
         <td>${exactDate ? exactDate.toLocaleDateString() : "N/A"}</td>
-        <td>${app.doctor_info.first_name} ${app.doctor_info.last_name}</td>
+        <td>Dr. ${app.doctor_info.first_name} ${app.doctor_info.last_name}</td>
         <td>${app.reason}</td>
       `;
       medHistoryBody.appendChild(row);
@@ -77,8 +78,7 @@ async function loadPatientMedicalHistory() {
           const detailsRow = document.createElement("tr");
           detailsRow.classList.add("expanded-details");
           detailsRow.innerHTML = `
-            <td colspan="3">
-              <div class="container">
+            <td colspan="3" style="padding: 0px; !important">
                 <table class="table table-bordered table-striped w-100">
                   <thead class="thead-light">
                     <tr>
@@ -104,7 +104,6 @@ async function loadPatientMedicalHistory() {
                 <div class="text-center mt-2">
                   <button class="btn btn-secondary btn-sm close-details">Close</button>
                 </div>
-              </div>
             </td>
           `;
           // Insert the details row immediately after the clicked row
