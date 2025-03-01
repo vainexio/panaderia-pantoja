@@ -969,6 +969,44 @@ app.delete('/cancelAppointment/:appointmentId', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+app.post('/getPatientMedicalHistory', async (req, res) => {
+  const currentPatient = req.body.currentPatient;
+  if (!currentPatient || !currentPatient.patient_id) {
+    return res.status(400).json({ message: "Invalid patient data." });
+  }
+  try {
+    const appointmentsHistory = await appointments.aggregate([
+      { $match: { patient_id: currentPatient.patient_id } },
+      {
+        $lookup: {
+          from: "doctors", // actual collection name (usually lowercase)
+          localField: "doctor_id",
+          foreignField: "doctor_id",
+          as: "doctor_info"
+        }
+      },
+      { $unwind: "$doctor_info" },
+      {
+        $lookup: {
+          from: "medical records", // adjust if needed
+          localField: "appointment_id",
+          foreignField: "appointment_id",
+          as: "medicalRecord"
+        }
+      },
+      {
+        $addFields: {
+          medicalRecord: { $arrayElemAt: ["$medicalRecord", 0] }
+        }
+      },
+      { $sort: { appointment_day: 1, appointment_time_schedule: 1 } }
+    ]);
+    res.status(200).json({ appointments: appointmentsHistory });
+  } catch (err) {
+    console.error("Error fetching patient medical history", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
 
