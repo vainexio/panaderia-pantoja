@@ -42,8 +42,9 @@ async function doctorSettings() {
       // If session.currentSession is true, add a Bootstrap class to highlight the row.
       const rowClass = session.currentSession ? "table-primary" : "";
       const button = !session.currentSession
-        ? `<button class="btn btn-sm btn-danger remove-session-btn" data-session-id="${session.session_id}">Logout</button>`
-        : `<p>Current Session</p>`;
+        ? `<button class="btn btn-sm btn-danger remove-session-btn" data-session-id="${session.session_id}">Remove Device</button>`
+        : `<button class="action-button remove-session-btn" current-session-id="${session.session_id}">Logout</button>`;
+      
       tableHTML += `
             <tr data-session-id="${session.session_id}" class="${rowClass}">
               <td>${session.ip_address}</td>
@@ -64,8 +65,14 @@ async function doctorSettings() {
 
     document.querySelectorAll(".remove-session-btn").forEach((button) => {
       button.addEventListener("click", async function () {
-        const sessionId = this.getAttribute("data-session-id");
-        await removeSession(sessionId,doctorSettings);
+        const current = this.getAttribute("current-session-id");
+        if (current) {
+          await removeSession(current,doctorSettings);
+          window.location = "/"
+        } else {
+          const sessionId = this.getAttribute("data-session-id");
+          await removeSession(sessionId,doctorSettings);
+        }
       });
     });
 
