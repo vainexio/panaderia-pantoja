@@ -77,51 +77,64 @@ async function loadPatientHistory() {
   }
 }
 
-// Show expanded details for a patient using read-only form groups
 function showPatientDetails(patient) {
   // Create an expanded details container
   const detailsContainer = document.createElement("div");
   detailsContainer.id = "patientDetailsExpanded";
   detailsContainer.innerHTML = `
     <header class="form-header mt-5">
-          <h1>Patient Details</h1>
-        </header>
-    <form class="medical-record-form">
-    <div class="form-group">
-      <label>Name:</label>
-      <input type="text" value="${patient.name}" readonly />
+      <h1>Patient Details</h1>
+    </header>
+    <div class="read-only-container mb-4">
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Name:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" value="${patient.name}" readonly />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Sex:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" value="${patient.sex}" readonly />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Birthdate:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" value="${patient.birthdate}" readonly />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Contact Number:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" value="${patient.contact_number}" readonly />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Email:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" value="${patient.email}" readonly />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Emergency Contact:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" value="${patient.emergency_contact_name || "None"}" readonly />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3 col-form-label">Emergency Contact Number:</label>
+        <div class="col-sm-9">
+          <input type="text" class="form-control" value="${patient.emergency_contact_number || "None"}" readonly />
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label>Sex:</label>
-      <input type="text" value="${patient.sex}" readonly />
-    </div>
-    <div class="form-group">
-      <label>Birthdate:</label>
-      <input type="text" value="${patient.birthdate}" readonly />
-    </div>
-    <div class="form-group">
-      <label>Contact Number:</label>
-      <input type="text" value="${patient.contact_number}" readonly />
-    </div>
-    <div class="form-group">
-      <label>Email:</label>
-      <input type="text" value="${patient.email}" readonly />
-    </div>
-    <div class="form-group">
-      <label>Emergency Contact:</label>
-      <input type="text" value="${patient.emergency_contact_name || "None"}" readonly />
-    </div>
-    <div class="form-group">
-      <label>Emergency Contact Number:</label>
-      <input type="text" value="${patient.emergency_contact_number || "None"}" readonly />
-    </div>
-    </form>
     <header class="form-header mt-5">
-          <h1>Appointment History</h1>
-        </header>
-    <div id="appointmentsHistoryContainer"></div>
-    <div class="submit-container">
-    <button id="backToListBtn" type="submit" class="action-button">Back to Patient List</button>
+      <h1>Appointment History</h1>
+    </header>
+    <div id="appointmentsHistoryContainer" class="mb-4"></div>
+    <div class="text-center">
+      <button id="backToListBtn" type="button" class="btn btn-primary">Back to Patient List</button>
     </div>
   `;
 
@@ -129,65 +142,88 @@ function showPatientDetails(patient) {
   const container = document.querySelector(".PHContainer");
   container.appendChild(detailsContainer);
 
-  // Populate appointment history
+  // For each appointment, create its own appointment table and its own medical record table
   const appointmentsContainer = document.getElementById("appointmentsHistoryContainer");
   if (patient.appointments && patient.appointments.length > 0) {
     patient.appointments.forEach(app => {
-      // Compute exact date using a helper function (see below)
+      // Compute the exact appointment date using your helper function
       const exactDate = getAppointmentDate(app.appointment_day);
-      const appDiv = document.createElement("div");
-      appDiv.classList.add("appointment-details");
-      appDiv.innerHTML = `
-      <header class="form-header mb-0 mt-4">
-          <p>Appointment on ${exactDate ? exactDate.toLocaleDateString() : "N/A"} (${app.appointment_day})</p>
-        </header>
-        <form class="medical-record-form">
-        <div class="form-group">
-          <label>Time Schedule:</label>
-          <input type="text" value="${app.appointment_time_schedule}" readonly />
-        </div>
-        <div class="form-group">
-          <label>Reason:</label>
-          <input type="text" value="${app.reason}" readonly />
-        </div>
-        <div class="form-group">
-          <label>Status:</label>
-          <input type="text" value="${app.status}" readonly />
-        </div>
-        </form>
+
+      // Create a table for appointment data
+      const appointmentTable = document.createElement("table");
+      appointmentTable.className = "table table-bordered table-striped w-100 mb-3";
+      appointmentTable.innerHTML = `
+        <thead class="thead-dark">
+  <tr>
+    <th style="background-color: black !important;" colspan="3" class="text-center">Appointment on ${exactDate ? exactDate.toLocaleDateString() : "N/A"} (${app.appointment_day})</th>
+  </tr>
+
+          <tr>
+            <th>Time Schedule</th>
+            <th>Reason</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${app.appointment_time_schedule}</td>
+            <td>${app.reason}</td>
+            <td>${app.status}</td>
+          </tr>
+        </tbody>
       `;
-      if (app.medicalRecord) {
-        appDiv.innerHTML += `
-          <header class="form-header mt-5">
-          <h1>Medical Record</h1>
-        </header>
-          <form class="medical-record-form">
-          <div class="form-group">
-            <label>Diagnosis:</label>
-            <input type="text" value="${app.medicalRecord.diagnosis || ''}" readonly />
-          </div>
-          <div class="form-group">
-            <label>Treatment Plan:</label>
-            <input type="text" value="${app.medicalRecord.treatment_plan || ''}" readonly />
-          </div>
-          <div class="form-group">
-            <label>Allergies:</label>
-            <input type="text" value="${app.medicalRecord.allergies || ''}" readonly />
-          </div>
-          <div class="form-group">
-            <label>Medical History:</label>
-            <input type="text" value="${app.medicalRecord.medical_history || ''}" readonly />
-          </div>
-          </form>
+      appointmentsContainer.appendChild(appointmentTable);
+
+      // Create a separate table for the medical record for this appointment
+      const mrTable = document.createElement("table");
+      mrTable.className = "table table-bordered table-striped w-100 mb-3";
+      
+      let mrContent = "";
+      // Check if there are multiple records or a single record
+      if (Array.isArray(app.medicalRecords) && app.medicalRecords.length > 0) {
+        app.medicalRecords.forEach(rec => {
+          mrContent += `
+            <tr>
+              <td>${rec.diagnosis || "N/A"}</td>
+              <td>${rec.treatment_plan || "N/A"}</td>
+              <td>${rec.allergies || "N/A"}</td>
+              <td>${rec.medical_history || "N/A"}</td>
+            </tr>
+          `;
+        });
+      } else if (app.medicalRecord) {
+        mrContent = `
+          <tr>
+            <td>${app.medicalRecord.diagnosis || "N/A"}</td>
+            <td>${app.medicalRecord.treatment_plan || "N/A"}</td>
+            <td>${app.medicalRecord.allergies || "N/A"}</td>
+            <td>${app.medicalRecord.medical_history || "N/A"}</td>
+          </tr>
         `;
+      } else {
+        mrContent = `<tr><td colspan="4" class="text-center">No Medical Record Found</td></tr>`;
       }
-      appointmentsContainer.appendChild(appDiv);
+      
+      mrTable.innerHTML = `
+        <thead class="thead-light">
+          <tr>
+            <th>Diagnosis</th>
+            <th>Treatment Plan</th>
+            <th>Allergies</th>
+            <th>Medical History</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${mrContent}
+        </tbody>
+      `;
+      appointmentsContainer.appendChild(mrTable);
     });
   } else {
-    appointmentsContainer.innerHTML = `<p>No appointment history found.</p>`;
+    appointmentsContainer.innerHTML = `<p class="text-center">No appointment history found.</p>`;
   }
 
-  // Attach "Back" button event to remove expanded view and restore the table
+  // Attach "Back to Patient List" button event to collapse the expanded view and restore the patient list
   document.getElementById("backToListBtn").addEventListener("click", function () {
     detailsContainer.remove();
     const allRows = document.querySelectorAll(".PH_TableInput .PH_TableRow");
