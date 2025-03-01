@@ -43,7 +43,7 @@ async function loadPatientMedicalHistory() {
       row.classList.add("MH_RowLabel");
       row.innerHTML = `
         <td>${exactDate ? exactDate.toLocaleDateString() : "N/A"}</td>
-        <td></td>
+        <td>${app.appointment_time_schedule}</td>
         <td>Dr. ${app.doctor_info.first_name} ${app.doctor_info.last_name}</td>
         <td>${app.reason}</td>
       `;
@@ -87,19 +87,11 @@ async function loadPatientMedicalHistory() {
           const detailsRow = document.createElement("tr");
           detailsRow.classList.add("expanded-details");
           detailsRow.innerHTML = `
-            <td colspan="3" style="padding: 0;">
+            <td colspan="4" style="padding: 0;">
               <div class="read-only-container">
               <header class="form-header">
               <h1>Medical Record</h1>
               </header>
-                <div class="form-group row mb-1">
-                  <label class="col-sm-3 col-form-label">Status:</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" value="${
-                      app.status || "N/A"
-                    }" readonly />
-                  </div>
-                </div>
                 <div class="form-group row mb-1">
                   <label class="col-sm-3 col-form-label">Diagnosis:</label>
                   <div class="col-sm-9">
@@ -161,7 +153,7 @@ async function loadPatientMedicalHistory() {
 
     // If no appointments exist, show a "No medical history" message
     if (appointments.length === 0) {
-      medHistoryBody.innerHTML = `<tr><td colspan="3" class="text-center">No medical history yet! &#128578;</td></tr>`;
+      medHistoryBody.innerHTML = `<tr><td colspan="4" class="text-center">No medical history yet! &#128578;</td></tr>`;
     }
   } catch (err) {
     console.error("Error fetching medical history:", err);
