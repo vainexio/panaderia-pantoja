@@ -423,7 +423,7 @@ app.post('/registerPatient', async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 });
-app.get('/api/clinic-schedule', async (req, res) => {
+app.get('/clinicSchedule', async (req, res) => {
   try {
     const now = new Date();
     const currentMonth = now.toLocaleString('default', { month: 'long' });
@@ -629,8 +629,6 @@ app.post('/getDoctorAppointments', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
-
 app.post('/updateAppointmentStatus', async (req, res) => {
   try {
     const { appointment_id, newStatus } = req.body;
@@ -804,60 +802,7 @@ app.post('/getPatientHistory', async (req, res) => {
   }
 });
 
-
 /* Patient Backend */
-app.post('/createAppointment_old', async (req, res) => {
-  try {
-    const { currentPatient, formData } = req.body;
-
-    if (!currentPatient || !formData) {
-      return res.status(400).json({ message: 'Missing required information' });
-    }
-
-    const existingAppointment = await appointments.findOne({ patient_id: currentPatient.patient_id, status: "Pending" });
-    if (existingAppointment) {
-      return res.status(400).json({ message: 'You already have a pending appointment.' });
-    }
-
-    const scheduleLower = formData.schedule.toLowerCase();
-    if (scheduleLower === 'morning' || scheduleLower === 'afternoon') {
-      const count = await appointments.countDocuments({
-        appointment_day: formData.day,
-        appointment_time_schedule: formData.schedule
-      });
-      if (count >= 10) {
-        return res.status(400).json({
-          message: `Appointments fully booked for ${formData.schedule} on ${formData.day}`
-        });
-      }
-    }
-
-    const availableDoctor = await availableDoctors.findOne({ day_of_week: formData.day });
-    if (!availableDoctor) {
-      return res.status(400).json({ message: 'No available doctor for this day' });
-    }
-
-    const appointmentId = Math.floor(Math.random() * 900000) + 100000;
-    const newAppointment = new appointments({
-      appointment_id: appointmentId,
-      patient_id: currentPatient.patient_id,
-      doctor_id: availableDoctor.doctor_id,
-      appointment_day: formData.day,
-      appointment_time_schedule: formData.schedule,
-      reason: formData.reason,
-      status: 'Pending'
-    });
-    await newAppointment.save();
-
-    res.status(201).json({
-      message: 'Appointment created successfully',
-      appointment: newAppointment
-    });
-  } catch (err) {
-    console.error('Error creating appointment:', err);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
 app.post('/createAppointment', async (req, res) => {
   try {
     const { currentPatient, formData } = req.body;
@@ -981,7 +926,6 @@ app.post('/appointments', async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 app.delete('/cancelAppointment/:appointmentId', async (req, res) => {
   try {
     const appointmentId = parseInt(req.params.appointmentId);

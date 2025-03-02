@@ -1,10 +1,8 @@
 const color = {
-  blue: "#91b2ff",
-  yellow: "#ffe365",
-  secondary_blue: "#7373fc",
-  secondary_yellow: "#fdf468",
-  red: "#ff3333",
-  light_gray: "#e9ecef",
+  color1: "#91b2ff",
+  color2: "#ffe365",
+  color3: "#7373fc",
+  color4: "#fdf468",
 };
 async function analyticsData() {
   try {
@@ -28,7 +26,7 @@ async function analyticsData() {
           {
             label: "Number of Appointments",
             data: data.appointmentsByDay.map((item) => item.count),
-            backgroundColor: color.blue,
+            backgroundColor: color.color1,
           },
         ],
       },
@@ -49,10 +47,10 @@ async function analyticsData() {
           {
             data: data.statusDistribution.map((item) => item.count),
             backgroundColor: [
-              color.blue,
-              color.yellow,
-              color.secondary_blue,
-              color.secondary_yellow,
+              color.color1,
+              color.color2,
+              color.color3,
+              color.color4,
             ],
           },
         ],
@@ -70,7 +68,7 @@ async function analyticsData() {
         datasets: [
           {
             data: data.timeScheduleDistribution.map((item) => item.count),
-            backgroundColor: [color.blue, color.yellow],
+            backgroundColor: [color.color1, color.color2],
           },
         ],
       },
@@ -88,7 +86,7 @@ async function analyticsData() {
           {
             label: "Appointments",
             data: data.appointmentsPerDoctor.map((item) => item.count),
-            backgroundColor: color.blue,
+            backgroundColor: color.color1,
           },
         ],
       },
@@ -109,7 +107,7 @@ async function analyticsData() {
           {
             label: "Count",
             data: data.appointmentReasons.map((item) => item.count),
-            backgroundColor: color.blue,
+            backgroundColor: color.color1,
           },
         ],
       },
@@ -130,8 +128,8 @@ async function analyticsData() {
           {
             label: "Appointments",
             data: data.appointmentTrends.map((item) => item.count),
-            backgroundColor: color.blue,
-            borderColor: color.yellow,
+            backgroundColor: color.color1,
+            borderColor: color.color2,
             fill: true,
             tension: 0.1,
           },

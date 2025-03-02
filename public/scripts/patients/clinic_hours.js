@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function () {
   function isReady() {
-    fetch("/api/clinic-schedule")
+    fetch("/clinicSchedule")
       .then((response) => response.json())
       .then((data) => {
         let monthDisplay = document.getElementById("monthDisplay");
