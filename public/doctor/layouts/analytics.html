@@ -1,5 +1,51 @@
-<section id="analytics" class="analytics section-content"> <!-- Don't change the id and class -->
+<section id="analytics" class="analytics section-content">
   <div class="container m-auto">
-    <header class="mb-6 text-center"></header>
+    <header class="mb-6 text-center">
+      <h1>Analytics Dashboard</h1>
+    </header>
+    <div class="row">
+      <!-- Appointments by Day -->
+      <div class="col-md-6 col-sm-12 mb-4">
+        <div class="p-3 border rounded">
+          <h2 class="text-center">Appointments by Day</h2>
+          <canvas id="appointmentsByDayChart"></canvas>
+        </div>
+      </div>
+      <!-- Appointment Status Distribution -->
+      <div class="col-md-6 col-sm-12 mb-4">
+        <div class="p-3 border rounded">
+          <h2 class="text-center">Appointment Status Distribution</h2>
+          <canvas id="statusDistributionChart"></canvas>
+        </div>
+      </div>
+      <!-- Time Schedule Distribution -->
+      <div class="col-md-6 col-sm-12 mb-4">
+        <div class="p-3 border rounded">
+          <h2 class="text-center">Time Schedule Distribution</h2>
+          <canvas id="timeScheduleChart"></canvas>
+        </div>
+      </div>
+      <!-- Appointments per Doctor -->
+      <div class="col-md-6 col-sm-12 mb-4">
+        <div class="p-3 border rounded">
+          <h2 class="text-center">Appointments per Doctor</h2>
+          <canvas id="appointmentsPerDoctorChart"></canvas>
+        </div>
+      </div>
+      <!-- Appointment Reasons -->
+      <div class="col-md-6 col-sm-12 mb-4">
+        <div class="p-3 border rounded">
+          <h2 class="text-center">Appointment Reasons</h2>
+          <canvas id="appointmentReasonsChart"></canvas>
+        </div>
+      </div>
+      <!-- Appointment Trends Over Time -->
+      <div class="col-md-6 col-sm-12 mb-4">
+        <div class="p-3 border rounded">
+          <h2 class="text-center">Appointment Trends Over Time</h2>
+          <canvas id="appointmentTrendsChart"></canvas>
+        </div>
+      </div>
     </div>
+  </div>
 </section>

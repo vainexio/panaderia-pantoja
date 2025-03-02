@@ -9,3 +9,16 @@
 }
 /* Use this pallets */
 /* Css designs goes below this */
+/* Optional: constrain the canvas height */
+#analytics canvas {
+  max-height: 300px;
+}
+.graph {
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 32px;
+}
+
+.row {
+  gap: 10px;
+}
