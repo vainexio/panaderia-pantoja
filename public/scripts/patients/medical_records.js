@@ -34,11 +34,10 @@ async function loadPatientMedicalHistory() {
     const appointments = data.appointments;
 
     const medHistoryBody = document.getElementById("medHistoryBody");
-    medHistoryBody.innerHTML = ""; // Clear any previous rows
+    medHistoryBody.innerHTML = "";
 
-    // For each appointment, add a main row with date, doctor's name, and reason.
     appointments.forEach((app) => {
-      const exactDate = app.appointment_date//getAppointmentDate(app.appointment_day);
+      const exactDate = app.appointment_date
       const row = document.createElement("tr");
       row.classList.add("MH_RowLabel");
       row.innerHTML = `
@@ -49,20 +48,16 @@ async function loadPatientMedicalHistory() {
       `;
       medHistoryBody.appendChild(row);
 
-      // Add click event to toggle expanded details for this appointment
       row.addEventListener("click", function () {
-        // If this row is already expanded, collapse it
         if (row.classList.contains("expanded")) {
           row.classList.remove("expanded");
           const nextRow = row.nextElementSibling;
           if (nextRow && nextRow.classList.contains("expanded-details")) {
             nextRow.remove();
           }
-          // Restore display for any other rows if needed
           const allRows = document.querySelectorAll("#medHistoryBody tr");
           allRows.forEach((r) => (r.style.display = ""));
         } else {
-          // Collapse any other expanded row first
           const expandedRow = document.querySelector(
             "#medHistoryBody tr.expanded"
           );
@@ -75,7 +70,6 @@ async function loadPatientMedicalHistory() {
             const allRows = document.querySelectorAll("#medHistoryBody tr");
             allRows.forEach((r) => (r.style.display = ""));
           }
-          // Mark the clicked row as expanded and hide others
           row.classList.add("expanded");
           const allRows = document.querySelectorAll("#medHistoryBody tr");
           allRows.forEach((r) => {
@@ -83,7 +77,6 @@ async function loadPatientMedicalHistory() {
               r.style.display = "none";
             }
           });
-          // Create an expanded details row using form-group structure
           const detailsRow = document.createElement("tr");
           detailsRow.classList.add("expanded-details");
           detailsRow.innerHTML = `
@@ -135,9 +128,7 @@ async function loadPatientMedicalHistory() {
               </div>
             </td>
           `;
-          // Insert the details row immediately after the clicked row
           row.parentNode.insertBefore(detailsRow, row.nextSibling);
-          // Attach event to the Close button
           detailsRow
             .querySelector(".close-details")
             .addEventListener("click", function (e) {
@@ -151,7 +142,6 @@ async function loadPatientMedicalHistory() {
       });
     });
 
-    // If no appointments exist, show a "No medical history" message
     if (appointments.length === 0) {
       medHistoryBody.innerHTML = `<tr><td colspan="4" class="text-center">No medical history yet! &#128578;</td></tr>`;
     }
@@ -160,7 +150,6 @@ async function loadPatientMedicalHistory() {
   }
 }
 
-// Initialize the patient medical history once DOM is ready
 document.addEventListener("DOMContentLoaded", function () {
   waitUntilReady(loadPatientMedicalHistory);
 });

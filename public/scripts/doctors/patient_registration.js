@@ -28,7 +28,9 @@ async function patientRegistration() {
         }, 500);
       });
 
-    document.getElementById("patientForm").addEventListener("submit", async function (event) {
+    document
+      .getElementById("patientForm")
+      .addEventListener("submit", async function (event) {
         event.preventDefault();
 
         const formData = Object.fromEntries(
@@ -51,7 +53,7 @@ async function patientRegistration() {
             error.message || "Failed to register patient.";
           notification.className = "alert alert-danger mt-3 rounded-3";
         }
-      document.getElementById("patientForm").reset();
+        document.getElementById("patientForm").reset();
 
         setTimeout(function () {
           if (notification.textContent.length > 0) {
@@ -64,6 +66,5 @@ async function patientRegistration() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  // Wait for content load
   waitUntilReady(patientRegistration);
 });

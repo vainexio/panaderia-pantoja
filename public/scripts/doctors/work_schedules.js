@@ -20,9 +20,10 @@ function fetchSchedules() {
     setTimeout(fetchSchedules, 100);
     return;
   }
-  
-  let docName = document.getElementById("docName")
-  docName.innerText = "Doctor "+currentDoctor.first_name+" "+currentDoctor.last_name
+
+  let docName = document.getElementById("docName");
+  docName.innerText =
+    "Doctor " + currentDoctor.first_name + " " + currentDoctor.last_name;
   if (!window.scheduleFormAttached) {
     window.scheduleFormAttached = true;
 
@@ -39,7 +40,12 @@ function fetchSchedules() {
         let response = await fetch("/schedule", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ currentDoctor, day_of_week, start_time, end_time }),
+          body: JSON.stringify({
+            currentDoctor,
+            day_of_week,
+            start_time,
+            end_time,
+          }),
         });
         if (response.ok) {
           response = await response.json();
@@ -48,7 +54,8 @@ function fetchSchedules() {
           fetchSchedules(); // Refresh the schedule table
         } else {
           response = await response.json();
-          notification.textContent = response.message || "Failed to create work schedule.";
+          notification.textContent =
+            response.message || "Failed to create work schedule.";
           notification.className = "alert alert-danger mt-3 rounded-3";
         }
         document.getElementById("scheduleForm").reset();
@@ -101,12 +108,12 @@ function fetchSchedules() {
   }
 
   fetch("/schedules", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        currentDoctor,
-      }),
-    })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      currentDoctor,
+    }),
+  })
     .then((response) => response.json())
     .then((schedules) => {
       let tableHTML = `

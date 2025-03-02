@@ -60,7 +60,9 @@ document.addEventListener("DOMContentLoaded", async function () {
           const overallOnDuty = item.availabilities.some((slot) => slot.onDuty);
           const statusDot = document.createElement("span");
           statusDot.id = "statusDot";
-          statusDot.className = overallOnDuty ? "Create Appointment" : "off-duty";
+          statusDot.className = overallOnDuty
+            ? "Create Appointment"
+            : "off-duty";
           statusSlot.appendChild(statusDot);
 
           const doctorName = document.createElement("h3");
@@ -68,11 +70,6 @@ document.addEventListener("DOMContentLoaded", async function () {
           doctorName.textContent =
             "Dr. " + item.doctor.first_name + " " + item.doctor.last_name;
           statusSlot.appendChild(doctorName);
-
-          /*const statusText = document.createElement("span");
-          statusText.id = "statusText";
-          statusText.textContent = overallOnDuty ? "• On-duty" : "• Off-duty";
-          statusSlot.appendChild(statusText);*/
 
           item.availabilities.forEach((slot) => {
             let classColor = "time-color";
@@ -111,7 +108,6 @@ document.addEventListener("DOMContentLoaded", async function () {
       });
   }
 
-  // Wait for content load
   waitUntilReady(isReady);
 });
 

@@ -1,8 +1,6 @@
 let patientHistoryInitialized = false
 
 async function loadPatientHistory() {
-  //if (patientHistoryInitialized) return
-  //patientHistoryInitialized = true
   try {
     const response = await fetch("/getPatientHistory", {
       method: "POST",
@@ -16,7 +14,7 @@ async function loadPatientHistory() {
     const patients = data.patients;
 
     const tableBody = document.querySelector(".PH_TableInput");
-    tableBody.innerHTML = ""; // Clear existing rows
+    tableBody.innerHTML = "";
 
     patients.forEach(patient => {
       const row = document.createElement("tr");
@@ -28,44 +26,34 @@ async function loadPatientHistory() {
         <td class="PH_TableData">${patient.contact_number}</td>
         <td class="PH_TableData">${patient.email}</td>
       `;
-      // When the row is clicked, hide others and show detailed view
       row.addEventListener("click", function () {
-  // Check if another row is already expanded
   const expandedRow = document.querySelector(".PH_TableInput .PH_TableRow.expanded");
   if (expandedRow && expandedRow !== row) {
-    // Collapse the previously expanded row
     expandedRow.classList.remove("expanded");
     const detailsContainer = document.getElementById("patientDetailsExpanded");
     if (detailsContainer) {
       detailsContainer.remove();
     }
-    // Restore display for all rows before expanding the clicked row
     const allRows = document.querySelectorAll(".PH_TableInput .PH_TableRow");
     allRows.forEach(r => (r.style.display = ""));
   }
 
-  // Toggle the clicked row
   if (row.classList.contains("expanded")) {
-    // If clicked row is already expanded, collapse it
     row.classList.remove("expanded");
     const detailsContainer = document.getElementById("patientDetailsExpanded");
     if (detailsContainer) {
       detailsContainer.remove();
     }
-    // Restore all rows
     const allRows = document.querySelectorAll(".PH_TableInput .PH_TableRow");
     allRows.forEach(r => (r.style.display = ""));
   } else {
-    // Expand the clicked row
     row.classList.add("expanded");
-    // Hide all other rows
     const allRows = document.querySelectorAll(".PH_TableInput .PH_TableRow");
     allRows.forEach(r => {
       if (r !== row) {
         r.style.display = "none";
       }
     });
-    // Show detailed information for the clicked patient
     showPatientDetails(patient);
   }
 });
@@ -78,7 +66,6 @@ async function loadPatientHistory() {
 }
 
 function showPatientDetails(patient) {
-  // Create an expanded details container
   const detailsContainer = document.createElement("div");
   detailsContainer.id = "patientDetailsExpanded";
   detailsContainer.innerHTML = `
@@ -138,18 +125,14 @@ function showPatientDetails(patient) {
     </div>
   `;
 
-  // Append the details container to the main patient history container
   const container = document.querySelector(".PHContainer");
   container.appendChild(detailsContainer);
 
-  // For each appointment, create its own appointment table and its own medical record table
   const appointmentsContainer = document.getElementById("appointmentsHistoryContainer");
   if (patient.appointments && patient.appointments.length > 0) {
     patient.appointments.forEach(app => {
-      // Compute the exact appointment date using your helper function
-      const exactDate = app.appointment_date //getAppointmentDate(app.appointment_day);
+      const exactDate = app.appointment_date
 
-      // Create a table for appointment data
       const appointmentTable = document.createElement("table");
       appointmentTable.style.setProperty("border-top", "2px solid #283986", "important");
       appointmentTable.style.setProperty("border-left", "2px solid #283986", "important");
@@ -178,7 +161,6 @@ function showPatientDetails(patient) {
       `;
       appointmentsContainer.appendChild(appointmentTable);
 
-      // Create a separate table for the medical record for this appointment
       const mrTable = document.createElement("table");
       mrTable.style.setProperty("border-bottom", "2px solid #283986", "important");
       mrTable.style.setProperty("border-left", "2px solid #283986", "important");
@@ -187,7 +169,6 @@ function showPatientDetails(patient) {
       mrTable.className = "table table-bordered table-striped w-100 mb-8";
       
       let mrContent = ``;
-      // Check if there are multiple records or a single record
       if (Array.isArray(app.medicalRecords) && app.medicalRecords.length > 0) {
         app.medicalRecords.forEach(rec => {
           mrContent += `
@@ -234,7 +215,6 @@ function showPatientDetails(patient) {
     appointmentsContainer.innerHTML = `<p class="text-center">No appointment history found.</p>`;
   }
 
-  // Attach "Back to Patient List" button event to collapse the expanded view and restore the patient list
   document.getElementById("backToListBtn").addEventListener("click", function () {
     detailsContainer.remove();
     const allRows = document.querySelectorAll(".PH_TableInput .PH_TableRow");
@@ -242,7 +222,6 @@ function showPatientDetails(patient) {
   });
 }
 
-// Helper function: compute exact date for the current week based on day name
 function getAppointmentDate(dayName) {
   const daysMapping = { 'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3, 'Friday': 4 };
   if (!(dayName in daysMapping)) return null;

@@ -1,8 +1,8 @@
 const color = {
-  blue: "#283986",
-  yellow: "#ffd41c",
-  secondary_blue: "#91b2ff",
-  secondary_yellow: "#ffe365",
+  blue: "#91b2ff",
+  yellow: "#ffe365",
+  secondary_blue: "#7373fc",
+  secondary_yellow: "#fdf468",
   red: "#ff3333",
   light_gray: "#e9ecef",
 };

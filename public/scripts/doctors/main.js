@@ -16,28 +16,28 @@ function showSection(sectionId) {
   const sections = document.querySelectorAll(".section-content");
   sections.forEach((section) => {
     section.style.display = "none";
-    const selectedSectionNav = document.getElementById(section.id+"_nav");
-    selectedSectionNav.classList.remove("active")
+    const selectedSectionNav = document.getElementById(section.id + "_nav");
+    selectedSectionNav.classList.remove("active");
   });
 
   const selectedSection = document.getElementById(sectionId);
   selectedSection.style.display = "block";
-  
-  const selectedSectionNav = document.getElementById(sectionId+"_nav");
-  selectedSectionNav.classList.add("active")
+
+  const selectedSectionNav = document.getElementById(sectionId + "_nav");
+  selectedSectionNav.classList.add("active");
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
   // Get current doctor
-  currentDoctor = await fetch("/currentAccount?type=doctor")
-  if (currentDoctor.ok) currentDoctor = await currentDoctor.json()
+  currentDoctor = await fetch("/currentAccount?type=doctor");
+  if (currentDoctor.ok) currentDoctor = await currentDoctor.json();
   else {
-    let error = await currentDoctor.json()
+    let error = await currentDoctor.json();
     alert("No login session was found. Please login!");
     window.location.href = error.redirect;
     return;
   }
-  
+
   let layouts = [
     "work_schedule",
     "appointments",
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       this.classList.add("active");
     });
   });
-  
+
   ready = true;
   /* Hide loader */
   setTimeout(() => {

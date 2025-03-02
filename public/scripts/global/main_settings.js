@@ -37,7 +37,6 @@ async function removeOtherSessions(accountId, type, callback) {
 let mainSettingsInitialized = false;
 
 async function mainSettings() {
-  // Prevent duplicate listener registration
   if (mainSettingsInitialized) return;
   mainSettingsInitialized = true;
   
@@ -49,7 +48,6 @@ async function mainSettings() {
     var passwordFields = document.getElementById('password-fields');
     var inputs = passwordFields.querySelectorAll('input');
     
-    // Toggle display and disabled attribute
     if (passwordFields.style.display === "none" || passwordFields.style.display === "") {
       passwordFields.style.display = "block";
       this.innerText = "Cancel";

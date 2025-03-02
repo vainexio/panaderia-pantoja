@@ -25,7 +25,6 @@ async function patientSettings() {
     const sessionData = await sessionResponse.json();
     const loginSessions = sessionData.loginSessions || [];
 
-    // Build the HTML table using Bootstrap classes.
     let tableHTML = `
       <div class="table-responsive">
         <button id="remove-other-sessions" class="btn btn-danger mb-3">Logout Other Sessions</button>
@@ -40,9 +39,7 @@ async function patientSettings() {
           </thead>
           <tbody>
     `;
-    // Iterate through each session and highlight the current session if applicable.
     loginSessions.forEach((session) => {
-      // If session.currentSession is true, add a Bootstrap class to highlight the row.
       const rowClass = session.currentSession ? "table-primary" : "";
       const button = !session.currentSession
         ? `<button class="btn btn-sm btn-danger remove-session-btn" data-session-id="${session.session_id}">Remove Device</button>`
@@ -63,10 +60,8 @@ async function patientSettings() {
         </table>
       </div>
     `;
-    // Update the login sessions container.
     document.querySelector(".login-sessions-card").innerHTML = tableHTML;
 
-    // Attach event listeners for each remove button.
     document.querySelectorAll(".remove-session-btn").forEach((button) => {
       button.addEventListener("click", async function () {
         const current = this.getAttribute("current-session-id");
@@ -80,7 +75,6 @@ async function patientSettings() {
       });
     });
 
-    // Attach event listener for the "Remove All Sessions" button.
     const removeAllBtn = document.getElementById("remove-other-sessions");
     if (removeAllBtn) {
       removeAllBtn.addEventListener("click", async function () {
