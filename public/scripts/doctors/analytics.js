@@ -1,8 +1,8 @@
 const color = {
   color1: "#36437F",
-  color2: "#DCC76A",
-  tertiary: "#666666",
-  quaternary: "#C9C584",
+  color2: "#DFC448",
+  color3: "#BFBFBF",
+  color4: "#C9C584",
 };
 async function analyticsData() {
   try {
