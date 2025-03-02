@@ -152,7 +152,6 @@ app.get('/currentAccount', async (req, res) => {
 app.post('/getAllSessions', async (req, res) => {
   try {
     let deviceId = req.cookies.deviceId;
-    // Expecting the doctor's id in the request body
     const { accountId, type } = req.body;
     if (!accountId || !type) {
       return res.status(400).json({ error: 'Account ID & type is required' });
@@ -185,7 +184,6 @@ app.post('/getAllSessions', async (req, res) => {
       })
     );
 
-    // Sort sessions so that the current session appears first
     sessionsWithLocation.sort((a, b) => b.currentSession - a.currentSession);
 
     res.json({ loginSessions: sessionsWithLocation });
@@ -482,7 +480,6 @@ app.get('/api/clinic-schedule', async (req, res) => {
 app.post('/schedule', async (req, res) => {
   const { currentDoctor, day_of_week, start_time, end_time } = req.body;
   try {
-    // Check if a schedule for this day already exists for the current doctor
     const existingSchedule = await availableDoctors.findOne({
       doctor_id: currentDoctor.doctor_id,
       day_of_week
@@ -492,7 +489,6 @@ app.post('/schedule', async (req, res) => {
       return res.status(400).json({ message: 'Schedule for '+day_of_week+' already exists! Please try a different day.' });
     }
     
-    // Convert times to 12-hour format
     const startTimeFormatted = method.convertTo12Hour(start_time);
     const endTimeFormatted = method.convertTo12Hour(end_time);
 
@@ -536,7 +532,6 @@ app.delete('/schedule/:id', async (req, res) => {
 app.put('/schedule/:id', async (req, res) => {
   const { day_of_week, start_time, end_time } = req.body;
   try {
-    // Convert times to 12-hour format
     const updatedStartTime = method.convertTo12Hour(start_time);
     const updatedEndTime = method.convertTo12Hour(end_time);
 
@@ -552,26 +547,24 @@ app.put('/schedule/:id', async (req, res) => {
 });
 app.post('/getDoctorAppointments', async (req, res) => {
   const currentDoctor = req.body.currentDoctor;
-  const statusFilter = req.body.statusFilter; // Optional status filter (e.g., "Pending", "Completed", etc.)
-  const patientSearch = req.body.patientSearch; // Optional patient name search string
+  const statusFilter = req.body.statusFilter;
+  const patientSearch = req.body.patientSearch;
 
   if (!currentDoctor || !currentDoctor.doctor_id) {
     return res.status(400).json({ message: "Invalid doctor data." });
   }
 
   try {
-    // Build the initial match query for doctor_id and optional status filter
     const matchQuery = { doctor_id: currentDoctor.doctor_id };
     if (statusFilter && statusFilter !== 'All') {
       matchQuery.status = statusFilter;
     }
 
-    // Build the aggregation pipeline
     const pipeline = [];
     pipeline.push({ $match: matchQuery });
     pipeline.push({
       $lookup: {
-        from: "patients", // Actual collection name (lowercase)
+        from: "patients",
         localField: "patient_id",
         foreignField: "patient_id",
         as: "patient_info"
@@ -588,7 +581,6 @@ app.post('/getDoctorAppointments', async (req, res) => {
         }
       });
     }
-    // Add numeric fields for sorting by day and schedule
     pipeline.push({
       $addFields: {
         daySort: {
@@ -618,8 +610,6 @@ app.post('/getDoctorAppointments', async (req, res) => {
     pipeline.push({ $project: { daySort: 0, scheduleSort: 0 } });
 
     const appointmentList = await appointments.aggregate(pipeline);
-
-    // Format the appointments; use the stored appointment date ("appintment_date") as exact_date.
     const formattedAppointments = appointmentList.map(app => {
       return {
         appointment_id: app.appointment_id,
@@ -668,12 +658,11 @@ app.post('/startAppointment', async (req, res) => {
     if (!appointment_id) {
       return res.status(400).json({ message: "Appointment ID is required" });
     }
-    // Fetch appointment details along with patient info from the "patients" collection.
     const appointmentDetail = await appointments.aggregate([
       { $match: { appointment_id: Number(appointment_id) } },
       {
         $lookup: {
-          from: "patients",  // Ensure your collection name is correct.
+          from: "patients",
           localField: "patient_id",
           foreignField: "patient_id",
           as: "patient_info"
@@ -687,8 +676,6 @@ app.post('/startAppointment', async (req, res) => {
     }
     
     const appointment = appointmentDetail[0];
-    
-    // Look for an existing medical record for this appointment.
     let record = await medicalRecords.findOne({ appointment_id: appointment_id });
     
     res.status(200).json({
@@ -702,7 +689,6 @@ app.post('/startAppointment', async (req, res) => {
         emergency_contact: `${appointment.patient_info.emergency_contact_name || "None"} - ${appointment.patient_info.emergency_contact_number || "None"}`,
         contact_number: appointment.patient_info.contact_number,
         email: appointment.patient_info.email,
-        // Include other patient details if needed.
       },
       medicalRecord: record || null
     });
@@ -717,10 +703,10 @@ app.post('/saveMedicalRecord', async (req, res) => {
     if (!appointment_id || !patient_id || !doctor_id) {
       return res.status(400).json({ message: "Missing required fields" });
     }
-    // Check if a record exists for this appointment.
+    // Check if a record exists
     let record = await medicalRecords.findOne({ appointment_id: appointment_id });
     if (record) {
-      // Update the existing record.
+      // Update existing
       record.diagnosis = diagnosis;
       record.treatment_plan = treatment_plan;
       record.allergies = allergies;
@@ -728,8 +714,8 @@ app.post('/saveMedicalRecord', async (req, res) => {
       await record.save();
       res.status(200).json({ message: "Medical record updated", record });
     } else {
-      // Create a new record.
-      const record_id = Math.floor(Math.random() * 900000) + 100000; // Example: 6-digit random number.
+      // Create new
+      const record_id = Math.floor(Math.random() * 900000) + 100000;
       const newRecord = new medicalRecords({
         record_id,
         appointment_id,
@@ -764,7 +750,7 @@ app.post('/getPatientHistory', async (req, res) => {
       },
       {
         $lookup: {
-          from: "patients", // actual collection name is lowercase by default
+          from: "patients",
           localField: "patient_id",
           foreignField: "patient_id",
           as: "patient_info"
@@ -773,13 +759,13 @@ app.post('/getPatientHistory', async (req, res) => {
       { $unwind: "$patient_info" },
       {
         $lookup: {
-          from: "medical records", // ensure this matches your collection name
+          from: "medical records",
           localField: "appointment_id",
           foreignField: "appointment_id",
           as: "medicalRecord"
         }
       },
-      // Group by patient so that each patient appears only once
+      // Group by patient
       {
         $group: {
           _id: "$patient_id",
@@ -792,7 +778,6 @@ app.post('/getPatientHistory', async (req, res) => {
               appointment_date: "$appointment_date",
               reason: "$reason",
               status: "$status",
-              // Use the first medical record if available (assumes one record per appointment)
               medicalRecord: { $arrayElemAt: ["$medicalRecord", 0] }
             }
           }
@@ -800,7 +785,6 @@ app.post('/getPatientHistory', async (req, res) => {
       }
     ]);
 
-    // Format the data so the client gets flat patient fields and an array of appointments
     const formattedHistory = history.map(item => ({
       patient_id: item._id,
       name: `${item.patient.first_name} ${item.patient.last_name}`,
@@ -908,8 +892,6 @@ app.post('/createAppointment', async (req, res) => {
       return res.status(400).json({ message: 'No available doctor for this day' });
     }
 
-    // Compute the exact appointment date.
-    // Map day names to numbers (Monday=1, Tuesday=2, …, Friday=5).
     const dayMapping = { "Monday": 1, "Tuesday": 2, "Wednesday": 3, "Thursday": 4, "Friday": 5 };
     const targetDay = dayMapping[formData.day];
     if (!targetDay) {
@@ -917,16 +899,15 @@ app.post('/createAppointment', async (req, res) => {
     }
 
     const today = new Date();
-    const currentDay = today.getDay(); // Sunday=0, Monday=1, …, Saturday=6
+    const currentDay = today.getDay();
     let diff = targetDay - currentDay;
-    // If the target day is today or earlier in the week, schedule for next week.
     if (diff <= 0) {
       diff += 7;
     }
     const appointmentDateObj = new Date();
     appointmentDateObj.setDate(today.getDate() + diff);
 
-    // Format the appointment date as MM/DD/YYYY.
+    // Format appointment date
     const mm = (appointmentDateObj.getMonth() + 1).toString().padStart(2, '0');
     const dd = appointmentDateObj.getDate().toString().padStart(2, '0');
     const yyyy = appointmentDateObj.getFullYear();
@@ -938,7 +919,7 @@ app.post('/createAppointment', async (req, res) => {
       patient_id: currentPatient.patient_id,
       doctor_id: availableDoctor.doctor_id,
       appointment_day: formData.day,
-      appointment_date: formattedDate,  // New field storing the exact date
+      appointment_date: formattedDate,
       appointment_time_schedule: formData.schedule,
       reason: formData.reason,
       status: 'Pending'
@@ -1031,7 +1012,7 @@ app.post('/getPatientMedicalHistory', async (req, res) => {
       } },
       {
         $lookup: {
-          from: "doctors", // actual collection name (usually lowercase)
+          from: "doctors",
           localField: "doctor_id",
           foreignField: "doctor_id",
           as: "doctor_info"
@@ -1040,7 +1021,7 @@ app.post('/getPatientMedicalHistory', async (req, res) => {
       { $unwind: "$doctor_info" },
       {
         $lookup: {
-          from: "medical records", // adjust if needed
+          from: "medical records",
           localField: "appointment_id",
           foreignField: "appointment_id",
           as: "medicalRecord"
@@ -1061,7 +1042,6 @@ app.post('/getPatientMedicalHistory', async (req, res) => {
 });
 app.post('/analyticsData', async (req, res) => {
   try {
-    // A. Appointments by Day (Monday-Friday)
     const appointmentsByDayAgg = await appointments.aggregate([
       {
         $group: {
@@ -1076,7 +1056,6 @@ app.post('/analyticsData', async (req, res) => {
       return { day, count: found ? found.count : 0 };
     });
 
-    // B. Appointment Status Distribution
     const statusDistributionAgg = await appointments.aggregate([
       {
         $group: {
@@ -1090,7 +1069,6 @@ app.post('/analyticsData', async (req, res) => {
       count: item.count
     }));
 
-    // C. Time Schedule Distribution
     const timeScheduleAgg = await appointments.aggregate([
       {
         $group: {
@@ -1104,7 +1082,6 @@ app.post('/analyticsData', async (req, res) => {
       count: item.count
     }));
 
-    // D. Appointments per Doctor
     const appointmentsPerDoctorAgg = await appointments.aggregate([
       {
         $group: {
@@ -1127,7 +1104,6 @@ app.post('/analyticsData', async (req, res) => {
       count: item.count
     }));
 
-    // E. Appointment Reasons
     const appointmentReasonsAgg = await appointments.aggregate([
       {
         $group: {
@@ -1140,9 +1116,6 @@ app.post('/analyticsData', async (req, res) => {
       reason: item._id,
       count: item.count
     }));
-
-    // F. Appointment Trends Over Time
-    // Convert the stored appointment_date (MM/DD/YYYY) to a Date object and group by month/year.
     const appointmentTrendsAgg = await appointments.aggregate([
       {
         $addFields: {
@@ -1182,7 +1155,6 @@ app.post('/analyticsData', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 
 // Start the server

@@ -1,3 +1,10 @@
+const color = {
+  blue: "#283986",
+  yellow: "#ffd41c;",
+  secondary_blue: "#91b2ff",
+  secondary_yellow: "#ffe365",
+  light_gray: "#e9ecef"
+}
 async function analyticsData () {
   try {
     const response = await fetch("/analyticsData", {
@@ -9,7 +16,6 @@ async function analyticsData () {
     }
     const data = await response.json();
 
-    // A. Appointments by Day (Bar Chart)
     const appointmentsByDayCtx = document.getElementById("appointmentsByDayChart").getContext("2d");
     new Chart(appointmentsByDayCtx, {
       type: "bar",
@@ -18,7 +24,7 @@ async function analyticsData () {
         datasets: [{
           label: "Number of Appointments",
           data: data.appointmentsByDay.map(item => item.count),
-          backgroundColor: "rgba(54, 162, 235, 0.6)"
+          backgroundColor: color.blue
         }]
       },
       options: {
@@ -27,7 +33,6 @@ async function analyticsData () {
       }
     });
 
-    // B. Appointment Status Distribution (Pie Chart)
     const statusDistributionCtx = document.getElementById("statusDistributionChart").getContext("2d");
     new Chart(statusDistributionCtx, {
       type: "pie",
@@ -36,9 +41,9 @@ async function analyticsData () {
         datasets: [{
           data: data.statusDistribution.map(item => item.count),
           backgroundColor: [
-            "rgba(255, 205, 86, 0.7)",
-            "rgba(75, 192, 192, 0.7)",
-            "rgba(54, 162, 235, 0.7)",
+            color.blue"rgba(255, 205, 86, 0.7)",
+            color.secondary_blue"rgba(75, 192, 192, 0.7)",
+            color.yellow"rgba(54, 162, 235, 0.7)",
             "rgba(255, 99, 132, 0.7)"
           ]
         }]
@@ -46,7 +51,6 @@ async function analyticsData () {
       options: { responsive: true }
     });
 
-    // C. Time Schedule Distribution (Pie Chart)
     const timeScheduleCtx = document.getElementById("timeScheduleChart").getContext("2d");
     new Chart(timeScheduleCtx, {
       type: "pie",
@@ -63,7 +67,6 @@ async function analyticsData () {
       options: { responsive: true }
     });
 
-    // D. Appointments per Doctor (Bar Chart)
     const appointmentsPerDoctorCtx = document.getElementById("appointmentsPerDoctorChart").getContext("2d");
     new Chart(appointmentsPerDoctorCtx, {
       type: "bar",
@@ -81,7 +84,6 @@ async function analyticsData () {
       }
     });
 
-    // E. Appointment Reasons (Bar Chart)
     const appointmentReasonsCtx = document.getElementById("appointmentReasonsChart").getContext("2d");
     new Chart(appointmentReasonsCtx, {
       type: "bar",
@@ -99,7 +101,6 @@ async function analyticsData () {
       }
     });
 
-    // F. Appointment Trends Over Time (Line Chart)
     const appointmentTrendsCtx = document.getElementById("appointmentTrendsChart").getContext("2d");
     new Chart(appointmentTrendsCtx, {
       type: "line",
