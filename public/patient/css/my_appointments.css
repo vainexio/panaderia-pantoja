@@ -55,19 +55,18 @@
 
 /* Appointment table container */
 .appointment-table-container {
-  background-color: #d1d5db; /* gray-300 */
+  background-color: #d1d5db;
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-/* Table styles */
 table {
   width: 100%;
   text-align: left;
 }
 
 thead tr {
-  background-color: #1e3a8a; /* blue-900 */
+  background-color: #1e3a8a;
   color: white;
 }
 
@@ -76,7 +75,7 @@ th, td {
 }
 
 tbody tr {
-  border-bottom: 1px solid #9ca3af; /* gray-400 */
+  border-bottom: 1px solid #9ca3af;
   color: black;
 }
 
@@ -90,20 +89,19 @@ tbody tr {
 
 .status-indicator.pending {
   background-color: #facc15;
-  margin-left:15px;/* yellow-400 */
+  margin-left:15px;
 }
 
 .status-indicator.cancelled {
   background-color: #ef4444;
-   margin-left:15px;/* red-500 */
+   margin-left:15px;
 }
 
 .status-indicator.confirmed {
   background-color: #22c55e;
-   margin-left:15px;/* green-500 */
+   margin-left:15px;
 }
 
-/* Status legend */
 .status-legend {
   margin-top: 1rem;
   display: flex;

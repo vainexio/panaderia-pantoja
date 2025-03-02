@@ -9,11 +9,11 @@
 }
 /* Use this pallets */
 /* Css designs goes below this */
-/* Optional: constrain the canvas height */
 #analytics canvas {
   max-height: 300px;
 }
-.row {
+
+.graph-row {
   gap: 8px;
   justify-content: center;
 }

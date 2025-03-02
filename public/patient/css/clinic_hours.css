@@ -11,7 +11,6 @@
   --unavail: #e6c2bf;
 }
 /* Css designs goes below this */
-
 #clinic_hours {
   background-color: var(--blue);
   color: var(--black);
@@ -91,7 +90,6 @@
   font-size: 26px;
   font-weight: bold;
 }
-
 /* Doctor Availability Item */
 .availabilityItem {
   background: var(--white);
@@ -213,13 +211,6 @@
   border-radius: 50%;
   margin-right: 5px;
 }
-/*#availabilityColors {
-background: var(--white);
-border-radius: 10px;
-padding: 10px;
-box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-width: 50%
-}*/
 .availability-dot-today {
   background-color: var(--blue);
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
