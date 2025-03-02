@@ -1059,6 +1059,129 @@ app.post('/getPatientMedicalHistory', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+app.post('/analyticsData', async (req, res) => {
+  try {
+    // A. Appointments by Day (Monday-Friday)
+    const appointmentsByDayAgg = await appointments.aggregate([
+      {
+        $group: {
+          _id: "$appointment_day",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    const daysOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    const appointmentsByDay = daysOrder.map(day => {
+      const found = appointmentsByDayAgg.find(item => item._id === day);
+      return { day, count: found ? found.count : 0 };
+    });
+
+    // B. Appointment Status Distribution
+    const statusDistributionAgg = await appointments.aggregate([
+      {
+        $group: {
+          _id: "$status",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    const statusDistribution = statusDistributionAgg.map(item => ({
+      status: item._id,
+      count: item.count
+    }));
+
+    // C. Time Schedule Distribution
+    const timeScheduleAgg = await appointments.aggregate([
+      {
+        $group: {
+          _id: "$appointment_time_schedule",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    const timeScheduleDistribution = timeScheduleAgg.map(item => ({
+      schedule: item._id,
+      count: item.count
+    }));
+
+    // D. Appointments per Doctor
+    const appointmentsPerDoctorAgg = await appointments.aggregate([
+      {
+        $group: {
+          _id: "$doctor_id",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $lookup: {
+          from: "doctors",
+          localField: "_id",
+          foreignField: "doctor_id",
+          as: "doctor"
+        }
+      },
+      { $unwind: "$doctor" }
+    ]);
+    const appointmentsPerDoctor = appointmentsPerDoctorAgg.map(item => ({
+      doctor: `Dr. ${item.doctor.first_name} ${item.doctor.last_name}`,
+      count: item.count
+    }));
+
+    // E. Appointment Reasons
+    const appointmentReasonsAgg = await appointments.aggregate([
+      {
+        $group: {
+          _id: "$reason",
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+    const appointmentReasons = appointmentReasonsAgg.map(item => ({
+      reason: item._id,
+      count: item.count
+    }));
+
+    // F. Appointment Trends Over Time
+    // Convert the stored appointment_date (MM/DD/YYYY) to a Date object and group by month/year.
+    const appointmentTrendsAgg = await appointments.aggregate([
+      {
+        $addFields: {
+          appointmentDateObj: {
+            $dateFromString: {
+              dateString: "$appointment_date",
+              format: "%m/%d/%Y"
+            }
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%m/%Y", date: "$appointmentDateObj" }
+          },
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+    const appointmentTrends = appointmentTrendsAgg.map(item => ({
+      month: item._id,
+      count: item.count
+    }));
+
+    res.status(200).json({
+      appointmentsByDay,
+      statusDistribution,
+      timeScheduleDistribution,
+      appointmentsPerDoctor,
+      appointmentReasons,
+      appointmentTrends
+    });
+  } catch (err) {
+    console.error("Error generating analytics data", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
 
