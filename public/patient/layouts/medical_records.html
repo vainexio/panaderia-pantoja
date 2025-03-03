@@ -2,37 +2,22 @@
   <div class="container m-auto">
     <div class="bg-color">
       <div class="StudentInfocontainer">
-        <div class="studentInfo">
-          <div class="buttonContainer"></div>
-        </div>
         <p class="textCenter bold textBlueContainer" id="MedRecord_MedHistory">
           Appointment &amp; Medical History
         </p>
-        <div class="medHistoryContainer">
-          <div class="medHistoryContainer_dfText" id="No_MedHistory">
-            <p class="No_MedHistory">No medical history yet! &#128578;</p>
-          </div>
-          <div class="medHistoryContainer_table" id="Yes_MedHistory">
-            <table class="medHistoryTable table table-bordered table-striped w-100">
-              <thead class="thead-dark">
-                <tr>
-                  <th>Date</th>
-                  <th>Diagnosis</th>
-                  <th>Treatment</th>
-                  <th>Doctor</th>
-                  <th>Med Cert</th>
-                </tr>
-              </thead>
-              <tbody class="medHistoryTableNames" id="medHistoryBody">
-                <!-- Rows will be populated dynamically -->
-              </tbody>
-            </table>
-          </div>
+        <div class="medHistoryContainer_table" id="Yes_MedHistory">
+          <table class="medHistoryTable">
+            <thead class="thead-dark">
+              <tr>
+                <th>Date</th>
+                <th>Time Schedule</th>
+                <th>Assigned Doctor</th>
+                <th>Reason for Appointment</th>
+              </tr>
+            </thead>
+            <tbody class="medHistoryTableNames" id="medHistoryBody"></tbody>
+          </table>
         </div>
-      </div>
-      <!-- Certificate Preview Container -->
-      <div id="medCerf" class="medCerf mt-4">
-        <div class="medCerfContainer"></div>
       </div>
     </div>
   </div>
