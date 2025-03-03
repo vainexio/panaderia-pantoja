@@ -155,7 +155,6 @@ async function loadPatientMedicalHistory() {
   }
 }
 
-// Helper function to fetch an image and convert it to a base64 data URL
 async function getBase64ImageFromURL(url) {
   const response = await fetch(url);
   const blob = await response.blob();
@@ -171,23 +170,18 @@ async function generateAndDownloadMedCert(record) {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  // URL of the image you want to include
   const imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/NU_shield.svg/1200px-NU_shield.svg.png";
-
-  // Convert the image from URL to base64
   const base64data = await getBase64ImageFromURL(imageUrl);
 
-  // Define image dimensions and placement
   const pageWidth = doc.internal.pageSize.getWidth();
-  const imageWidth = 30; // Adjust as needed
-  const imageHeight = 33; // Adjust as needed
+  const imageWidth = 30;
+  const imageHeight = 33;
   const imageX = (pageWidth - imageWidth) / 2;
-  const imageY = 5; // Top margin for the image
+  const imageY = 5;
 
   // Add the image to the PDF
   doc.addImage(base64data, "PNG", imageX, imageY, imageWidth, imageHeight);
 
-  // Calculate new starting Y for header texts (placing them below the image)
   const baseY = imageY + imageHeight + 10;
 
   doc.setFontSize(16);
@@ -196,7 +190,6 @@ async function generateAndDownloadMedCert(record) {
   doc.text("Medical Certificate", 105, baseY + 10, { align: "center" });
   doc.setFontSize(10);
   
-  // Prepare the certificate content segments
   const segments = [
     { text: "This is to certify that ", isData: false },
     { text: `${currentPatient.first_name} ${currentPatient.last_name}`, isData: true },
@@ -217,14 +210,12 @@ async function generateAndDownloadMedCert(record) {
     { text: ".", isData: false },
   ];
 
-  // Set starting coordinates for the certificate content
   let x = 20;
-  let y = baseY + 30; // Starting Y position for the certificate body
+  let y = baseY + 30;
   const maxWidth = doc.internal.pageSize.getWidth() - 40;
   const lineHeight = 10;
 
   segments.forEach(segment => {
-    // Use bold font for dynamic data and normal for static text
     if (segment.isData) {
       doc.setFont("helvetica", "bold");
     } else {
@@ -232,12 +223,10 @@ async function generateAndDownloadMedCert(record) {
     }
     doc.text(segment.text, x, y);
     const segmentWidth = doc.getTextWidth(segment.text);
-    // Underline dynamic data for emphasis
     if (segment.isData) {
       doc.line(x, y + 1, x + segmentWidth, y + 1);
     }
     x += segmentWidth;
-    // Wrap text if exceeding the page width
     if (x > maxWidth) {
       y += lineHeight;
       x = 20;
@@ -248,7 +237,6 @@ async function generateAndDownloadMedCert(record) {
   doc.setFontSize(10);
   doc.text("This certificate is issued for academic purposes.", 105, y + 20, { align: "center" });
   
-  // Save the PDF
   doc.save(`${currentPatient.first_name}${currentPatient.last_name}_MedCert.pdf`);
 }
 
