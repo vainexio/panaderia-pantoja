@@ -1,25 +1,3 @@
-function getAppointmentDate(dayName) {
-  const daysMapping = {
-    Monday: 0,
-    Tuesday: 1,
-    Wednesday: 2,
-    Thursday: 3,
-    Friday: 4,
-  };
-  if (!(dayName in daysMapping)) return null;
-  const now = new Date();
-  let monday;
-  if (now.getDay() === 0) {
-    monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-  } else {
-    const diff = now.getDay() - 1;
-    monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - diff);
-  }
-  const appointmentDate = new Date(monday);
-  appointmentDate.setDate(monday.getDate() + daysMapping[dayName]);
-  return appointmentDate;
-}
-
 async function loadPatientMedicalHistory() {
   try {
     const response = await fetch("/getPatientMedicalHistory", {
@@ -34,120 +12,71 @@ async function loadPatientMedicalHistory() {
     const appointments = data.appointments;
 
     const medHistoryBody = document.getElementById("medHistoryBody");
-    medHistoryBody.innerHTML = "";
+    medHistoryBody.innerHTML = ""; // Clear any previous rows
+
+    if (appointments.length === 0) {
+      medHistoryBody.innerHTML = `<tr><td colspan="5" class="text-center">No medical history yet! &#128578;</td></tr>`;
+      return;
+    }
 
     appointments.forEach((app) => {
-      const exactDate = app.appointment_date
+      // Use the stored appointment_date directly.
+      const exactDate = app.appointment_date;
       const row = document.createElement("tr");
       row.classList.add("MH_RowLabel");
       row.innerHTML = `
         <td>${exactDate ? exactDate : "N/A"}</td>
-        <td>${app.appointment_time_schedule}</td>
+        <td>${(app.medicalRecord && app.medicalRecord.diagnosis) || "N/A"}</td>
+        <td>${(app.medicalRecord && app.medicalRecord.treatment_plan) || "N/A"}</td>
         <td>Dr. ${app.doctor_info.first_name} ${app.doctor_info.last_name}</td>
-        <td>${app.reason}</td>
+        <td><button class="btn btn-sm btn-primary med-cert-btn">Med Cert</button></td>
       `;
       medHistoryBody.appendChild(row);
 
-      row.addEventListener("click", function () {
-        if (row.classList.contains("expanded")) {
-          row.classList.remove("expanded");
-          const nextRow = row.nextElementSibling;
-          if (nextRow && nextRow.classList.contains("expanded-details")) {
-            nextRow.remove();
-          }
-          const allRows = document.querySelectorAll("#medHistoryBody tr");
-          allRows.forEach((r) => (r.style.display = ""));
-        } else {
-          const expandedRow = document.querySelector(
-            "#medHistoryBody tr.expanded"
-          );
-          if (expandedRow) {
-            expandedRow.classList.remove("expanded");
-            const nextRow = expandedRow.nextElementSibling;
-            if (nextRow && nextRow.classList.contains("expanded-details")) {
-              nextRow.remove();
-            }
-            const allRows = document.querySelectorAll("#medHistoryBody tr");
-            allRows.forEach((r) => (r.style.display = ""));
-          }
-          row.classList.add("expanded");
-          const allRows = document.querySelectorAll("#medHistoryBody tr");
-          allRows.forEach((r) => {
-            if (r !== row) {
-              r.style.display = "none";
-            }
-          });
-          const detailsRow = document.createElement("tr");
-          detailsRow.classList.add("expanded-details");
-          detailsRow.innerHTML = `
-            <td colspan="4" style="padding: 0;">
-              <div class="read-only-container">
-              <header class="form-header">
-              <h1>Medical Record</h1>
-              </header>
-                <div class="form-group row mb-1">
-                  <label class="col-sm-3 col-form-label">Diagnosis:</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" value="${
-                      (app.medicalRecord && app.medicalRecord.diagnosis) ||
-                      "N/A"
-                    }" readonly />
-                  </div>
-                </div>
-                <div class="form-group row mb-1">
-                  <label class="col-sm-3 col-form-label">Treatment Plan:</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" value="${
-                      (app.medicalRecord && app.medicalRecord.treatment_plan) ||
-                      "N/A"
-                    }" readonly />
-                  </div>
-                </div>
-                <div class="form-group row mb-1">
-                  <label class="col-sm-3 col-form-label">Allergies:</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" value="${
-                      (app.medicalRecord && app.medicalRecord.allergies) ||
-                      "N/A"
-                    }" readonly />
-                  </div>
-                </div>
-                <div class="form-group row mb-1">
-                  <label class="col-sm-3 col-form-label">Medical History:</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" value="${
-                      (app.medicalRecord &&
-                        app.medicalRecord.medical_history) ||
-                      "N/A"
-                    }" readonly />
-                  </div>
-                </div>
-                <div class="text-center mt-2">
-                  <button class="action-button close-details">Close</button>
-                </div>
-              </div>
-            </td>
-          `;
-          row.parentNode.insertBefore(detailsRow, row.nextSibling);
-          detailsRow
-            .querySelector(".close-details")
-            .addEventListener("click", function (e) {
-              e.stopPropagation();
-              row.classList.remove("expanded");
-              detailsRow.remove();
-              const allRows = document.querySelectorAll("#medHistoryBody tr");
-              allRows.forEach((r) => (r.style.display = ""));
-            });
-        }
+      // Attach event listener to the "Med Cert" button
+      row.querySelector(".med-cert-btn").addEventListener("click", function(e) {
+        e.stopPropagation();
+        generateMedicalCertificateForRecord(app);
       });
     });
-
-    if (appointments.length === 0) {
-      medHistoryBody.innerHTML = `<tr><td colspan="4" class="text-center">No medical history yet! &#128578;</td></tr>`;
-    }
   } catch (err) {
     console.error("Error fetching medical history:", err);
   }
+}
+
+function generateMedicalCertificateForRecord(record) {
+  // Ensure jsPDF is available from the global window.jspdf namespace.
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  // Header: University details & Certificate title
+  doc.setFontSize(16);
+  doc.text("University of Example", 105, 15, { align: "center" });
+  doc.setFontSize(14);
+  doc.text("Medical Certificate", 105, 25, { align: "center" });
+  doc.setFontSize(10);
+  doc.text(`Date Issued: ${new Date().toLocaleDateString()}`, 105, 35, { align: "center" });
+  
+  // Certificate body:
+  doc.setFontSize(12);
+  doc.text("This is to certify that:", 20, 50);
+  doc.text(`Name: ${currentPatient.first_name} ${currentPatient.last_name}`, 20, 60);
+  doc.text(`Student ID: ${currentPatient.patient_id}`, 20, 70);
+  doc.text(`Date of Examination: ${record.appointment_date || "N/A"}`, 20, 80);
+  doc.text(`Diagnosis: ${(record.medicalRecord && record.medicalRecord.diagnosis) || "N/A"}`, 20, 90);
+  doc.text(`Treatment Plan: ${(record.medicalRecord && record.medicalRecord.treatment_plan) || "N/A"}`, 20, 100);
+  doc.text(`Allergies: ${(record.medicalRecord && record.medicalRecord.allergies) || "N/A"}`, 20, 110);
+  doc.text(`Medical History: ${(record.medicalRecord && record.medicalRecord.medical_history) || "N/A"}`, 20, 120);
+  doc.text(`Attending Physician: Dr. ${record.doctor_info.first_name} ${record.doctor_info.last_name}`, 20, 130);
+  doc.text("Signature: _____________________", 20, 140);
+  doc.setFontSize(10);
+  doc.text("This certificate is issued for academic purposes.", 105, 150, { align: "center" });
+
+  // Output the PDF as a Data URI string and display it in the medCerfContainer.
+  const dataUriString = doc.output("datauristring");
+  document.querySelector(".medCerfContainer").innerHTML = `
+    <iframe src="${dataUriString}" width="100%" height="500px" style="border: none;"></iframe>
+  `;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
