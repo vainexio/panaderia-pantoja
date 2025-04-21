@@ -38,10 +38,9 @@
     margin-left: 270px;
     padding: 10px;
     overflow-x: hidden;
-    background: url("https://cdn.glitch.global/43994c3c-7e58-44a5-9091-1ff0c7f96aa6/58f6e3d6-08c0-4916-9b41-4355c0cc411e.image.png?v=1745226801641");
-    background-size: 100% 100%;
+    background: url("https://cdn.glitch.global/43994c3c-7e58-44a5-9091-1ff0c7f96aa6/90a20d6f-a516-4bd0-aae3-cce8ad4e949b.image.png?v=1745227027108");
+    background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
     z-index: 1;
   }
   
@@ -217,7 +216,7 @@
     border-radius: 12px;
   }
   .action-button:not(:disabled):hover {
-    color: var(--red);
+    color: var(--yellow);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
   }
