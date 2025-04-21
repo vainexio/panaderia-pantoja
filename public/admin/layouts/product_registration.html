@@ -1,3 +1,45 @@
 <section id="product_registration" class="product_registration section-content">
-  <!-- Don't change the id and class -->
+  <div class="register-card">
+    <header class="form-header">
+      <h1>Register a Product</h1>
+      <p>Fill in the details below to create a new product information</p>
+    </header>
+    <form id="patientForm" class="patient-form">
+      <div class="form-group">
+        <label for="product_name">Product Name</label>
+        <input type="text" id="product_name" name="product_name" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="product_category">Category</label>
+        <input type="text" id="product_category" name="product_category" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="product_min">Required Min. Quantity</label>
+        <input type="number" id="product_min" name="product_min" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="product_max">Required Max. Quantity</label>
+        <input type="number" id="product_max" name="product_max" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="product_expiry">Product Expiry</label>
+        <input class="mb-2" type="number" id="product_expiry" name="product_expiry" min="1" required>
+        
+        <select id="duration-unit" name="duration_unit" required>
+        <option value="months">Month(s)</option>
+        <option value="years">Year(s)</option>
+        </select>
+      </div>
+      
+      
+    </form>
+    <div id="patient_regis_notif" class="notification" role="alert"></div>
+  </div>
+  
 </section>
+    
+    

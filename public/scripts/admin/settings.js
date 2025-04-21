@@ -2,6 +2,8 @@ async function adminSettings() {
   try {
     document.getElementById("doc_settings_first_name").value =
       currentAdmin.username;
+    document.getElementById("doc_settings_id").value =
+      currentAdmin.id;
 
     const sessionResponse = await fetch("/getAllSessions", {
       method: "POST",
