@@ -1,3 +1,21 @@
+async function deleteCategory(catName, callback) {
+  try {
+    const response = await fetch("/deleteCategory", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ catName }),
+    });
+    if (response.ok) {
+      console.log("Category deleted successfully");
+      // Refresh
+      callback();
+    } else {
+      console.error("Failed to remove category");
+    }
+  } catch (error) {
+    console.error("Error removing category:", error);
+  }
+}
 async function displayCategories() {
   let response = await fetch("/getCategories");
     if (response.ok) {
@@ -6,7 +24,7 @@ async function displayCategories() {
       
       let tableHTML = `
       <div class="table-responsive">
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-transparent">
           <thead class="thead-dark">
             <tr>
               <th scope="col">Category Name</th>
@@ -47,6 +65,13 @@ async function displayCategories() {
         </select>
       </div>
       `
+      
+      document.querySelectorAll(".remove-cat-btn").forEach((button) => {
+      button.addEventListener("click", async function () {
+        const current = this.getAttribute("cat-name");
+        await deleteCategory(current, displayCategories);
+      });
+    });
     }
 }
 async function productRegistration() {
@@ -124,18 +149,6 @@ async function productRegistration() {
         }, 2000);
       });
     
-    document.querySelectorAll(".remove-cat-btn").forEach((button) => {
-      button.addEventListener("click", async function () {
-        const current = this.getAttribute("cat-name");
-        if (current) {
-          await removeSession(current, adminSettings);
-          window.location = "/";
-        } else {
-          const sessionId = this.getAttribute("data-session-id");
-          await removeSession(sessionId, adminSettings);
-        }
-      });
-    });
     displayCategories();
   }
 }

@@ -278,6 +278,15 @@ section h1 {
   color: var(--black);
 }
 
+.table-transparent,
+.table-transparent th,
+.table-transparent td,
+.table-transparent thead,
+.table-transparent tbody {
+  background-color: transparent !important;
+  color: white;
+}
+
 @media (max-width: 768px) {
   .navbar {
     width: 60px;

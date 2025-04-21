@@ -318,7 +318,6 @@ app.post('/registerProduct', async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 });
-
 app.get('/getProducts', async (req, res) => {
   try {
     const foundProducts = await products.find();
@@ -346,12 +345,22 @@ app.post('/createCategory', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 })
-app.delete('/deleteCategory/:id', async (req, res) => {
+app.delete('/deleteCategory', async (req, res) => {
   try {
-    await categories.findByIdAndDelete(req.params.id);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const { catName } = req.body;
+    if (!catName) {
+      return res.status(400).json({ error: "Category name is required" });
+    }
+    const result = await categories.deleteOne({ name: catName });
+    console.log(result,catName)
+    if (result.deletedCount > 0) {
+      return res.json({ message: "Category removed" });
+    } else {
+      return res.status(404).json({ error: "Category not found" });
+    }
+  } catch (error) {
+    console.error("Error in /deleteCategory:", error);
+    res.status(500).json({ error: "Server error" });
   }
 })
 app.get('/getCategories', async (req, res) => {
