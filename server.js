@@ -331,7 +331,7 @@ app.post('/createCategory', async (req, res) => {
   try {
     const { ctg_name } = req.body;
     
-    const existingCategory = await products.findOne({ name: ctg_name.toLowerCase()});
+    const existingCategory = await categories.findOne({ name: ctg_name.toLowerCase()});
 
     if (existingCategory) {
       return res.status(400).json({ message: "This category already exists!" });
@@ -342,6 +342,14 @@ app.post('/createCategory', async (req, res) => {
     
     await newCat.save();
     res.status(201).json({ message: "Category created successfully!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
+app.delete('/deleteCategory/:id', async (req, res) => {
+  try {
+    await categories.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

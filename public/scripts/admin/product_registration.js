@@ -1,3 +1,54 @@
+async function displayCategories() {
+  let response = await fetch("/getCategories");
+    if (response.ok) {
+      response = await response.json()
+      let categoryList = ""
+      
+      let tableHTML = `
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Category Name</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+    `;
+      
+      for (let i in response) {
+        let cat = response[i]
+        categoryList += `<option value="${cat.name.toLowerCase()}">${cat.name}</option>`
+        const button = `<button class="btn btn-sm btn-danger remove-cat-btn" cat-name="${cat.name}">Delete</button>`
+
+        tableHTML += `
+        <tr cat-name="${cat.name}">
+        <td>${cat.name}</td>
+        <td>
+        ${button}
+        </td>
+        </tr>
+        `;
+      }
+      tableHTML += `
+      </tbody>
+      </table>
+      </div>
+      `
+      document.querySelector(".categories-card").innerHTML = tableHTML;
+      
+      let categoryGroup = document.getElementById('category-group')
+      categoryGroup.innerHTML = `
+      <div class="form-group">
+        <label for="product_category">Category</label>
+        <select id="product_category" name="product_category" required>
+        <option value="">${response.length > 0 ? "Select Category" : "Create a Category First"}</option>
+        ${categoryList}
+        </select>
+      </div>
+      `
+    }
+}
 async function productRegistration() {
   if (!window.productRegistrationFormAttached) {
     window.productRegistrationFormAttached = true;
@@ -56,6 +107,7 @@ async function productRegistration() {
         if (response.ok) {
           notification.textContent = "Category created successfully!";
           notification.className = "alert alert-success mt-3 rounded-3";
+          displayCategories()
         } else {
           const error = await response.json();
           notification.textContent =
@@ -72,27 +124,19 @@ async function productRegistration() {
         }, 2000);
       });
     
-    let response = await fetch("/getCategories");
-    if (response.ok) {
-      response = await response.json()
-      let categoryList = ""
-      
-        console.log(response)
-      for (let i in response) {
-        let cat = response[i]
-        categoryList += `<option value="${cat.name.toLowerCase()}">${cat.name}</option>`
-      }
-      let categoryGroup = document.getElementById('category-group')
-      categoryGroup.innerHTML = `
-      <div class="form-group">
-        <label for="product_category">Category</label>
-        <select id="product_category" name="product_category" required>
-        <option value="">${response.length > 0 ? "Select Category" : "Create a Category First"}</option>
-        ${categoryList}
-        </select>
-      </div>
-      `
-    }
+    document.querySelectorAll(".remove-cat-btn").forEach((button) => {
+      button.addEventListener("click", async function () {
+        const current = this.getAttribute("cat-name");
+        if (current) {
+          await removeSession(current, adminSettings);
+          window.location = "/";
+        } else {
+          const sessionId = this.getAttribute("data-session-id");
+          await removeSession(sessionId, adminSettings);
+        }
+      });
+    });
+    displayCategories();
   }
 }
 
