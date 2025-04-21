@@ -92,7 +92,6 @@ app.get('/admin-dashboard', async (req, res) => {
 });
 /* Global Backend */
 app.get('/currentAccount', async (req, res) => {
-  console.log(req.user)
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   let user = req.user
   try {
@@ -205,7 +204,7 @@ app.post('/login', async (req, res) => {
 
 app.post('/getAllSessions', async (req, res) => {
   try {
-    let deviceId = req.cookies.deviceId;
+    let deviceId = req.session.device_id;
     const { accountId } = req.body;
     if (!accountId) {
       return res.status(400).json({ error: 'Account ID is required' });
@@ -301,9 +300,9 @@ app.post('/registerProduct', async (req, res) => {
     // Create new patient
     const newProduct = new products(productsSchema);
     newProduct.name = product_name
-    newProduct.category = product_min
-    newProduct.min = product_max
-    newProduct.max = product_category
+    newProduct.category = product_category
+    newProduct.min = product_min
+    newProduct.max = product_max
     newProduct.expiry = product_expiry
     newProduct.expiry_unit = product_expiry_unit
     

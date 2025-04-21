@@ -9,12 +9,12 @@
 
 .product_registration {
   padding: 2rem 0;
-  display: none;
+  display: flex;
   justify-content: center;
 }
 
 .register-card {
-  width: 80%;
+  width: 50%;
   max-width: 980px;
   min-height: 100%;
   margin: auto;
@@ -23,6 +23,9 @@
   background-color: transparent;
   display: flex;
   flex-direction: column;
+}
+.products-card {
+  width: 50%;
 }
 
 .product-form {

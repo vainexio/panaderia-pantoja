@@ -62,7 +62,5 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   ready = true;
   /* Hide loader */
-  setTimeout(() => {
-    document.getElementById("preloader").classList.add("fade-out");
-  }, 500);
+  document.getElementById("preloader").classList.add("fade-out");
 });
