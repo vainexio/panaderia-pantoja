@@ -6,10 +6,13 @@ body {
     font-family: "Roboto Slab", serif;
     font-weight: 400;
     line-height: 1.6;
-    background: url('https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/login-bg?v=1738147121772') no-repeat center center/cover;
+    background: url('https://cdn.glitch.global/43994c3c-7e58-44a5-9091-1ff0c7f96aa6/PANTOJA_STOREFRONT.jpg?v=1745221476255'), rgba(0, 0, 0, 0.5);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: multiply;
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,7 +77,7 @@ input:focus {
 
 /* Submit Button */
 button {
-    background: linear-gradient(145deg, #007bff, #0056b3);
+    background: linear-gradient(145deg, #c30e0e, #cb7702);
     color: rgb(255, 255, 255);
     font-size: 16px;
     padding: 12px 15px;
@@ -97,7 +100,7 @@ button:disabled {
 }
 
 button:hover {
-    background: linear-gradient(145deg, #007bff, #0069d9);
+    background: linear-gradient(145deg, #c30e0e, #ff9a0c);
 }
 
 button:active {
@@ -152,7 +155,7 @@ form::before {
     left: calc(50% - 25px);
     width: 50px;
     height: 50px;
-    background: linear-gradient(145deg, #007bff, #0056b3);
+    background: linear-gradient(145deg, #c30e0e, #c30e0e);
     border-radius: 50%;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
@@ -164,6 +167,6 @@ form::after {
     left: calc(50% - 30px);
     width: 60px;
     height: 5px;
-    background: #007bff;
+    background: #c30e0e;
     border-radius: 10px;
 }
