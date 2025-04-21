@@ -1,5 +1,5 @@
 const express = require('express');
-const session = require('express-session');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const json2xls = require('json2xls');
@@ -16,7 +16,7 @@ const method = require('./data/functions.js')
 const settings = require('./data/settings.js')
 const app = express();
 app.use(cors());
-
+const JWT_SECRET = process.env.JWT_SECRET;
 // Connect to MongoDB
 if (process.env.MONGOOSE) mongoose.connect(process.env.MONGOOSE);
 
@@ -52,6 +52,21 @@ let loginSession = mongoose.model('LoginSession', loginSessionSchema);
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(async (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) return next();
+
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    // you might also fetch fresh user data here
+    req.user = await accounts.findById(payload.userId);
+  } catch (err) {
+    // invalid or expired → clear cookie
+    res.clearCookie('token');
+  }
+  next();
+});
+
 app.use(express.static('public', {
   setHeaders: (res, path) => {
     if (path.endsWith('.js')) {
@@ -172,56 +187,33 @@ app.post('/login2', async (req, res) => {
   return res.status(401).json({ message: 'Invalid email or password' });
 });
 app.post('/login', async (req, res) => {
-  const { username, password, remember } = req.body;
-  let ip = req.ip;
-  if (ip.startsWith('::ffff:')) ip = ip.substring(7);
-
-  // 1) find existing session by sessionId cookie
-  const existing = req.cookies.sessionId
-    ? await loginSession.findOne({ session_id: req.cookies.sessionId })
-    : null;
-
-  // 2) authenticate user
+  const { username, password } = req.body;
+  const remember = true
   const user = await accounts.findOne({ username });
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ message: 'Invalid email or password' });
-  }
+  if (!user) return res.status(401).send('Invalid credentials');
 
-  // 3) generate a fresh session token
-  const newSessionId = method.generateSecurityKey();
+  const ok = await bcrypt.compare(password, user.passwordHash);
+  if (!ok) return res.status(401).send('Invalid credentials');
 
-  // 4) upsert the session document
-  if (!existing) {
-    await loginSession.create({
-      session_id:   newSessionId,
-      ip_address:   ip,
-      target_id:    user.id,
-      created_at:   new Date()
-    });
-    console.log('created new loginSession');
-  } else {
-    existing.session_id  = newSessionId;
-    existing.ip_address  = ip;
-    existing.target_id   = user.id;
-    existing.updated_at  = new Date();
-    await existing.save();
-    console.log('updated existing loginSession');
-  }
+  // choose duration
+  const expiresIn = remember
+    ? 30 * 24 * 60 * 60      // 30 days in seconds
+    : 60 * 60;               // 1 hour
 
-  // 5) send cookie; if remember, set 30 days, else browser‑session
-  const cookieOpts = {
+  const token = jwt.sign(
+    { userId: user.id },
+    JWT_SECRET,
+    { expiresIn }
+  );
+
+  // httpOnly cookie so JS can’t read it
+  res.cookie('token', token, {
     httpOnly: true,
-    secure:   process.env.NODE_ENV === 'production'
-  };
-  if (remember) {
-    cookieOpts.maxAge = 1000 * 60 * 60 * 24 * 30; // 30 days
-  }
-  res.cookie('sessionId', newSessionId, cookieOpts);
-
-  return res.json({
-    redirect: '/admin-dashboard',
-    message:  'Login successful'
+    maxAge: expiresIn * 1000,    // in ms
+    sameSite: 'lax',             // or 'strict'
   });
+
+  res.send({ success: true });
 });
 
 app.get('/session', async (req, res) => {
