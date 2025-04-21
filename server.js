@@ -28,7 +28,6 @@ const loginSessionSchema = new mongoose.Schema({
   session_id: String,
   ip_address: String,
   target_id: String,
-  type: String,
   device_id: String,
 });
 const productsSchema = new mongoose.Schema({
@@ -66,7 +65,7 @@ app.set('trust proxy', true);
 app.use(cookieParser());
 //
 
-app.get('/admin', async (req, res) => {
+app.get('/admin-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/admin.html');
 });
 
@@ -82,7 +81,7 @@ app.get('/currentAccount', async (req, res) => {
     });
   }
   
-  let currentSession = await fetch("https://bulldogs-care-center.glitch.me/session", { headers: { cookie: req.headers.cookie || "" } });
+  let currentSession = await fetch("https://panaderiapantoja.glitch.me/session", { headers: { cookie: req.headers.cookie || "" } });
   
   if (currentSession.ok) {
     currentSession = await currentSession.json();
@@ -128,17 +127,17 @@ app.post('/login', async (req, res) => {
           target_id: admin.id,
           device_id: deviceId,
         });
-        
+        console.log('new session')
         await session.save();
       } else if (existingSession) {
         existingSession.target_id = admin.id
         existingSession.ip_address = ip
         existingSession.device_id = deviceId
         existingSession.session_id = method.generateSecurityKey()
-        
+        console.log('old session')
         await existingSession.save();
       }
-      return res.json({ redirect: '/admin', message: 'Login successful', key });
+      return res.json({ redirect: '/admin-dashboard', message: 'Login successful', key });
     }
   
   return res.status(401).json({ message: 'Invalid email or password' });
