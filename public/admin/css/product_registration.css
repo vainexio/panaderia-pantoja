@@ -7,7 +7,7 @@
     --black: #363636;
 }
 
-.patient_registration {
+.product_registration {
   padding: 2rem 0;
   display: none;
   justify-content: center;
@@ -25,63 +25,11 @@
   flex-direction: column;
 }
 
-.form-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.form-header h1 {
-  font-weight: bold;
-  color: var(--black);
-}
-
-.form-header p {
-  color: var(--black);
-}
-
-.patient-form {
+.product-form {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
-}
-
-.form-group {
-  flex: 1 1 calc(33.333% - 1rem);
-  min-width: 250px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-  color: var(--black);
-}
-
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 8px;
-  border: 1px solid var(--black);
-  background-color: var(--white);
-  font-size: 1rem;
-}
-
-.form-group input[readonly],
-.form-group input:read-only {
-  background-color: transparent;
-  cursor: default;
-}
-
-.submit-container {
-  width: 100%;
-  display: flex;
-  justify-content: end;
-  margin-top: 1rem;
-}
-.submit-container #genPassword {
-  margin-right: 1rem;
 }
 .notification {
   display: none;

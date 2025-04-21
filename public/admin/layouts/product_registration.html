@@ -4,15 +4,10 @@
       <h1>Register a Product</h1>
       <p>Fill in the details below to create a new product information</p>
     </header>
-    <form id="patientForm" class="patient-form">
+    <form id="productForm" class="product-form">
       <div class="form-group">
         <label for="product_name">Product Name</label>
         <input type="text" id="product_name" name="product_name" required/>
-      </div>
-      
-      <div class="form-group">
-        <label for="product_category">Category</label>
-        <input type="text" id="product_category" name="product_category" required/>
       </div>
       
       <div class="form-group">
@@ -26,8 +21,13 @@
       </div>
       
       <div class="form-group">
+        <label for="product_category">Category</label>
+        <input type="text" id="product_category" name="product_category" required/>
+      </div>
+      
+      <div class="form-group">
         <label for="product_expiry">Product Expiry</label>
-        <input class="mb-2" type="number" id="product_expiry" name="product_expiry" min="1" required>
+        <input class="mb-1" type="number" id="product_expiry" name="product_expiry" min="1" required>
         
         <select id="duration-unit" name="duration_unit" required>
         <option value="months">Month(s)</option>
@@ -35,9 +35,11 @@
         </select>
       </div>
       
-      
+      <div class="submit-container">
+        <button type="submit" class="action-button">Register Product</button>
+      </div>
     </form>
-    <div id="patient_regis_notif" class="notification" role="alert"></div>
+    <div id="regis_notif" class="notification" role="alert"></div>
   </div>
   
 </section>

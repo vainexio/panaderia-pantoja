@@ -201,6 +201,52 @@ app.post('/getAllSessions', async (req, res) => {
   }
 });
 
+/* Admin Backend */
+app.post('/registerProduct', async (req, res) => {
+  try {
+    const { product_name, product_min, product_max, product_category, product_expiry, duration_unit } = req.body;
+    console.log(req.body)
+    return res.status(400).json({ message: "TEST" });
+    if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !duration_unit) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+
+    const existingProduct = await products.findOne({
+      $or: [
+        { product_name },
+      ]
+    });
+
+    if (existingPatient) {
+      return res.status(400).json({ message: "Patient with same name or email already exists." });
+    }
+
+    // UUID
+    const patient_id = await generatePatientId();
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create new patient
+    const newPatient = new patients({
+      patient_id,
+      first_name,
+      last_name,
+      sex,
+      birthdate,
+      contact_number,
+      patient_type,
+      email,
+      password: hashedPassword
+    });
+
+    // Save to database
+    await newPatient.save();
+
+    res.status(201).json({ message: "Patient registered successfully!" });
+  } catch (error) {
+    console.error("Error registering patient:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+});
 app.get('/test', async (req, res) => {
   let doc = new accounts(accountsSchema)
   doc.id = 1;
