@@ -157,6 +157,49 @@ app.get('/session', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+app.post('/getAllSessions', async (req, res) => {
+  try {
+    let deviceId = req.cookies.deviceId;
+    const { accountId } = req.body;
+    if (!accountId) {
+      return res.status(400).json({ error: 'Account ID is required' });
+    }
+
+    const sessions = await loginSession.find({ target_id: accountId });
+
+    const sessionsWithLocation = await Promise.all(
+      sessions.map(async (session) => {
+        try {
+          const ipResponse = await fetch(`http://ip-api.com/json/${session.ip_address}`);
+          const ipData = await ipResponse.json();
+          return {
+            currentSession: deviceId == session.device_id,
+            session_id: session.session_id,
+            ip_address: session.ip_address,
+            location: `${ipData.city || 'N/A'}, ${ipData.country || 'N/A'}`,
+            device_id: session.device_id,
+          };
+        } catch (err) {
+          console.error(`Error fetching location for IP ${session.ip_address}:`, err);
+          return {
+            currentSession: deviceId == session.device_id,
+            session_id: session.session_id,
+            ip_address: session.ip_address,
+            location: 'Unknown',
+            device_id: session.device_id,
+          };
+        }
+      })
+    );
+
+    sessionsWithLocation.sort((a, b) => b.currentSession - a.currentSession);
+
+    res.json({ loginSessions: sessionsWithLocation });
+  } catch (error) {
+    console.error('Error in /getAllSessions:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 app.get('/test', async (req, res) => {
   let doc = new accounts(accountsSchema)

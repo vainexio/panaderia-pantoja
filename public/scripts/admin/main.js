@@ -1,8 +1,8 @@
 let ready = false;
-let currentDoctor;
+let currentAdmin;
 
 function waitUntilReady(callback) {
-  if (ready === true && currentDoctor) {
+  if (ready === true && currentAdmin) {
     callback();
   } else {
     setTimeout(() => waitUntilReady(callback), 100);
@@ -29,10 +29,10 @@ function showSection(sectionId) {
 
 document.addEventListener("DOMContentLoaded", async function () {
   // Get current account
-  currentDoctor = await fetch("/currentAccount");
-  if (currentDoctor.ok) currentDoctor = await currentDoctor.json();
+  currentAdmin = await fetch("/currentAccount");
+  if (currentAdmin.ok) currentAdmin = await currentAdmin.json();
   else {
-    let error = await currentDoctor.json();
+    let error = await currentAdmin.json();
     alert("No login session was found. Please login!");
     window.location.href = error.redirect;
     return;

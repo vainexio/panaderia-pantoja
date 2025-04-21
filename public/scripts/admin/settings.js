@@ -1,20 +1,13 @@
-async function doctorSettings() {
+async function adminSettings() {
   try {
     document.getElementById("doc_settings_first_name").value =
-      currentDoctor.first_name;
-    document.getElementById("doc_settings_last_name").value =
-      currentDoctor.last_name;
-    document.getElementById("doc_settings_account_type").value = "Doctor";
-    document.getElementById("doc_settings_contact_number").value =
-      currentDoctor.contact_number;
-    document.getElementById("doc_settings_email").value = currentDoctor.email;
+      currentAdmin.username;
 
     const sessionResponse = await fetch("/getAllSessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        accountId: currentDoctor.doctor_id,
-        type: "doctor",
+        accountId: currentAdmin.id,
       }),
     });
     if (!sessionResponse.ok) {
@@ -66,11 +59,11 @@ async function doctorSettings() {
       button.addEventListener("click", async function () {
         const current = this.getAttribute("current-session-id");
         if (current) {
-          await removeSession(current, doctorSettings);
+          await removeSession(current, adminSettings);
           window.location = "/";
         } else {
           const sessionId = this.getAttribute("data-session-id");
-          await removeSession(sessionId, doctorSettings);
+          await removeSession(sessionId, adminSettings);
         }
       });
     });
@@ -79,9 +72,8 @@ async function doctorSettings() {
     if (removeAllBtn) {
       removeAllBtn.addEventListener("click", async function () {
         await removeOtherSessions(
-          currentDoctor.doctor_id,
-          "doctor",
-          doctorSettings
+          currentAdmin.id,
+          adminSettings
         );
       });
     }
@@ -91,5 +83,5 @@ async function doctorSettings() {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  waitUntilReady(doctorSettings);
+  waitUntilReady(adminSettings);
 });
