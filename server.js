@@ -40,7 +40,6 @@ const productsSchema = new mongoose.Schema({
   expiry_unit: String,
 });
 const categorySchema = new mongoose.Schema({
-  id: Number,
   name: String,
 });
 const stockRecordsSchema = new mongoose.Schema({
@@ -289,7 +288,6 @@ app.delete('/removeOtherSessions', async (req, res) => {
 app.post('/registerProduct', async (req, res) => {
   try {
     const { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit } = req.body;
-    console.log(req.body)
     if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !product_expiry_unit) {
       return res.status(400).json({ message: "All fields are required." });
     }
@@ -320,6 +318,7 @@ app.post('/registerProduct', async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 });
+
 app.get('/getProducts', async (req, res) => {
   try {
     const foundProducts = await products.find();
@@ -328,6 +327,25 @@ app.get('/getProducts', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+app.post('/createCategory', async (req, res) => {
+  try {
+    const { ctg_name } = req.body;
+    
+    const existingCategory = await products.findOne({ name: ctg_name.toLowerCase()});
+
+    if (existingCategory) {
+      return res.status(400).json({ message: "This category already exists!" });
+    }
+    
+    let newCat = new categories(categorySchema)
+    newCat.name = ctg_name.toLowerCase()
+    
+    await newCat.save();
+    res.status(201).json({ message: "Category created successfully!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
 app.get('/getCategories', async (req, res) => {
   try {
     const foundCtg = await categories.find();
