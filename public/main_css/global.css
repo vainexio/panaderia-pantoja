@@ -181,6 +181,10 @@
   .nav-link:hover::after {
     width: 87%;
   }
+
+.nav-link i {
+  margin-right: 8px;
+}
   
   .navbar-brand {
     margin-bottom: 5vh;
@@ -227,41 +231,6 @@
     background: #bebebe;
     color: var(--white);
     cursor: not-allowed;
-  }
-  
-  @media (max-width: 768px) {
-    .navbar {
-      width: 60px;
-      padding: 0;
-    }
-  
-    .nav-link {
-      justify-content: center;
-      padding-right: 10px;
-      color: white;
-    }
-  
-    .nav-link i {
-      font-size: 1rem;
-    }
-  
-    .nav-link span {
-      display: none;
-    }
-  
-    .navbar img {
-      display: none;
-    }
-  
-    section {
-      margin-left: 60px;
-      background: url("https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/bg2?v=1738146944212");
-      background-size: cover;
-    }
-  
-    section h1 {
-      font-size: 1.2rem;
-    }
   }
   
   /* e */
@@ -313,3 +282,49 @@
 .form-header p {
   color: var(--black);
 }
+
+
+  
+  @media (max-width: 768px) {
+    .navbar {
+      width: 60px;
+      padding: 0;
+    }
+  
+    .nav-link {
+      height: 40px;
+      width: 40px;
+      justify-content: center;
+      padding-right: 10px;
+      color: white;
+    }
+  
+    .nav-link i {
+      font-size: 1rem;
+      margin-right: 0px;
+    }
+  
+    .nav-link span {
+      display: none;
+    }
+  
+    .navbar img {
+      display: none;
+    }
+    
+    .nav-item-custom {
+    padding: 15px 20px;
+    margin-bottom: 1vh;
+    width: calc(100% - 30px);
+  }
+  
+    section {
+      margin-left: 60px;
+      background: url("https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/bg2?v=1738146944212");
+      background-size: cover;
+    }
+  
+    section h1 {
+      font-size: 1.2rem;
+    }
+  }
