@@ -25,7 +25,9 @@
     
     <link href="../main_css/global.css" rel="stylesheet" />
     <link href="../main_css/settings.css" rel="stylesheet" />
-    <link href="../admin/css/appointments.css" rel="stylesheet" />
+    <link href="../admin/css/dashboard.css" rel="stylesheet" />
+    <link href="../admin/css/inventory.css" rel="stylesheet" />
+    <link href="../admin/css/product_registration.css" rel="stylesheet" />
     <link href="../admin/css/settings.css" rel="stylesheet" />
   </head>
 
@@ -59,10 +61,10 @@
         </li>
         <li class="nav-item">
           <a
-             id="appointments_nav"
+             id="inventory_nav"
             class="nav-link align-items-center nav-item-custom"
             href="#"
-            onclick="showSection('appointments')"
+            onclick="showSection('inventory')"
           >
             <i class="bi bi-calendar-check me-2"></i>
             <span>Inventory</span>
@@ -97,14 +99,16 @@
     </nav>
 
     <main>
-      <div id="appointments_holder"></div>
+      <div id="dashboard_holder"></div>
+      <div id="inventory_holder"></div>
+      <div id="product_registration_holder"></div>
       <div id="settings_holder"></div>
     </main>
     <!-- Scripts -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="scripts/global/particles.js"></script>
-    <script src="scripts/admin/appointments.js"></script>
+    <script src="scripts/admin/dashboard.js"></script>
     <script src="scripts/global/main_settings.js"></script>
     <script src="scripts/admin/settings.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>

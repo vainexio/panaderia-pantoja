@@ -28,7 +28,7 @@ function showSection(sectionId) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-  // Get current doctor
+  // Get current account
   currentDoctor = await fetch("/currentAccount");
   if (currentDoctor.ok) currentDoctor = await currentDoctor.json();
   else {
@@ -39,7 +39,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   let layouts = [
-    "appointments",
+    "dashboard",
+    "inventory",
+    "product_registration",
     "settings",
   ];
   for (let i in layouts) {
@@ -48,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let data = await response.text();
     document.getElementById(layouts[i] + "_holder").innerHTML = data;
   }
-  showSection("appointments");
+  showSection("dashboard");
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.addEventListener("click", function () {
       document
