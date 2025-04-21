@@ -19,7 +19,7 @@
   img.logo {
     display: block;
     width: 100%;
-    height: auto;
+    height: 200px;
     padding-right: 10px;
   }
   
@@ -35,10 +35,10 @@
   section {
     height: 100vh;
     display: flex;
-    margin-left: 250px;
+    margin-left: 270px;
     padding: 10px;
     overflow-x: hidden;
-    /*background: url("");*/
+    background-color: var(--white);
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
@@ -124,7 +124,7 @@
   }
   
   .navbar {
-    width: 250px;
+    width: 270px;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -147,7 +147,7 @@
   .nav-item-custom {
     padding: 15px 20px;
     margin-bottom: 1vh;
-    width: calc(100% - 20px);
+    width: calc(100% - 30px);
   }
   
   .nav-link:hover {
