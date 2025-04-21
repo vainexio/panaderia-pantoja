@@ -41,7 +41,7 @@ async function displayCategories() {
 
         tableHTML += `
         <tr cat-name="${cat.name}">
-        <td>${cat.name}</td>
+        <td>${cat.name.toUpperCase()}</td>
         <td>
         ${button}
         </td>
