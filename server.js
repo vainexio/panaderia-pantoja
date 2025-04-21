@@ -35,7 +35,8 @@ const productsSchema = new mongoose.Schema({
   category: String,
   min: Number,
   max: Number,
-  expiration: String,
+  expiry: Number,
+  expiry_unit: String,
 });
 const stockRecordsSchema = new mongoose.Schema({
   productName: String,
@@ -204,46 +205,35 @@ app.post('/getAllSessions', async (req, res) => {
 /* Admin Backend */
 app.post('/registerProduct', async (req, res) => {
   try {
-    const { product_name, product_min, product_max, product_category, product_expiry, duration_unit } = req.body;
+    const { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit } = req.body;
     console.log(req.body)
-    return res.status(400).json({ message: "TEST" });
-    if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !duration_unit) {
+    if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !product_expiry_unit) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
     const existingProduct = await products.findOne({
-      $or: [
-        { product_name },
-      ]
+      $or: [ { product_name } ]
     });
 
-    if (existingPatient) {
-      return res.status(400).json({ message: "Patient with same name or email already exists." });
+    if (existingProduct) {
+      return res.status(400).json({ message: "A Product with same name already exists!" });
     }
 
-    // UUID
-    const patient_id = await generatePatientId();
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // Create new patient
-    const newPatient = new patients({
-      patient_id,
-      first_name,
-      last_name,
-      sex,
-      birthdate,
-      contact_number,
-      patient_type,
-      email,
-      password: hashedPassword
-    });
-
+    const newProduct = new products(productsSchema);
+    newProduct.name = product_name
+    newProduct.category = product_min
+    newProduct.min = product_max
+    newProduct.max = product_category
+    newProduct.expiry = product_expiry
+    newProduct.expiry_unit = product_expiry_unit
+    
     // Save to database
-    await newPatient.save();
+    await newProduct.save();
 
-    res.status(201).json({ message: "Patient registered successfully!" });
+    res.status(201).json({ message: "Product registered successfully!" });
   } catch (error) {
-    console.error("Error registering patient:", error);
+    console.error("Error registering product:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 });
