@@ -20,7 +20,6 @@ app.use(cors())
 // Connect to MongoDB
 if (process.env.MONGOOSE) {
 mongoose.connect(process.env.MONGOOSE, {
-  useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 }
@@ -79,7 +78,7 @@ const loginSessionSchema = new mongoose.Schema({
   type: String,
   device_id: String,
 });
-const loginSession = mongoose.model('LoginSession', loginSessionSchema);
+const loginSession = mongoose.model('LoginSession', loginSessionSchema,"hatdog");
 const patients = mongoose.model('Patients', patientsSchema);
 const medicalRecords = mongoose.model('Medical Records', medicalRecordsSchema);
 const appointments = mongoose.model('Appointments', appointmentsSchema);
