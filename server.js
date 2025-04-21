@@ -52,16 +52,15 @@ let loginSession = mongoose.model('LoginSession', loginSessionSchema);
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(async (req, res, next) => {
   const token = req.cookies.token;
   if (!token) return next();
 
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-    // you might also fetch fresh user data here
-    req.user = await accounts.findById(payload.userId);
+    req.user = await accounts.fineOne({ id: payload.userId});
   } catch (err) {
-    // invalid or expired → clear cookie
     res.clearCookie('token');
   }
   next();
@@ -86,34 +85,6 @@ app.get('/admin-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/admin.html');
 });
 /* Global Backend */
-app.get('/currentAccount', async (req, res) => {
-  // 1) grab the sessionId cookie
-  const sessionId = req.cookies.sessionId;
-  if (!sessionId) {
-    return res
-      .status(401)
-      .json({ message: "No session cookie", redirect: "/" });
-  }
-
-  // 2) look up that session in your DB
-  const session = await loginSession.findOne({ session_id: sessionId });
-  if (!session) {
-    return res
-      .status(401)
-      .json({ message: "Invalid or expired session", redirect: "/" });
-  }
-
-  // 3) load the account linked to that session
-  const account = await accounts.findOne({ id: Number(session.target_id) });
-  if (!account) {
-    return res
-      .status(404)
-      .json({ message: "Account not found", redirect: "/" });
-  }
-
-  // 4) return it
-  return res.status(200).json(account);
-});
 app.get('/currentAccount2', async (req, res) => {
   // Device id
   let deviceId = req.cookies.deviceId;
@@ -137,6 +108,27 @@ app.get('/currentAccount2', async (req, res) => {
   } else {
     console.log(currentSession);
     return res.status(404).json({ message: "No login session was found.", redirect: "/" });
+  }
+});
+app.get('/currentAccount', async (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: 'Not logged in', redirect: "/" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const account = await accounts.findOne({ _id: decoded.userId });
+
+    if (!account) {
+      return res.status(404).json({ message: 'Account not found', redirect: "/" });
+    }
+
+    res.status(200).json(account);
+
+  } catch (err) {
+    return res.status(404).json({ message: 'Invalid or expired token', redirect: "/" });
   }
 });
 app.post('/login2', async (req, res) => {
@@ -190,15 +182,14 @@ app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const remember = true
   const user = await accounts.findOne({ username });
-  if (!user) return res.status(401).send('Invalid credentials');
+  if (!user) return res.status(401).send({ message: 'Invalid credentials'});
 
-  const ok = await bcrypt.compare(password, user.passwordHash);
-  if (!ok) return res.status(401).send('Invalid credentials');
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok) return res.status(401).send({ message: 'Invalid credentials'});
 
-  // choose duration
   const expiresIn = remember
-    ? 30 * 24 * 60 * 60      // 30 days in seconds
-    : 60 * 60;               // 1 hour
+    ? 30 * 24 * 60 * 60
+    : 60 * 60;
 
   const token = jwt.sign(
     { userId: user.id },
@@ -206,14 +197,13 @@ app.post('/login', async (req, res) => {
     { expiresIn }
   );
 
-  // httpOnly cookie so JS can’t read it
   res.cookie('token', token, {
     httpOnly: true,
-    maxAge: expiresIn * 1000,    // in ms
-    sameSite: 'lax',             // or 'strict'
+    maxAge: expiresIn * 1000,
+    sameSite: 'lax', 
   });
-
-  res.send({ success: true });
+  return res.json({ redirect: '/admin-dashboard', message: 'Login successful' });
+  //res.send({ success: true });
 });
 
 app.get('/session', async (req, res) => {
