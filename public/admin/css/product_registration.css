@@ -21,12 +21,12 @@
   height: 100%;
 }
 .register-card {
-  width: 70%;
+  width: 60%;
   max-width: 980px;
   min-height: 100%;
-  margin-left: 20px;
   padding: 2rem;
-  border-radius: 16px;
+  border: 3px solid var(--red);
+  border-radius: 16px 0px 0px 16px;
   background-color: transparent;
   display: flex;
   flex-direction: column;
@@ -35,7 +35,9 @@
   width: 20%;
   height: 100%;
   border-radius: 16px;
-  margin-right: 20px;
+  margin-right: 40px;
+  padding: 5px;
+  border-radius: 0px 16px 16px 0px;
   background-color: var(--red);
 }
 
