@@ -36,7 +36,7 @@ async function displayCategories() {
       
       for (let i in response) {
         let cat = response[i]
-        categoryList += `<option value="${cat.name.toLowerCase()}">${cat.name}</option>`
+        categoryList += `<option value="${cat.name}">${cat.name.toUpperCase()}</option>`
         const button = `<button class="btn btn-sm btn-danger remove-cat-btn" cat-name="${cat.name}">Delete</button>`
 
         tableHTML += `
