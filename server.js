@@ -78,7 +78,7 @@ const loginSessionSchema = new mongoose.Schema({
   type: String,
   device_id: String,
 });
-const loginSession = mongoose.model('LoginSession', loginSessionSchema,"hatdog");
+const loginSession = mongoose.model('LoginSession', loginSessionSchema);
 const patients = mongoose.model('Patients', patientsSchema);
 const medicalRecords = mongoose.model('Medical Records', medicalRecordsSchema);
 const appointments = mongoose.model('Appointments', appointmentsSchema);
