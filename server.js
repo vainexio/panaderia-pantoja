@@ -22,54 +22,10 @@ mongoose.connect(process.env.MONGOOSE, {
   useUnifiedTopology: true,
 });
 }
-let doctorSchema = new mongoose.Schema({
-  doctor_id: Number,
-  first_name: String,
-  last_name: String,
-  contact_number: String,
-  email: String,
+const accountSchema = new mongoose.Schema({
+  username: String,
   password: String,
 });
-let doctorAvailabilitySchema = new mongoose.Schema({
-  availability_id: Number,
-  doctor_id: Number,
-  day_of_week: String,
-  start_time: String,
-  end_time: String,
-});
-let patientsSchema = new mongoose.Schema({
-  patient_id: Number,
-  first_name: String,
-  last_name: String,
-  sex: String,
-  birthdate: String,
-  contact_number: String,
-  patient_type: String,
-  email: String,
-  password: String,
-  emergency_contact_name: String,
-  emergency_contact_number: String,
-});
-let medicalRecordsSchema = new mongoose.Schema({
-  record_id: Number,
-  patient_id: Number,
-  doctor_id: Number,
-  appointment_id: Number,
-  diagnosis: String,
-  treatment_plan: String,
-  allergies: String,
-  medical_history: String,
-})
-let appointmentsSchema = new mongoose.Schema({
-  appointment_id: Number,
-  patient_id: Number,
-  doctor_id: Number,
-  appointment_day: String,
-  appointment_date: String,
-  appointment_time_schedule: String,
-  reason: String,
-  status: String,
-})
 const loginSessionSchema = new mongoose.Schema({
   session_id: String,
   ip_address: String,
@@ -77,12 +33,21 @@ const loginSessionSchema = new mongoose.Schema({
   type: String,
   device_id: String,
 });
+const productSchema = new mongoose.Schema({
+  name: String,
+  category: String,
+  min: Number,
+  max: Number,
+  expiration: String,
+});
+const stockRecordSchema = new mongoose.Schema({
+  productName: String,
+  amount: Number,
+  remaining: Number,
+  type: String,
+  date: String,
+});
 const loginSession = mongoose.model('LoginSession', loginSessionSchema);
-const patients = mongoose.model('Patients', patientsSchema);
-const medicalRecords = mongoose.model('Medical Records', medicalRecordsSchema);
-const appointments = mongoose.model('Appointments', appointmentsSchema);
-const doctors = mongoose.model('Doctors', doctorSchema);
-const availableDoctors = mongoose.model('Doctor Availability', doctorAvailabilitySchema);
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
