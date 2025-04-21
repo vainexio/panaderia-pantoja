@@ -16,12 +16,12 @@ async function removeSession(sessionId, callback) {
     console.error("Error removing session:", error);
   }
 }
-async function removeOtherSessions(accountId, type, callback) {
+async function removeOtherSessions(accountId, callback) {
   try {
     const response = await fetch("/removeOtherSessions", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ accountId, type }),
+      body: JSON.stringify({ accountId }),
     });
     if (response.ok) {
       console.log("All sessions removed successfully");

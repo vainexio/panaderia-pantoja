@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const json2xls = require('json2xls');
@@ -69,9 +70,36 @@ app.use(cookieParser());
 app.get('/admin-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/admin.html');
 });
-
 /* Global Backend */
 app.get('/currentAccount', async (req, res) => {
+  // 1) grab the sessionId cookie
+  const sessionId = req.cookies.sessionId;
+  if (!sessionId) {
+    return res
+      .status(401)
+      .json({ message: "No session cookie", redirect: "/" });
+  }
+
+  // 2) look up that session in your DB
+  const session = await loginSession.findOne({ session_id: sessionId });
+  if (!session) {
+    return res
+      .status(401)
+      .json({ message: "Invalid or expired session", redirect: "/" });
+  }
+
+  // 3) load the account linked to that session
+  const account = await accounts.findOne({ id: Number(session.target_id) });
+  if (!account) {
+    return res
+      .status(404)
+      .json({ message: "Account not found", redirect: "/" });
+  }
+
+  // 4) return it
+  return res.status(200).json(account);
+});
+app.get('/currentAccount2', async (req, res) => {
   // Device id
   let deviceId = req.cookies.deviceId;
   if (!deviceId) {
@@ -96,7 +124,7 @@ app.get('/currentAccount', async (req, res) => {
     return res.status(404).json({ message: "No login session was found.", redirect: "/" });
   }
 });
-app.post('/login', async (req, res) => {
+app.post('/login2', async (req, res) => {
   const { username, password } = req.body;
   
   // Device id
@@ -143,6 +171,59 @@ app.post('/login', async (req, res) => {
   
   return res.status(401).json({ message: 'Invalid email or password' });
 });
+app.post('/login', async (req, res) => {
+  const { username, password, remember } = req.body;
+  let ip = req.ip;
+  if (ip.startsWith('::ffff:')) ip = ip.substring(7);
+
+  // 1) find existing session by sessionId cookie
+  const existing = req.cookies.sessionId
+    ? await loginSession.findOne({ session_id: req.cookies.sessionId })
+    : null;
+
+  // 2) authenticate user
+  const user = await accounts.findOne({ username });
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({ message: 'Invalid email or password' });
+  }
+
+  // 3) generate a fresh session token
+  const newSessionId = method.generateSecurityKey();
+
+  // 4) upsert the session document
+  if (!existing) {
+    await loginSession.create({
+      session_id:   newSessionId,
+      ip_address:   ip,
+      target_id:    user.id,
+      created_at:   new Date()
+    });
+    console.log('created new loginSession');
+  } else {
+    existing.session_id  = newSessionId;
+    existing.ip_address  = ip;
+    existing.target_id   = user.id;
+    existing.updated_at  = new Date();
+    await existing.save();
+    console.log('updated existing loginSession');
+  }
+
+  // 5) send cookie; if remember, set 30 days, else browser‑session
+  const cookieOpts = {
+    httpOnly: true,
+    secure:   process.env.NODE_ENV === 'production'
+  };
+  if (remember) {
+    cookieOpts.maxAge = 1000 * 60 * 60 * 24 * 30; // 30 days
+  }
+  res.cookie('sessionId', newSessionId, cookieOpts);
+
+  return res.json({
+    redirect: '/admin-dashboard',
+    message:  'Login successful'
+  });
+});
+
 app.get('/session', async (req, res) => {
   let deviceId = req.cookies.deviceId;
   if (!deviceId) {
@@ -199,6 +280,40 @@ app.post('/getAllSessions', async (req, res) => {
   } catch (error) {
     console.error('Error in /getAllSessions:', error);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+app.delete('/removeSession', async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+    if (!sessionId) {
+      return res.status(400).json({ error: "sessionId is required" });
+    }
+    const result = await loginSession.deleteOne({ session_id: sessionId });
+    if (result.deletedCount > 0) {
+      return res.json({ message: "Session removed" });
+    } else {
+      return res.status(404).json({ error: "Session not found" });
+    }
+  } catch (error) {
+    console.error("Error in /removeSession:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+app.delete('/removeOtherSessions', async (req, res) => {
+  try {
+    let deviceId = req.cookies.deviceId;
+    const { accountId } = req.body;
+    if (!accountId) {
+      return res.status(400).json({ error: "accountId is required" });
+    }
+    const result = await loginSession.deleteMany({ 
+      target_id: accountId,
+      device_id: { $ne: deviceId } 
+    });
+    return res.json({ message: `${result.deletedCount} session(s) removed` });
+  } catch (error) {
+    console.error("Error in /removeOtherSessions:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
