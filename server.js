@@ -59,7 +59,7 @@ app.use(async (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-    req.user = await accounts.fineOne({ id: payload.userId});
+    req.user = await accounts.findOne({ id: payload.userId});
   } catch (err) {
     res.clearCookie('token');
   }
@@ -85,51 +85,23 @@ app.get('/admin-dashboard', async (req, res) => {
   res.sendFile(__dirname + '/public/admin.html');
 });
 /* Global Backend */
-app.get('/currentAccount2', async (req, res) => {
-  // Device id
-  let deviceId = req.cookies.deviceId;
-  if (!deviceId) {
-    deviceId = uuidv4();
-    res.cookie('deviceId', deviceId, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    });
-  }
-  
-  let currentSession = await fetch("https://panaderiapantoja.glitch.me/session", { headers: { cookie: req.headers.cookie || "" } });
-  
-  if (currentSession.ok) {
-    currentSession = await currentSession.json();
-    let sessionData = currentSession.session;
-    
-    let account = await accounts.findOne({ id: Number(sessionData.target_id) });
-    if (account) return res.status(200).json(account);
-    
-  } else {
-    console.log(currentSession);
-    return res.status(404).json({ message: "No login session was found.", redirect: "/" });
-  }
-});
 app.get('/currentAccount', async (req, res) => {
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res.status(401).json({ message: 'Not logged in', redirect: "/" });
-  }
-
+  console.log(req.user)
+  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+  let user = req.user
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    const account = await accounts.findOne({ _id: decoded.userId });
-
-    if (!account) {
-      return res.status(404).json({ message: 'Account not found', redirect: "/" });
-    }
-
+    const account = await accounts.findOne({ id: user.id });
+    if (!account) return res.status(404).json({ message: 'Account not found', redirect: "/" });
+    
+    const ok = user.password == account.password
+    if (!ok) return res.status(401).send({ message: 'Invalid credentials', redirect: "/"});
+    
     res.status(200).json(account);
 
   } catch (err) {
     return res.status(404).json({ message: 'Invalid or expired token', redirect: "/" });
   }
+
 });
 app.post('/login2', async (req, res) => {
   const { username, password } = req.body;
@@ -200,27 +172,12 @@ app.post('/login', async (req, res) => {
   res.cookie('token', token, {
     httpOnly: true,
     maxAge: expiresIn * 1000,
-    sameSite: 'lax', 
+    sameSite: 'strict', 
   });
   return res.json({ redirect: '/admin-dashboard', message: 'Login successful' });
   //res.send({ success: true });
 });
 
-app.get('/session', async (req, res) => {
-  let deviceId = req.cookies.deviceId;
-  if (!deviceId) {
-    return res.status(401).json({ message: 'No device identifier found. Please log in.' });
-  }
-  
-  try {
-    const session = await loginSession.findOne({ device_id: deviceId });
-    if (!session) return res.status(401).json({ message: 'Session not found. Please log in again.' });
-    
-    res.json({ message: 'Session valid', session });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error' });
-  }
-});
 app.post('/getAllSessions', async (req, res) => {
   try {
     let deviceId = req.cookies.deviceId;
