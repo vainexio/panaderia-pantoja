@@ -36,6 +36,26 @@ async function productRegistration() {
           }
         }, 2000);
       });
+    
+    const response = await fetch("/getCategories");
+    if (response.ok) {
+      response = await response.json()
+      let categoryList = ""
+      for (let ctg in response) {
+        categoryList += "
+          <option value="days">Day(s)</option>
+          <option value="months">Month(s)</option>
+          <option value="years">Year(s)</option>"
+      }
+      let categoryGroup = document.getElementById('category-group')
+      categoryGroup.innerHTML = `
+      <div class="form-group">
+        <label for="product_category">Category</label>
+        <select id="product_category" name="product_category" required>
+        </select>
+      </div>
+      `
+    }
   }
 }
 

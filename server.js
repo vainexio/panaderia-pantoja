@@ -39,12 +39,17 @@ const productsSchema = new mongoose.Schema({
   expiry: Number,
   expiry_unit: String,
 });
+const categorySchema = new mongoose.Schema({
+  id: Number,
+  name: String,
+});
 const stockRecordsSchema = new mongoose.Schema({
   productName: String,
   amount: Number,
   remaining: Number,
   date: String,
 });
+let categories = mongoose.model('Categories', categorySchema);
 let accounts = mongoose.model('Accounts', accountsSchema);
 let products = mongoose.model('Products', productsSchema);
 let stockRecords = mongoose.model('Stock Records', stockRecordsSchema);
@@ -319,6 +324,14 @@ app.get('/getProducts', async (req, res) => {
   try {
     const foundProducts = await products.find();
     res.json(foundProducts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.get('/getCategories', async (req, res) => {
+  try {
+    const foundCtg = await categories.find();
+    res.json(foundCtg);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
