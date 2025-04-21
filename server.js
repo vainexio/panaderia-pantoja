@@ -47,10 +47,10 @@ const stockRecordsSchema = new mongoose.Schema({
   remaining: Number,
   date: String,
 });
-const accounts = mongoose.model('Accounts', accountsSchema);
-const products = mongoose.model('Products', productsSchema);
-const stockRecords = mongoose.model('Stock Records', stockRecordsSchema);
-const loginSession = mongoose.model('LoginSession', loginSessionSchema);
+let accounts = mongoose.model('Accounts', accountsSchema);
+let products = mongoose.model('Products', productsSchema);
+let stockRecords = mongoose.model('Stock Records', stockRecordsSchema);
+let loginSession = mongoose.model('LoginSession', loginSessionSchema);
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -162,8 +162,16 @@ app.get('/session', async (req, res) => {
   }
 });
 
+app.get('/test', async (req, res) => {
+  let doc = new accounts(accountsSchema)
+  doc.id = 1;
+  doc.username = "admin"
+  doc.password = await bcrypt.hash("adminpass", 10)
+  await doc.save();
+  return doc
+});
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
 });
