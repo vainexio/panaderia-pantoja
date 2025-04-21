@@ -3,57 +3,71 @@ document.addEventListener("DOMContentLoaded", function () {
     particles: {
       number: {
         value: 70,
-        density: { enable: true, value_area: 900 }
-      },
-
-      // use your bread image instead of circles
-      shape: {
-        type: 'image',
-        image: {
-          src: 'https://pics.clipartpng.com/Bread_PNG_Clip_Art-2218.png',  // ← point this at your bread image
-          width: 5,                  // ← adjust to your image’s natural size
-          height: 5
+        density: {
+          enable: true,
+          value_area: 900
         }
       },
-
+      color: {
+        value: "#ffffff"
+      },
+      shape: {
+        type: "circle"
+      },
       opacity: {
         value: 0.5,
         random: true,
-        anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false }
+        anim: {
+          enable: true,
+          speed: 1,
+          opacity_min: 0.1,
+          sync: false
+        }
       },
-
       size: {
-        value: 32,      // match roughly the image size if you want uniform breads
-        random: false,  // or true if you want variety
-        anim: { enable: false }
+        value: 3,
+        random: true,
+        anim: {
+          enable: true,
+          speed: 3,
+          size_min: 0.1,
+          sync: false
+        }
       },
-
-      // disable the connecting lines
       line_linked: {
-        enable: false
+        enable: true,
+        distance: 150,
+        color: "#ffffff",
+        opacity: 0.4,
+        width: 1
       },
-
       move: {
         enable: true,
         speed: 1,
-        direction: 'none',
+        direction: "none",
         random: true,
         straight: false,
-        out_mode: 'out',
+        out_mode: "out",
         bounce: false
       }
     },
-
     interactivity: {
       events: {
-        onhover: { enable: true, mode: 'repulse' }
+        onhover: {
+          enable: true,
+          mode: "repulse"
+        }
       },
       modes: {
-        repulse: { distance: 100, duration: 0.4 },
-        push:   { particles_nb: 1 }
+        repulse: {
+          distance: 100,
+          duration: 0.4
+        },
+        push: {
+          particles_nb: 1
+        }
       }
     },
-
     retina_detect: true
   });
 });
