@@ -268,6 +268,7 @@ app.post('/login', async (req, res) => {
     });
   }
   let ip = req.ip;
+  console.log(req.clientIp)
   if (ip.startsWith("::ffff:")) ip = ip.substring(7);
   const existingSession = await loginSession.findOne({ device_id: deviceId, type: userType });
   // Manage login
