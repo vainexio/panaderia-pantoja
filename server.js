@@ -315,6 +315,39 @@ app.post('/registerProduct', async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 });
+app.get('/getProducts', async (req, res) => {
+  try {
+    const foundProducts = await products.find();
+    res.json(foundProducts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 2. Update a product
+app.post('/updateProduct', async (req, res) => {
+  const { id, name, category, min, max, expiry, expiry_unit } = req.body;
+  try {
+    const updated = await products.findByIdAndUpdate(
+      id,
+      { name, category, min, max, expiry, expiry_unit },
+      { new: true }
+    );
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 3. Delete a product
+app.delete('/deleteProduct/:id', async (req, res) => {
+  try {
+    await products.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 app.get('/test', async (req, res) => {
   let doc = new accounts(accountsSchema)
   doc.id = 1;
