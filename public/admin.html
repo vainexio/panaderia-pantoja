@@ -22,22 +22,18 @@
       href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;700&display=swap"
       rel="stylesheet"
     />
-
+    
     <link href="main_css/global.css" rel="stylesheet" />
     <link href="main_css/settings.css" rel="stylesheet" />
-    <link href="doctor/css/work_schedule.css" rel="stylesheet" />
-    <link href="doctor/css/appointments.css" rel="stylesheet" />
-    <link href="doctor/css/patient_history.css" rel="stylesheet" />
-    <link href="doctor/css/register_patient.css" rel="stylesheet" />
-    <link href="doctor/css/analytics.css" rel="stylesheet" />
-    <link href="doctor/css/settings.css" rel="stylesheet" />
+    <link href="admin/css/appointments.css" rel="stylesheet" />
+    <link href="admin/css/settings.css" rel="stylesheet" />
   </head>
 
   <body>
     <div id="preloader">
       <div class="loader"></div>
     </div>
-    <script src="scripts/doctors/main.js"></script>
+    <script src="scripts/admin/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <nav class="navbar position-fixed h-100 d-flex flex-column">
@@ -52,13 +48,13 @@
       <ul class="navbar-nav flex-grow-1 w-100">
         <li class="nav-item">
           <a
-             id="work_schedule_nav"
+             id="dashboard_nav"
             class="nav-link align-items-center nav-item-custom"
             href="#"
-            onclick="showSection('work_schedule')"
+            onclick="showSection('dashboard')"
           >
             <i class="bi bi-clock-history me-2"></i>
-            <span>Work Schedule</span>
+            <span>Dashboard</span>
           </a>
         </li>
         <li class="nav-item">
@@ -69,40 +65,18 @@
             onclick="showSection('appointments')"
           >
             <i class="bi bi-calendar-check me-2"></i>
-            <span>Appointments</span>
+            <span>Inventory</span>
           </a>
         </li>
         <li class="nav-item">
           <a
-             id="patient_history_nav"
+             id="product_registration_nav"
             class="nav-link align-items-center nav-item-custom"
             href="#"
-            onclick="showSection('patient_history')"
+            onclick="showSection('product_registration')"
           >
             <i class="bi bi-people me-2"></i>
-            <span>Patients History</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-             id="patient_registration_nav"
-            class="nav-link align-items-center nav-item-custom"
-            href="#"
-            onclick="showSection('patient_registration')"
-          >
-            <i class="bi bi-person-add me-2"></i>
-            <span>Register Patient</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-             id="analytics_nav"
-            class="nav-link align-items-center nav-item-custom"
-            href="#"
-            onclick="showSection('analytics')"
-          >
-            <i class="bi bi-clipboard2-data me-2"></i>
-            <span>Analytics</span>
+            <span>Product Registration</span>
           </a>
         </li>
       </ul>
@@ -123,24 +97,16 @@
     </nav>
 
     <main>
-      <div id="work_schedule_holder"></div>
       <div id="appointments_holder"></div>
-      <div id="patient_history_holder"></div>
-      <div id="patient_registration_holder"></div>
-      <div id="analytics_holder"></div>
       <div id="settings_holder"></div>
     </main>
     <!-- Scripts -->
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="scripts/global/particles.js"></script>
-    <script src="scripts/doctors/appointments.js"></script>
-    <script src="scripts/doctors/work_schedules.js"></script>
-    <script src="scripts/doctors/patient_history.js"></script>
-    <script src="scripts/doctors/patient_registration.js"></script>
+    <script src="scripts/admin/appointments.js"></script>
     <script src="scripts/global/main_settings.js"></script>
-    <script src="scripts/doctors/analytics.js"></script>
-    <script src="scripts/doctors/settings.js"></script>
+    <script src="scripts/admin/settings.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   </body>
 </html>

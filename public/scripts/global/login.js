@@ -1,34 +1,13 @@
 let selectedUserType = "";
 document.addEventListener("DOMContentLoaded", async function () {
-  const doctorButton = document.getElementById("doctorButton");
-  const patientButton = document.getElementById("patientButton");
   const errorMessageElement = document.getElementById("error-message");
   const button = document.getElementById("loginButton");
-
-  doctorButton.addEventListener("click", () => {
-    selectedUserType = "doctor";
-    doctorButton.classList.add("selected");
-    patientButton.classList.remove("selected");
-  });
-
-  patientButton.addEventListener("click", () => {
-    selectedUserType = "patient";
-    patientButton.classList.add("selected");
-    doctorButton.classList.remove("selected");
-  });
 
   document.getElementById("loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("email").value;
+    const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-
-    if (!selectedUserType) {
-      errorMessageElement.textContent =
-        "Please select a user type (doctor/patient).";
-      errorMessageElement.style.display = "block";
-      return;
-    }
 
     button.disabled = true;
     errorMessageElement.style.display = "none";
@@ -37,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       const response = await fetch("/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, userType: selectedUserType }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();

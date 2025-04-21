@@ -29,7 +29,7 @@ function showSection(sectionId) {
 
 document.addEventListener("DOMContentLoaded", async function () {
   // Get current doctor
-  currentDoctor = await fetch("/currentAccount?type=doctor");
+  currentDoctor = await fetch("/currentAccount");
   if (currentDoctor.ok) currentDoctor = await currentDoctor.json();
   else {
     let error = await currentDoctor.json();
@@ -39,20 +39,16 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
 
   let layouts = [
-    "work_schedule",
     "appointments",
-    "patient_history",
-    "patient_registration",
-    "analytics",
     "settings",
   ];
   for (let i in layouts) {
     console.log(layouts[i]);
-    let response = await fetch("../doctor/layouts/" + layouts[i] + ".html");
+    let response = await fetch("../admin/layouts/" + layouts[i] + ".html");
     let data = await response.text();
     document.getElementById(layouts[i] + "_holder").innerHTML = data;
   }
-  showSection("work_schedule");
+  showSection("appointments");
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.addEventListener("click", function () {
       document

@@ -17,11 +17,8 @@ const app = express();
 app.use(cors());
 
 // Connect to MongoDB
-if (process.env.MONGOOSE) {
-mongoose.connect(process.env.MONGOOSE, {
-  useUnifiedTopology: true,
-});
-}
+if (process.env.MONGOOSE) mongoose.connect(process.env.MONGOOSE);
+
 const accountsSchema = new mongoose.Schema({
   id: Number,
   username: String,
