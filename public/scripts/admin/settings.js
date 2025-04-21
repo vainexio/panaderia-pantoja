@@ -33,6 +33,9 @@ async function adminSettings() {
           <tbody>
     `;
     loginSessions.forEach((session) => {
+      if (session.currentSession) {
+        document.getElementById("doc_session_id").value = session.session_id;
+      }
       const rowClass = session.currentSession ? "table-primary" : "";
       const button = !session.currentSession
         ? `<button class="btn btn-sm btn-danger remove-session-btn" data-session-id="${session.session_id}">Remove Device</button>`
