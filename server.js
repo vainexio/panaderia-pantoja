@@ -14,8 +14,7 @@ const { v4: uuidv4 } = require('uuid');
 const method = require('./data/functions.js')
 const settings = require('./data/settings.js')
 const app = express();
-app.use(cors())
-
+app.use(cors());
 
 // Connect to MongoDB
 if (process.env.MONGOOSE) {
