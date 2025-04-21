@@ -60,6 +60,12 @@ app.use(async (req, res, next) => {
   try {
     const payload = jwt.verify(token, JWT_SECRET);
     req.user = await accounts.findOne({ id: payload.userId});
+    const existingSession = await loginSession.findOne({ device_id: token});
+    if (!existingSession) {
+      res.clearCookie('token');
+    } else {
+      req.session = existingSession
+    }
   } catch (err) {
     res.clearCookie('token');
   }
@@ -153,6 +159,7 @@ app.post('/login2', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const remember = true
+  const ip = req.ip;
   const user = await accounts.findOne({ username });
   if (!user) return res.status(401).send({ message: 'Invalid credentials'});
 
@@ -168,7 +175,25 @@ app.post('/login', async (req, res) => {
     JWT_SECRET,
     { expiresIn }
   );
-
+  
+  const existingSession = await loginSession.findOne({ device_id: token});
+  if (!existingSession) {
+    const session = new loginSession({
+      session_id: method.generateSecurityKey(),
+      ip_address: ip,
+      target_id: user.id,
+      device_id: token,
+    });
+    console.log('new session')
+    await session.save();
+  } else if (existingSession) {
+    existingSession.target_id = user.id
+    existingSession.ip_address = ip
+    existingSession.device_id = token
+    existingSession.session_id = method.generateSecurityKey()
+    console.log('old session')
+    await existingSession.save();
+  }
   res.cookie('token', token, {
     httpOnly: true,
     maxAge: expiresIn * 1000,

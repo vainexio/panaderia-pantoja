@@ -27,7 +27,6 @@ async function adminSettings() {
             <tr>
               <th scope="col">IP Address</th>
               <th scope="col">Location</th>
-              <th scope="col">Device ID</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
@@ -43,7 +42,6 @@ async function adminSettings() {
             <tr data-session-id="${session.session_id}" class="${rowClass}">
               <td>${session.ip_address}</td>
               <td>${session.location}</td>
-              <td>${session.device_id}</td>
               <td>
                 ${button}
               </td>

@@ -1,89 +1,94 @@
 :root {
-    --white: #fcfcfc;
-    --light-gray: #e9ecef;
-    --red: #981414;
-    --yellow: #ffd41c;
-    --secondary-yellow: #ffe365;
-    --black: #363636;
+  --white: #fcfcfc;
+  --light-gray: #e9ecef;
+  --red: #981414;
+  --yellow: #ffd41c;
+  --secondary-yellow: #ffe365;
+  --black: #363636;
 }
-  
-  body {
-    scroll-behavior: smooth;
-    font-family: "Roboto Slab", serif;
-    font-weight: 400;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-  }
-  
-  img.logo {
-    display: block;
-    width: 100%;
-    height: 200px;
-    padding-right: 10px;
-  }
-  
-  #particles-js {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-  }
-  
-  section {
-    height: 100vh;
-    display: flex;
-    margin-left: 250px;
-    padding: 10px;
-    overflow-x: hidden;
-    background: url("https://cdn.glitch.global/43994c3c-7e58-44a5-9091-1ff0c7f96aa6/90a20d6f-a516-4bd0-aae3-cce8ad4e949b.image.png?v=1745227027108");
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: 1;
-  }
-  
-  section header {
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-  
-  section h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: #222222;
-  }
-  
-  #preloader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--red);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-  }
-/* HTML: <div class="loader"></div> */
+
+body {
+  scroll-behavior: smooth;
+  font-family: "Roboto Slab", serif;
+  font-weight: 400;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+img.logo {
+  display: block;
+  width: 100%;
+  height: 200px;
+  padding-right: 10px;
+}
+
+#particles-js {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+section {
+  height: 100vh;
+  display: flex;
+  margin-left: 250px;
+  padding: 10px;
+  overflow-x: hidden;
+  background: url("https://cdn.glitch.global/43994c3c-7e58-44a5-9091-1ff0c7f96aa6/90a20d6f-a516-4bd0-aae3-cce8ad4e949b.image.png?v=1745227027108");
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+section header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+section h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #222222;
+}
+
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--red);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
 .loader {
-  width: 90px;
+  width: 30%;
   height: 14px;
   box-shadow: 0 3px 0 #fff;
   position: relative;
   display: grid;
-  clip-path: inset(-60px 0 -5px)
+  clip-path: inset(-60px 0 -5px);
 }
 .loader:after {
   content: "";
   position: relative;
-  background: repeating-linear-gradient(90deg,#0000 0 calc(50% - 8px), #ccc 0 calc(50% + 8px), #0000 0 100%) 0 0/calc(100%/3) 100%;
+  background: repeating-linear-gradient(
+      90deg,
+      #0000 0 calc(50% - 8px),
+      #ccc 0 calc(50% + 8px),
+      #0000 0 100%
+    )
+    0 0 / calc(100% / 3) 100%;
   animation: l6-1 1s infinite;
-} 
+}
 .loader:before {
   content: "";
   position: absolute;
@@ -96,163 +101,169 @@
   animation: l6-2 1s infinite;
 }
 @keyframes l6-1 {
-  50%,100% {background-position: calc(100%/2) 0}
+  50%,
+  100% {
+    background-position: calc(100% / 2) 0;
+  }
 }
 @keyframes l6-2 {
-  0%,50% {transform:translateY(-80px)}
+  0%,
+  50% {
+    transform: translateY(-80px);
+  }
 }
-  #preloader.fade-out {
-    opacity: 0;
-    visibility: hidden;
-  }
-  
-  .navbar {
-    width: 250px;
-    position: sticky;
-    top: 0;
-    z-index: 1020;
-    background-color: var(--red);
-  }
-  
-  .nav-link {
-    display: flex;
-    position: relative;
-    transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-    border-radius: 12px;
-    background-color: transparent;
-    color: white;
-  }
-  
-  .nav-item {
-    display: flex;
-    justify-content: center;
-  }
-  .nav-item-custom {
-    padding: 15px 20px;
-    margin-bottom: 1vh;
-    width: calc(100% - 30px);
-  }
-  
-  .nav-link:hover {
-    background-color: #ffffff34;
-    color: white;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-  }
-  
-  .nav-link.active {
-    background-color: var(--yellow);
-  }
-  
-  .nav-link.active::after {
-    width: 87%;
-    background-color: var(--red);
-    color: var(--white);
-  }
-  
-  .nav-link::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: var(--white);
-    transition: width 0.3s ease;
-    transform: translateX(-50%);
-  }
-  
-  .nav-link:hover::after {
-    width: 87%;
-  }
+#preloader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.navbar {
+  width: 250px;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background-color: var(--red);
+}
+
+.nav-link {
+  display: flex;
+  position: relative;
+  transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  border-radius: 12px;
+  background-color: transparent;
+  color: white;
+}
+
+.nav-item {
+  display: flex;
+  justify-content: center;
+}
+.nav-item-custom {
+  padding: 15px 20px;
+  margin-bottom: 1vh;
+  width: calc(100% - 30px);
+}
+
+.nav-link:hover {
+  background-color: #ffffff34;
+  color: white;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.nav-link.active {
+  background-color: var(--yellow);
+}
+
+.nav-link.active::after {
+  width: 87%;
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--white);
+  transition: width 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 87%;
+}
 
 .nav-link i {
   margin-right: 8px;
 }
-  
-  .navbar-brand {
-    margin-bottom: 5vh;
-    margin-right: 0px;
-    text-align: center;
-    align-items: center;
-    color: white;
-  }
-  
-  .nav-item-custom {
-    padding: 15px 20px;
-    margin-bottom: 1vh;
-  }
-  
-  .nav-item-custom:first-child {
-    margin-top: 10px;
-  }
-  
-  .form-group input readonly {
-    background-color: transparent;
-  }
-  /* Action Buttons */
-  .action-button {
-    display: inline-block;
-    padding: 0.5rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-    background-color: var(--red);
-    color: var(--white);
-    border-radius: 12px;
-  }
-  .action-button:not(:disabled):hover {
-    color: var(--yellow);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-  }
-  .action-button:not(:disabled):hover::after {
-    width: 87%;
-  }
-  .action-button:disabled {
-    background: #bebebe;
-    color: var(--white);
-    cursor: not-allowed;
-  }
-  
-  /* e */
-  .form-group {
-    flex: 1 1 calc(33.333% - 1rem);
-    min-width: 250px;
-  }
-  
-  .form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: var(--black);
-  }
-  
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 8px;
-    border: 1px solid var(--black);
-    background-color: var(--white);
-    font-size: 1rem;
-  }
-  
-  .form-group input[readonly],
-  .form-group input:read-only {
-    background-color: transparent;
-    cursor: default;
-  }
-  
-  .submit-container {
-    width: 100%;
-    display: flex;
-    justify-content: end;
-    margin-top: 1rem;
-  }
-  
+
+.navbar-brand {
+  margin-bottom: 5vh;
+  margin-right: 0px;
+  text-align: center;
+  align-items: center;
+  color: white;
+}
+
+.nav-item-custom {
+  padding: 15px 20px;
+  margin-bottom: 1vh;
+}
+
+.nav-item-custom:first-child {
+  margin-top: 10px;
+}
+
+.form-group input readonly {
+  background-color: transparent;
+}
+/* Action Buttons */
+.action-button {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  background-color: var(--red);
+  color: var(--white);
+  border-radius: 12px;
+}
+.action-button:not(:disabled):hover {
+  color: var(--yellow);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+.action-button:not(:disabled):hover::after {
+  width: 87%;
+}
+.action-button:disabled {
+  background: #bebebe;
+  color: var(--white);
+  cursor: not-allowed;
+}
+
+/* e */
+.form-group {
+  flex: 1 1 calc(33.333% - 1rem);
+  min-width: 250px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--black);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--black);
+  background-color: var(--white);
+  font-size: 1rem;
+}
+
+.form-group input[readonly],
+.form-group input:read-only {
+  background-color: transparent;
+  cursor: default;
+}
+
+.submit-container {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  margin-top: 1rem;
+}
+
 .form-header {
   text-align: center;
   margin-bottom: 1.5rem;
@@ -267,48 +278,46 @@
   color: var(--black);
 }
 
+@media (max-width: 768px) {
+  .navbar {
+    width: 60px;
+    padding: 0;
+  }
 
-  
-  @media (max-width: 768px) {
-    .navbar {
-      width: 60px;
-      padding: 0;
-    }
-  
-    .nav-link {
-      height: 40px;
-      width: 40px;
-      justify-content: center;
-      padding-right: 10px;
-      color: white;
-    }
-  
-    .nav-link i {
-      font-size: 1rem;
-      margin-right: 0px;
-    }
-  
-    .nav-link span {
-      display: none;
-    }
-  
-    .navbar img {
-      display: none;
-    }
-    
-    .nav-item-custom {
+  .nav-link {
+    height: 40px;
+    width: 40px;
+    justify-content: center;
+    padding-right: 10px;
+    color: white;
+  }
+
+  .nav-link i {
+    font-size: 1rem;
+    margin-right: 0px;
+  }
+
+  .nav-link span {
+    display: none;
+  }
+
+  .navbar img {
+    display: none;
+  }
+
+  .nav-item-custom {
     padding: 15px 20px;
     margin-bottom: 1vh;
     width: calc(100% - 30px);
   }
-  
-    section {
-      margin-left: 60px;
-      background: url("https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/bg2?v=1738146944212");
-      background-size: cover;
-    }
-  
-    section h1 {
-      font-size: 1.2rem;
-    }
+
+  section {
+    margin-left: 60px;
+    background: url("https://cdn.glitch.global/55d2e535-2ad0-4ea1-9976-55657ec6a397/bg2?v=1738146944212");
+    background-size: cover;
   }
+
+  section h1 {
+    font-size: 1.2rem;
+  }
+}
