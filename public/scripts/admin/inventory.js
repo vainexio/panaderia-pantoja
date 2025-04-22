@@ -80,66 +80,20 @@ async function showProductDetails(product) {
   // left: product info
   const left = document.createElement("div");
   left.className = "detail-left";
-  left.innerHTML = `
-  <form id="editProductForm" class="product-form">
-    <div class="form-group">
-      <label for="product_name">Product Name</label>
-      <input type="text" id="product_name" name="product_name" value="${product.name}" required />
-    </div>
-
-    <div class="form-group">
-      <label for="product_qty">Current Quantity</label>
-      <input type="number" id="product_qty" name="product_qty" value="${product.quantity}" />
-    </div>
-
-    <div class="form-group">
-      <label for="product_min">Required Min. Quantity</label>
-      <input type="number" id="product_min" name="product_min" value="${product.min}" required />
-    </div>
-
-    <div class="form-group">
-      <label for="product_max">Required Max. Quantity</label>
-      <input type="number" id="product_max" name="product_max" value="${product.max}" required />
-    </div>
-    
-    <div class="form-group">
-      <label for="product_id">Product ID</label>
-      <input type="text" id="product_id" name="product_id" value="${product.product_id}" readonly />
-    </div>
-    
-    <div class="form-group">
-      <label for="product_expiry">Product Expiry</label>
-      <input type="text" id="product_expiry" name="product_expiry" value="${product.expiry} ${product.expiry_unit}" readonly />
-    </div>
-
-    <div class="submit-container">
-      <button type="submit" class="action-button edit-product-btn">Save Changes</button>
-    </div>
-  </form>
-`;
+  left.innerHTML = `...`;  // keep your existing form structure
 
   // right: placeholder while fetching
   const right = document.createElement("div");
   right.className = "detail-right";
   
-  const recordHolder = document.createElement("div");
-  recordHolder.className = "record-holder";
-  
-  right.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
-
-  detailWrapper.append(left, right);
-  detailCard.appendChild(detailWrapper);
-
-  // 5. Attach to the same parent as inventoryCard
-  inventoryCard.parentNode.appendChild(detailCard);
-
-  // 6. Fetch & render stock records
+  // Fetch & render stock records
   const res = await fetch("/getStockRecord?type=single", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: product.product_id }),
   });
   const records = await res.json();
+
   if (!records) return right.innerHTML = `<h3>❌ No record yet</h3>`;
   
   const inRecs  = records.filter(r => r.type === "IN");
@@ -147,71 +101,95 @@ async function showProductDetails(product) {
 
   right.innerHTML = ""; // clear “Loading…”
 
-  function buildRecordsColumn(title, records, type) {
-  const sign = type === "IN" ? "+" : "–";
-  const cls  = type === "IN" ? "in" : "out";
+  // Build the stock records section dynamically
+  const recordHolder = document.createElement("div");
+  recordHolder.className = "record-holder";
+  
+  const stockForms = await renderStockRecordsForm(product.product_id);  // Dynamically generate forms
+  recordHolder.appendChild(stockForms);
 
-  if (!records.length) {
-    return `<h3>${title}</h3><p>No ${title.toLowerCase()}.</p>`;
-  }
+  // Add the record columns (IN/OUT)
+  const inCol = document.createElement("div");
+  inCol.className = "in-records";
+  inCol.innerHTML = buildRecordsColumn("📥 IN", inRecs, "IN");
 
-  const items = records.map(r => `
-    <div class="record-item" data-id="${r._id}">
-      <div class="record-content">
-        <h2 class="qty ${cls}">${sign}${r.amount}</h2>
-        <div class="date">${r.fromNow}</div>
-      </div>
-      <button type="button"
-              class="action-button delete-record-btn"
-              title="Delete record">
-        <i class="bi bi-trash3-fill"></i>
-      </button>
-    </div>
-  `).join("");
+  const outCol = document.createElement("div");
+  outCol.className = "out-records";
+  outCol.innerHTML = buildRecordsColumn("📤 OUT", outRecs, "OUT");
 
-  return `<h3>${title}</h3><div class="records-list">${items}</div>`;
-}
-
-// … later in your code:
-const inCol = document.createElement("div");
-inCol.className = "in-records";
-inCol.innerHTML  = buildRecordsColumn("📥 IN", inRecs, "IN");
-
-const outCol = document.createElement("div");
-outCol.className = "out-records";
-outCol.innerHTML = buildRecordsColumn("📤 OUT", outRecs, "OUT");
   recordHolder.append(inCol, outCol);
   right.appendChild(recordHolder);
+
+  detailWrapper.append(left, right);
+  detailCard.appendChild(detailWrapper);
+
+  // 5. Attach to the same parent as inventoryCard
+  inventoryCard.parentNode.appendChild(detailCard);
+}
+// Refactor to create records with less redundancy
+async function createStockRecordForm(productId, type) {
+  const form = document.createElement('form');
+  form.className = 'stockRecordForm';
+  form.dataset.type = type;
+
+  const input = document.createElement('input');
+  input.type = 'number';
+  input.id = `${type}_amount`;
+  input.placeholder = `Enter ${type === 'IN' ? 'received' : 'sold'} quantity`;
+  input.required = true;
+
+  const submitBtn = document.createElement('button');
+  submitBtn.type = 'submit';
+  submitBtn.className = 'action-button stock-record-btn';
+  submitBtn.textContent = `Create ${type} Record`;
+
+  form.appendChild(input);
+  form.appendChild(submitBtn);
+
+  // Add event listener to the form
+  form.addEventListener("submit", (e) => handleStockRecordSubmit(e, productId, type));
+
+  return form;
+}
+
+// Generic submit handler for both "IN" and "OUT" types
+async function handleStockRecordSubmit(e, productId, type) {
+  e.preventDefault();
   
-  const recordHolder2 = document.createElement("div");
-  recordHolder2.className = "record-holder2";
+  const amount = e.target.querySelector(`#${type}_amount`).value;
+
+  if (!amount || amount <= 0) return alert("Please enter a valid amount.");
+
+  // Submit the stock record
+  const res = await fetch("/createStockRecord", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      product_id: productId,
+      type,
+      amount: parseInt(amount),
+    }),
+  });
+
+  const result = await res.json();
+  if (result.success) {
+    alert(`${type} record created successfully!`);
+    loadInventory();  // Reload inventory to update the records
+  } else {
+    alert(`Error creating ${type} record.`);
+  }
+}
+
+// To create both "IN" and "OUT" forms dynamically
+async function renderStockRecordsForm(productId) {
+  const stockFormsContainer = document.createElement('div');
   
-  const inForm = document.createElement("div");
-  inForm.className = "stockRecordForm"
-  inForm.innerHTML = `<form id="categoryForm" class="product-form">
-      <div class="form-group">
-        <label for="ctg_name">IN</label>
-        <input type="text" id="ctg_name" name="ctg_name" placeholder="100" required />
-      </div>
-      <div class="submit-container">
-        <button type="submit" class="action-button stock-record-btn">Create Record</button>
-      </div>
-    </form>`
-  const outForm = document.createElement("div");
-  outForm.className = "stockRecordForm"
-  outForm.innerHTML = `<form id="categoryForm" class="product-form">
-      <div class="form-group">
-        <label for="ctg_name">OUT</label>
-        <input type="text" id="ctg_name" name="ctg_name" placeholder="100" required />
-      </div>
-      <div class="submit-container">
-        <button type="submit" class="action-button stock-record-btn">Create Record</button>
-      </div>
-    </form>`
+  const inForm = await createStockRecordForm(productId, "IN");
+  const outForm = await createStockRecordForm(productId, "OUT");
+
+  stockFormsContainer.append(inForm, outForm);
   
-  recordHolder2.appendChild(inForm)
-  recordHolder2.appendChild(outForm)
-  right.appendChild(recordHolder2)
+  return stockFormsContainer;
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
