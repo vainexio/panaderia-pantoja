@@ -2,7 +2,7 @@ async function loadInventory() {
   const res = await fetch("/api/products");
   const data = await res.json();
 
-  const inventory = document.getElementById("inventory");
+  const inventory = document.getElementById("inventory-card");
   const grouped = {};
 
   data.forEach((item) => {

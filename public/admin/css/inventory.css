@@ -1,5 +1,28 @@
+:root {
+    --white: #fcfcfc;
+    --light-gray: #e9ecef;
+    --red: #981414;
+    --yellow: #ffd41c;
+    --secondary-yellow: #ffe365;
+    --black: #363636;
+}
+
 .category-row {
   margin-bottom: 40px;
+}
+.inventory {
+  display: flex;
+  flex-direction: row;
+  justify-content: end !important;
+}
+.inventory-card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  height: 100%;
+  border-radius: 8px;
+  border: 2px solid var(--red);
 }
 .category-heading {
   font-size: 1.5rem;
@@ -14,7 +37,7 @@
 }
 .product-card {
   min-width: 150px;
-  background: blue;
+  background: var(--red);
   color: white;
   padding: 16px;
   border-radius: 8px;
