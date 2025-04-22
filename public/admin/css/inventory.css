@@ -80,14 +80,28 @@
 /* right column wider */
 .detail-right {
   flex: 2;
-  padding-left: 1rem;
-  height: 100%; /* or whatever height you want */
-  overflow: hidden;
+  height: 100%;
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 5px;
   border-radius: 0px 16px 16px 0px;
   border: 5px solid var(--red);
   border-left: none;
+  overflow: hidden;
+}
+.record-holder {
+  flex: 2;
+  height: 80%; /* or whatever height you want */
+  overflow: hidden;
+  display: flex;
+  gap: 1rem;
+  
+}
+.record-holder2 {
+  height: 20%; /* or whatever height you want */
+  display: flex;
+  gap: 1rem;
+  background-color: var(--red);
 }
 
 .qty {
@@ -107,7 +121,7 @@
   background: transparent;
   padding: 1rem;
   border-radius: 0.5rem;
-  height: 80%;
+  height: 100%;
   flex: 1;
   overflow-y: auto;
 }

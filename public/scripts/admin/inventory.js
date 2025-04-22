@@ -121,6 +121,10 @@ async function showProductDetails(product) {
   // right: placeholder while fetching
   const right = document.createElement("div");
   right.className = "detail-right";
+  
+  const recordHolder = document.createElement("div");
+  recordHolder.className = "record-holder";
+  
   right.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
 
   detailWrapper.append(left, right);
@@ -176,8 +180,23 @@ inCol.innerHTML  = buildRecordsColumn("📥 IN", inRecs, "IN");
 const outCol = document.createElement("div");
 outCol.className = "out-records";
 outCol.innerHTML = buildRecordsColumn("📤 OUT", outRecs, "OUT");
-
-right.append(inCol, outCol);
+  recordHolder.append(inCol, outCol);
+  right.appendChild(recordHolder);
+  
+  const recordHolder2 = document.createElement("div");
+  recordHolder2.className = "record-holder2";
+  
+  const inForm = document.createElement("div");
+  inForm.innerHTML = `<form id="categoryForm" class="product-form">
+      <div class="form-group">
+        <label for="ctg_name">Category Name</label>
+        <input type="text" id="ctg_name" name="ctg_name" placeholder="e.g. Finished Products" required />
+      </div>
+      <div class="submit-container">
+        <button type="submit" class="action-button">Create</button>
+      </div>
+    </form>`
+  right.appendChild(recordHolder2)
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
