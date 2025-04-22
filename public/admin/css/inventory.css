@@ -54,6 +54,8 @@
 
 .detail-wrapper {
   display: flex;
+  height: 100%;
+  width: 100%;
   gap: 2rem;
   margin-top: 1rem;
 }
@@ -69,6 +71,8 @@
 /* right column wider */
 .detail-right {
   flex: 2;
+  max-height: 500px; /* or whatever height you want */
+  overflow: hidden;
   display: flex;
   gap: 1rem;
 }
@@ -90,18 +94,33 @@
   background: transparent;
   padding: 1rem;
   border-radius: 0.5rem;
+  height: 100%;
   flex: 1;
   overflow-y: auto;
 }
 .record-item {
-  margin-bottom: 10px;
-  padding: 5px;
-  padding-left: 15px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
   border: 2px solid var(--black);
   border-radius: 16px;
+  margin-bottom: 10px;
   background-color: transparent;
+}
+
+.record-content {
   display: flex;
   flex-direction: column;
+}
+.delete-record-btn {
+  background: transparent;
+  border: none;
+  color: var(--black);
+  margin-left: auto;
+  font-size: 1.2rem;
+}
+.delete-record-btn:hover {
+  color: var(--red) !important;
 }
 .out-records {
   flex: 1.2;

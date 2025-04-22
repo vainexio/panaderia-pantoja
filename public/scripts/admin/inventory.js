@@ -123,13 +123,15 @@ async function showProductDetails(product) {
 
   const items = records.map(r => `
     <div class="record-item" data-id="${r._id}">
+      <div class="record-content">
+        <h2 class="qty ${cls}">${sign}${r.amount}</h2>
+        <div class="date">on ${r.date}</div>
+      </div>
       <button type="button"
-              class="delete-record-btn btn btn-sm"
+              class="action-button delete-record-btn"
               title="Delete record">
-        <i class="bi bi-trash"></i>
+        <i class="bi bi-trash3-fill"></i>
       </button>
-      <h2 class="qty ${cls}">${sign}${r.amount}</h2>
-      <div class="date">on ${r.date}</div>
     </div>
   `).join("");
 
