@@ -61,7 +61,6 @@ async function showProductDetails(product) {
 
   // 2. Create a new wrapper for details
   detailCard = document.querySelector(".product-details-card");
-  detailCard.innerHTML = ""
   detailCard.style.display = "flex";
   // 3. Back button (just removes the details view + shows inventory again)
   const backBtn = document.createElement("button");
@@ -129,6 +128,7 @@ async function showProductDetails(product) {
   //right.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
 
   detailWrapper.append(left, right);
+  detailCard.innerHTML = ""
   detailCard.appendChild(detailWrapper);
 
   // 5. Attach to the same parent as inventoryCard
