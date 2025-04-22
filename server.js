@@ -39,6 +39,7 @@ const productsSchema = new mongoose.Schema({
   product_id: String,
   name: String,
   category: String,
+  quantity: Number,
   min: Number,
   max: Number,
   expiry: Number,
@@ -48,7 +49,6 @@ const stockRecordsSchema = new mongoose.Schema({
   product_id: String,
   type: String,
   amount: Number,
-  remaining: Number,
   date: String,
 });
 let categories = mongoose.model('Categories', categorySchema);
@@ -310,7 +310,7 @@ app.get('/api/products', async (req, res) => {
 });
 app.post('/registerProduct', async (req, res) => {
   try {
-    const { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit } = req.body;
+    const { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit, product_qty } = req.body;
     if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !product_expiry_unit) {
       return res.status(400).json({ message: "All fields are required." });
     }
@@ -328,6 +328,7 @@ app.post('/registerProduct', async (req, res) => {
     newProduct.product_id = method.generateSecurityKey();
     newProduct.name = product_name
     newProduct.category = product_category
+    newProduct.quantity = product_qty ? product_qty : 0
     newProduct.min = product_min
     newProduct.max = product_max
     newProduct.expiry = product_expiry
