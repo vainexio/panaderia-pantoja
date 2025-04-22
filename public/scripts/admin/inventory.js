@@ -61,12 +61,8 @@ async function showProductDetails(product) {
 
   // 2. Create a new wrapper for details
   detailCard = document.querySelector(".product-details-card");
-  console.log(detailCard)
-  if (!detailCard) {
-    detailCard = document.createElement("div");
-    detailCard.className = "product-details-card";
-  }
-
+  detailCard.innerHTML = ""
+  detailCard.style.display = "flex";
   // 3. Back button (just removes the details view + shows inventory again)
   const backBtn = document.createElement("button");
   backBtn.textContent = "← Back to Inventory";
@@ -74,6 +70,7 @@ async function showProductDetails(product) {
   backBtn.addEventListener("click", () => {
     detailCard.remove();
     inventoryCard.style.display = "";
+    detailCard.style.display = "none";
   });
   detailCard.appendChild(backBtn);
 
@@ -129,7 +126,7 @@ async function showProductDetails(product) {
   const recordHolder = document.createElement("div");
   recordHolder.className = "record-holder";
   
-  right.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
+  //right.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
 
   detailWrapper.append(left, right);
   detailCard.appendChild(detailWrapper);
@@ -149,7 +146,7 @@ async function showProductDetails(product) {
   const inRecs  = records.filter(r => r.type === "IN");
   const outRecs = records.filter(r => r.type === "OUT");
 
-  right.innerHTML = ""; // clear “Loading…”
+  //right.innerHTML = ""; // clear “Loading…”
 
   function buildRecordsColumn(title, records, type) {
   const sign = type === "IN" ? "+" : "–";
@@ -234,8 +231,7 @@ inForm.addEventListener("submit", async (e) => {
     });
     const result = await res.json();
     if (result.success) {
-      alert("IN record created successfully!");
-      showProductDetails(product); // Reload inventory to update the records
+      showProductDetails(product);
     } else {
       alert("Error creating IN record");
     }
@@ -258,8 +254,7 @@ outForm.addEventListener("submit", async (e) => {
     });
     const result = await res.json();
     if (result.success) {
-      alert("OUT record created successfully!");
-      showProductDetails(product); // Reload inventory to update the records
+      showProductDetails(product);
     } else {
       alert("Error creating OUT record");
     }

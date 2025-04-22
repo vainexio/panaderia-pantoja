@@ -34,7 +34,6 @@
   padding: 2rem;
   border-radius: 16px;
   background-color: transparent;
-  display: flex;
   flex-direction: column;
 }
 .category-heading {
@@ -131,7 +130,7 @@
   padding: 10px;
   border-radius: 16px;
   margin-bottom: 10px;
-  background-color: var(--light-gray);
+  background-color: var(--white);
 }
 
 .record-content {
