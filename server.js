@@ -319,35 +319,36 @@ app.get('/getCategories', async (req, res) => {
   }
 });
 
-// Creations
 app.post('/createStockRecord', async (req, res) => {
-  const { product_id, type, amount } = req.body;
-
-  // Validate the input
-  if (!product_id || !type || !amount) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
-
-  // Ensure amount is a valid number and type is either "IN" or "OUT"
-  if (isNaN(amount) || (type !== 'IN' && type !== 'OUT')) {
-    return res.status(400).json({ error: "Invalid type or amount" });
-  }
-
   try {
-    // Create and save the new stock record
-    const newRecord = new stockRecords({
-      product_id,
-      type,
-      amount,
-      date: new Date().toISOString(), // Add the current date
-    });
-
+    const { product_id, type, amount } = req.body;
+    // Validate input
+    if (!product_id || !type || amount == null) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+    if (typeof amount !== 'number' || (type !== 'IN' && type !== 'OUT')) {
+      return res.status(400).json({ success: false, error: 'Invalid type or amount' });
+    }
+    // Create stock record
+    const newRecord = new stockRecords({ product_id, type, amount });
     await newRecord.save();
 
-    res.status(201).json({ success: true, message: `${type} record created successfully`, record: newRecord });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An error occurred while creating the stock record" });
+    // Adjust product quantity
+    const delta = type === 'IN' ? amount : -amount;
+    await products.findOneAndUpdate(
+      { product_id },
+      { $inc: { quantity: delta } },
+      { new: true }
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: `${type} record created and product quantity updated`,
+      record: newRecord,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 app.post('/createProduct', async (req, res) => {
@@ -407,6 +408,32 @@ app.post('/createCategory', async (req, res) => {
 })
 
 // Deletions
+// Delete a stock record
+app.post('/deleteStockRecord', async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!id) {
+      return res.status(400).json({ success: false, error: 'Missing record id' });
+    }
+    // Find record to adjust product quantity
+    const rec = await stockRecords.findById(id);
+    if (!rec) {
+      return res.status(404).json({ success: false, error: 'Record not found' });
+    }
+    // Reverse the quantity change
+    const delta = rec.type === 'IN' ? -rec.amount : rec.amount;
+    await products.findOneAndUpdate(
+      { product_id: rec.product_id },
+      { $inc: { quantity: delta } }
+    );
+
+    // Delete the record
+    await stockRecords.deleteOne({ _id: id });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
 app.delete('/deleteCategory', async (req, res) => {
   try {
     const { catName } = req.body;

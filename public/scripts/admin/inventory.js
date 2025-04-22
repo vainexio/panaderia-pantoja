@@ -151,12 +151,40 @@ async function showProductDetails(product) {
   left.className = "detail-left";
   left.innerHTML = `
   <form id="editProductForm" class="product-form">
-    <!-- form fields -->
+    <div class="form-group">
+      <label for="product_name">Product Name</label>
+      <input type="text" id="product_name" name="product_name" value="${product.name}" required />
+    </div>
+
+    <div class="form-group">
+      <label for="product_qty">Current Quantity</label>
+      <input type="number" id="product_qty" name="product_qty" value="${product.quantity}" />
+    </div>
+
+    <div class="form-group">
+      <label for="product_min">Required Min. Quantity</label>
+      <input type="number" id="product_min" name="product_min" value="${product.min}" required />
+    </div>
+
+    <div class="form-group">
+      <label for="product_max">Required Max. Quantity</label>
+      <input type="number" id="product_max" name="product_max" value="${product.max}" required />
+    </div>
+    
+    <div class="form-group">
+      <label for="product_id">Product ID</label>
+      <input type="text" id="product_id" name="product_id" value="${product.product_id}" readonly />
+    </div>
+    
+    <div class="form-group">
+      <label for="product_expiry">Product Expiry</label>
+      <input type="text" id="product_expiry" name="product_expiry" value="${product.expiry} ${product.expiry_unit}" readonly />
+    </div>
+
     <div class="submit-container">
       <button type="submit" class="action-button edit-product-btn">Save Changes</button>
     </div>
-  </form>
-  `;
+  </form>;`
 
   const right = document.createElement("div");
   right.className = "detail-right";
