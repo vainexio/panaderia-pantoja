@@ -50,6 +50,7 @@ const stockRecordsSchema = new mongoose.Schema({
   type: String,
   amount: Number,
   date: String,
+  author: String,
 });
 let categories = mongoose.model('Categories', categorySchema);
 let accounts = mongoose.model('Accounts', accountsSchema);
@@ -241,6 +242,21 @@ app.delete('/removeOtherSessions', async (req, res) => {
 });
 
 // Collect/Get
+app.post('/getStockRecord', async (req, res) => {
+  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+  try {
+    let type = req.query.type
+    if (type == "all") {
+      const records = await stockRecords.find();
+      res.json(records);
+    } else if (type == "single") {
+      const record = await stockRecords.find({product_id: req.body.id}).sort({ date: -1 });;
+      res.json(record);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 app.post('/getProduct', async (req, res) => {
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   try {
@@ -381,7 +397,7 @@ app.delete('/deleteProduct/:id', async (req, res) => {
   }
 });
 
-app.get('/test', async (req, res) => {
+app.get('/test2', async (req, res) => {
   let doc = new accounts(accountsSchema)
   doc.id = 1;
   doc.username = "admin"
@@ -389,6 +405,50 @@ app.get('/test', async (req, res) => {
   await doc.save();
   return doc
 });
+app.get('/test', async (req, res) => {
+  try {
+    // 1) Define some sample records
+    const samples = [
+      {
+        product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
+        type: "IN",
+        amount: 50,
+        date: "2025-04-20"
+      },
+      {
+        product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
+        type: "OUT",
+        amount: 10,
+        date: "2025-04-21"
+      },
+      {
+        product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
+        type: "IN",
+        amount: 200,
+        date: "2025-04-19"
+      },
+      {
+        product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
+        type: "OUT",
+        amount: 5,
+        date: "2025-04-22"
+      }
+    ];
+
+    // 2) Insert them all at once
+    const created = await stockRecords.insertMany(samples);
+
+    // 3) Send back what was created
+    res.json({
+      message: `${created.length} sample records created.`,
+      records: created
+    });
+  } catch (err) {
+    console.error("Error seeding stockRecords:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {

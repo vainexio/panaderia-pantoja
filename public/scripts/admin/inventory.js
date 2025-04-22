@@ -92,7 +92,7 @@ async function showProductDetails(product) {
   // right: placeholder while fetching
   const right = document.createElement("div");
   right.className = "detail-right";
-  right.innerHTML = `<p>Loading stock records…</p>`;
+  right.innerHTML = `<h3>Loading stock records…</h3>`;
 
   detailWrapper.append(left, right);
   detailCard.appendChild(detailWrapper);
@@ -107,27 +107,34 @@ async function showProductDetails(product) {
     body: JSON.stringify({ id: product.product_id }),
   });
   const records = await res.json();
-
+  if (!records) return right.innerHTML = `<h3>❌ No record yet</h3>`;
   const inRecs  = records.filter(r => r.type === "IN");
   const outRecs = records.filter(r => r.type === "OUT");
 
   right.innerHTML = ""; // clear “Loading…”
 
-  const inCol = document.createElement("div");
-  inCol.className = "in-records";
-  inCol.innerHTML = `<h3>Incoming Stock</h3>` +
-    (inRecs.length
-      ? `<ul>${inRecs.map(r => `<li>${r.amount} on ${r.date}</li>`).join("")}</ul>`
-      : `<p>No incoming records.</p>`);
+  function buildRecordsColumn(title, records, type) {
+  const sign = type === "IN" ? "+" : "–";
+  const cls  = type === "IN" ? "in" : "out";
 
-  const outCol = document.createElement("div");
-  outCol.className = "out-records";
-  outCol.innerHTML = `<h3>Outgoing Stock</h3>` +
-    (outRecs.length
-      ? `<ul>${outRecs.map(r => `<li>${r.amount} on ${r.date}</li>`).join("")}</ul>`
-      : `<p>No outgoing records.</p>`);
+  const itemsHTML = records.length
+    ? `<ul>${records.map(r =>
+        `<li><span class="qty ${cls}">${sign}${r.amount}</span> on ${r.date}</li>`
+      ).join("")}</ul>`
+    : `<p>No ${type === "IN" ? "incoming" : "outgoing"} records.</p>`;
 
-  right.append(inCol, outCol);
+  return `<h3>${title}</h3>${itemsHTML}`;
+}
+
+const inCol = document.createElement("div");
+inCol.className = "in-records";
+inCol.innerHTML  = buildRecordsColumn("Incoming Stock", inRecs, "IN");
+
+const outCol = document.createElement("div");
+outCol.className = "out-records";
+outCol.innerHTML = buildRecordsColumn("Outgoing Stock", outRecs, "OUT");
+
+right.append(inCol, outCol);
 }
 
 document.addEventListener("DOMContentLoaded", async function () {

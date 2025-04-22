@@ -72,10 +72,26 @@
   gap: 1rem;
 }
 
-/* IN vs OUT columns */
+.qty {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+/* green for incoming */
+.qty.in {
+  color: #2a9d8f;
+}
+
+/* red for outgoing */
+.qty.out {
+  color: var(--red);
+}
+.in-records li,
+.out-records li {
+  margin-bottom: 0.5rem;
+}
 .in-records,
 .out-records {
-  background: #fff;
+  background: transparent;
   padding: 1rem;
   border-radius: 0.5rem;
   flex: 1;
