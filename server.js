@@ -50,8 +50,7 @@ const stockRecordsSchema = new mongoose.Schema({
   product_id: String,
   type: String,
   amount: Number,
-  date: String,
-  author: String,
+  date: { type: Date, default: Date.now },
 });
 let categories = mongoose.model('Categories', categorySchema);
 let accounts = mongoose.model('Accounts', accountsSchema);
@@ -321,6 +320,36 @@ app.get('/getCategories', async (req, res) => {
 });
 
 // Creations
+app.post('/createStockRecord', async (req, res) => {
+  const { product_id, type, amount } = req.body;
+
+  // Validate the input
+  if (!product_id || !type || !amount) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  // Ensure amount is a valid number and type is either "IN" or "OUT"
+  if (isNaN(amount) || (type !== 'IN' && type !== 'OUT')) {
+    return res.status(400).json({ error: "Invalid type or amount" });
+  }
+
+  try {
+    // Create and save the new stock record
+    const newRecord = new stockRecords({
+      product_id,
+      type,
+      amount,
+      date: new Date().toISOString(), // Add the current date
+    });
+
+    await newRecord.save();
+
+    res.status(201).json({ success: true, message: `${type} record created successfully`, record: newRecord });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while creating the stock record" });
+  }
+});
 app.post('/createProduct', async (req, res) => {
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   try {
