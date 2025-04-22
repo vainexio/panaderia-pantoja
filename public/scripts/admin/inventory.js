@@ -1,5 +1,5 @@
 async function loadInventory() {
-  const res = await fetch("/api/products");
+  const res = await fetch("/getProducts");
   const data = await res.json();
 
   const inventory = document.getElementById("inventory-card");

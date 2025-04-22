@@ -38,7 +38,7 @@ section {
   margin-left: 250px;
   padding: 10px;
   overflow-x: hidden;
-  background: url("https://cdn.glitch.global/43994c3c-7e58-44a5-9091-1ff0c7f96aa6/c66b1bf9-af06-47bc-9e55-35c4d24d2ace.image.png?v=1745328257966");
+  background: url("https://cdn.glitch.global/43994c3c-7e58-44a5-9091-1ff0c7f96aa6/e38fea2b-0191-436a-ba41-7bd3ebc78afe.image.png?v=1745328830634");
   background-position: center center;
   background-size: 100% 100%; /* force stretch */
   background-repeat: no-repeat;
@@ -219,6 +219,31 @@ section h1 {
   background-color: var(--red);
   color: var(--white);
   border-radius: 12px;
+}
+.action-button.loading {
+  position: relative;
+  pointer-events: none;
+  color: transparent;
+}
+
+.action-button.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--white);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 .action-button:not(:disabled):hover {
   color: var(--yellow);

@@ -115,53 +115,6 @@ app.get('/currentAccount', async (req, res) => {
   }
 
 });
-app.post('/login2', async (req, res) => {
-  const { username, password } = req.body;
-  
-  // Device id
-  let deviceId = req.cookies.deviceId;
-  if (!deviceId) {
-    deviceId = uuidv4();
-    res.cookie('deviceId', deviceId, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    });
-  }
-  let ip = req.ip;
-  console.log(req.clientIp)
-  if (ip.startsWith("::ffff:")) ip = ip.substring(7);
-  const existingSession = await loginSession.findOne({ device_id: deviceId});
-  // Manage login
-  const admin = await accounts.findOne({ username });
-    if (admin) {
-      const isMatch = await bcrypt.compare(password, admin.password);
-      if (!isMatch) return res.status(401).json({ message: 'Invalid email or password' });
-      
-      let key = method.generateSecurityKey()
-      settings.allowedKeys.push(key)
-      
-      if (!existingSession) {
-        const session = new loginSession({
-          session_id: method.generateSecurityKey(),
-          ip_address: ip,
-          target_id: admin.id,
-          device_id: deviceId,
-        });
-        console.log('new session')
-        await session.save();
-      } else if (existingSession) {
-        existingSession.target_id = admin.id
-        existingSession.ip_address = ip
-        existingSession.device_id = deviceId
-        existingSession.session_id = method.generateSecurityKey()
-        console.log('old session')
-        await existingSession.save();
-      }
-      return res.json({ redirect: '/admin-dashboard', message: 'Login successful', key });
-    }
-  
-  return res.status(401).json({ message: 'Invalid email or password' });
-});
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const remember = true
@@ -288,7 +241,7 @@ app.delete('/removeOtherSessions', async (req, res) => {
 });
 
 /* Admin Backend */
-app.get('/api/products', async (req, res) => {
+app.get('/getProducts', async (req, res) => {
   const foundProducts = await products.find();
 
   const result = await Promise.all(foundProducts.map(async (product) => {
@@ -397,7 +350,6 @@ app.get('/getCategories', async (req, res) => {
   }
 });
 
-// 2. Update a product
 app.post('/updateProduct', async (req, res) => {
   const { id, name, category, min, max, expiry, expiry_unit } = req.body;
   try {
@@ -411,8 +363,6 @@ app.post('/updateProduct', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-// 3. Delete a product
 app.delete('/deleteProduct/:id', async (req, res) => {
   try {
     await products.findByIdAndDelete(req.params.id);
@@ -421,6 +371,7 @@ app.delete('/deleteProduct/:id', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 app.get('/test', async (req, res) => {
   let doc = new accounts(accountsSchema)
   doc.id = 1;

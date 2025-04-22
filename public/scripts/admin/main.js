@@ -1,6 +1,12 @@
 let ready = false;
 let currentAdmin;
-
+function setLoading(button, isLoading) {
+    if (isLoading) {
+      button.classList.add("loading");
+    } else {
+      button.classList.remove("loading");
+    }
+  }
 function waitUntilReady(callback) {
   if (ready === true && currentAdmin) {
     callback();
@@ -63,4 +69,13 @@ document.addEventListener("DOMContentLoaded", async function () {
   ready = true;
   /* Hide loader */
   document.getElementById("preloader").classList.add("fade-out");
+  document.querySelectorAll(".action-button").forEach(button => {
+    button.addEventListener("click", () => {
+      setLoading(button, true);
+
+      setTimeout(() => {
+        setLoading(button, false);
+      }, 1000);
+    });
+  });
 });

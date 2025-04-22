@@ -118,7 +118,6 @@ async function productRegistration() {
       .getElementById("categoryForm")
       .addEventListener("submit", async function (event) {
         event.preventDefault();
-
         const formData = Object.fromEntries(
           new FormData(event.target).entries()
         );
