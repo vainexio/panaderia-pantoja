@@ -155,7 +155,7 @@ async function showProductDetails(product) {
     <div class="record-item" data-id="${r._id}">
       <div class="record-content">
         <h2 class="qty ${cls}">${sign}${r.amount}</h2>
-        <div class="date">on ${r.date}</div>
+        <div class="date">${r.fromNow}</div>
       </div>
       <button type="button"
               class="action-button delete-record-btn"
