@@ -301,7 +301,7 @@ app.get('/api/products', async (req, res) => {
 
     return {
       name: product.name,
-      category: product.category,
+      category: product.category.toUpperCase(),
       quantity: currentQty
     };
   }));

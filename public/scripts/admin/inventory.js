@@ -13,7 +13,10 @@ async function loadInventory() {
   Object.entries(grouped).forEach(([category, items]) => {
     const row = document.createElement("div");
     row.className = "category-row";
-
+    
+    const divider = document.createElement("div");
+    row.className = "divider";
+    
     const heading = document.createElement("div");
     heading.className = "category-heading";
     heading.textContent = category;
@@ -31,6 +34,7 @@ async function loadInventory() {
     row.appendChild(heading);
     row.appendChild(scroll);
     inventory.appendChild(row);
+    inventory.appendChild(divider);
   });
 }
 document.addEventListener("DOMContentLoaded", async function () {
