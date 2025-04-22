@@ -91,14 +91,14 @@
 }
 .record-holder {
   flex: 2;
-  height: 80%; /* or whatever height you want */
+  height: 75%; /* or whatever height you want */
   overflow: hidden;
   display: flex;
   gap: 1rem;
   
 }
 .record-holder2 {
-  height: 20%; /* or whatever height you want */
+  height: 25%; /* or whatever height you want */
   display: flex;
   gap: 1rem;
   background-color: var(--red);
@@ -159,13 +159,19 @@
   height: 100%;
 }
 
-.stockRecordForm .product-form {
-  display: flex;
-  flex-direction: row !important;
-}
-
 .stockRecordForm form .form-group label {
   color: white;
+}
+.stockRecordForm .product-form {
+  gap: 0px;
+}
+.stockRecordForm .product-form .submit-container {
+  width: 100%;
+  margin-top: 3px;
+  align-items: bottom;
+}
+.stockRecordForm .product-form .submit-container button:hover {
+  color: var(--red);
 }
 
 .stock-record-btn {
