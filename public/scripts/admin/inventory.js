@@ -1,0 +1,38 @@
+async function loadInventory() {
+  const res = await fetch("/api/products");
+  const data = await res.json();
+
+  const inventory = document.getElementById("inventory");
+  const grouped = {};
+
+  data.forEach((item) => {
+    if (!grouped[item.category]) grouped[item.category] = [];
+    grouped[item.category].push(item);
+  });
+
+  Object.entries(grouped).forEach(([category, items]) => {
+    const row = document.createElement("div");
+    row.className = "category-row";
+
+    const heading = document.createElement("div");
+    heading.className = "category-heading";
+    heading.textContent = category;
+
+    const scroll = document.createElement("div");
+    scroll.className = "scroll-container";
+
+    items.forEach((product) => {
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.innerHTML = `<div><strong>${product.name}</strong></div><div>Qty: ${product.quantity}</div>`;
+      scroll.appendChild(card);
+    });
+
+    row.appendChild(heading);
+    row.appendChild(scroll);
+    inventory.appendChild(row);
+  });
+}
+document.addEventListener("DOMContentLoaded", async function () {
+  waitUntilReady(loadInventory);
+});

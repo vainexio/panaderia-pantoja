@@ -31,7 +31,12 @@ const loginSessionSchema = new mongoose.Schema({
   target_id: String,
   device_id: String,
 });
+const categorySchema = new mongoose.Schema({
+  category_id: String,
+  name: String,
+});
 const productsSchema = new mongoose.Schema({
+  product_id: String,
   name: String,
   category: String,
   min: Number,
@@ -39,11 +44,9 @@ const productsSchema = new mongoose.Schema({
   expiry: Number,
   expiry_unit: String,
 });
-const categorySchema = new mongoose.Schema({
-  name: String,
-});
 const stockRecordsSchema = new mongoose.Schema({
-  productName: String,
+  product_id: String,
+  type: String,
   amount: Number,
   remaining: Number,
   date: String,
@@ -285,6 +288,26 @@ app.delete('/removeOtherSessions', async (req, res) => {
 });
 
 /* Admin Backend */
+app.get('/api/products', async (req, res) => {
+  const foundProducts = await products.find();
+
+  const result = await Promise.all(foundProducts.map(async (product) => {
+    const inRecords = await stockRecords.find({ product_id: product.product_id, type: "IN" });
+    const outRecords = await stockRecords.find({ product_id: product.product_id, type: "OUT" });
+
+    const totalIn = inRecords.reduce((sum, rec) => sum + (rec.remaining || 0), 0);
+    const totalOut = outRecords.reduce((sum, rec) => sum + rec.amount, 0);
+    const currentQty = totalIn - totalOut;
+
+    return {
+      name: product.name,
+      category: product.category,
+      quantity: currentQty
+    };
+  }));
+
+  res.json(result);
+});
 app.post('/registerProduct', async (req, res) => {
   try {
     const { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit } = req.body;
@@ -302,6 +325,7 @@ app.post('/registerProduct', async (req, res) => {
 
     // Create new patient
     const newProduct = new products(productsSchema);
+    newProduct.product_id = method.generateSecurityKey();
     newProduct.name = product_name
     newProduct.category = product_category
     newProduct.min = product_min
