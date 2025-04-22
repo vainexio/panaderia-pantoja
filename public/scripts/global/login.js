@@ -1,5 +1,11 @@
 let selectedUserType = "";
 document.addEventListener("DOMContentLoaded", async function () {
+  let currentAdmin = await fetch("/currentAccount" );
+  if (currentAdmin.ok) {
+    currentAdmin = await currentAdmin.json();
+    window.location.href = "/admin-dashboard";
+    return;
+  }
   const errorMessageElement = document.getElementById("error-message");
   const button = document.getElementById("loginButton");
 
