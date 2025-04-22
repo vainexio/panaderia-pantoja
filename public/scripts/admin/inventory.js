@@ -1,17 +1,26 @@
 async function loadInventory() {
-  const res = await fetch("/getProduct?type=all", {
+  let products = await fetch("/getProduct?type=all", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
   });
-  const data = await res.json();
-
+  let categories = await fetch("/getCategory?type=all", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+  });
+  products = await products.json();
+  categories = await categories.json();
+  
   const inventory = document.getElementById("inventory-card");
+  inventory.innerHTML = ""
   const grouped = {};
-
-  data.forEach((item) => {
-    let category = item.category.toUpperCase()
-    if (!grouped[category]) grouped[category] = [];
-    grouped[category].push(item);
+  
+  products.forEach((item) => {
+    let category = categories.find(ctg => ctg.category_id == item.category_id)
+    if (!category) category = { name: "Unknown Category" }
+    let ctgName = category.name.toUpperCase()
+    
+    if (!grouped[ctgName]) grouped[ctgName] = [];
+    grouped[ctgName].push(item);
   });
 
   Object.entries(grouped).forEach(([category, items]) => {
