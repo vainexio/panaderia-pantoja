@@ -241,12 +241,37 @@ app.delete('/removeOtherSessions', async (req, res) => {
 });
 
 // Collect/Get
-app.get('/getProducts', async (req, res) => {
+app.post('/getProduct', async (req, res) => {
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
-  const foundProducts = await products.find();
-  res.json(foundProducts);
+  try {
+    let type = req.query.type
+    if (type == "all") {
+      const foundProducts = await products.find();
+      res.json(foundProducts);
+      return;
+    } else if (type == "single") {
+      const foundProducts = await products.findOne({product_id: req.body.id});
+      res.json(foundProducts);
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
-
+app.post('/getCategory', async (req, res) => {
+  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+  try {
+    let type = req.query.type
+    if (type == "all") {
+      const foundCtg = await categories.find();
+      res.json(foundCtg)
+    } else if (type == "single") {
+      const foundCtg = await categories.findOne({category_id: req.body.id});
+      res.json(foundCtg)
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 app.get('/getCategories', async (req, res) => {
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   try {

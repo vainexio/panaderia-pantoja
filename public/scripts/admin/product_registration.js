@@ -98,6 +98,7 @@ async function productRegistration() {
         if (response.ok) {
           notification.textContent = "Product registered successfully!";
           notification.className = "alert alert-success mt-3 rounded-3";
+          loadInventory()
         } else {
           const error = await response.json();
           notification.textContent =
