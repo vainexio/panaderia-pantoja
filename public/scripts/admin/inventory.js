@@ -88,11 +88,6 @@ async function showProductDetails(product) {
     </div>
 
     <div class="form-group">
-      <label for="product_id">Product ID</label>
-      <input type="text" id="product_id" name="product_id" value="${product.product_id}" readonly />
-    </div>
-
-    <div class="form-group">
       <label for="product_qty">Current Quantity</label>
       <input type="number" id="product_qty" name="product_qty" value="${product.quantity}" />
     </div>
@@ -106,10 +101,15 @@ async function showProductDetails(product) {
       <label for="product_max">Required Max. Quantity</label>
       <input type="number" id="product_max" name="product_max" value="${product.max}" required />
     </div>
-
+    
+    <div class="form-group">
+      <label for="product_id">Product ID</label>
+      <input type="text" id="product_id" name="product_id" value="${product.product_id}" readonly />
+    </div>
+    
     <div class="form-group">
       <label for="product_expiry">Product Expiry</label>
-      <input type="number" id="product_expiry" name="product_expiry" value="${product.expiry} ${product.product_expiry_unit}" readonly />
+      <input type="text" id="product_expiry" name="product_expiry" value="${product.expiry} ${product.expiry_unit}" readonly />
     </div>
 
     <div class="submit-container">

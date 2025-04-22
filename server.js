@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const fs = require('fs');
 const cors = require('cors');
 const fetch = require('node-fetch');
+const moment = require("moment");
 
 const cookieParser = require('cookie-parser');
 const { v4: uuidv4 } = require('uuid');
@@ -244,15 +245,25 @@ app.delete('/removeOtherSessions', async (req, res) => {
 // Collect/Get
 app.post('/getStockRecord', async (req, res) => {
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+
   try {
-    let type = req.query.type
-    if (type == "all") {
-      const records = await stockRecords.find();
-      res.json(records);
-    } else if (type == "single") {
-      const record = await stockRecords.find({product_id: req.body.id}).sort({ date: -1 });;
-      res.json(record);
+    let type = req.query.type;
+    let records;
+
+    if (type === "all") {
+      records = await stockRecords.find();
+    } else if (type === "single") {
+      records = await stockRecords.find({ product_id: req.body.id }).sort({ date: -1 });
     }
+
+    // Add `fromNow` to each record
+    const withFromNow = records.map(r => ({
+      ...r.toObject(), // convert Mongoose doc to plain object
+      fromNow: moment(r.date).fromNow()
+    }));
+
+    res.json(withFromNow);
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -407,38 +418,37 @@ app.get('/test2', async (req, res) => {
 });
 app.get('/test', async (req, res) => {
   try {
-    // 1) Define some sample records
+    const now = new Date();
+
     const samples = [
       {
         product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
         type: "IN",
         amount: 50,
-        date: "2025-04-20"
+        date: new Date(now.getTime() - 10 * 60 * 1000) // 10 minutes ago
       },
       {
         product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
         type: "OUT",
         amount: 10,
-        date: "2025-04-21"
+        date: new Date(now.getTime() - 5 * 60 * 1000) // 5 minutes ago
       },
       {
         product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
         type: "IN",
         amount: 200,
-        date: "2025-04-19"
+        date: new Date(now.getTime() - 60 * 60 * 1000) // 1 hour ago
       },
       {
         product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
         type: "OUT",
         amount: 5,
-        date: "2025-04-22"
+        date: new Date(now) // current time
       }
     ];
 
-    // 2) Insert them all at once
     const created = await stockRecords.insertMany(samples);
 
-    // 3) Send back what was created
     res.json({
       message: `${created.length} sample records created.`,
       records: created
