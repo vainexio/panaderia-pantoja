@@ -1,7 +1,9 @@
 const fetch = require('node-fetch');
-
-
-function generateSecurityKey(length = 32) {
+function sleep(miliseconds) {
+    var currentTime = new Date().getTime();
+    while (currentTime + miliseconds >= new Date().getTime()) { }
+}
+function genId(length = 32) {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let key = "";
 
@@ -9,10 +11,6 @@ function generateSecurityKey(length = 32) {
         key += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return key;
-}
-function sleep(miliseconds) {
-    var currentTime = new Date().getTime();
-    while (currentTime + miliseconds >= new Date().getTime()) { }
 }
 
 const dayOfWeekMap = {

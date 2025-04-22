@@ -89,7 +89,7 @@ async function productRegistration() {
         );
         const notification = document.getElementById("regis_notif");
 
-        const response = await fetch("/registerProduct", {
+        const response = await fetch("/createProduct", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),

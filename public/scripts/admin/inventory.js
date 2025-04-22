@@ -6,8 +6,9 @@ async function loadInventory() {
   const grouped = {};
 
   data.forEach((item) => {
-    if (!grouped[item.category]) grouped[item.category] = [];
-    grouped[item.category].push(item);
+    let category = item.category.toUpperCase()
+    if (!grouped[category]) grouped[category] = [];
+    grouped[category].push(item);
   });
 
   Object.entries(grouped).forEach(([category, items]) => {

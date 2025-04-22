@@ -38,7 +38,7 @@ const categorySchema = new mongoose.Schema({
 const productsSchema = new mongoose.Schema({
   product_id: String,
   name: String,
-  category: String,
+  category_id: String,
   quantity: Number,
   min: Number,
   max: Number,
@@ -138,7 +138,7 @@ app.post('/login', async (req, res) => {
   const existingSession = await loginSession.findOne({ device_id: token});
   if (!existingSession) {
     const session = new loginSession({
-      session_id: method.generateSecurityKey(),
+      session_id: method.genId(),
       ip_address: ip,
       target_id: user.id,
       device_id: token,
@@ -149,7 +149,7 @@ app.post('/login', async (req, res) => {
     existingSession.target_id = user.id
     existingSession.ip_address = ip
     existingSession.device_id = token
-    existingSession.session_id = method.generateSecurityKey()
+    existingSession.session_id = method.genId()
     console.log('old session')
     await existingSession.save();
   }
@@ -242,26 +242,22 @@ app.delete('/removeOtherSessions', async (req, res) => {
 
 /* Admin Backend */
 app.get('/getProducts', async (req, res) => {
+  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   const foundProducts = await products.find();
-
-  const result = await Promise.all(foundProducts.map(async (product) => {
-    const inRecords = await stockRecords.find({ product_id: product.product_id, type: "IN" });
-    const outRecords = await stockRecords.find({ product_id: product.product_id, type: "OUT" });
-
-    const totalIn = inRecords.reduce((sum, rec) => sum + (rec.remaining || 0), 0);
-    const totalOut = outRecords.reduce((sum, rec) => sum + rec.amount, 0);
-    const currentQty = totalIn - totalOut;
-
-    return {
-      name: product.name,
-      category: product.category.toUpperCase(),
-      quantity: currentQty
-    };
-  }));
-
-  res.json(result);
+  res.json(foundProducts);
 });
-app.post('/registerProduct', async (req, res) => {
+
+app.get('/getCategories', async (req, res) => {
+  try {
+    const foundCtg = await categories.find();
+    res.json(foundCtg);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+app.post('/createProduct', async (req, res) => {
   try {
     const { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit, product_qty } = req.body;
     if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !product_expiry_unit) {
@@ -278,7 +274,7 @@ app.post('/registerProduct', async (req, res) => {
 
     // Create new patient
     const newProduct = new products(productsSchema);
-    newProduct.product_id = method.generateSecurityKey();
+    newProduct.product_id = method.genId();
     newProduct.name = product_name
     newProduct.category = product_category
     newProduct.quantity = product_qty ? product_qty : 0
@@ -296,14 +292,6 @@ app.post('/registerProduct', async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 });
-app.get('/getProducts', async (req, res) => {
-  try {
-    const foundProducts = await products.find();
-    res.json(foundProducts);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 app.post('/createCategory', async (req, res) => {
   try {
     const { ctg_name } = req.body;
@@ -316,6 +304,7 @@ app.post('/createCategory', async (req, res) => {
     
     let newCat = new categories(categorySchema)
     newCat.name = ctg_name.toLowerCase()
+    newCat.category_id = method.genId()
     
     await newCat.save();
     res.status(201).json({ message: "Category created successfully!" });
@@ -341,14 +330,6 @@ app.delete('/deleteCategory', async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 })
-app.get('/getCategories', async (req, res) => {
-  try {
-    const foundCtg = await categories.find();
-    res.json(foundCtg);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 
 app.post('/updateProduct', async (req, res) => {
   const { id, name, category, min, max, expiry, expiry_unit } = req.body;
