@@ -61,7 +61,7 @@ async function showProductDetails(product) {
 
   // 2. Create a new wrapper for details
   detailCard = document.createElement("div");
-  detailCard.className = "inventory-card";
+  detailCard.className = "product-details-card";
 
   // 3. Back button (just removes the details view + shows inventory again)
   const backBtn = document.createElement("button");
