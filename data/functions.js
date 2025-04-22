@@ -104,7 +104,7 @@ function computeCalendarWeeks(date) {
 }
 module.exports = {
   sleep,
-  generateSecurityKey,
+  genId,
   checkIfOnDuty,
   computeCalendarWeeks,
   convertTo12Hour

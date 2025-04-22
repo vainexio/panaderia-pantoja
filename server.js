@@ -240,7 +240,7 @@ app.delete('/removeOtherSessions', async (req, res) => {
   }
 });
 
-/* Admin Backend */
+// Collect/Get
 app.get('/getProducts', async (req, res) => {
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   const foundProducts = await products.find();
@@ -248,6 +248,7 @@ app.get('/getProducts', async (req, res) => {
 });
 
 app.get('/getCategories', async (req, res) => {
+  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   try {
     const foundCtg = await categories.find();
     res.json(foundCtg);
@@ -256,8 +257,9 @@ app.get('/getCategories', async (req, res) => {
   }
 });
 
-
+// Creations
 app.post('/createProduct', async (req, res) => {
+  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   try {
     const { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit, product_qty } = req.body;
     if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !product_expiry_unit) {
@@ -293,6 +295,7 @@ app.post('/createProduct', async (req, res) => {
   }
 });
 app.post('/createCategory', async (req, res) => {
+  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   try {
     const { ctg_name } = req.body;
     
@@ -312,6 +315,8 @@ app.post('/createCategory', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 })
+
+// Deletions
 app.delete('/deleteCategory', async (req, res) => {
   try {
     const { catName } = req.body;
@@ -330,7 +335,6 @@ app.delete('/deleteCategory', async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 })
-
 app.post('/updateProduct', async (req, res) => {
   const { id, name, category, min, max, expiry, expiry_unit } = req.body;
   try {
