@@ -5,6 +5,7 @@
     --yellow: #ffd41c;
     --secondary-yellow: #ffe365;
     --black: #363636;
+    --green: #009926;
 }
 
 .category-row {
@@ -73,21 +74,16 @@
 }
 
 .qty {
-  font-size: 1.25rem;
   font-weight: bold;
 }
 /* green for incoming */
 .qty.in {
-  color: #2a9d8f;
+  color: var(--green);
 }
 
 /* red for outgoing */
 .qty.out {
   color: var(--red);
-}
-.in-records li,
-.out-records li {
-  margin-bottom: 0.5rem;
 }
 .in-records,
 .out-records {
@@ -97,8 +93,16 @@
   flex: 1;
   overflow-y: auto;
 }
-
-/* make the OUT column just a bit wider */
+.record-item {
+  margin-bottom: 10px;
+  padding: 5px;
+  padding-left: 15px;
+  border: 2px solid var(--black);
+  border-radius: 16px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+}
 .out-records {
   flex: 1.2;
 }

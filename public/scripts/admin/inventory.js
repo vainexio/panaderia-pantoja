@@ -117,15 +117,26 @@ async function showProductDetails(product) {
   const sign = type === "IN" ? "+" : "–";
   const cls  = type === "IN" ? "in" : "out";
 
-  const itemsHTML = records.length
-    ? `<ul>${records.map(r =>
-        `<li><span class="qty ${cls}">${sign}${r.amount}</span> on ${r.date}</li>`
-      ).join("")}</ul>`
-    : `<p>No ${type === "IN" ? "incoming" : "outgoing"} records.</p>`;
+  if (!records.length) {
+    return `<h3>${title}</h3><p>No ${title.toLowerCase()}.</p>`;
+  }
 
-  return `<h3>${title}</h3>${itemsHTML}`;
+  const items = records.map(r => `
+    <div class="record-item" data-id="${r._id}">
+      <button type="button"
+              class="delete-record-btn btn btn-sm"
+              title="Delete record">
+        <i class="bi bi-trash"></i>
+      </button>
+      <h2 class="qty ${cls}">${sign}${r.amount}</h2>
+      <div class="date">on ${r.date}</div>
+    </div>
+  `).join("");
+
+  return `<h3>${title}</h3><div class="records-list">${items}</div>`;
 }
 
+// … later in your code:
 const inCol = document.createElement("div");
 inCol.className = "in-records";
 inCol.innerHTML  = buildRecordsColumn("Incoming Stock", inRecs, "IN");
