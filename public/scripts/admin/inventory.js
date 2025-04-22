@@ -81,18 +81,47 @@ async function showProductDetails(product) {
   const left = document.createElement("div");
   left.className = "detail-left";
   left.innerHTML = `
-    <h2>${product.name}</h2>
-    <p><strong>Product ID:</strong> ${product.product_id}</p>
-    <p><strong>Quantity:</strong> ${product.quantity}</p>
-    <p><strong>Min:</strong> ${product.min}</p>
-    <p><strong>Max:</strong> ${product.max}</p>
-    <p><strong>Expiry:</strong> ${product.expiry} ${product.expiry_unit}</p>
-  `;
+  <form id="editProductForm" class="product-form">
+    <div class="form-group">
+      <label for="product_name">Product Name</label>
+      <input type="text" id="product_name" name="product_name" value="${product.name}" required />
+    </div>
+
+    <div class="form-group">
+      <label for="product_id">Product ID</label>
+      <input type="text" id="product_id" name="product_id" value="${product.product_id}" readonly />
+    </div>
+
+    <div class="form-group">
+      <label for="product_qty">Current Quantity</label>
+      <input type="number" id="product_qty" name="product_qty" value="${product.quantity}" />
+    </div>
+
+    <div class="form-group">
+      <label for="product_min">Required Min. Quantity</label>
+      <input type="number" id="product_min" name="product_min" value="${product.min}" required />
+    </div>
+
+    <div class="form-group">
+      <label for="product_max">Required Max. Quantity</label>
+      <input type="number" id="product_max" name="product_max" value="${product.max}" required />
+    </div>
+
+    <div class="form-group">
+      <label for="product_expiry">Product Expiry</label>
+      <input type="number" id="product_expiry" name="product_expiry" value="${product.expiry} ${product.product_expiry_unit}" readonly />
+    </div>
+
+    <div class="submit-container">
+      <button type="submit" class="action-button edit-product-btn">Save Changes</button>
+    </div>
+  </form>
+`;
 
   // right: placeholder while fetching
   const right = document.createElement("div");
   right.className = "detail-right";
-  right.innerHTML = `<h3>Loading stock records…</h3>`;
+  right.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
 
   detailWrapper.append(left, right);
   detailCard.appendChild(detailWrapper);
@@ -108,6 +137,7 @@ async function showProductDetails(product) {
   });
   const records = await res.json();
   if (!records) return right.innerHTML = `<h3>❌ No record yet</h3>`;
+  
   const inRecs  = records.filter(r => r.type === "IN");
   const outRecs = records.filter(r => r.type === "OUT");
 

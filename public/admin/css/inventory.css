@@ -71,6 +71,7 @@
 /* left column narrow */
 .detail-left {
   flex: 1;
+  color: white;
   border-radius: 16px 0px 0px 16px;
   padding: 1rem;
   background-color: var(--red);
@@ -146,4 +147,21 @@
 }
 .back-button:hover {
   background: #a00;
+}
+
+#editProductForm .form-group label {
+  color: white;
+}
+.edit-product-btn {
+  background: white;
+  border: none;
+  color: var(--black);
+  margin-left: auto;
+  font-size: 1.2rem;
+}
+
+#editProductForm .form-group input[readonly],
+#editProductForm .form-group input:read-only {
+  color: white;
+  border: 1px solid var(--white);
 }
