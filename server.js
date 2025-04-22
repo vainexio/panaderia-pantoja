@@ -358,9 +358,7 @@ app.post('/createProduct', async (req, res) => {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    const existingProduct = await products.findOne({
-      $or: [ { product_name } ]
-    });
+    const existingProduct = await products.findOne({name: product_name});
 
     if (existingProduct) {
       return res.status(400).json({ message: "A Product with same name already exists!" });
@@ -370,7 +368,7 @@ app.post('/createProduct', async (req, res) => {
     const newProduct = new products(productsSchema);
     newProduct.product_id = method.genId();
     newProduct.name = product_name
-    newProduct.category = product_category
+    newProduct.category_id = product_category
     newProduct.quantity = product_qty ? product_qty : 0
     newProduct.min = product_min
     newProduct.max = product_max
