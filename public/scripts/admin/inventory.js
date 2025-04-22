@@ -187,15 +187,30 @@ outCol.innerHTML = buildRecordsColumn("📤 OUT", outRecs, "OUT");
   recordHolder2.className = "record-holder2";
   
   const inForm = document.createElement("div");
+  inForm.className = "stockRecordForm"
   inForm.innerHTML = `<form id="categoryForm" class="product-form">
       <div class="form-group">
-        <label for="ctg_name">Category Name</label>
-        <input type="text" id="ctg_name" name="ctg_name" placeholder="e.g. Finished Products" required />
+        <label for="ctg_name">IN</label>
+        <input type="text" id="ctg_name" name="ctg_name" placeholder="100" required />
       </div>
       <div class="submit-container">
-        <button type="submit" class="action-button">Create</button>
+        <button type="submit" class="action-button stock-record-btn">Create Record</button>
       </div>
     </form>`
+  const outForm = document.createElement("div");
+  outForm.className = "stockRecordForm"
+  outForm.innerHTML = `<form id="categoryForm" class="product-form">
+      <div class="form-group">
+        <label for="ctg_name">OUT</label>
+        <input type="text" id="ctg_name" name="ctg_name" placeholder="100" required />
+      </div>
+      <div class="submit-container">
+        <button type="submit" class="action-button stock-record-btn">Create Record</button>
+      </div>
+    </form>`
+  
+  recordHolder2.appendChild(inForm)
+  recordHolder2.appendChild(outForm)
   right.appendChild(recordHolder2)
 }
 

@@ -153,3 +153,25 @@
 .back-button:hover {
   background: #a00;
 }
+.stockRecordForm {
+  padding: 10px;
+  width: 50%;
+  height: 100%;
+}
+
+.stockRecordForm .product-form {
+  display: flex;
+  flex-direction: row !important;
+}
+
+.stockRecordForm form .form-group label {
+  color: white;
+}
+
+.stock-record-btn {
+  background: var(--white);
+  border: none;
+  color: var(--black);
+  margin-left: auto;
+  font-size: 1.2rem;
+}
