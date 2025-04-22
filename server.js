@@ -247,18 +247,30 @@ app.post('/getStockRecord', async (req, res) => {
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
 
   try {
-    let type = req.query.type;
-    let records;
+    const { type } = req.query;
+    const { id, days, limit } = req.body;
 
-    if (type === "all") {
-      records = await stockRecords.find();
-    } else if (type === "single") {
-      records = await stockRecords.find({ product_id: req.body.id }).sort({ date: -1 });
+    const query = {};
+    if (type === "single" && id) query.product_id = id;
+
+    // If `days` is provided (e.g., last 30 days)
+    if (days) {
+      const since = moment().subtract(parseInt(days), 'days').startOf('day');
+      query.date = { $gte: since.toDate() };
     }
 
-    // Add `fromNow` to each record
+    // Fetch data based on query
+    let findQuery = stockRecords.find(query).sort({ date: -1 });
+
+    // If `limit` is provided
+    if (limit) {
+      findQuery = findQuery.limit(parseInt(limit));
+    }
+
+    const records = await findQuery;
+
     const withFromNow = records.map(r => ({
-      ...r.toObject(), // convert Mongoose doc to plain object
+      ...r.toObject(),
       fromNow: moment(r.date).fromNow()
     }));
 

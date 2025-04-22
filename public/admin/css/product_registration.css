@@ -20,11 +20,11 @@
   height: 100%;
 }
 .register-card {
-  width: 80%;
+  width: 70%;
   max-width: 980px;
   min-height: 100%;
   padding: 2rem;
-  border: 3px solid var(--red);
+  border: 5px solid var(--red);
   border-radius: 16px 0px 0px 16px;
   background-color: transparent;
   display: flex;

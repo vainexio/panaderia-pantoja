@@ -171,11 +171,11 @@ async function showProductDetails(product) {
 // … later in your code:
 const inCol = document.createElement("div");
 inCol.className = "in-records";
-inCol.innerHTML  = buildRecordsColumn("Incoming Stock", inRecs, "IN");
+inCol.innerHTML  = buildRecordsColumn("📥 IN", inRecs, "IN");
 
 const outCol = document.createElement("div");
 outCol.className = "out-records";
-outCol.innerHTML = buildRecordsColumn("Outgoing Stock", outRecs, "OUT");
+outCol.innerHTML = buildRecordsColumn("📤 OUT", outRecs, "OUT");
 
 right.append(inCol, outCol);
 }
