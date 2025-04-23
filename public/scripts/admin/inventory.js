@@ -149,7 +149,9 @@ async function showProductDetails(product) {
       <label for="in_amount">IN</label>
       <input type="number" id="in_amount" name="in_amount" placeholder="100" required />
     </div>
-    <button type="submit" class="action-button black-loading stock-record-btn" style="align-self: flex-end"><i class="bi bi-box-arrow-in-down"></i> Create</button>
+    <div class="submit-container">
+      <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-in-down"></i> Save Record</button>
+      </div>
   `;
 
   const outForm = document.createElement("form");
@@ -159,8 +161,9 @@ async function showProductDetails(product) {
       <label for="out_amount">OUT</label>
       <input type="number" id="out_amount" name="out_amount" placeholder="100" required />
     </div>
-    <button type="submit" class="action-button black-loading stock-record-btn" style="align-self: flex-end"><i class="bi bi-box-arrow-up"></i> Create</button>
-
+    <div class="submit-container">
+      <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-up"></i> Save Record</button>
+      </div>
   `;
 
   recordHolder2.append(inForm, outForm);
