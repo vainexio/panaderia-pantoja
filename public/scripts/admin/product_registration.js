@@ -95,12 +95,12 @@ async function productRegistration() {
 
         if (response.ok) {
           notify("Product registered", { type: "success", duration: 5000 });
+          document.getElementById("productForm").reset();
           loadInventory()
         } else {
           const error = await response.json();
           notify(error.message || "Failed to register product.", { type: "error", duration: 5000 });
         }
-        document.getElementById("productForm").reset();
       });
     
     document

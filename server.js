@@ -319,6 +319,7 @@ app.get('/getCategories', async (req, res) => {
   }
 });
 
+// Create
 app.post('/createStockRecord', async (req, res) => {
   try {
     const { product_id, type, amount } = req.body;
@@ -358,7 +359,9 @@ app.post('/createProduct', async (req, res) => {
     if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !product_expiry_unit) {
       return res.status(400).json({ message: "All fields are required." });
     }
-
+    if (product_min >= product_max) {
+      return res.status(400).json({ message: "Max. Qty must be greater than Min. Qty" });
+    }
     const existingProduct = await products.findOne({name: product_name});
 
     if (existingProduct) {
@@ -408,7 +411,6 @@ app.post('/createCategory', async (req, res) => {
 })
 
 // Deletions
-// Delete a stock record
 app.post('/deleteStockRecord', async (req, res) => {
   try {
     const { id } = req.body;
@@ -488,6 +490,10 @@ app.post("/editProduct", async (req, res) => {
       { name, min, max },
       { new: true }           // return the updated doc
     );
+    
+    if (min >= max) {
+      return res.status(400).json({ success: false, error: "Max. Qty must be greater than Min. Qty" });
+    }
 
     if (!doc) {
       return res.status(404).json({ success: false, error: "Product not found" });

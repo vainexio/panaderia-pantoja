@@ -199,7 +199,8 @@ async function showProductDetails(product) {
     </div>
 
     <div class="submit-container">
-      <button type="submit" class="action-button">Save Changes</button>
+    <button class="action-button me-1"><i class="bi bi-trash3-fill"></i> Delete</button>
+    <button type="submit" class="action-button">Save Changes</button>
       </div>
   </form>`;
 
