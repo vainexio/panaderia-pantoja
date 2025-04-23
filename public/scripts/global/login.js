@@ -1,4 +1,19 @@
 let selectedUserType = "";
+
+function setLoading(button, isLoading, isBlack) {
+    if (isLoading) {
+      button.classList.add("loading");
+      if (isBlack) {
+        button.classList.add("black");
+      }
+    } else {
+      button.classList.remove("loading");
+      if (isBlack) {
+        button.classList.remove("black");
+      }
+    }
+  }
+
 document.addEventListener("DOMContentLoaded", async function () {
   let currentAdmin = await fetch("/currentAccount" );
   if (currentAdmin.ok) {
@@ -41,4 +56,17 @@ document.addEventListener("DOMContentLoaded", async function () {
       button.disabled = false;
     }
   });
+  
+  
+  document.addEventListener("click", function(event) {
+  // if the thing clicked has class="action-button"
+  if ( event.target.matches(".action-button") ) {
+    const button = event.target;
+    setLoading(button, true, event.target.matches(".black-loading"));
+
+    setTimeout(() => {
+      setLoading(button, false, event.target.matches(".black-loading"));
+    }, 1000);
+  }
+});
 });

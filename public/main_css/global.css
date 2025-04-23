@@ -318,8 +318,9 @@ section h1 {
   color: white;
 }
 
-.black {
-  color: black;
+.black::after {
+  border: 2px solid var(--black) !important;
+  border-top: 2px solid transparent !important;
 }
 
 @media (max-width: 768px) {

@@ -204,7 +204,7 @@ async function showProductDetails(product) {
       <input type="number" id="in_amount" name="in_amount" placeholder="100" required />
     </div>
     <div class="submit-container">
-      <button type="submit" class="action-button stock-record-btn">Create Record</button>
+      <button type="submit" class="action-button black-loading stock-record-btn">Create Record</button>
     </div>
   `;
 
@@ -216,7 +216,7 @@ async function showProductDetails(product) {
       <input type="number" id="out_amount" name="out_amount" placeholder="100" required />
     </div>
     <div class="submit-container">
-      <button type="submit" class="action-button stock-record-btn">Create Record</button>
+      <button type="submit" class="action-button black-loading stock-record-btn">Create Record</button>
     </div>
   `;
 
