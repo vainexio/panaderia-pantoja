@@ -411,6 +411,25 @@ app.post('/createCategory', async (req, res) => {
 })
 
 // Deletions
+app.post('/deleteProduct', async (req, res) => {
+  const { product_id } = req.body;
+  if (!product_id) return res.json({ success: false, error: "No product ID provided" });
+
+  try {
+    // Replace this with your actual DB delete logic
+    const result = await products.deleteOne({ product_id });
+
+    if (result.deletedCount === 1) {
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, error: "Product not found" });
+    }
+  } catch (err) {
+    console.error(err);
+    res.json({ success: false, error: "Server error" });
+  }
+});
+
 app.post('/deleteStockRecord', async (req, res) => {
   try {
     const { id } = req.body;

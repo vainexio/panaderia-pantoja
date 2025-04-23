@@ -77,7 +77,7 @@ function buildRecordsColumn(title, records, type, icon) {
         <div class="date">${r.fromNow}</div>
       </div>
       <button type="button"
-              class="action-button delete-record-btn"
+              class="action-button delete-record-btn black-loading"
               title="Delete record">
         <i class="bi bi-trash3-fill"></i>
       </button>
@@ -153,7 +153,7 @@ async function showProductDetails(product) {
   detailCard.style.display = "flex";
 
   const backBtn = document.createElement("button");
-  backBtn.textContent = "← Back to Inventory";
+  backBtn.innerHTML = `<i class="bi bi-arrow-return-left"></i> Back to Inventory`;
   backBtn.className = "action-button back-button";
   backBtn.addEventListener("click", () => {
     detailCard.style.display = "none";
@@ -199,8 +199,8 @@ async function showProductDetails(product) {
     </div>
 
     <div class="submit-container">
-    <button class="action-button me-1"><i class="bi bi-trash3-fill"></i> Delete</button>
-    <button type="submit" class="action-button">Save Changes</button>
+    <button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill"></i> Delete Product</button>
+    <button type="submit" class="action-button"><i class="bi bi-floppy-fill"></i> Save Changes</button>
       </div>
   </form>`;
 
@@ -222,7 +222,7 @@ async function showProductDetails(product) {
       <input type="number" id="in_amount" name="in_amount" placeholder="100" required />
     </div>
     <div class="submit-container">
-      <button type="submit" class="action-button black-loading stock-record-btn">Create Record</button>
+      <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-in-down"></i> Create Record</button>
     </div>
   `;
 
@@ -234,21 +234,16 @@ async function showProductDetails(product) {
       <input type="number" id="out_amount" name="out_amount" placeholder="100" required />
     </div>
     <div class="submit-container">
-      <button type="submit" class="action-button black-loading stock-record-btn">Create Record</button>
+      <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-up"></i> Create Record</button>
     </div>
   `;
-
+  
   recordHolder2.append(inForm, outForm);
   right.appendChild(recordHolder2);
-
   detailWrapper.append(left, right);
   detailCard.appendChild(detailWrapper);
   separator.parentNode.appendChild(detailCard);
-
-  // initial render of records
-  await fetchAndRenderStockRecords(product.product_id);
-
-  // wire up record forms to refresh only the record-holder
+  
   inForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const amount = +inForm.in_amount.value;
@@ -270,7 +265,7 @@ async function showProductDetails(product) {
       alert("Error creating IN record");
     }
   });
-
+  //
   outForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const amount = +outForm.out_amount.value;
@@ -292,9 +287,9 @@ async function showProductDetails(product) {
       alert("Error creating OUT record");
     }
   });
-  
+  //
   const editForm = document.getElementById("editProductForm");
-editForm.addEventListener("submit", async e => {
+  editForm.addEventListener("submit", async e => {
   e.preventDefault();
 
   const product_id = editForm.product_id.value;
@@ -320,6 +315,31 @@ editForm.addEventListener("submit", async e => {
     notify("Update failed: " + (error || "unknown error", { type: "error", duration: 5000 }));
   }
 });
+  //
+  const deleteBtn = editForm.querySelector(".delete-product-btn");
+  deleteBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  const confirmed = confirm("Are you sure you want to delete this product? This will delete all existing records associated to this product");
+  if (!confirmed) return;
+
+  const res = await fetch("/deleteProduct", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product_id: product.product_id }),
+  });
+  const { success, error } = await res.json();
+
+  if (success) {
+    await loadInventory();
+    notify("Product deleted successfully", { type: "success", duration: 5000 });
+    detailCard.style.display = "none";
+    separator.style.display = "";
+  } else {
+    notify("Delete failed: " + (error || "unknown error"), { type: "error", duration: 5000 });
+  }
+});
+  
+  await fetchAndRenderStockRecords(product.product_id);
 }
 
 
