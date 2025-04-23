@@ -36,7 +36,13 @@
   border-radius: 16px;
   padding: 5px;
   border-radius: 0px 16px 16px 0px;
+  color: white;
   background-color: var(--red);
+}
+.record-input {
+  padding: 20px;
+  border-radius: 16px;
+  background-color: var(--white);
 }
 .product-details-card {
   width: 98%;

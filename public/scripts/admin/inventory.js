@@ -133,11 +133,11 @@ async function loadInventory() {
     scroll.className = "scroll-container";
 
     items.forEach((product) => {
-      let status = product.min < product.quantity ? `<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>` : `<i class="bi bi-exclamation-triangle-fill" title="Low stocks" style="color:var(--red);"></i>`
+      let status = product.min < product.quantity ? `<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>` : `<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>`
       const card = document.createElement("div");
-      //card.style.backgroundColor =  product.min < product.quantity ? "#007c02" : "var(--red)"
+      card.style.color =  product.min > product.quantity ? "var(--red)" : "var(--black)"
       card.className = "product-card";
-      card.innerHTML = `<div><h3>${product.name}</h3><div class="divider"></div><div>Qty: ${product.quantity} ${status}</div><div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
+      card.innerHTML = `<div><h4>${product.name}</h4><div class="divider"></div><div>Qty: ${product.quantity} ${status}</div><div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
     
       card.addEventListener("click", () => showProductDetails(product));
       scroll.appendChild(card);
