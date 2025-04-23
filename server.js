@@ -284,7 +284,7 @@ app.post('/getProduct', async (req, res) => {
   try {
     let type = req.query.type
     if (type == "all") {
-      const foundProducts = await products.find();
+      const foundProducts = await products.find().sort({ name: 1 });
       res.json(foundProducts);
     } else if (type == "single") {
       const foundProducts = await products.findOne({product_id: req.body.id});
