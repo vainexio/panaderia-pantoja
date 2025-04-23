@@ -159,7 +159,7 @@ async function showProductDetails(product) {
 
     <div class="form-group">
       <label for="product_qty">Current Quantity</label>
-      <input type="number" id="product_qty" name="product_qty" value="${product.quantity}" />
+      <input type="number" id="product_qty" name="product_qty" value="${product.quantity}" readonly />
     </div>
 
     <div class="form-group">
@@ -185,6 +185,7 @@ async function showProductDetails(product) {
     <div class="submit-container">
       <button type="submit" class="action-button edit-product-btn">Save Changes</button>
     </div>
+    <div id="product_details_notif" class="notification" role="alert"></div>
   </form>;`
 
   const right = document.createElement("div");
@@ -267,6 +268,40 @@ async function showProductDetails(product) {
       alert("Error creating OUT record");
     }
   });
+  
+  const editForm = document.getElementById("editProductForm");
+editForm.addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const product_id = editForm.product_id.value;
+  const name = editForm.product_name.value.trim();
+  const min = +editForm.product_min.value;
+  const max = +editForm.product_max.value;
+
+  if (!name || min < 0 || max < 0) {
+    return alert("Please fill out all fields correctly.");
+  }
+
+  const res = await fetch("/editProduct", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product_id, name, min, max })
+  });
+  const { success, error } = await res.json();
+  const notification = document.getElementById("regis_notif");
+  
+  if (success) {
+    notification.textContent = "Product registered successfully!";
+    notification.className = "alert alert-success mt-3 rounded-3";
+    await loadInventory();
+  } else {
+    const error = await success.json();
+    notification.textContent =
+      error.message || "Failed to register product.";
+          notification.className = "alert alert-danger mt-3 rounded-3";
+    alert("Update failed: " + (error || "unknown error"));
+  }
+});
 }
 
 // kick things off when the DOM is ready
