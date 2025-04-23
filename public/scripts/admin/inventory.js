@@ -9,41 +9,51 @@ async function fetchAndRenderStockRecords(productId) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: productId }),
   });
-  const records = await res.json() || [];
+  const records = (await res.json()) || [];
 
-  const inRecs  = records.filter(r => r.type === "IN");
-  const outRecs = records.filter(r => r.type === "OUT");
+  const inRecs = records.filter((r) => r.type === "IN");
+  const outRecs = records.filter((r) => r.type === "OUT");
 
   const recordHolder = detailCard.querySelector(".record-holder");
   recordHolder.innerHTML = ""; // clear previous
 
   const inCol = document.createElement("div");
   inCol.className = "in-records";
-  inCol.innerHTML  = buildRecordsColumn("IN", inRecs, "IN", '<i class="bi bi-box-arrow-in-down"></i>');
+  inCol.innerHTML = buildRecordsColumn(
+    "IN",
+    inRecs,
+    "IN",
+    '<i class="bi bi-box-arrow-in-down"></i>'
+  );
 
   const outCol = document.createElement("div");
   outCol.className = "out-records";
-  outCol.innerHTML = buildRecordsColumn("OUT", outRecs, "OUT", '<i class="bi bi-box-arrow-up"></i>');
+  outCol.innerHTML = buildRecordsColumn(
+    "OUT",
+    outRecs,
+    "OUT",
+    '<i class="bi bi-box-arrow-up"></i>'
+  );
 
   recordHolder.append(inCol, outCol);
 
   // wire up delete buttons for each record
-  detailCard.querySelectorAll('.delete-record-btn').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      const recItem = btn.closest('.record-item');
+  detailCard.querySelectorAll(".delete-record-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const recItem = btn.closest(".record-item");
       if (!recItem) return;
-      const recId = recItem.getAttribute('data-id');
-      const { success } = await fetch('/deleteStockRecord', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const recId = recItem.getAttribute("data-id");
+      const { success } = await fetch("/deleteStockRecord", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: recId }),
-      }).then(r => r.json());
+      }).then((r) => r.json());
 
       if (success) {
         // re-fetch and re-render
         await fetchAndRenderStockRecords(productId);
       } else {
-        alert('Error deleting record');
+        alert("Error deleting record");
       }
     });
   });
@@ -52,13 +62,15 @@ async function fetchAndRenderStockRecords(productId) {
 // buildRecordsColumn unchanged from your original
 function buildRecordsColumn(title, records, type, icon) {
   const sign = type === "IN" ? "+" : "–";
-  const cls  = type === "IN" ? "in" : "out";
+  const cls = type === "IN" ? "in" : "out";
 
   if (!records.length) {
     return `<h3>${icon} ${title}</h3><p>No record yet.</p>`;
   }
 
-  const items = records.map(r => `
+  const items = records
+    .map(
+      (r) => `
     <div class="record-item" data-id="${r._id}">
       <div class="record-content">
         <h2 class="qty ${cls}">${sign}${r.amount}</h2>
@@ -70,7 +82,9 @@ function buildRecordsColumn(title, records, type, icon) {
         <i class="bi bi-trash3-fill"></i>
       </button>
     </div>
-  `).join("\n");
+  `
+    )
+    .join("\n");
 
   return `<h3>${icon} ${title}</h3><div class="records-list">${items}</div>`;
 }
@@ -80,12 +94,12 @@ async function loadInventory() {
   separator = document.getElementById("stock-separator");
   let inventoryCard = document.getElementById("inventory-card");
   let products = await fetch("/getProduct?type=all", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
   });
   let categories = await fetch("/getCategory?type=all", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
   });
   products = await products.json();
   categories = await categories.json();
@@ -94,7 +108,9 @@ async function loadInventory() {
   const grouped = {};
 
   products.forEach((item) => {
-    let category = categories.find(ctg => ctg.category_id == item.category_id);
+    let category = categories.find(
+      (ctg) => ctg.category_id == item.category_id
+    );
     if (!category) category = { name: "Unknown Category" };
     const ctgName = category.name.toUpperCase();
 
@@ -131,7 +147,6 @@ async function loadInventory() {
 
 // show product details with editable form and stock records
 async function showProductDetails(product) {
-  separator.style.display = "nonasync function showProductDetails(product) {
   separator.style.display = "none";
   detailCard = document.querySelector(".product-details-card");
   detailCard.innerHTML = "";
@@ -184,9 +199,9 @@ async function showProductDetails(product) {
     </div>
 
     <div class="submit-container">
-      <button type="su
-    <div id="product_details_notif" class="notification" role="alert"></div>
-  </form>;`;
+      <button type="submit" class="action-button">Save Changes</button>
+      </div>
+  </form>`;
 
   const right = document.createElement("div");
   right.className = "detail-right";
@@ -276,7 +291,37 @@ async function showProductDetails(product) {
       alert("Error creating OUT record");
     }
   });
-}o
+  
+  const editForm = document.getElementById("editProductForm");
+editForm.addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const product_id   = editForm.product_id.value;
+  const name         = editForm.product_name.value.trim();
+  const min          = +editForm.product_min.value;
+  const max          = +editForm.product_max.value;
+
+  if (!name || min < 0 || max < 0) {
+    return alert("Please fill out all fields correctly.");
+  }
+
+  const res = await fetch("/editProduct", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ product_id, name, min, max })
+  });
+  const { success, error } = await res.json();
+
+  if (success) {
+    notify("Product updated successfully", { type: "success", duration: 3000 });
+    await loadInventory();
+  } else {
+    notify("Update failed: " + (error || "unknown error", { type: "err", duration: 3000 });
+    alert("Update failed: " + (error || "unknown error"));
+  }
+});
+}
+
 
 // kick things off when the DOM is ready
 document.addEventListener("DOMContentLoaded", async function () {

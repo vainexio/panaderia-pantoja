@@ -386,24 +386,22 @@ section h1 {
   padding: 1rem 1.5rem 0.75rem;
   border-radius: 0.5rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  color: #fff;
+  color: #ffffff;
   overflow: hidden;
   transform: translateX(100%);
   animation: slide-in 0.3s forwards;
 }
 
 /* types */
-.notif.info    { background: #007bff; }
-.notif.success { background: #28a745; }
-.notif.warn    { background: #ffc107; color: #333; }
-.notif.error   { background: #dc3545; }
+.notif.info    { background: var(--blue); }
+.notif.success { background: var(--green); }
+.notif.warn    { background: var(--yellow); color: #333; }
+.notif.error   { background: var(--red); }
 
-/* slide-in animation */
 @keyframes slide-in {
   to { transform: translateX(0); }
 }
 
-/* close (“X”) button */
 .notif .close-btn {
   position: absolute;
   top: 0.5rem;
@@ -415,7 +413,6 @@ section h1 {
   cursor: pointer;
 }
 
-/* progress bar at bottom */
 .notif .progress {
   position: absolute;
   bottom: 0;

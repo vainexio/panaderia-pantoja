@@ -474,6 +474,31 @@ app.delete('/deleteProduct/:id', async (req, res) => {
   }
 });
 
+// Updates
+app.post("/editProduct", async (req, res) => {
+  try {
+    const { product_id, name, min, max } = req.body;
+    if (!product_id || typeof name !== "string" || min == null || max == null) {
+      return res.status(400).json({ success: false, error: "Invalid payload" });
+    }
+
+    // find by _id (or adjust field if you use a different unique key)
+    const doc = await products.findOneAndUpdate(
+      { product_id: product_id },
+      { name, min, max },
+      { new: true }           // return the updated doc
+    );
+
+    if (!doc) {
+      return res.status(404).json({ success: false, error: "Product not found" });
+    }
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error("Error updating product:", err);
+    return res.status(500).json({ success: false, error: "Server error" });
+  }
+});
 app.get('/test2', async (req, res) => {
   let doc = new accounts(accountsSchema)
   doc.id = 1;
