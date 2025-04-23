@@ -417,10 +417,13 @@ app.post('/deleteProduct', async (req, res) => {
   if (!product_id) return res.json({ success: false, error: "No product ID provided" });
 
   try {
-    // Replace this with your actual DB delete logic
+    // Delete the product
     const result = await products.deleteOne({ product_id });
 
     if (result.deletedCount === 1) {
+      // Delete all stock records for that product
+      await stockRecords.deleteMany({ product_id });
+
       res.json({ success: true });
     } else {
       res.json({ success: false, error: "Product not found" });
@@ -430,6 +433,7 @@ app.post('/deleteProduct', async (req, res) => {
     res.json({ success: false, error: "Server error" });
   }
 });
+
 
 app.post('/deleteStockRecord', async (req, res) => {
   try {

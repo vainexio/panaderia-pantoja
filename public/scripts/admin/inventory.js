@@ -3,11 +3,11 @@
 let separator, detailCard;
 
 // helper: fetch and render stock records for a given product ID
-async function fetchAndRenderStockRecords(productId,intro) {
-  
+async function fetchAndRenderStockRecords(productId, intro) {
   const recordHolder = detailCard.querySelector(".record-holder");
-  if (intro) recordHolder.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
-  
+  if (intro)
+    recordHolder.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
+
   const res = await fetch("/getStockRecord?type=single", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -18,7 +18,7 @@ async function fetchAndRenderStockRecords(productId,intro) {
   const inRecs = records.filter((r) => r.type === "IN");
   const outRecs = records.filter((r) => r.type === "OUT");
   recordHolder.innerHTML = ``;
-  
+
   const inCol = document.createElement("div");
   inCol.className = "in-records";
   inCol.innerHTML = buildRecordsColumn(
@@ -135,13 +135,25 @@ async function loadInventory() {
     const scroll = document.createElement("div");
     scroll.className = "scroll-container";
 
+    scroll.addEventListener("wheel", function (e) {
+      // Only scroll horizontally if it's overflowing
+      if (scroll.scrollWidth > scroll.clientWidth) {
+        e.preventDefault(); // prevent vertical scroll
+        scroll.scrollLeft += e.deltaY;
+      }
+    });
+
     items.forEach((product) => {
-      let status = product.min < product.quantity ? `<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>` : `<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>`
+      let status =
+        product.min <= product.quantity
+          ? `<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>`
+          : `<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>`;
       const card = document.createElement("div");
-      card.style.color =  product.min > product.quantity ? "var(--red)" : "var(--black)"
+      card.style.color =
+        product.min > product.quantity ? "var(--red)" : "var(--black)";
       card.className = "product-card";
       card.innerHTML = `<div><h4>${product.name}</h4><div class="divider"></div><div>Qty: ${product.quantity} ${status}</div><div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
-    
+
       card.addEventListener("click", () => showProductDetails(product));
       scroll.appendChild(card);
     });
@@ -243,13 +255,13 @@ async function showProductDetails(product) {
       <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-up"></i> Create Record</button>
     </div>
   `;
-  
+
   recordHolder2.append(inForm, outForm);
   right.appendChild(recordHolder2);
   detailWrapper.append(left, right);
   detailCard.appendChild(detailWrapper);
   separator.parentNode.appendChild(detailCard);
-  
+
   inForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const amount = +inForm.in_amount.value;
@@ -297,60 +309,73 @@ async function showProductDetails(product) {
   });
   //
   const editForm = document.getElementById("editProductForm");
-  editForm.addEventListener("submit", async e => {
-  e.preventDefault();
+  editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const product_id = editForm.product_id.value;
-  const name = editForm.product_name.value.trim();
-  const min = +editForm.product_min.value;
-  const max = +editForm.product_max.value;
+    const product_id = editForm.product_id.value;
+    const name = editForm.product_name.value.trim();
+    const min = +editForm.product_min.value;
+    const max = +editForm.product_max.value;
 
-  if (!name || min < 0 || max < 0) {
-    return alert("Please fill out all fields correctly.");
-  }
+    if (!name || min < 0 || max < 0) {
+      return alert("Please fill out all fields correctly.");
+    }
 
-  const res = await fetch("/editProduct", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product_id, name, min, max })
+    const res = await fetch("/editProduct", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product_id, name, min, max }),
+    });
+    const { success, error } = await res.json();
+
+    if (success) {
+      notify("Product updated successfully", {
+        type: "success",
+        duration: 5000,
+      });
+      await loadInventory();
+    } else {
+      console.log(error);
+      notify("Update failed: " + (error || "unknown error"), {
+        type: "error",
+        duration: 5000,
+      });
+    }
   });
-  const { success, error } = await res.json();
-
-  if (success) {
-    notify("Product updated successfully", { type: "success", duration: 5000 });
-    await loadInventory();
-  } else {
-    console.log(error)
-    notify("Update failed: " + (error || "unknown error"), { type: "error", duration: 5000 });
-  }
-});
   //
   const deleteBtn = editForm.querySelector(".delete-product-btn");
   deleteBtn.addEventListener("click", async (e) => {
-  e.preventDefault();
-  const confirmed = confirm("Are you sure you want to delete this product? This will delete all existing records associated to this product");
-  if (!confirmed) return;
+    e.preventDefault();
+    const confirmed = confirm(
+      "Are you sure you want to delete this product? This will delete all existing records associated to this product"
+    );
+    if (!confirmed) return;
 
-  const res = await fetch("/deleteProduct", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product_id: product.product_id }),
+    const res = await fetch("/deleteProduct", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product_id: product.product_id }),
+    });
+    const { success, error } = await res.json();
+
+    if (success) {
+      await loadInventory();
+      notify("Product deleted successfully", {
+        type: "success",
+        duration: 5000,
+      });
+      detailCard.style.display = "none";
+      separator.style.display = "";
+    } else {
+      notify("Delete failed: " + (error || "unknown error"), {
+        type: "error",
+        duration: 5000,
+      });
+    }
   });
-  const { success, error } = await res.json();
 
-  if (success) {
-    await loadInventory();
-    notify("Product deleted successfully", { type: "success", duration: 5000 });
-    detailCard.style.display = "none";
-    separator.style.display = "";
-  } else {
-    notify("Delete failed: " + (error || "unknown error"), { type: "error", duration: 5000 });
-  }
-});
-  
-  await fetchAndRenderStockRecords(product.product_id,true);
+  await fetchAndRenderStockRecords(product.product_id, true);
 }
-
 
 // kick things off when the DOM is ready
 document.addEventListener("DOMContentLoaded", async function () {
