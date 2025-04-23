@@ -19,11 +19,11 @@ async function fetchAndRenderStockRecords(productId) {
 
   const inCol = document.createElement("div");
   inCol.className = "in-records";
-  inCol.innerHTML  = buildRecordsColumn("📥 IN", inRecs, "IN");
+  inCol.innerHTML  = buildRecordsColumn("IN", inRecs, "IN", '<i class="bi bi-box-arrow-in-down">');
 
   const outCol = document.createElement("div");
   outCol.className = "out-records";
-  outCol.innerHTML = buildRecordsColumn("📤 OUT", outRecs, "OUT");
+  outCol.innerHTML = buildRecordsColumn("OUT", outRecs, "OUT", '<i class="bi bi-box-arrow-up"></i>');
 
   recordHolder.append(inCol, outCol);
 
@@ -50,7 +50,7 @@ async function fetchAndRenderStockRecords(productId) {
 }
 
 // buildRecordsColumn unchanged from your original
-function buildRecordsColumn(title, records, type) {
+function buildRecordsColumn(title, records, type, icon) {
   const sign = type === "IN" ? "+" : "–";
   const cls  = type === "IN" ? "in" : "out";
 
@@ -72,7 +72,7 @@ function buildRecordsColumn(title, records, type) {
     </div>
   `).join("\n");
 
-  return `<h3>${title}</h3><div class="records-list">${items}</div>`;
+  return `<h3>${icon} ${title}</h3><div class="records-list">${items}</div>`;
 }
 
 // initial inventory loader
