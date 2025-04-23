@@ -38,7 +38,7 @@
   background-color: var(--red);
 }
 .product-details-card {
-  width: 100%;
+  width: 98%;
   min-height: 100%;
   padding: 2rem;
   border-radius: 16px;
@@ -65,7 +65,7 @@
   flex-shrink: 0;
 }
 .divider {
-  border-top: 2px solid #616060;
+  border-top: 2px solid #7A7A7A;
   margin-bottom: 30px;
 }
 
