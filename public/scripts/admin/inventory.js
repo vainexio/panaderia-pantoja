@@ -55,7 +55,7 @@ function buildRecordsColumn(title, records, type, icon) {
   const cls  = type === "IN" ? "in" : "out";
 
   if (!records.length) {
-    return `<h3>${title}</h3><p>No record yet.</p>`;
+    return `<h3>${icon} ${title}</h3><p>No record yet.</p>`;
   }
 
   const items = records.map(r => `
@@ -77,7 +77,7 @@ function buildRecordsColumn(title, records, type, icon) {
 
 // initial inventory loader
 async function loadInventory() {
-  separator = document.getElementById("separator");
+  separator = document.getElementById("stock-separator");
   let inventoryCard = document.getElementById("inventory-card");
   let products = await fetch("/getProduct?type=all", {
       method: "POST",
@@ -226,7 +226,7 @@ async function showProductDetails(product) {
 
   detailWrapper.append(left, right);
   detailCard.appendChild(detailWrapper);
-  separator.appendChild(detailCard);
+  separator.parentNode.appendChild(detailCard);
 
   // initial render of records
   await fetchAndRenderStockRecords(product.product_id);
