@@ -268,12 +268,20 @@ app.post('/getStockRecord', async (req, res) => {
 
     const records = await findQuery;
 
-    const withFromNow = records.map(r => ({
-      ...r.toObject(),
-      fromNow: moment(r.date).fromNow()
-    }));
+    const data = records.map(r => {
+      const obj = r.toObject();
+      const m   = moment(r.date);
 
-    res.json(withFromNow);
+      return {
+        ...obj,
+        fromNow:         m.fromNow(),            // “3 hours ago”
+        formattedDate:   m.format('DD/MM/YY'),   // “23/04/25”
+        formattedTime:   m.format('HH:mm'),      // “14:07”
+        formattedDateTime: m.format('DD/MM/YY HH:mm') // “23/04/25 14:07”
+      };
+    });
+
+    res.json(data);
 
   } catch (err) {
     res.status(500).json({ error: err.message });

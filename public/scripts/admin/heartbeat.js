@@ -1,3 +1,4 @@
+/*
 let counter = 0 
 async function heartBeat() {
   setInterval(function() {
@@ -8,3 +9,4 @@ async function heartBeat() {
 document.addEventListener("DOMContentLoaded", async function () {
   waitUntilReady(heartBeat);
 });
+*/

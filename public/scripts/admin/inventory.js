@@ -353,7 +353,7 @@ function buildRecordsColumn(title, records, type, icon) {
     <div class="record-item" data-id="${r._id}">
       <div class="record-content">
         <h2 class="qty ${cls}">${sign}${r.amount}</h2>
-        <div class="date">${r.fromNow}</div>
+        <div class="date">${r.formattedDateTime} • <b>${r.fromNow}</b></div>
       </div>
       <button type="button"
               class="action-button delete-record-btn black-loading"
