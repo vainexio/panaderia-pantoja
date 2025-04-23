@@ -12,7 +12,6 @@
   display: block;
   justify-content: center;
 }
-
 .separator {
   display: flex;
   flex-direction: row;
@@ -23,7 +22,7 @@
 .register-card {
   width: 75%;
   min-height: 100%;
-  padding: 2rem;
+  padding: 1.5rem;
   border: 5px solid var(--red);
   border-radius: 16px 0px 0px 16px;
   background-color: transparent;

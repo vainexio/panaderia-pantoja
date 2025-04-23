@@ -144,6 +144,25 @@ async function showProductDetails(product) {
   const inForm = document.createElement("form");
   inForm.className = "stockRecordForm";
   inForm.innerHTML = `
+  <form id="categoryForm" class="product-form mb-4" style=" display: flex; flex-direction: row; align-items: center; gap: 1rem; flex-wrap: nowrap; ">
+        <div class="form-group">
+          <label for="ctg_name">Category Name</label>
+          <input
+            type="text"
+            id="ctg_name"
+            name="ctg_name"
+            placeholder="e.g. Finished Products"
+            required
+          />
+        </div>
+        <button
+          type="submit"
+          class="action-button"
+          style="align-self: flex-end"
+        >
+          Create
+        </button>
+      </form>
     <div class="form-group2">
       <label for="in_amount">IN</label>
       <input type="number" id="in_amount" name="in_amount" placeholder="100" required />
