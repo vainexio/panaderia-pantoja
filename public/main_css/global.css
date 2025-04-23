@@ -260,6 +260,14 @@ section h1 {
 }
 
 /* e */
+/* Wrapper for form groups */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Base form-group styling */
 .form-group {
   flex: 1 1 calc(33.333% - 1rem);
   min-width: 200px;
@@ -287,6 +295,20 @@ section h1 {
   background-color: transparent;
   cursor: default;
 }
+
+/* Responsive breakpoints */
+@media (max-width: 1024px) {
+  .form-group {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .form-group {
+    flex: 1 1 100%;
+  }
+}
+
 
 .submit-container {
   width: 100%;
