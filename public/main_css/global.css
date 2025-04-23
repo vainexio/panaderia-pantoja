@@ -318,6 +318,10 @@ section h1 {
   color: white;
 }
 
+.black {
+  color: black;
+}
+
 @media (max-width: 768px) {
   .navbar {
     width: 60px;

@@ -1,10 +1,16 @@
 let ready = false;
 let currentAdmin;
-function setLoading(button, isLoading) {
+function setLoading(button, isLoading, isBlack) {
     if (isLoading) {
       button.classList.add("loading");
+      if (isBlack) {
+        button.classList.add("black");
+      }
     } else {
       button.classList.remove("loading");
+      if (isBlack) {
+        button.classList.remove("black");
+      }
     }
   }
 function waitUntilReady(callback) {
@@ -69,13 +75,15 @@ document.addEventListener("DOMContentLoaded", async function () {
   ready = true;
   /* Hide loader */
   document.getElementById("preloader").classList.add("fade-out");
-  document.querySelectorAll(".action-button").forEach(button => {
-    button.addEventListener("click", () => {
-      setLoading(button, true);
+  document.addEventListener("click", function(event) {
+  // if the thing clicked has class="action-button"
+  if ( event.target.matches(".action-button") ) {
+    const button = event.target;
+    setLoading(button, true);
 
-      setTimeout(() => {
-        setLoading(button, false);
-      }, 1000);
-    });
-  });
+    setTimeout(() => {
+      setLoading(button, false);
+    }, 1000);
+  }
+});
 });

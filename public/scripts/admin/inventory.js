@@ -243,6 +243,7 @@ async function showProductDetails(product) {
     if (success) {
       inForm.reset();
       await fetchAndRenderStockRecords(product.product_id);
+      await loadInventory()
     } else {
       alert("Error creating IN record");
     }
@@ -260,6 +261,7 @@ async function showProductDetails(product) {
     if (success) {
       outForm.reset();
       await fetchAndRenderStockRecords(product.product_id);
+      await loadInventory();
     } else {
       alert("Error creating OUT record");
     }
