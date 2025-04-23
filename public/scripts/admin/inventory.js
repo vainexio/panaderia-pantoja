@@ -131,6 +131,7 @@ async function loadInventory() {
 
 // show product details with editable form and stock records
 async function showProductDetails(product) {
+  separator.style.display = "nonasync function showProductDetails(product) {
   separator.style.display = "none";
   detailCard = document.querySelector(".product-details-card");
   detailCard.innerHTML = "";
@@ -159,7 +160,7 @@ async function showProductDetails(product) {
 
     <div class="form-group">
       <label for="product_qty">Current Quantity</label>
-      <input type="number" id="product_qty" name="product_qty" value="${product.quantity}" readonly />
+      <input ter" id="product_qty" name="product_qty" value="${product.quantity}" readonly />
     </div>
 
     <div class="form-group">
@@ -183,10 +184,9 @@ async function showProductDetails(product) {
     </div>
 
     <div class="submit-container">
-      <button type="submit" class="action-button edit-product-btn">Save Changes</button>
-    </div>
+      <button type="su
     <div id="product_details_notif" class="notification" role="alert"></div>
-  </form>;`
+  </form>;`;
 
   const right = document.createElement("div");
   right.className = "detail-right";
@@ -233,33 +233,41 @@ async function showProductDetails(product) {
   await fetchAndRenderStockRecords(product.product_id);
 
   // wire up record forms to refresh only the record-holder
-  inForm.addEventListener("submit", async e => {
+  inForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const amount = +inForm.in_amount.value;
     if (!amount) return;
     const { success } = await fetch("/createStockRecord", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ product_id: product.product_id, type: "IN", amount }),
-    }).then(r => r.json());
+      body: JSON.stringify({
+        product_id: product.product_id,
+        type: "IN",
+        amount,
+      }),
+    }).then((r) => r.json());
     if (success) {
       inForm.reset();
       await fetchAndRenderStockRecords(product.product_id);
-      await loadInventory()
+      await loadInventory();
     } else {
       alert("Error creating IN record");
     }
   });
 
-  outForm.addEventListener("submit", async e => {
+  outForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const amount = +outForm.out_amount.value;
     if (!amount) return;
     const { success } = await fetch("/createStockRecord", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ product_id: product.product_id, type: "OUT", amount }),
-    }).then(r => r.json());
+      body: JSON.stringify({
+        product_id: product.product_id,
+        type: "OUT",
+        amount,
+      }),
+    }).then((r) => r.json());
     if (success) {
       outForm.reset();
       await fetchAndRenderStockRecords(product.product_id);
@@ -268,41 +276,7 @@ async function showProductDetails(product) {
       alert("Error creating OUT record");
     }
   });
-  
-  const editForm = document.getElementById("editProductForm");
-editForm.addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const product_id = editForm.product_id.value;
-  const name = editForm.product_name.value.trim();
-  const min = +editForm.product_min.value;
-  const max = +editForm.product_max.value;
-
-  if (!name || min < 0 || max < 0) {
-    return alert("Please fill out all fields correctly.");
-  }
-
-  const res = await fetch("/editProduct", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ product_id, name, min, max })
-  });
-  const { success, error } = await res.json();
-  const notification = document.getElementById("regis_notif");
-  
-  if (success) {
-    notification.textContent = "Product registered successfully!";
-    notification.className = "alert alert-success mt-3 rounded-3";
-    await loadInventory();
-  } else {
-    const error = await success.json();
-    notification.textContent =
-      error.message || "Failed to register product.";
-          notification.className = "alert alert-danger mt-3 rounded-3";
-    alert("Update failed: " + (error || "unknown error"));
-  }
-});
-}
+}o
 
 // kick things off when the DOM is ready
 document.addEventListener("DOMContentLoaded", async function () {

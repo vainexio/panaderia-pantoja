@@ -366,3 +366,62 @@ section h1 {
     font-size: 1.2rem;
   }
 }
+/* Notif */
+/* container at top-right */
+#notif-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 10000;
+}
+
+/* each notification */
+.notif {
+  position: relative;
+  min-width: 300px;
+  max-width: 360px;
+  padding: 1rem 1.5rem 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: #fff;
+  overflow: hidden;
+  transform: translateX(100%);
+  animation: slide-in 0.3s forwards;
+}
+
+/* types */
+.notif.info    { background: #007bff; }
+.notif.success { background: #28a745; }
+.notif.warn    { background: #ffc107; color: #333; }
+.notif.error   { background: #dc3545; }
+
+/* slide-in animation */
+@keyframes slide-in {
+  to { transform: translateX(0); }
+}
+
+/* close (“X”) button */
+.notif .close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* progress bar at bottom */
+.notif .progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: rgba(255,255,255,0.7);
+  width: 100%;
+  transform-origin: left;
+}
