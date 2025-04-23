@@ -41,7 +41,6 @@
 .product-details-card {
   width: 98%;
   min-height: 100%;
-  padding: 2rem;
   border-radius: 16px;
   background-color: transparent;
   flex-direction: column;
@@ -80,7 +79,7 @@
 
 .detail-wrapper {
   display: flex;
-  min-height: 85vh;
+  height: 100%;
   width: 100%;
   margin-top: 1rem;
 }
@@ -108,13 +107,13 @@
 }
 .record-holder {
   flex: 2;
-  height: 75%; /* or whatever height you want */
+  height: 75%;
   overflow: hidden;
   display: flex;
   gap: 1rem;
 }
 .record-holder2 {
-  height: 30%; /* or whatever height you want */
+  height: 25%;
   display: flex;
   gap: 1rem;
   background-color: var(--red);
@@ -208,13 +207,11 @@
   color: var(--red) !important;
 }
 
-@media screen and (min-width: 1025px) and (max-width: 1440px) {
+@media screen and (max-width: 1600px) {
   .record-holder {
     height: 75%;
-    background-color: blue;
   }
   .record-holder2 {
-    height: 35%;
-    background-color: blue;
+    height: 30%;
   }
 }
