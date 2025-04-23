@@ -181,14 +181,7 @@
   flex-direction: row;
   color: red;
 }
-.stockRecordForm .form-group,
-#editProductForm .form-group {
-  flex: 1 1 calc(33.333% - 1rem);
-  min-width: 33%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-}
+
 .stockRecordForm .form-group label {
   color: white;
 }

@@ -144,7 +144,7 @@ async function showProductDetails(product) {
   const inForm = document.createElement("form");
   inForm.className = "stockRecordForm";
   inForm.innerHTML = `
-    <div class="form-group">
+    <div class="form-group2">
       <label for="in_amount">IN</label>
       <input type="number" id="in_amount" name="in_amount" placeholder="100" required />
       <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-in-down"></i> Create Record</button>
@@ -154,11 +154,9 @@ async function showProductDetails(product) {
   const outForm = document.createElement("form");
   outForm.className = "stockRecordForm";
   outForm.innerHTML = `
-    <div class="form-group">
+    <div class="form-group2">
       <label for="out_amount">OUT</label>
       <input type="number" id="out_amount" name="out_amount" placeholder="100" required />
-    </div>
-    <div class="submit-container">
       <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-up"></i> Create Record</button>
     </div>
   `;
