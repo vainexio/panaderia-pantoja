@@ -144,40 +144,23 @@ async function showProductDetails(product) {
   const inForm = document.createElement("form");
   inForm.className = "stockRecordForm";
   inForm.innerHTML = `
-  <form id="categoryForm" class="product-form mb-4" style=" display: flex; flex-direction: row; align-items: center; gap: 1rem; flex-wrap: nowrap; ">
-        <div class="form-group">
-          <label for="ctg_name">Category Name</label>
-          <input
-            type="text"
-            id="ctg_name"
-            name="ctg_name"
-            placeholder="e.g. Finished Products"
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          class="action-button"
-          style="align-self: flex-end"
-        >
-          Create
-        </button>
-      </form>
-    <div class="form-group2">
+  
+    <div class="form-group">
       <label for="in_amount">IN</label>
       <input type="number" id="in_amount" name="in_amount" placeholder="100" required />
-      <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-in-down"></i> Create Record</button>
     </div>
+    <button type="submit" class="action-button black-loading stock-record-btn" style="align-self: flex-end"><i class="bi bi-box-arrow-in-down"></i> Create</button>
   `;
 
   const outForm = document.createElement("form");
   outForm.className = "stockRecordForm";
   outForm.innerHTML = `
-    <div class="form-group2">
+    <div class="form-group">
       <label for="out_amount">OUT</label>
       <input type="number" id="out_amount" name="out_amount" placeholder="100" required />
-      <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-up"></i> Create Record</button>
     </div>
+    <button type="submit" class="action-button black-loading stock-record-btn" style="align-self: flex-end"><i class="bi bi-box-arrow-up"></i> Create</button>
+
   `;
 
   recordHolder2.append(inForm, outForm);

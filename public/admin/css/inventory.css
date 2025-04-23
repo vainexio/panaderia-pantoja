@@ -172,9 +172,14 @@
   background: #a00;
 }
 .stockRecordForm {
+  margin-top: 20px;
   padding: 10px;
   width: 50%;
-  height: 100%;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: nowrap;
 }
 .stockRecordForm .form-group {
   display: flex;
@@ -184,6 +189,7 @@
 
 .stockRecordForm .form-group label {
   color: white;
+  margin-right: 5px;
 }
 
 #editProductForm .form-group label {
@@ -192,17 +198,6 @@
   font-size: 12px;
   margin-bottom: 0.5rem;
   color: var(--black);
-}
-.stockRecordForm .product-form {
-  gap: 0px;
-}
-.stockRecordForm .product-form .submit-container {
-  width: 100%;
-  margin-top: 3px;
-  align-items: bottom;
-}
-.stockRecordForm .product-form .submit-container button:hover {
-  color: var(--red);
 }
 
 .stock-record-btn {
