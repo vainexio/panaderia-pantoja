@@ -393,10 +393,10 @@ section h1 {
 }
 
 /* types */
-.notif.info    { background: var(--blue); }
-.notif.success { background: var(--green); }
-.notif.warn    { background: var(--yellow); color: #333; }
-.notif.error   { background: var(--red); }
+.notif.info    { background: #365688; }
+.notif.success { background: #1B5E20; }
+.notif.warn    { background: #D37024; }
+.notif.error   { background: #A03232; }
 
 @keyframes slide-in {
   to { transform: translateX(0); }

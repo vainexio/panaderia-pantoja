@@ -296,10 +296,10 @@ async function showProductDetails(product) {
 editForm.addEventListener("submit", async e => {
   e.preventDefault();
 
-  const product_id   = editForm.product_id.value;
-  const name         = editForm.product_name.value.trim();
-  const min          = +editForm.product_min.value;
-  const max          = +editForm.product_max.value;
+  const product_id = editForm.product_id.value;
+  const name = editForm.product_name.value.trim();
+  const min = +editForm.product_min.value;
+  const max = +editForm.product_max.value;
 
   if (!name || min < 0 || max < 0) {
     return alert("Please fill out all fields correctly.");
@@ -313,11 +313,10 @@ editForm.addEventListener("submit", async e => {
   const { success, error } = await res.json();
 
   if (success) {
-    notify("Product updated successfully", { type: "success", duration: 3000 });
+    notify("Product updated successfully", { type: "success", duration: 5000 });
     await loadInventory();
   } else {
-    notify("Update failed: " + (error || "unknown error", { type: "err", duration: 3000 });
-    alert("Update failed: " + (error || "unknown error"));
+    notify("Update failed: " + (error || "unknown error", { type: "error", duration: 5000 }));
   }
 });
 }

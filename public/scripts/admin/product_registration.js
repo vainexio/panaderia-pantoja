@@ -6,11 +6,11 @@ async function deleteCategory(catName, callback) {
       body: JSON.stringify({ catName }),
     });
     if (response.ok) {
-      console.log("Category deleted successfully");
+      notify("Category deleted", { type: "success", duration: 5000 });
       // Refresh
       callback();
     } else {
-      console.error("Failed to remove category");
+      notify("Failed to remove category", { type: "error", duration: 5000 });
     }
   } catch (error) {
     console.error("Error removing category:", error);
@@ -87,8 +87,6 @@ async function productRegistration() {
         const formData = Object.fromEntries(
           new FormData(event.target).entries()
         );
-        const notification = document.getElementById("regis_notif");
-
         const response = await fetch("/createProduct", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -96,23 +94,13 @@ async function productRegistration() {
         });
 
         if (response.ok) {
-          notification.textContent = "Product registered successfully!";
-          notification.className = "alert alert-success mt-3 rounded-3";
+          notify("Product registered", { type: "success", duration: 5000 });
           loadInventory()
         } else {
           const error = await response.json();
-          notification.textContent =
-            error.message || "Failed to register product.";
-          notification.className = "alert alert-danger mt-3 rounded-3";
+          notify(error.message || "Failed to register product.", { type: "error", duration: 5000 });
         }
         document.getElementById("productForm").reset();
-
-        setTimeout(function () {
-          if (notification.textContent.length > 0) {
-            notification.textContent = "";
-            notification.className = "";
-          }
-        }, 2000);
       });
     
     document
@@ -122,7 +110,6 @@ async function productRegistration() {
         const formData = Object.fromEntries(
           new FormData(event.target).entries()
         );
-        const notification = document.getElementById("regis_notif");
 
         const response = await fetch("/createCategory", {
           method: "POST",
@@ -131,23 +118,13 @@ async function productRegistration() {
         });
 
         if (response.ok) {
-          notification.textContent = "Category created successfully!";
-          notification.className = "alert alert-success mt-3 rounded-3";
+          notify("Category created", { type: "success", duration: 5000 });
           displayCategories()
         } else {
           const error = await response.json();
-          notification.textContent =
-            error.message || "Failed to create category.";
-          notification.className = "alert alert-danger mt-3 rounded-3";
+          notify(error.message || "Failed to create category.", { type: "error", duration: 5000 });
         }
         document.getElementById("categoryForm").reset();
-
-        setTimeout(function () {
-          if (notification.textContent.length > 0) {
-            notification.textContent = "";
-            notification.className = "";
-          }
-        }, 2000);
       });
     
     displayCategories();
