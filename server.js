@@ -359,6 +359,7 @@ app.post('/createProduct', async (req, res) => {
     if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !product_expiry_unit) {
       return res.status(400).json({ message: "All fields are required." });
     }
+    console.log(product_min,product_max)
     if (product_min >= product_max) {
       return res.status(400).json({ message: "Max. Qty must be greater than Min. Qty" });
     }
@@ -373,7 +374,7 @@ app.post('/createProduct', async (req, res) => {
     newProduct.product_id = method.genId();
     newProduct.name = product_name
     newProduct.category_id = product_category
-    newProduct.quantity = product_qty ? product_qty : 0
+    newProduct.quantity = product_qty && product_qty > 0 ? product_qty : 0
     newProduct.min = product_min
     newProduct.max = product_max
     newProduct.expiry = product_expiry
