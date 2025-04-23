@@ -466,18 +466,30 @@ app.delete('/deleteCategory', async (req, res) => {
     if (!catName) {
       return res.status(400).json({ error: "Category name is required" });
     }
-    const result = await categories.deleteOne({ name: catName });
-    console.log(result,catName)
-    if (result.deletedCount > 0) {
-      return res.json({ message: "Category removed" });
-    } else {
+
+    // 1) Find the category document
+    const category = await categories.findOne({ name: catName });
+    if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
+
+    // 2) Check if any product uses this category_id
+    const inUse = await products.exists({ category_id: category.category_id });
+    if (inUse) {
+      return res.status(400).json({ 
+        error: "Cannot delete — there are products associated with this category" 
+      });
+    }
+
+    // 3) Safe to delete
+    await categories.deleteOne({ _id: category._id });
+    return res.json({ message: "Category removed" });
+
   } catch (error) {
     console.error("Error in /deleteCategory:", error);
     res.status(500).json({ error: "Server error" });
   }
-})
+});
 app.post('/updateProduct', async (req, res) => {
   const { id, name, category, min, max, expiry, expiry_unit } = req.body;
   try {

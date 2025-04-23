@@ -19,12 +19,12 @@
   height: 100%;
 }
 .inventory-card {
-  width: 95%;
+  width: 98%;
   min-height: 100%;
-  padding: 2rem;
-  border: 5px solid var(--red);
+  padding: 1rem;
   border-radius: 16px;
   background-color: transparent;
+  /*border: 5px solid var(--red);*/
   display: flex;
   overflow-y: auto;
   flex-direction: column;

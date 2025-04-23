@@ -1,6 +1,6 @@
 async function deleteCategory(catName, callback) {
   try {
-    const response = await fetch("/deleteCategory", {
+    let response = await fetch("/deleteCategory", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ catName }),
@@ -10,7 +10,8 @@ async function deleteCategory(catName, callback) {
       // Refresh
       callback();
     } else {
-      notify("Failed to remove category", { type: "error", duration: 5000 });
+      response = await response.json()
+      notify(response.error, { type: "error", duration: 5000 });
     }
   } catch (error) {
     console.error("Error removing category:", error);

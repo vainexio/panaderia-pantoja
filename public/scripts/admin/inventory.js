@@ -1,97 +1,4 @@
-// inventory.js
-
 let separator, detailCard;
-
-// helper: fetch and render stock records for a given product ID
-async function fetchAndRenderStockRecords(productId, intro) {
-  const recordHolder = detailCard.querySelector(".record-holder");
-  if (intro)
-    recordHolder.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
-
-  const res = await fetch("/getStockRecord?type=single", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: productId }),
-  });
-  const records = (await res.json()) || [];
-
-  const inRecs = records.filter((r) => r.type === "IN");
-  const outRecs = records.filter((r) => r.type === "OUT");
-  recordHolder.innerHTML = ``;
-
-  const inCol = document.createElement("div");
-  inCol.className = "in-records";
-  inCol.innerHTML = buildRecordsColumn(
-    "IN",
-    inRecs,
-    "IN",
-    '<i class="bi bi-box-arrow-in-down"></i>'
-  );
-
-  const outCol = document.createElement("div");
-  outCol.className = "out-records";
-  outCol.innerHTML = buildRecordsColumn(
-    "OUT",
-    outRecs,
-    "OUT",
-    '<i class="bi bi-box-arrow-up"></i>'
-  );
-
-  recordHolder.append(inCol, outCol);
-
-  // wire up delete buttons for each record
-  detailCard.querySelectorAll(".delete-record-btn").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const recItem = btn.closest(".record-item");
-      if (!recItem) return;
-      const recId = recItem.getAttribute("data-id");
-      const { success } = await fetch("/deleteStockRecord", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: recId }),
-      }).then((r) => r.json());
-
-      if (success) {
-        await fetchAndRenderStockRecords(productId);
-        notify("Record deleted", { type: "success", duration: 5000 });
-      } else {
-        alert("Error deleting record");
-      }
-    });
-  });
-}
-
-// buildRecordsColumn unchanged from your original
-function buildRecordsColumn(title, records, type, icon) {
-  const sign = type === "IN" ? "+" : "–";
-  const cls = type === "IN" ? "in" : "out";
-
-  if (!records.length) {
-    return `<h3>${icon} ${title}</h3><p>No record yet.</p>`;
-  }
-
-  const items = records
-    .map(
-      (r) => `
-    <div class="record-item" data-id="${r._id}">
-      <div class="record-content">
-        <h2 class="qty ${cls}">${sign}${r.amount}</h2>
-        <div class="date">${r.fromNow}</div>
-      </div>
-      <button type="button"
-              class="action-button delete-record-btn black-loading"
-              title="Delete record">
-        <i class="bi bi-trash3-fill"></i>
-      </button>
-    </div>
-  `
-    )
-    .join("\n");
-
-  return `<h3>${icon} ${title}</h3><div class="records-list">${items}</div>`;
-}
-
-// initial inventory loader
 async function loadInventory() {
   separator = document.getElementById("stock-separator");
   let inventoryCard = document.getElementById("inventory-card");
@@ -126,7 +33,7 @@ async function loadInventory() {
     row.className = "category-row";
 
     const divider = document.createElement("div");
-    divider.className = "divider";
+    //divider.className = "divider";
 
     const heading = document.createElement("div");
     heading.className = "category-heading";
@@ -162,8 +69,7 @@ async function loadInventory() {
     inventoryCard.append(row, divider);
   });
 }
-
-// show product details with editable form and stock records
+//
 async function showProductDetails(product) {
   separator.style.display = "none";
   detailCard = document.querySelector(".product-details-card");
@@ -375,6 +281,91 @@ async function showProductDetails(product) {
   });
 
   await fetchAndRenderStockRecords(product.product_id, true);
+}
+async function fetchAndRenderStockRecords(productId, intro) {
+  const recordHolder = detailCard.querySelector(".record-holder");
+  if (intro)
+    recordHolder.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
+
+  const res = await fetch("/getStockRecord?type=single", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: productId }),
+  });
+  const records = (await res.json()) || [];
+
+  const inRecs = records.filter((r) => r.type === "IN");
+  const outRecs = records.filter((r) => r.type === "OUT");
+  recordHolder.innerHTML = ``;
+
+  const inCol = document.createElement("div");
+  inCol.className = "in-records";
+  inCol.innerHTML = buildRecordsColumn(
+    "IN",
+    inRecs,
+    "IN",
+    '<i class="bi bi-box-arrow-in-down"></i>'
+  );
+
+  const outCol = document.createElement("div");
+  outCol.className = "out-records";
+  outCol.innerHTML = buildRecordsColumn(
+    "OUT",
+    outRecs,
+    "OUT",
+    '<i class="bi bi-box-arrow-up"></i>'
+  );
+
+  recordHolder.append(inCol, outCol);
+
+  // wire up delete buttons for each record
+  detailCard.querySelectorAll(".delete-record-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const recItem = btn.closest(".record-item");
+      if (!recItem) return;
+      const recId = recItem.getAttribute("data-id");
+      const { success } = await fetch("/deleteStockRecord", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: recId }),
+      }).then((r) => r.json());
+
+      if (success) {
+        await fetchAndRenderStockRecords(productId);
+        notify("Record deleted", { type: "success", duration: 5000 });
+      } else {
+        alert("Error deleting record");
+      }
+    });
+  });
+}
+function buildRecordsColumn(title, records, type, icon) {
+  const sign = type === "IN" ? "+" : "–";
+  const cls = type === "IN" ? "in" : "out";
+
+  if (!records.length) {
+    return `<h3>${icon} ${title}</h3><p>No record yet.</p>`;
+  }
+
+  const items = records
+    .map(
+      (r) => `
+    <div class="record-item" data-id="${r._id}">
+      <div class="record-content">
+        <h2 class="qty ${cls}">${sign}${r.amount}</h2>
+        <div class="date">${r.fromNow}</div>
+      </div>
+      <button type="button"
+              class="action-button delete-record-btn black-loading"
+              title="Delete record">
+        <i class="bi bi-trash3-fill"></i>
+      </button>
+    </div>
+  `
+    )
+    .join("\n");
+
+  return `<h3>${icon} ${title}</h3><div class="records-list">${items}</div>`;
 }
 
 // kick things off when the DOM is ready

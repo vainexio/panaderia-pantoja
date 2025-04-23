@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let data = await response.text();
     document.getElementById(layouts[i] + "_holder").innerHTML = data;
   }
-  showSection("dashboard");
+  showSection("inventory");
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.addEventListener("click", function () {
       document
