@@ -1,10 +1,11 @@
 :root {
     --white: #fcfcfc;
-    --light-gray: #e9ecef;
+    --light-gray: #e3e3e3;
     --red: #981414;
     --yellow: #ffd41c;
     --secondary-yellow: #ffe365;
     --black: #363636;
+    --green: #009926;
 }
 
 .product_registration {

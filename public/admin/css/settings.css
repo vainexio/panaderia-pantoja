@@ -1,13 +1,12 @@
 :root {
-  --white: #fcfcfc;
-  --light-gray: #e9ecef;
-  --blue: #283986;
-  --secondary-blue: #91b2ff;
-  --yellow: #ffd41c;
-  --secondary-yellow: #ffe365;
-  --black: #363636;
+    --white: #fcfcfc;
+    --light-gray: #e3e3e3;
+    --red: #981414;
+    --yellow: #ffd41c;
+    --secondary-yellow: #ffe365;
+    --black: #363636;
+    --green: #009926;
 }
-
 .settings {
     padding: 2rem 0;
     display: flex;

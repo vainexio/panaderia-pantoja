@@ -1,6 +1,6 @@
 :root {
     --white: #fcfcfc;
-    --light-gray: #e9ecef;
+    --light-gray: #e3e3e3;
     --red: #981414;
     --yellow: #ffd41c;
     --secondary-yellow: #ffe365;
@@ -40,9 +40,12 @@
   background-color: var(--red);
 }
 .record-input {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
   padding: 20px;
-  border-radius: 16px;
-  background-color: var(--white);
+  border-radius: 0px 16px 16px 0px;
+  background-color: var(--light-gray);
 }
 .product-details-card {
   width: 98%;

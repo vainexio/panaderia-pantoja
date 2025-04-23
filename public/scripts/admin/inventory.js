@@ -146,6 +146,62 @@ async function loadInventory() {
     row.append(heading, scroll);
     inventoryCard.append(row, divider);
   });
+  
+  ////////////////
+  const recordsContainer = document.getElementById('recordsContainer');
+  const addRecordBtn    = document.getElementById('addRecordBtn');
+  const batchForm       = document.getElementById('batchRecordForm');
+  let rowIndex = 1;
+
+  // 1) Add new row when button clicked
+  addRecordBtn.addEventListener('click', () => {
+    const template = document.querySelector('.record-input');
+    const clone = template.cloneNode(true);
+
+    // clear values & update ids
+    clone.querySelectorAll('input, select').forEach(el => {
+      el.value = '';
+      const name = el.getAttribute('name');
+      el.id = `${name}_${rowIndex}`;
+      // update its label's for-attribute too:
+      const lbl = clone.querySelector(`label[for^="${name}_"]`);
+      if (lbl) lbl.setAttribute('for', el.id);
+    });
+
+    recordsContainer.appendChild(clone);
+    rowIndex++;
+  });
+
+  // 2) On submit, gather all rows and send in one batch
+  batchForm.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const payload = Array.from(recordsContainer.querySelectorAll('.record-input')).map(row => {
+      return {
+        product_name: row.querySelector('select[name="product_name"]').value,
+        amount:       parseInt(row.querySelector('input[name="amount"]').value, 10),
+        type:         row.querySelector('select[name="type"]').value
+      };
+    });
+
+    // send to your batch-insert endpoint
+    const res = await fetch('/createStockRecords', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ records: payload })
+    });
+    const result = await res.json();
+    if (result.success) {
+      alert('All records saved!');
+      // optionally reset form:
+      batchForm.reset();
+      // remove all but first row:
+      recordsContainer.querySelectorAll('.record-input:not(:first-child)')
+                      .forEach(n => n.remove());
+    } else {
+      alert('Error: ' + (result.message||'unknown'));
+    }
+  });
 }
 
 // show product details with editable form and stock records
