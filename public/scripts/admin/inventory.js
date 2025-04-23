@@ -1,6 +1,6 @@
 // inventory.js
 
-let inventoryCard, detailCard;
+let separator, detailCard;
 
 // helper: fetch and render stock records for a given product ID
 async function fetchAndRenderStockRecords(productId) {
@@ -19,7 +19,7 @@ async function fetchAndRenderStockRecords(productId) {
 
   const inCol = document.createElement("div");
   inCol.className = "in-records";
-  inCol.innerHTML  = buildRecordsColumn("IN", inRecs, "IN", '<i class="bi bi-box-arrow-in-down">');
+  inCol.innerHTML  = buildRecordsColumn("IN", inRecs, "IN", '<i class="bi bi-box-arrow-in-down"></i>');
 
   const outCol = document.createElement("div");
   outCol.className = "out-records";
@@ -77,7 +77,8 @@ function buildRecordsColumn(title, records, type, icon) {
 
 // initial inventory loader
 async function loadInventory() {
-  inventoryCard = document.getElementById("inventory-card");
+  separator = document.getElementById("separator");
+  let inventoryCard = document.getElementById("inventory-card");
   let products = await fetch("/getProduct?type=all", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -130,7 +131,7 @@ async function loadInventory() {
 
 // show product details with editable form and stock records
 async function showProductDetails(product) {
-  inventoryCard.style.display = "none";
+  separator.style.display = "none";
   detailCard = document.querySelector(".product-details-card");
   detailCard.innerHTML = "";
   detailCard.style.display = "flex";
@@ -140,7 +141,7 @@ async function showProductDetails(product) {
   backBtn.className = "action-button back-button";
   backBtn.addEventListener("click", () => {
     detailCard.style.display = "none";
-    inventoryCard.style.display = "";
+    separator.style.display = "";
   });
   detailCard.appendChild(backBtn);
 
@@ -225,7 +226,7 @@ async function showProductDetails(product) {
 
   detailWrapper.append(left, right);
   detailCard.appendChild(detailWrapper);
-  inventoryCard.parentNode.appendChild(detailCard);
+  separator.appendChild(detailCard);
 
   // initial render of records
   await fetchAndRenderStockRecords(product.product_id);

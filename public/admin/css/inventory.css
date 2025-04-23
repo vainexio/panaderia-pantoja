@@ -19,14 +19,23 @@
   height: 100%;
 }
 .inventory-card {
-  width: 98%;
+  width: 70%;
   min-height: 100%;
   padding: 2rem;
   border: 5px solid var(--red);
-  border-radius: 16px;
+  border-radius: 16px 0px 0px 16px;
+  border-right: none;
   background-color: transparent;
   display: flex;
   flex-direction: column;
+}
+.create-stock-record {
+  width: 20%;
+  height: 100%;
+  border-radius: 16px;
+  padding: 5px;
+  border-radius: 0px 16px 16px 0px;
+  background-color: var(--red);
 }
 .product-details-card {
   width: 100%;
