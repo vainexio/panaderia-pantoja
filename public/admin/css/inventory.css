@@ -106,7 +106,7 @@
   overflow: hidden;
 }
 .record-holder {
-  flex: 2;
+  flex: 1;
   height: 75%;
   overflow: hidden;
   display: flex;
@@ -209,7 +209,7 @@
 
 @media screen and (max-width: 1600px) {
   .record-holder {
-    height: 75%;
+    height: 70%;
   }
   .record-holder2 {
     height: 30%;
