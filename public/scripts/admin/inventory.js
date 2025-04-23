@@ -320,7 +320,8 @@ async function showProductDetails(product) {
     notify("Product updated successfully", { type: "success", duration: 5000 });
     await loadInventory();
   } else {
-    notify("Update failed: " + (error || "unknown error", { type: "error", duration: 5000 }));
+    console.log(error)
+    notify("Update failed: " + (error || "unknown error"), { type: "error", duration: 5000 });
   }
 });
   //
