@@ -147,8 +147,6 @@ async function showProductDetails(product) {
     <div class="form-group">
       <label for="in_amount">IN</label>
       <input type="number" id="in_amount" name="in_amount" placeholder="100" required />
-    </div>
-    <div class="submit-container">
       <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-in-down"></i> Create Record</button>
     </div>
   `;
