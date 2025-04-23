@@ -1,8 +1,11 @@
 let separator, detailCard;
-async function loadInventory() {
+async function inventoryStart() {
+  loadInventory(true)
+}
+async function loadInventory(intro) {
   separator = document.getElementById("stock-separator");
   let inventoryCard = document.getElementById("inventory-card");
-  inventoryCard.innerHTML = `<h3>Loading inventory…</h3>`;
+  if (intro) inventoryCard.innerHTML = `<h3>Loading inventory…</h3>`;
   let products = await fetch("/getProduct?type=all", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -206,7 +209,7 @@ async function showProductDetails(product) {
     }).then((r) => r.json());
     if (success) {
       outForm.reset();
-      notify("Added outcoming record", { type: "success", duration: 5000 });
+      notify("Added outgoing record", { type: "success", duration: 5000 });
       await fetchAndRenderStockRecords(product.product_id);
       await loadInventory();
     } else {
@@ -370,5 +373,5 @@ function buildRecordsColumn(title, records, type, icon) {
 
 // kick things off when the DOM is ready
 document.addEventListener("DOMContentLoaded", async function () {
-  waitUntilReady(loadInventory);
+  waitUntilReady(inventoryStart);
 });
