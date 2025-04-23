@@ -50,8 +50,8 @@ async function fetchAndRenderStockRecords(productId) {
       }).then((r) => r.json());
 
       if (success) {
-        // re-fetch and re-render
         await fetchAndRenderStockRecords(productId);
+        notify("Record deleted", { type: "success", duration: 5000 });
       } else {
         alert("Error deleting record");
       }
@@ -133,9 +133,11 @@ async function loadInventory() {
     scroll.className = "scroll-container";
 
     items.forEach((product) => {
+      let status = product.min < product.quantity ? `<i class="bi bi-check-circle-fill" style="color:green;"></i>` : `<i class="bi bi-exclamation-triangle-fill" style="color:red;"></i>`
       const card = document.createElement("div");
-      card.className = "action-button product-card";
-      card.innerHTML = `<div><strong>${product.name}</strong></div><div>Qty: ${product.quantity}</div>`;
+      card.className = "product-card";
+      card.innerHTML = `<div><strong>${product.name}</strong></div><div>Quantity: ${product.quantity} ${status}</div><div>Min: ${product.min}</div>Max: ${product.max}</div>`;
+    
       card.addEventListener("click", () => showProductDetails(product));
       scroll.appendChild(card);
     });

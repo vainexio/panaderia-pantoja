@@ -49,9 +49,10 @@
 .category-heading {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 10px;
 }
 .scroll-container {
+  
+  margin-top: 10px;
   display: flex;
   overflow-x: auto;
   gap: 16px;
@@ -59,11 +60,19 @@
 }
 .product-card {
   min-width: 150px;
-  background: var(--red);
-  color: white;
+  background: var(--white);
+  color: var(--black);
   padding: 16px;
   border-radius: 8px;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.product-card:not(:disabled):hover {
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 .divider {
   border-top: 2px solid #7A7A7A;
