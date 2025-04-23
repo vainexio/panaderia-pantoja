@@ -38,14 +38,6 @@
   color: white;
   background-color: var(--red);
 }
-.record-input {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-end;
-  padding: 20px;
-  border-radius: 0px 16px 16px 0px;
-  background-color: var(--light-gray);
-}
 .product-details-card {
   width: 98%;
   min-height: 100%;
@@ -185,6 +177,13 @@
   height: 100%;
 }
 
+#editProductForm .form-group {
+  flex: 1 1 calc(33.333% - 2rem);
+  min-width: 100px !important;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
 .stockRecordForm .form-group label {
   color: white;
 }
