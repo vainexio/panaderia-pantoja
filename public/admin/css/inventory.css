@@ -1,11 +1,11 @@
 :root {
-    --white: #fcfcfc;
-    --light-gray: #e3e3e3;
-    --red: #981414;
-    --yellow: #ffd41c;
-    --secondary-yellow: #ffe365;
-    --black: #363636;
-    --green: #009926;
+  --white: #fcfcfc;
+  --light-gray: #e3e3e3;
+  --red: #981414;
+  --yellow: #ffd41c;
+  --secondary-yellow: #ffe365;
+  --black: #363636;
+  --green: #009926;
 }
 
 .category-row {
@@ -51,7 +51,6 @@
   font-weight: bold;
 }
 .scroll-container {
-  
   margin-top: 10px;
   display: flex;
   overflow-x: auto;
@@ -75,7 +74,7 @@
   transform: translateY(-2px);
 }
 .divider {
-  border-top: 2px solid #7A7A7A;
+  border-top: 2px solid #7a7a7a;
   margin-bottom: 30px;
 }
 
@@ -109,14 +108,13 @@
 }
 .record-holder {
   flex: 2;
-  height: 70%; /* or whatever height you want */
+  height: 75%; /* or whatever height you want */
   overflow: hidden;
   display: flex;
   gap: 1rem;
-  
 }
 .record-holder2 {
-  height: 35%; /* or whatever height you want */
+  height: 30%; /* or whatever height you want */
   display: flex;
   gap: 1rem;
   background-color: var(--red);
@@ -210,14 +208,13 @@
   color: var(--red) !important;
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1199px) {
-  .responsive-form {
-    flex-direction: row;
-    align-items: flex-end;
-    gap: 1rem;
+@media screen and (min-width: 1025px) and (max-width: 1440px) {
+  .record-holder {
+    height: 75%;
+    background-color: blue;
   }
-
-  .submit-container {
-    align-self: flex-end;
+  .record-holder2 {
+    height: 35%;
+    background-color: blue;
   }
 }
