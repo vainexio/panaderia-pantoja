@@ -27,6 +27,8 @@
   border-right: none;
   background-color: transparent;
   display: flex;
+  overflow-y: auto;
+  overflow: hidden;
   flex-direction: column;
 }
 .create-stock-record {
