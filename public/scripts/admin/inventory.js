@@ -5,8 +5,7 @@ async function inventoryStart() {
 async function loadInventory(intro) {
   separator = document.getElementById("stock-separator");
   let inventoryCard = document.getElementById("inventory-card");
-  if (intro) inventoryCard.innerHTML = `<div class="loader"></div>
-      <div>`;
+  if (intro) inventoryCard.innerHTML = `<div class="loader2"></div><h4>Loading Inventory</h4>`;
   let products = await fetch("/getProduct?type=all", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

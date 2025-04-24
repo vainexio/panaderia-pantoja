@@ -75,6 +75,7 @@ section h1 {
   margin-top: 3px;
   color: white;
 }
+/* L1 start */
 .loader {
   width: 30%;
   height: 14px;
@@ -106,12 +107,24 @@ section h1 {
   background: lightblue;
   animation: l6-2 1s infinite;
 }
-
-/* HTML: <div class="loader"></div> */
+@keyframes l6-1 {
+  50%,
+  100% {
+    background-position: calc(100% / 2) 0;
+  }
+}
+@keyframes l6-2 {
+  0%,
+  50% {
+    transform: translateY(-80px);
+  }
+}
+/* L1 end */
+/* L2 start */
 .loader2 {
-  width: 90px;
-  height: 14px;
-  box-shadow: 0 3px 0 #fff;
+  width: 205px;
+  height: 50px;
+  box-shadow: 0 3px 0 var(--red);
   position: relative;
   clip-path: inset(-40px 0 -5px)
 }
@@ -120,12 +133,12 @@ section h1 {
   position: absolute;
   inset: auto calc(50% - 17px) 0;
   height: 50px;
-  --g:no-repeat linear-gradient(#ccc 0 0);
+  --g:no-repeat linear-gradient(var(--red) 0 0);
   background: var(--g),var(--g),var(--g),var(--g);
   background-size: 16px 14px;
   animation:
-    l7-1 2s infinite linear,
-    l7-2 2s infinite linear;
+    l7-1 0.9s infinite linear,
+    l7-2 0.9s infinite linear;
 }
 @keyframes l7-1 {
   0%,
@@ -140,18 +153,7 @@ section h1 {
   0%,70% {transform:translate(0)}
   100%  {transform:translate(200%)}
 }
-@keyframes l6-1 {
-  50%,
-  100% {
-    background-position: calc(100% / 2) 0;
-  }
-}
-@keyframes l6-2 {
-  0%,
-  50% {
-    transform: translateY(-80px);
-  }
-}
+/* L2 end */
 #preloader.fade-out {
   opacity: 0;
   visibility: hidden;
