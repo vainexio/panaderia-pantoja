@@ -62,7 +62,7 @@ async function loadInventory(intro) {
       card.style.color =
         product.min > product.quantity ? "var(--red)" : "var(--black)";
       card.className = "product-card";
-      card.innerHTML = `<div><h4>${product.name}</h4><div class="divider"></div><div>Qty: ${product.quantity} ${status}</div><div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
+      card.innerHTML = `<div><h5>${product.name}</h5><div class="divider"></div><div>Qty: ${product.quantity} ${status}</div><div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
 
       card.addEventListener("click", () => showProductDetails(product));
       scroll.appendChild(card);
@@ -356,12 +356,10 @@ function buildRecordsColumn(title, records, type, icon) {
       (r) => `
     <div class="record-item" data-id="${r._id}">
       <div class="record-content">
-        <h2 class="qty ${cls}">${sign}${r.amount}</h2>
+        <h4 class="qty ${cls}">${sign}${r.amount}</h4>
         <div class="date">${r.formattedDateTime} • <b>${r.fromNow}</b></div>
       </div>
-      <button type="button"
-              class="action-button delete-record-btn black-loading"
-              title="Delete record">
+      <button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
         <i class="bi bi-trash3-fill"></i>
       </button>
     </div>

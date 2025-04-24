@@ -361,35 +361,50 @@ app.post('/createStockRecord', async (req, res) => {
   }
 });
 app.post('/createProduct', async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+  if (!req.user) 
+    return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+
   try {
-    const { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit, product_qty } = req.body;
-    if (!product_name || !product_min || !product_max || !product_category || !product_expiry || !product_expiry_unit) {
+    let { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit, product_qty } = req.body;
+
+    product_min = Number(product_min);
+    product_max = Number(product_max);
+    product_qty = Number(product_qty) || 0;
+
+    if (!product_name || isNaN(product_min) || isNaN(product_max)
+        || !product_category || !product_expiry || !product_expiry_unit) {
       return res.status(400).json({ message: "All fields are required." });
     }
-    console.log(product_min,product_max)
-    if (Number(product_min) >= Number(product_max)) {
+
+    if (product_min >= product_max) {
       return res.status(400).json({ message: "Max. Qty must be greater than Min. Qty" });
     }
-    const existingProduct = await products.findOne({name: product_name});
 
-    if (existingProduct) {
+    const existing = await products.findOne({ name: product_name });
+    if (existing) {
       return res.status(400).json({ message: "A Product with same name already exists!" });
     }
 
-    // Create new patient
     const newProduct = new products(productsSchema);
     newProduct.product_id = method.genId();
-    newProduct.name = product_name
-    newProduct.category_id = product_category
-    newProduct.quantity = product_qty && product_qty > 0 ? product_qty : 0
-    newProduct.min = Number(product_min)
-    newProduct.max = Number(product_max)
-    newProduct.expiry = product_expiry
-    newProduct.expiry_unit = product_expiry_unit
-    
-    // Save to database
+    newProduct.name = product_name;
+    newProduct.category_id = product_category;
+    newProduct.quantity = product_qty;
+    newProduct.min = product_min;
+    newProduct.max = product_max;
+    newProduct.expiry = product_expiry;
+    newProduct.expiry_unit = product_expiry_unit;
     await newProduct.save();
+
+    if (product_qty > 0) {
+      const rec = new stockRecords({
+        product_id: newProduct.product_id,
+        type: 'IN',
+        amount: product_qty,
+        date: new Date().toISOString()
+      });
+      await rec.save();
+    }
 
     res.status(201).json({ message: "Product registered successfully!" });
   } catch (error) {
