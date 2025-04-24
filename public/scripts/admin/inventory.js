@@ -221,7 +221,8 @@ async function showProductDetails(product) {
   const editForm = document.getElementById("editProductForm");
   editForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
+    const btn = e.submitter;
+    setLoading(btn,true);
     const product_id = editForm.product_id.value;
     const name = editForm.product_name.value.trim();
     const min = +editForm.product_min.value;
@@ -243,8 +244,10 @@ async function showProductDetails(product) {
         type: "success",
         duration: 5000,
       });
+      setLoading(btn,false);
       await loadInventory();
     } else {
+      setLoading(btn,false);
       console.log(error);
       notify("Update failed: " + (error || "unknown error"), {
         type: "error",
@@ -256,11 +259,13 @@ async function showProductDetails(product) {
   const deleteBtn = editForm.querySelector(".delete-product-btn");
   deleteBtn.addEventListener("click", async (e) => {
     e.preventDefault();
+    setLoading(deleteBtn,true);
+    
     const confirmed = confirm(
       "Are you sure you want to delete this product? This will delete all existing records associated to this product"
     );
-    if (!confirmed) return;
-
+    if (!confirmed) return setLoading(deleteBtn,false);
+    
     const res = await fetch("/deleteProduct", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -270,6 +275,7 @@ async function showProductDetails(product) {
 
     if (success) {
       await loadInventory();
+      setLoading(deleteBtn,false);
       notify("Product deleted successfully", {
         type: "success",
         duration: 5000,
@@ -277,6 +283,7 @@ async function showProductDetails(product) {
       detailCard.style.display = "none";
       separator.style.display = "";
     } else {
+      setLoading(deleteBtn,false);
       notify("Delete failed: " + (error || "unknown error"), {
         type: "error",
         duration: 5000,
@@ -325,6 +332,9 @@ async function fetchAndRenderStockRecords(productId, intro) {
   // wire up delete buttons for each record
   detailCard.querySelectorAll(".delete-record-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
+      const confirmed = confirm("Are you sure you want to delete this record?");
+      if (!confirmed) return;
+      setLoading(btn,true);
       const recItem = btn.closest(".record-item");
       if (!recItem) return;
       const recId = recItem.getAttribute("data-id");
@@ -336,7 +346,9 @@ async function fetchAndRenderStockRecords(productId, intro) {
 
       if (success) {
         await fetchAndRenderStockRecords(productId);
+        await loadInventory();
         notify("Record deleted", { type: "success", duration: 5000 });
+        setLoading(btn,false);
       } else {
         alert("Error deleting record");
       }

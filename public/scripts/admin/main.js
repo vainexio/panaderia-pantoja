@@ -1,6 +1,7 @@
 let ready = false;
 let currentAdmin;
-function setLoading(button, isLoading, isBlack) {
+function setLoading(button, isLoading) {
+  let isBlack = button.matches(".black-loading")
   if (isLoading) {
     button.classList.add("loading");
     if (isBlack) {
@@ -70,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   ready = true;
   /* Hide loader */
   document.getElementById("preloader").classList.add("fade-out");
-  document.addEventListener("click", function (event) {
+  /*document.addEventListener("click", function (event) {
     // if the thing clicked has class="action-button"
     if (event.target.matches(".action-button")) {
       const button = event.target;
@@ -80,5 +81,5 @@ document.addEventListener("DOMContentLoaded", async function () {
         setLoading(button, false, event.target.matches(".black-loading"));
       }, 1000);
     }
-  });
+  });*/
 });
