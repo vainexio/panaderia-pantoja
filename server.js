@@ -406,7 +406,7 @@ app.post("/generateCategoryQr", async (req, res) => {
           }
 
           // generate & fetch QR
-          const { imageUrl } = await method.generateQr(product.product_id);
+          const { imageUrl } = await method.generateQr(product.product_id+);
           const response = await fetch(imageUrl);
           if (!response.ok) throw new Error("Failed to fetch QR image");
           const qrBuffer = await response.buffer();
@@ -440,7 +440,7 @@ app.post("/generateCategoryQr", async (req, res) => {
         {
           children: [
             new Paragraph({
-              text: `QR Codes for ${category.name.toUpperCase()}`,
+              text: `LIST OF QR CODES | ${category.name.toUpperCase()}`,
               heading: "Heading1",
               alignment: AlignmentType.CENTER,
             }),

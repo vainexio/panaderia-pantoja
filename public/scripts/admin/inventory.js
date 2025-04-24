@@ -318,7 +318,7 @@ async function showProductDetails(product) {
     e.preventDefault();
 
     const confirmed = confirm(
-      "Are you sure you want to delete this product? This will delete all existing records associated to this product"
+      "Are you sure you want to delete this product? All existing records associated to this product will be deleted!"
     );
     if (!confirmed) return;
     setLoading(deleteBtn, true);

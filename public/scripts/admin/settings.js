@@ -2,8 +2,7 @@ async function adminSettings() {
   try {
     document.getElementById("doc_settings_first_name").value =
       currentAdmin.username;
-    document.getElementById("doc_settings_id").value =
-      currentAdmin.id;
+    document.getElementById("doc_settings_id").value = currentAdmin.id;
 
     const sessionResponse = await fetch("/getAllSessions", {
       method: "POST",
@@ -42,14 +41,16 @@ async function adminSettings() {
         : `<button class="action-button remove-session-btn" current-session-id="${session.session_id}">Logout</button>`;
 
       tableHTML += `
-            <tr data-session-id="${session.session_id}" class="${rowClass}">
-              <td>${session.session_id+(session.currentSession ? "<i> (you)</i>" : "")}</td>
-              <td>${session.location}</td>
-              <td>
-                ${button}
-              </td>
-            </tr>
-      `;
+  <tr data-session-id="${session.session_id}" class="${rowClass}">
+    <td>${session.session_id.slice(0, 10)}...${
+        session.currentSession ? "<i> (you)</i>" : ""
+      }</td>
+    <td>${session.location}</td>
+    <td>
+      ${button}
+    </td>
+  </tr>
+`;
     });
     tableHTML += `
           </tbody>
@@ -60,7 +61,7 @@ async function adminSettings() {
 
     document.querySelectorAll(".remove-session-btn").forEach((button) => {
       button.addEventListener("click", async function () {
-        setLoading(button,true);
+        setLoading(button, true);
         const current = this.getAttribute("current-session-id");
         if (current) {
           await removeSession(current, adminSettings);
@@ -69,7 +70,7 @@ async function adminSettings() {
           const sessionId = this.getAttribute("data-session-id");
           await removeSession(sessionId, adminSettings);
           notify("Device removed", { type: "success", duration: 5000 });
-          setLoading(button,false);
+          setLoading(button, false);
         }
       });
     });
@@ -77,13 +78,13 @@ async function adminSettings() {
     const removeAllBtn = document.getElementById("remove-other-sessions");
     if (removeAllBtn) {
       removeAllBtn.addEventListener("click", async function () {
-        setLoading(removeAllBtn,true);
-        await removeOtherSessions(
-          currentAdmin.id,
-          adminSettings
-        );
-        notify("Other devices were removed", { type: "success", duration: 5000 });
-        setLoading(removeAllBtn,false);
+        setLoading(removeAllBtn, true);
+        await removeOtherSessions(currentAdmin.id, adminSettings);
+        notify("Other devices were removed", {
+          type: "success",
+          duration: 5000,
+        });
+        setLoading(removeAllBtn, false);
       });
     }
   } catch (error) {
