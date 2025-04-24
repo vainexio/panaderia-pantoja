@@ -1,90 +1,110 @@
 async function dashboard() {
-  const { products, stockRecords } = await fetch('/api/raw-inventory').then(r=>r.json());
-  const prodMap = Object.fromEntries(products.map(p=>[p.product_id,p]));
-  const today = new Date(), days=7;
-  // prepare date buckets
-  const dates = Array.from({length:days})
-    .map((_,i)=>{ const d=new Date(); d.setDate(today.getDate()-(days-1-i)); return d.toISOString().slice(0,10); });
+  const { products, stockRecords } = await fetch("/api/raw-inventory").then(
+    (r) => r.json()
+  );
+  const prodMap = Object.fromEntries(products.map((p) => [p.product_id, p]));
+  const sevenAgo = new Date();
+  sevenAgo.setDate(sevenAgo.getDate() - 7);
 
-  // separate IN/OUT
-  const ins  = stockRecords.filter(r=>r.type==='IN');
-  const outs = stockRecords.filter(r=>r.type==='OUT');
+  const ins = stockRecords.filter((r) => r.type === "IN");
+  const outs = stockRecords.filter((r) => r.type === "OUT");
 
-  // helper: group by product, sum amount
-  function sumBy(records){
-    return records.reduce((acc,r)=>{
-      acc[r.product_id] = (acc[r.product_id]||0) + r.amount;
+  // 1) 7-Day IN vs OUT per product
+  const outs7 = outs.filter((r) => new Date(r.date) >= sevenAgo);
+  const ins7 = ins.filter((r) => new Date(r.date) >= sevenAgo);
+  const sumByProduct = (arr) =>
+    arr.reduce((acc, r) => {
+      acc[r.product_id] = (acc[r.product_id] || 0) + r.amount;
       return acc;
     }, {});
-  }
-  const totalOuts = sumBy(outs);
-  const totalIns  = sumBy(ins);
-
-  // 1) 7-day OUTs per product (bar)
-  new Chart(c1,{type:'bar',
-    data:{
-      labels: Object.keys(totalOuts).map(id=>prodMap[id].name),
-      datasets:[{ label:'OUT', data:Object.values(totalOuts) }]
-    }
-  });
-
-  // 2) Top-out product (doughnut)
-  const topId = Object.entries(totalOuts).sort((a,b)=>b[1]-a[1])[0]?.[0];
-  new Chart(c2,{type:'doughnut',
-    data:{
-      labels: ['Others', prodMap[topId].name],
-      datasets:[{ data:[
-        Object.values(totalOuts).reduce((s,v)=>s+v,0) - totalOuts[topId],
-        totalOuts[topId]
-      ]}]
-    }
-  });
-
-  // 3) Low-stock by category (doughnut)
-  const low = products.filter(p=>p.quantity < p.min);
-  const byCat = low.reduce((acc,p)=>{
-    acc[p.category_id] = (acc[p.category_id]||0)+1; return acc;
-  }, {});
-  new Chart(c3,{type:'doughnut',
-    data:{
-      labels: Object.keys(byCat).map(cid=>products.find(p=>p.category_id===cid).category_id),
-      datasets:[{ data:Object.values(byCat) }]
-    }
-  });
-
-  // 4) IN vs OUT volume (pie)
-  new Chart(c4,{type:'pie',
-    data:{
-      labels:['IN','OUT'],
-      datasets:[{ data:[
-        ins.reduce((s,r)=>s+r.amount,0),
-        outs.reduce((s,r)=>s+r.amount,0)
-      ] }]
-    }
-  });
-
-  // 5) Daily OUT trend (line)
-  const dailyOut = dates.map(d=>{
-    return outs.filter(r=>r.date.slice(0,10)===d).reduce((s,r)=>s+r.amount,0);
-  });
-  new Chart(c5,{type:'line',
-    data:{ labels:dates, datasets:[{ label:'Daily OUT', data:dailyOut }] }
-  });
-
-  // 6) Stock turnover rate per product (turnover = OUT/avgStock)
-  const avgStock = prod=> (prod.min + prod.max)/2;
-  new Chart(c6,{type:'bar',
-    data:{
-      labels: Object.keys(totalOuts).map(id=>prodMap[id].name),
-      datasets:[{
-        label:'Turnover Rate',
-        data: Object.entries(totalOuts).map(([id,val])=> val / avgStock(prodMap[id]) )
-      }]
+  const out7Sum = sumByProduct(outs7),
+    in7Sum = sumByProduct(ins7);
+  const allIds7 = Array.from(
+    new Set([...Object.keys(out7Sum), ...Object.keys(in7Sum)])
+  );
+  const labels7 = allIds7.map((id) => prodMap[id]?.name || id);
+  const dataOut7 = allIds7.map((id) => out7Sum[id] || 0);
+  const dataIn7 = allIds7.map((id) => in7Sum[id] || 0);
+  new Chart(document.getElementById("c1"), {
+    type: "bar",
+    data: {
+      labels: labels7,
+      datasets: [
+        { label: "IN", data: dataIn7 },
+        { label: "OUT", data: dataOut7 },
+      ],
     },
-    options:{ scales:{ y:{ ticks:{ callback:v=>v.toFixed(2) } } } }
+    options: {
+      responsive: true,
+      scales: { x: { stacked: false }, y: { beginAtZero: true } },
+    },
+  });
+
+  // 2) Top outgoing products (7-day)
+  const sortedOut7 = Object.entries(out7Sum)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+  new Chart(document.getElementById("c2"), {
+    type: "bar",
+    data: {
+      labels: sortedOut7.map((e) => prodMap[e[0]].name),
+      datasets: [{ label: "OUT", data: sortedOut7.map((e) => e[1]) }],
+    },
+    options: { responsive: true },
+  });
+
+  // 4) IN vs OUT Volume overall
+  new Chart(document.getElementById("c4"), {
+    type: "pie",
+    data: {
+      labels: ["IN", "OUT"],
+      datasets: [
+        {
+          data: [
+            ins.reduce((s, r) => s + r.amount, 0),
+            outs.reduce((s, r) => s + r.amount, 0),
+          ],
+        },
+      ],
+    },
+    options: { responsive: true },
+  });
+
+  // 5) Daily OUT Trend
+  const days = Array.from({ length: 7 }).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - 6 + i);
+    return d.toISOString().slice(0, 10);
+  });
+  const outsByDay = days.map((d) =>
+    outs
+      .filter((r) => r.date.slice(0, 10) === d)
+      .reduce((s, r) => s + r.amount, 0)
+  );
+  new Chart(document.getElementById("c5"), {
+    type: "line",
+    data: { labels: days, datasets: [{ label: "Daily OUT", data: outsByDay }] },
+    options: { responsive: true },
+  });
+
+  // 6) Stock Turnover Rate
+  const avgStock = (p) => (p.min + p.max) / 2;
+  const turnoverIds = Object.keys(out7Sum);
+  new Chart(document.getElementById("c6"), {
+    type: "bar",
+    data: {
+      labels: turnoverIds.map((id) => prodMap[id].name),
+      datasets: [
+        {
+          label: "Turnover",
+          data: turnoverIds.map((id) => out7Sum[id] / avgStock(prodMap[id])),
+        },
+      ],
+    },
+    options: { responsive: true, scales: { y: { beginAtZero: true } } },
   });
 }
 
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", function () {
   waitUntilReady(dashboard);
 });

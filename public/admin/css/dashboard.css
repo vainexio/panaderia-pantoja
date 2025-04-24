@@ -14,7 +14,7 @@
   padding-left: 3rem;
   justify-content: center;
   width: 100%;
-  grid-template-columns: repeat(3, 1fr);  /* two cards per row */
+  grid-template-columns: repeat(1, 1fr);  /* two cards per row */
   gap: 1rem;                              /* space between cards */
 }
 
