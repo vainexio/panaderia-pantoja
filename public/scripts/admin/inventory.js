@@ -259,13 +259,10 @@ async function showProductDetails(product) {
   const deleteBtn = editForm.querySelector(".delete-product-btn");
   deleteBtn.addEventListener("click", async (e) => {
     e.preventDefault();
+    
+    const confirmed = confirm("Are you sure you want to delete this product? This will delete all existing records associated to this product");
+    if (!confirmed) return;
     setLoading(deleteBtn,true);
-    
-    const confirmed = confirm(
-      "Are you sure you want to delete this product? This will delete all existing records associated to this product"
-    );
-    if (!confirmed) return setLoading(deleteBtn,false);
-    
     const res = await fetch("/deleteProduct", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

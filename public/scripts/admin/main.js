@@ -71,15 +71,4 @@ document.addEventListener("DOMContentLoaded", async function () {
   ready = true;
   /* Hide loader */
   document.getElementById("preloader").classList.add("fade-out");
-  /*document.addEventListener("click", function (event) {
-    // if the thing clicked has class="action-button"
-    if (event.target.matches(".action-button")) {
-      const button = event.target;
-      setLoading(button, true, event.target.matches(".black-loading"));
-
-      setTimeout(() => {
-        setLoading(button, false, event.target.matches(".black-loading"));
-      }, 1000);
-    }
-  });*/
 });

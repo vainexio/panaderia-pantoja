@@ -21,7 +21,7 @@ async function adminSettings() {
 
     let tableHTML = `
       <div class="table-responsive">
-        <button id="remove-other-sessions" class="btn btn-danger mb-3">Logout Other Sessions</button>
+        <button id="remove-other-sessions" class="btn btn-danger mb-3">Logout Other Devices</button>
         <table class="table table-striped table-bordered">
           <thead class="thead-dark">
             <tr>
@@ -43,7 +43,7 @@ async function adminSettings() {
 
       tableHTML += `
             <tr data-session-id="${session.session_id}" class="${rowClass}">
-              <td>${session.ip_address}</td>
+              <td>${session.ip_address+(session.currentSession ? "<i> (you)</i>" : "")}</td>
               <td>${session.location}</td>
               <td>
                 ${button}
@@ -60,6 +60,7 @@ async function adminSettings() {
 
     document.querySelectorAll(".remove-session-btn").forEach((button) => {
       button.addEventListener("click", async function () {
+        setLoading(button,true);
         const current = this.getAttribute("current-session-id");
         if (current) {
           await removeSession(current, adminSettings);
@@ -67,6 +68,8 @@ async function adminSettings() {
         } else {
           const sessionId = this.getAttribute("data-session-id");
           await removeSession(sessionId, adminSettings);
+          notify("Device removed", { type: "success", duration: 5000 });
+          setLoading(button,false);
         }
       });
     });
@@ -74,10 +77,13 @@ async function adminSettings() {
     const removeAllBtn = document.getElementById("remove-other-sessions");
     if (removeAllBtn) {
       removeAllBtn.addEventListener("click", async function () {
+        setLoading(removeAllBtn,true);
         await removeOtherSessions(
           currentAdmin.id,
           adminSettings
         );
+        notify("Other devices were removed", { type: "success", duration: 5000 });
+        setLoading(removeAllBtn,false);
       });
     }
   } catch (error) {

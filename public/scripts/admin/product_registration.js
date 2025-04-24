@@ -10,7 +10,7 @@ async function deleteCategory(catName, callback) {
       // Refresh
       callback();
     } else {
-      response = await response.json()
+      response = await response.json();
       notify(response.error, { type: "error", duration: 5000 });
     }
   } catch (error) {
@@ -19,11 +19,11 @@ async function deleteCategory(catName, callback) {
 }
 async function displayCategories() {
   let response = await fetch("/getCategories");
-    if (response.ok) {
-      response = await response.json()
-      let categoryList = ""
-      
-      let tableHTML = `
+  if (response.ok) {
+    response = await response.json();
+    let categoryList = "";
+
+    let tableHTML = `
       <div class="table-responsive">
         <table class="table table-striped table-transparent">
           <thead class="thead-dark">
@@ -34,14 +34,16 @@ async function displayCategories() {
           </thead>
           <tbody>
     `;
-      
-      for (let i in response) {
-        let cat = response[i]
-        console.log(cat._id.toString())
-        categoryList += `<option value="${cat.category_id}">${cat.name.toUpperCase()}</option>`
-        const button = `<button class="btn btn-sm btn-danger remove-cat-btn" cat-name="${cat.name}">Delete</button>`
 
-        tableHTML += `
+    for (let i in response) {
+      let cat = response[i];
+      console.log(cat._id.toString());
+      categoryList += `<option value="${
+        cat.category_id
+      }">${cat.name.toUpperCase()}</option>`;
+      const button = `<button class="btn btn-sm btn-danger remove-cat-btn" cat-name="${cat.name}">Delete</button>`;
+
+      tableHTML += `
         <tr cat-name="${cat.name}">
         <td>${cat.name.toUpperCase()}</td>
         <td>
@@ -49,32 +51,36 @@ async function displayCategories() {
         </td>
         </tr>
         `;
-      }
-      tableHTML += `
+    }
+    tableHTML += `
       </tbody>
       </table>
       </div>
-      `
-      document.querySelector(".categories-card").innerHTML = tableHTML;
-      
-      let categoryGroup = document.getElementById('category-group')
-      categoryGroup.innerHTML = `
+      `;
+    document.querySelector(".categories-card").innerHTML = tableHTML;
+
+    let categoryGroup = document.getElementById("category-group");
+    categoryGroup.innerHTML = `
       <div class="form-group">
         <label for="product_category">Category</label>
         <select id="product_category" name="product_category" required>
-        <option value="">${response.length > 0 ? "Select Category" : "Create a Category First"}</option>
+        <option value="">${
+          response.length > 0 ? "Select Category" : "Create a Category First"
+        }</option>
         ${categoryList}
         </select>
       </div>
-      `
-      
-      document.querySelectorAll(".remove-cat-btn").forEach((button) => {
+      `;
+
+    document.querySelectorAll(".remove-cat-btn").forEach((button) => {
       button.addEventListener("click", async function () {
         const current = this.getAttribute("cat-name");
+        setLoading(button, true);
         await deleteCategory(current, displayCategories);
+        setLoading(button, false);
       });
     });
-    }
+  }
 }
 async function productRegistration() {
   if (!window.productRegistrationFormAttached) {
@@ -84,7 +90,8 @@ async function productRegistration() {
       .getElementById("productForm")
       .addEventListener("submit", async function (event) {
         event.preventDefault();
-
+        const btn = event.submitter;
+        setLoading(btn, true);
         const formData = Object.fromEntries(
           new FormData(event.target).entries()
         );
@@ -97,17 +104,24 @@ async function productRegistration() {
         if (response.ok) {
           notify("Product registered", { type: "success", duration: 5000 });
           document.getElementById("productForm").reset();
-          loadInventory()
+          setLoading(btn, false);
+          loadInventory();
         } else {
           const error = await response.json();
-          notify(error.message || "Failed to register product.", { type: "error", duration: 5000 });
+          notify(error.message || "Failed to register product.", {
+            type: "error",
+            duration: 5000,
+          });
+          setLoading(btn, false);
         }
       });
-    
+
     document
       .getElementById("categoryForm")
       .addEventListener("submit", async function (event) {
         event.preventDefault();
+        const btn = event.submitter;
+        setLoading(btn, true);
         const formData = Object.fromEntries(
           new FormData(event.target).entries()
         );
@@ -120,14 +134,19 @@ async function productRegistration() {
 
         if (response.ok) {
           notify("Category created", { type: "success", duration: 5000 });
-          displayCategories()
+          displayCategories();
+          setLoading(btn, false);
         } else {
           const error = await response.json();
-          notify(error.message || "Failed to create category.", { type: "error", duration: 5000 });
+          notify(error.message || "Failed to create category.", {
+            type: "error",
+            duration: 5000,
+          });
+          setLoading(btn, false);
         }
         document.getElementById("categoryForm").reset();
       });
-    
+
     displayCategories();
   }
 }

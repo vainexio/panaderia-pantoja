@@ -220,12 +220,14 @@ section h1 {
   color: var(--white);
   border-radius: 12px;
 }
+.btn.loading,
 .action-button.loading {
   position: relative;
   pointer-events: none;
   color: transparent;
 }
 
+.btn.loading::after,
 .action-button.loading::after {
   content: "";
   position: absolute;
