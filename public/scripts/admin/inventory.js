@@ -245,6 +245,7 @@ async function showProductDetails(product) {
       notify("Added incoming record", { type: "success", duration: 5000 });
       await loadInventory();
     } else {
+      console.log(success)
       setLoading(btn, false);
       notify("Failed to add record", { type: "error", duration: 5000 });
     }
@@ -475,7 +476,7 @@ function buildRecordsColumn(title, records, type, icon) {
   return `<h3>${icon} ${title}</h3><div class="records-list">${items}</div>`;
 }
 
-// kick things off when the DOM is ready
+// 
 document.addEventListener("DOMContentLoaded", async function () {
   waitUntilReady(inventoryStart);
 });
