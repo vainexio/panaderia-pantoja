@@ -127,9 +127,9 @@ async function showProductDetails(product) {
     </div>
 
     <div class="submit-container">
-    <button class="action-button me-1 qr-gen-btn"><i class="bi bi-qr-code-scan"></i> Generate QR</button>
-    <button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill"></i> Delete</button>
-    <button type="submit" class="action-button""><i class="bi bi-floppy-fill"></i> Save</button>
+    <button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill" title="Delete Product"></i></button>
+    <button class="action-button me-1 qr-gen-btn"><i class="bi bi-qr-code-scan"></i> QR</button>
+    <button type="submit" class="action-button" title="Save Changes"><i class="bi bi-floppy-fill"></i> Save</button>
       </div>
   </form>
   <div class="qr-container"></div>
@@ -319,7 +319,7 @@ async function showProductDetails(product) {
       const qrContainer = document.querySelector(".qr-container");
       qrContainer.innerHTML = `
     <img id="qrPreview" src="${qrLink}" class="qr-code" />
-    <button id="downloadQrBtn" type="button" class="action-button" title="Open in New Tab" style="width: 50%;border-radius: 0px 0px 12px 12px">Download QR</button>
+    <button id="downloadQrBtn" type="button" class="action-button" title="Open in New Tab" >Open in New Tab</button>
     `;
       
       document.getElementById("downloadQrBtn").addEventListener("click", () => {
