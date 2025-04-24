@@ -5,7 +5,8 @@ async function inventoryStart() {
 async function loadInventory(intro) {
   separator = document.getElementById("stock-separator");
   let inventoryCard = document.getElementById("inventory-card");
-  if (intro) inventoryCard.innerHTML = `<h3>Loading inventory…</h3>`;
+  if (intro) inventoryCard.innerHTML = `<div class="loader"></div>
+      <div>`;
   let products = await fetch("/getProduct?type=all", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -176,6 +177,8 @@ async function showProductDetails(product) {
     e.preventDefault();
     const amount = +inForm.in_amount.value;
     if (!amount) return;
+    const btn = e.submitter;
+    setLoading(btn,true)
     const { success } = await fetch("/createStockRecord", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -187,11 +190,13 @@ async function showProductDetails(product) {
     }).then((r) => r.json());
     if (success) {
       inForm.reset();
-      notify("Added incoming record", { type: "success", duration: 5000 });
       await fetchAndRenderStockRecords(product.product_id);
+      setLoading(btn,false);
+      notify("Added incoming record", { type: "success", duration: 5000 });
       await loadInventory();
     } else {
-      alert("Error creating IN record");
+      setLoading(btn,false);
+      notify("Failed to add record", { type: "error", duration: 5000 });
     }
   });
   //
@@ -199,6 +204,8 @@ async function showProductDetails(product) {
     e.preventDefault();
     const amount = +outForm.out_amount.value;
     if (!amount) return;
+    const btn = e.submitter;
+    setLoading(btn,true)
     const { success } = await fetch("/createStockRecord", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -210,11 +217,13 @@ async function showProductDetails(product) {
     }).then((r) => r.json());
     if (success) {
       outForm.reset();
-      notify("Added outgoing record", { type: "success", duration: 5000 });
       await fetchAndRenderStockRecords(product.product_id);
+      setLoading(btn,false);
+      notify("Added outgoing record", { type: "success", duration: 5000 });
       await loadInventory();
     } else {
-      alert("Error creating OUT record");
+      setLoading(btn,false);
+      notify("Failed to add record", { type: "error", duration: 5000 });
     }
   });
   //
