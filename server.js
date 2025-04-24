@@ -406,7 +406,7 @@ app.post("/generateCategoryQr", async (req, res) => {
           }
 
           // generate & fetch QR
-          const { imageUrl } = await method.generateQr(product.product_id+);
+          const { imageUrl } = await method.generateQr(product.product_id+"-"+product.name);
           const response = await fetch(imageUrl);
           if (!response.ok) throw new Error("Failed to fetch QR image");
           const qrBuffer = await response.buffer();
