@@ -122,38 +122,49 @@ section h1 {
 /* L1 end */
 /* L2 start */
 .loader2 {
-  width: 30%;
-  height: 50px;
-  box-shadow: 0 3px 0 var(--red);
+  height: 60px;
+  aspect-ratio: 1;
   position: relative;
-  clip-path: inset(-40px 0 -5px)
+  border: 3px solid #0000;
 }
+
 .loader2:before {
   content: "";
   position: absolute;
-  inset: auto calc(50% - 17px) 0;
-  height: 50px;
-  --g:no-repeat linear-gradient(var(--red) 0 0);
-  background: var(--g),var(--g),var(--g),var(--g);
-  background-size: 16px 14px;
-  animation:
-    l7-1 0.9s infinite linear,
-    l7-2 0.9s infinite linear;
+  inset: auto 35% 0;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--red);
+  animation: l7-0 .5s cubic-bezier(0,800,1,800) infinite;
+}
+.loader2:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  outline: 3px solid var(--red);
+  animation: l7-1 .5s linear infinite;
+}
+.inverted:before {
+  background: var(--white);
+}
+.inverted:after {
+  outline: 3px solid var(--white);
+}
+@keyframes l7-0 {
+  0%,2% {bottom: 0%}
+  98%,to {bottom:.1%}
 }
 @keyframes l7-1 {
-  0%,
-  100%  {background-position: 0 -50px,100% -50px}
-  17.5% {background-position: 0 100%,100% -50px,0 -50px,100% -50px}
-  35%   {background-position: 0 100%,100% 100% ,0 -50px,100% -50px}
-  52.5% {background-position: 0 100%,100% 100% ,0 calc(100% - 16px),100% -50px}
-  70%,
-  98%  {background-position: 0 100%,100% 100% ,0 calc(100% - 16px),100% calc(100% - 16px)}
-}
-@keyframes l7-2 {
-  0%,70% {transform:translate(0)}
-  100%  {transform:translate(200%)}
+  0%,30% {rotate:  0deg}
+  70%,to {rotate: 90deg}
 }
 /* L2 end */
+.loading-holder {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row;
+  width: 200px;
+}
 #preloader.fade-out {
   opacity: 0;
   visibility: hidden;
