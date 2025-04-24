@@ -1,11 +1,12 @@
 let separator, detailCard;
 async function inventoryStart() {
-  loadInventory(true)
+  loadInventory(true);
 }
 async function loadInventory(intro) {
   separator = document.getElementById("stock-separator");
   let inventoryCard = document.getElementById("inventory-card");
-  if (intro) inventoryCard.innerHTML = `<div class="loading-holder"><div class="loader2"></div><h4>Loading Inventory</h4></div>`;
+  if (intro)
+    inventoryCard.innerHTML = `<div class="loading-holder"><div class="loader2"></div><h4>Loading Inventory</h4></div>`;
   let products = await fetch("/getProduct?type=all", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -180,7 +181,7 @@ async function showProductDetails(product) {
     const amount = +inForm.in_amount.value;
     if (!amount) return;
     const btn = e.submitter;
-    setLoading(btn,true)
+    setLoading(btn, true);
     const { success } = await fetch("/createStockRecord", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -193,11 +194,11 @@ async function showProductDetails(product) {
     if (success) {
       inForm.reset();
       await fetchAndRenderStockRecords(product.product_id);
-      setLoading(btn,false);
+      setLoading(btn, false);
       notify("Added incoming record", { type: "success", duration: 5000 });
       await loadInventory();
     } else {
-      setLoading(btn,false);
+      setLoading(btn, false);
       notify("Failed to add record", { type: "error", duration: 5000 });
     }
   });
@@ -207,7 +208,7 @@ async function showProductDetails(product) {
     const amount = +outForm.out_amount.value;
     if (!amount) return;
     const btn = e.submitter;
-    setLoading(btn,true)
+    setLoading(btn, true);
     const { success } = await fetch("/createStockRecord", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -220,11 +221,11 @@ async function showProductDetails(product) {
     if (success) {
       outForm.reset();
       await fetchAndRenderStockRecords(product.product_id);
-      setLoading(btn,false);
+      setLoading(btn, false);
       notify("Added outgoing record", { type: "success", duration: 5000 });
       await loadInventory();
     } else {
-      setLoading(btn,false);
+      setLoading(btn, false);
       notify("Failed to add record", { type: "error", duration: 5000 });
     }
   });
@@ -233,7 +234,7 @@ async function showProductDetails(product) {
   editForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn = e.submitter;
-    setLoading(btn,true);
+    setLoading(btn, true);
     const product_id = editForm.product_id.value;
     const name = editForm.product_name.value.trim();
     const min = +editForm.product_min.value;
@@ -255,10 +256,10 @@ async function showProductDetails(product) {
         type: "success",
         duration: 5000,
       });
-      setLoading(btn,false);
+      setLoading(btn, false);
       await loadInventory();
     } else {
-      setLoading(btn,false);
+      setLoading(btn, false);
       console.log(error);
       notify("Update failed: " + (error || "unknown error"), {
         type: "error",
@@ -270,10 +271,12 @@ async function showProductDetails(product) {
   const deleteBtn = editForm.querySelector(".delete-product-btn");
   deleteBtn.addEventListener("click", async (e) => {
     e.preventDefault();
-    
-    const confirmed = confirm("Are you sure you want to delete this product? This will delete all existing records associated to this product");
+
+    const confirmed = confirm(
+      "Are you sure you want to delete this product? This will delete all existing records associated to this product"
+    );
     if (!confirmed) return;
-    setLoading(deleteBtn,true);
+    setLoading(deleteBtn, true);
     const res = await fetch("/deleteProduct", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -283,7 +286,7 @@ async function showProductDetails(product) {
 
     if (success) {
       await loadInventory();
-      setLoading(deleteBtn,false);
+      setLoading(deleteBtn, false);
       notify("Product deleted successfully", {
         type: "success",
         duration: 5000,
@@ -291,42 +294,48 @@ async function showProductDetails(product) {
       detailCard.style.display = "none";
       separator.style.display = "";
     } else {
-      setLoading(deleteBtn,false);
+      setLoading(deleteBtn, false);
       notify("Delete failed: " + (error || "unknown error"), {
         type: "error",
         duration: 5000,
       });
     }
   });
-  
+
   const genQrButton = editForm.querySelector(".qr-gen-btn");
   genQrButton.addEventListener("click", async (e) => {
     e.preventDefault();
-    setLoading(genQrButton,true);
+    setLoading(genQrButton, true);
     let res = await fetch("/generateQr", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ product_id: product.product_id }),
     });
     if (res.ok) {
-    res = await res.json();
-    const qrLink = res.message;
+      res = await res.json();
+      const qrLink = res.message;
 
-    // 👇 Display the QR link in HTML
-    const qrContainer = document.querySelector(".qr-container");
-    qrContainer.innerHTML = `
-    <img src="${qrLink}" class="qr-code" />
-    <button type="button" class="action-button" title="Download QR" style="width: 40%;">Download QR</button>
+      // 👇 Display the QR link in HTML
+      const qrContainer = document.querySelector(".qr-container");
+      qrContainer.innerHTML = `
+    <img id="qrPreview" src="${qrLink}" class="qr-code" />
+    <button id="downloadQrBtn" type="button" class="action-button" title="Open in New Tab" style="width: 50%;border-radius: 0px 0px 12px 12px">Download QR</button>
     `;
-      setLoading(genQrButton,false);
-  } else {
-    res = await res.json();
-    notify("Generate failed: " + (res.error || "unknown error"), {
-      type: "error",
-      duration: 5000,
-    });
-    setLoading(genQrButton,false);
-  }
+      
+      document.getElementById("downloadQrBtn").addEventListener("click", () => {
+        const qrImg = document.getElementById("qrPreview");
+        window.open(qrImg.src, "_blank");
+      });
+      
+      setLoading(genQrButton, false);
+    } else {
+      res = await res.json();
+      notify("Generate failed: " + (res.error || "unknown error"), {
+        type: "error",
+        duration: 5000,
+      });
+      setLoading(genQrButton, false);
+    }
   });
 
   await fetchAndRenderStockRecords(product.product_id, true);
@@ -371,7 +380,7 @@ async function fetchAndRenderStockRecords(productId, intro) {
     btn.addEventListener("click", async () => {
       const confirmed = confirm("Are you sure you want to delete this record?");
       if (!confirmed) return;
-      setLoading(btn,true);
+      setLoading(btn, true);
       const recItem = btn.closest(".record-item");
       if (!recItem) return;
       const recId = recItem.getAttribute("data-id");
@@ -384,7 +393,7 @@ async function fetchAndRenderStockRecords(productId, intro) {
       if (success) {
         await fetchAndRenderStockRecords(productId);
         notify("Record deleted", { type: "success", duration: 5000 });
-        setLoading(btn,false);
+        setLoading(btn, false);
         await loadInventory();
       } else {
         alert("Error deleting record");
