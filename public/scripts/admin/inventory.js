@@ -1,4 +1,4 @@
-let separator, detailCard;
+let separator, detailCard, currentProduct;
 async function inventoryStart() {
   loadInventory(true);
 }
@@ -120,6 +120,7 @@ async function loadInventory(intro) {
 }
 //
 async function showProductDetails(product) {
+  currentProduct = product
   separator.style.display = "none";
   detailCard = document.querySelector(".product-details-card");
   detailCard.innerHTML = "";

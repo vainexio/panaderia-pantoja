@@ -70,3 +70,14 @@ const socket = io("https://panaderiapantoja.glitch.me");
 socket.on("notify", (data) => {
   notify(data.message, { type: data.type, duration: data.duration });
 });
+socket.on("reload", (data) => {
+  let target = data.target
+  if (target == "inventory") loadInventory();
+  else if (target == "product") {
+    let product = data.product
+    if (currentProduct.product_id == product.product_id) {
+      showProductDetails(product)
+      fetchAndRenderStockRecords(product.product_id)
+    }
+  }
+});
