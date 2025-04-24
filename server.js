@@ -517,8 +517,8 @@ app.post("/createStockRecord", async (req, res) => {
       io.emit("reload",{ target: "product", product: updatedProduct});
       io.emit("notify", {
         message: `An [${type}] record was added to ${updatedProduct.name}`,
-        type: "success",
-        duration: 10000,
+        type: "info",
+        duration: 5000,
       });
     }
 

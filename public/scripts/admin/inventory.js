@@ -132,6 +132,7 @@ async function showProductDetails(product) {
   backBtn.addEventListener("click", () => {
     detailCard.style.display = "none";
     separator.style.display = "";
+    currentProduct = null
   });
   detailCard.appendChild(backBtn);
 
