@@ -1,36 +1,33 @@
 :root {
   --white: #fcfcfc;
-  --light-gray: #e9ecef;
-  --blue: #283986;
-  --secondary-blue: #91b2ff;
+  --light-gray: #e3e3e3;
+  --red: #981414;
   --yellow: #ffd41c;
   --secondary-yellow: #ffe365;
   --black: #363636;
+  --green: #009926;
 }
 .dashboard .chart-grid {
   display: grid;
-  height: 100%;
-  padding-right: 3rem;
-  padding-left: 3rem;
-  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+  gap: 1rem;
   width: 100%;
-  grid-template-columns: repeat(1, 1fr);  /* two cards per row */
-  gap: 1rem;                              /* space between cards */
+  padding-left: 3rem;
+  justify-content: end;
 }
 
-/* collapse to one column on small screens */
-@media (max-width: 600px) {
-  .dashboard .chart-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* optional: make .chart-card stretch & add padding/border */
+/* Ensure chart-cards fill their grid cell */
 .dashboard .chart-card {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 40%;
 }
-/* Use this pallets */
-/* Css designs goes below this */
+
+/* Make canvas fill card and maintain aspect ratio */
+.dashboard .chart-card canvas {
+  justify-content: center;
+  width: 100% !important;
+  height: auto !important;
+  border: 2px solid var(--red);
+}
