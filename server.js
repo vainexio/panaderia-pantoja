@@ -491,7 +491,7 @@ app.post("/createStockRecord", async (req, res) => {
         .json({ success: false, error: "Invalid type or amount" });
     }
     // Create stock record
-    const newRecord = new stockRecords({ product_id, type, amount, author_id });
+    const newRecord = new stockRecords({ product_id: product_id, type: type, amount: amount, author_id: Number(author_id) });
     await newRecord.save();
 
     // Adjust product quantity
@@ -501,7 +501,7 @@ app.post("/createStockRecord", async (req, res) => {
       { $inc: { quantity: delta } },
       { new: true }
     );
-
+    if (Number(author_id) == 2) { io.emit("notify", { message: "A product was updated", type: "success", duration: 10000, }); }
     return res.status(201).json({
       success: true,
       message: `${type} record created and product quantity updated`,
@@ -813,22 +813,14 @@ app.get("/test", async (req, res) => {
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, async () => {
+/*app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
-});
+});*/
 //
 
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
-
-  // Send a notification when connected
-  socket.emit("notify", "Welcome! Real-time updates are active.");
-
-  // Optional: trigger a notification later
-  setTimeout(() => {
-    socket.emit("notify", "A new product was added!");
-  }, 5000);
 });
-server.listen(3002, () => {
-  console.log("Server is running on port", 3002);
+server.listen(PORT, () => {
+  console.log("Server is running on port", PORT);
 });

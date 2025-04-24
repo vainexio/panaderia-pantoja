@@ -64,8 +64,9 @@ window.addEventListener("online", () =>
   notify("You are back online", { type: "success", duration: 10000 })
 );
 //
-const socket = io();
+const socket = io("https://panaderiapantoja.glitch.me");
 
-socket.on("server-message", (msg) => {
-  notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 10000, });
+
+socket.on("notify", (data) => {
+  notify(data.message, { type: data.type, duration: data.duration });
 });
