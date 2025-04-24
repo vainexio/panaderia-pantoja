@@ -351,9 +351,9 @@ async function fetchAndRenderStockRecords(productId, intro) {
 
       if (success) {
         await fetchAndRenderStockRecords(productId);
-        await loadInventory();
         notify("Record deleted", { type: "success", duration: 5000 });
         setLoading(btn,false);
+        await loadInventory();
       } else {
         alert("Error deleting record");
       }
