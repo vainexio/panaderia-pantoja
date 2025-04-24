@@ -9,6 +9,7 @@ const fs = require('fs');
 const cors = require('cors');
 const fetch = require('node-fetch');
 const moment = require("moment");
+const { Document, Packer, Paragraph, Media, TextRun } = require("docx");
 
 const cookieParser = require('cookie-parser');
 const { v4: uuidv4 } = require('uuid');
@@ -344,6 +345,38 @@ app.get('/getCategories', async (req, res) => {
 });
 
 // Create
+app.post("/generateCategoryQr", async (req, res) => {
+  const { category_id } = req.body;
+  if (!category_id) return res.status(400).json({ error: "Missing category_id" });
+
+  const foundProducts = await products.find({ category_id });
+  const doc = new Document();
+
+  let row = [];
+  for (let i = 0; i < foundProducts.length; i++) {
+    const product = foundProducts[i];
+    const qrDataUrl = await QRCode.toDataURL(product.product_id);
+    const qrImage = Media.addImage(doc, qrDataUrl);
+
+    const column = new Paragraph({
+      children: [qrImage, new TextRun(product.name)],
+      alignment: "center",
+    });
+
+    row.push(column);
+    if (row.length === 3 || i === foundProducts.length - 1) {
+      doc.addSection({ children: [new Paragraph({ children: row, spacing: { after: 200 } })] });
+      row = [];
+    }
+  }
+
+  const buffer = await Packer.toBuffer(doc);
+  const filename = `qrs_${category_id}_${Date.now()}.docx`;
+  const filepath = path.join(__dirname, "../public/docs", filename);
+  fs.writeFileSync(filepath, buffer);
+
+  res.json({ link: "/docs/" + filename });
+});
 app.post('/createStockRecord', async (req, res) => {
   try {
     const { product_id, type, amount } = req.body;

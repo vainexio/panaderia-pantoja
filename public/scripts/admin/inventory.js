@@ -18,7 +18,7 @@ async function loadInventory(intro) {
   products = await products.json();
   categories = await categories.json();
 
-  inventoryCard.innerHTML = "";
+  inventoryCard.innerHTML = ``
   const grouped = {};
 
   products.forEach((item) => {
@@ -41,7 +41,7 @@ async function loadInventory(intro) {
 
     const heading = document.createElement("div");
     heading.className = "category-heading";
-    heading.textContent = category;
+    heading.innerHTML = category+` <button class="action-button me-1 category-qr-gen-btn"><i class="bi bi-qr-code-scan"></i> Download QR</button>`;
 
     const scroll = document.createElement("div");
     scroll.className = "scroll-container";
