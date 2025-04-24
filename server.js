@@ -379,25 +379,31 @@ app.post("/generateCategoryQr", async (req, res) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    const foundProducts = await products.find({ category_id });
-    const rows = [];
+    // fetch and sort products by name
+    const foundProducts = await products
+      .find({ category_id })
+      .sort({ name: 1 }) 
+      .exec();   
 
-    for (let i = 0; i < foundProducts.length; i += 3) {
-      // take up to 3 products and pad with nulls if <3
-      const chunk = foundProducts.slice(i, i + 3);
-      while (chunk.length < 3) chunk.push(null);
+    const rows = [];
+    const perRow = 2;
+
+    for (let i = 0; i < foundProducts.length; i += perRow) {
+      // grab up to `perRow` products and pad with nulls
+      const chunk = foundProducts.slice(i, i + perRow);
+      while (chunk.length < perRow) chunk.push(null);
 
       const cells = await Promise.all(
         chunk.map(async (product) => {
-          // empty cell
+          // empty slot
           if (!product) {
             return new TableCell({
               children: [],
-              width: { size: 33.33, type: WidthType.PERCENTAGE },
+              width: { size: 50, type: WidthType.PERCENTAGE },
             });
           }
 
-          // fetch QR
+          // generate & fetch QR
           const { imageUrl } = await method.generateQr(product.product_id);
           const response = await fetch(imageUrl);
           if (!response.ok) throw new Error("Failed to fetch QR image");
@@ -409,7 +415,7 @@ app.post("/generateCategoryQr", async (req, res) => {
           });
 
           return new TableCell({
-            width: { size: 33.33, type: WidthType.PERCENTAGE },
+            width: { size: 50, type: WidthType.PERCENTAGE },
             children: [
               new Paragraph({
                 children: [image],
@@ -427,7 +433,6 @@ app.post("/generateCategoryQr", async (req, res) => {
       rows.push(new TableRow({ children: cells }));
     }
 
-    // build document with a 100%-width table
     const doc = new Document({
       sections: [
         {
@@ -451,7 +456,6 @@ app.post("/generateCategoryQr", async (req, res) => {
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     );
-    // deliver a .docx (not .pdf)
     res.setHeader(
       "Content-Disposition",
       `attachment; filename="${category.name}_qr_codes.docx"`

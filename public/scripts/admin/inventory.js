@@ -74,19 +74,18 @@ async function loadInventory(intro) {
     const originalCategory = categories.find(
       (ctg) => ctg.name.toUpperCase() === category
     );
+    const qrBtn = heading.querySelector(".category-qr-gen-btn");
 
-    heading
-      .querySelector(".category-qr-gen-btn")
-      .addEventListener("click", async (e) => {
-        let btn = e.submitter;
+    qrBtn.addEventListener("click", async (e) => {
+        setLoading(qrBtn, true);
         if (!originalCategory) {
-          setLoading(btn, true);
           notify("Unable to find the category ID for: " + category, {
             type: "error",
             duration: 5000,
           });
           return;
         }
+      notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 5000, });
 
         const res = await fetch("/generateCategoryQr", {
           method: "POST",
@@ -95,22 +94,23 @@ async function loadInventory(intro) {
         });
 
         if (res.ok) {
+          notify("Download Successful", { type: "success", duration: 5000, });
           const blob = await res.blob();
           const link = document.createElement("a");
           link.href = URL.createObjectURL(blob);
           link.download = `${originalCategory.name.replace(
             /\s+/g,
             "_"
-          )}_qr_codes.pdf`;
+          )}_qr_codes.docx`;
           link.click();
-          setLoading(btn, false);
+          setLoading(qrBtn, false);
         } else {
           const error = await res.json();
           notify("QR Download Failed: " + (error.message || "unknown error"), {
             type: "error",
             duration: 5000,
           });
-          setLoading(btn, false);
+          setLoading(qrBtn, false);
         }
       });
 
