@@ -453,8 +453,9 @@ app.post('/generateQr', async (req, res) => {
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
   try {
     const { product_id } = req.body;
-    
-    res.status(201).json({ message: method.generateQr() });
+    let generatedQr = await method.generateQr(product_id)
+    console.log(generatedQr)
+    res.status(201).json({ message: generatedQr.imageUrl });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -130,7 +130,10 @@ async function showProductDetails(product) {
     <button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill"></i> Delete</button>
     <button type="submit" class="action-button""><i class="bi bi-floppy-fill"></i> Save</button>
       </div>
-  </form>`;
+  </form>
+  <div class="qr-container" style="margin-top: 1rem;"></div>
+
+  `;
 
   const right = document.createElement("div");
   right.className = "detail-right";
@@ -300,21 +303,28 @@ async function showProductDetails(product) {
   const genQrButton = editForm.querySelector(".qr-gen-btn");
   genQrButton.addEventListener("click", async (e) => {
     e.preventDefault();
-    const res = await fetch("/generateQr", {
+    let res = await fetch("/generateQr", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ product_id: product.product_id }),
     });
-    const { success, error } = await res.json();
+    if (res.ok) {
+    res = await res.json();
+    const qrLink = res.message;
 
-    if (success) {
-      
-    } else {
-      notify("Generate failed: " + (error || "unknown error"), {
-        type: "error",
-        duration: 5000,
-      });
-    }
+    // 👇 Display the QR link in HTML
+    const qrContainer = document.querySelector(".qr-container");
+    qrContainer.innerHTML = `
+      <a href="${qrLink}" target="_blank">View QR Code</a><br>
+      <img src="${qrLink}" alt="QR Code" style="margin-top: 0.5rem; max-width: 150px;" />
+    `;
+  } else {
+    res = await res.json();
+    notify("Generate failed: " + (res.error || "unknown error"), {
+      type: "error",
+      duration: 5000,
+    });
+  }
   });
 
   await fetchAndRenderStockRecords(product.product_id, true);

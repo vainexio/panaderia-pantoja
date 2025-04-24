@@ -1,12 +1,4 @@
-const fetch = require('node-fetch');
-const fetch = require('node-fetch');
-//Functions
-const get = require('../functions/get.js')
-const {getTime, chatAI2, getNth, getChannel, getGuild, getUser, getMember, getRandom, getColor} = get
-
-const Discord = require('discord.js');
-const {MessageAttachment, ActivityType, WebhookClient, Permissions, Client, Intents, MessageEmbed, MessageActionRow, MessageButton, MessageSelectMenu} = Discord;
-
+const fetch = require('node-fetch')
 //
 function sleep(miliseconds) {
     var currentTime = new Date().getTime();
@@ -117,11 +109,11 @@ module.exports = {
   checkIfOnDuty,
   computeCalendarWeeks,
   convertTo12Hour,
-  generateQr: async function(data) {
+  generateQr: async function(text) {
     
     let data = {
       method: 'POST',
-      body: JSON.stringify({"data":data,"config":{"body":"square","eye":"frame0","eyeBall":"ball0","erf1":[],"erf2":[],"erf3":[],"brf1":[],"brf2":[],"brf3":[],"bodyColor":"#000000","bgColor":"#FFFFFF","eye1Color":"#000000","eye2Color":"#000000","eye3Color":"#000000","eyeBall1Color":"#000000","eyeBall2Color":"#000000","eyeBall3Color":"#000000","gradientColor1":"","gradientColor2":"","gradientType":"linear","gradientOnEyes":"true","logo":"","logoMode":"default"},"size":800,"download":"imageUrl","file":"png"}),
+      body: JSON.stringify({"data":text,"config":{"body":"square","eye":"frame0","eyeBall":"ball0","erf1":[],"erf2":[],"erf3":[],"brf1":[],"brf2":[],"brf3":[],"bodyColor":"#000000","bgColor":"#FFFFFF","eye1Color":"#000000","eye2Color":"#000000","eye3Color":"#000000","eyeBall1Color":"#000000","eyeBall2Color":"#000000","eyeBall3Color":"#000000","gradientColor1":"","gradientColor2":"","gradientType":"linear","gradientOnEyes":"true","logo":"","logoMode":"default"},"size":800,"download":"imageUrl","file":"png"}),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -130,6 +122,6 @@ module.exports = {
     qrCode = await qrCode.json();
     let imageUrl = "https:" + qrCode.imageUrl;
     
-    return {imageUrl, raw: generatedQr};
+    return {imageUrl, raw: text};
   }
 }
