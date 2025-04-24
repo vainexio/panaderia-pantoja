@@ -24,7 +24,6 @@
   padding: 1rem;
   border-radius: 16px;
   background-color: transparent;
-  /*border: 5px solid var(--red);*/
   display: flex;
   overflow-y: auto;
   flex-direction: column;
@@ -90,7 +89,6 @@
   color: white;
   border-radius: 16px 0px 0px 16px;
   padding: 1rem;
-  border: 5px solid var(--red);
 }
 
 /* right column wider */
@@ -100,9 +98,8 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  border-radius: 0px 16px 16px 0px;
+  border-radius: 16px;
   border: 5px solid var(--red);
-  border-left: none;
   overflow: hidden;
 }
 .record-holder {
@@ -135,7 +132,6 @@
 .out-records {
   background: transparent;
   padding: 1rem;
-  border-radius: 0.5rem;
   height: 100%;
   flex: 1;
   overflow-y: auto;
@@ -172,7 +168,7 @@
   margin-top: 10px;
   padding: 10px;
   width: 50%;
-  height: 60px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -182,21 +178,6 @@
   color: white;
   margin-right: 1rem;
 }
-#editProductForm .form-group {
-  flex: 1 1 calc(33.333% - 1rem);
-  min-width: 33%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-}
-#editProductForm .form-group label {
-  display: block;
-  font-weight: bold;
-  font-size: 12px;
-  margin-bottom: 0.5rem;
-  color: var(--black);
-}
-
 .stock-record-btn {
   background: var(--white);
   border: none;
