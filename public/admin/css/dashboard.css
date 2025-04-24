@@ -7,27 +7,36 @@
   --black: #363636;
   --green: #009926;
 }
+.dashboard {
+  background: none;
+  background-color: var(--red);
+}
 .dashboard .chart-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50%, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* always two cards per row */
   gap: 1rem;
   width: 100%;
-  padding-left: 3rem;
-  justify-content: end;
+  padding-left: 0;
+}
+@media (max-width: 600px) {
+  .dashboard .chart-grid {
+    grid-template-columns: 1fr; /* stack to one column */
+  }
 }
 
-/* Ensure chart-cards fill their grid cell */
+/* Chart cards stretch to fill grid cell */
 .dashboard .chart-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 40%;
+  width: 100%;
 }
 
-/* Make canvas fill card and maintain aspect ratio */
+/* Canvas fills its parent width */
 .dashboard .chart-card canvas {
-  justify-content: center;
   width: 100% !important;
   height: auto !important;
-  border: 2px solid var(--red);
 }
