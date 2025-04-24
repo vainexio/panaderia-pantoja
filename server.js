@@ -109,7 +109,9 @@ app.use((req, res, next) => {
 app.set("trust proxy", true);
 app.use(cookieParser());
 //
-
+app.get("/ping", (req, res) => {
+  return res.json({ pong: true, ts: Date.now() });
+});
 app.get("/admin-dashboard", async (req, res) => {
   res.sendFile(__dirname + "/public/admin.html");
 });
@@ -438,7 +440,7 @@ app.post("/generateCategoryQr", async (req, res) => {
         {
           children: [
             new Paragraph({
-              text: `QR Codes for ${category.name}`,
+              text: `QR Codes for ${category.nametoUpperCase()}`,
               heading: "Heading1",
               alignment: AlignmentType.CENTER,
             }),
@@ -502,6 +504,7 @@ app.post("/createStockRecord", async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
 app.post("/createProduct", async (req, res) => {
   if (!req.user)
     return res.status(401).send({ message: "Not logged in", redirect: "/" });

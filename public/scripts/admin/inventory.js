@@ -85,7 +85,7 @@ async function loadInventory(intro) {
           });
           return;
         }
-      notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 5000, });
+      notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 10000, });
 
         const res = await fetch("/generateCategoryQr", {
           method: "POST",
@@ -94,7 +94,7 @@ async function loadInventory(intro) {
         });
 
         if (res.ok) {
-          notify("Download Successful", { type: "success", duration: 5000, });
+          notify("Initiating Download", { type: "success", duration: 5000, });
           const blob = await res.blob();
           const link = document.createElement("a");
           link.href = URL.createObjectURL(blob);
