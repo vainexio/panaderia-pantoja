@@ -13,6 +13,15 @@ async function pingServer() {
 
     const res = await fetch("/ping", { signal: controller.signal });
     clearTimeout(timeoutId);
+    
+    if (res.status === 401) {
+      const error = await res.json();
+      notify(error.message || "Session expired", { type: "error" });
+      setTimeout(() => {
+        window.location.href = error.redirect || "/";
+      }, 2000);
+      return;
+    }
 
     const duration = performance.now() - start;
     if (!res.ok) {

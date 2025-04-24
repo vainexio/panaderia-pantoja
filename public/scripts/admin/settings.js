@@ -25,7 +25,7 @@ async function adminSettings() {
         <table class="table table-striped table-bordered">
           <thead class="thead-dark">
             <tr>
-              <th scope="col">IP Address</th>
+              <th scope="col">Session ID</th>
               <th scope="col">Location</th>
               <th scope="col">Actions</th>
             </tr>
@@ -43,7 +43,7 @@ async function adminSettings() {
 
       tableHTML += `
             <tr data-session-id="${session.session_id}" class="${rowClass}">
-              <td>${session.ip_address+(session.currentSession ? "<i> (you)</i>" : "")}</td>
+              <td>${session.session_id+(session.currentSession ? "<i> (you)</i>" : "")}</td>
               <td>${session.location}</td>
               <td>
                 ${button}

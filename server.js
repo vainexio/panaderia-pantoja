@@ -110,6 +110,7 @@ app.set("trust proxy", true);
 app.use(cookieParser());
 //
 app.get("/ping", (req, res) => {
+  if (!req.user) return res.status(401).send({ message: "Login session expired", redirect: "/" });
   return res.json({ pong: true, ts: Date.now() });
 });
 app.get("/admin-dashboard", async (req, res) => {
@@ -117,8 +118,7 @@ app.get("/admin-dashboard", async (req, res) => {
 });
 /* Global Backend */
 app.get("/currentAccount", async (req, res) => {
-  if (!req.user)
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
+  if (!req.user) return res.status(401).send({ message: "Not logged in", redirect: "/" });
   let user = req.user;
   try {
     const account = await accounts.findOne({ id: user.id });
