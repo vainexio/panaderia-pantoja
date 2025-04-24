@@ -18,7 +18,19 @@
   width: 100%;
   height: 100%;
 }
-
+.qr-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.qr-code {
+  margin-top: 0.5rem;
+  width: 50%;
+  align-self: center;
+  height: auto;
+}
 #refreshBtn {
   margin: 10px;
 }
