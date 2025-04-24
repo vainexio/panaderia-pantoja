@@ -64,6 +64,7 @@ const stockRecordsSchema = new mongoose.Schema({
   type: String,
   amount: Number,
   date: { type: Date, default: Date.now },
+  author_id: String,
 });
 let categories = mongoose.model("Categories", categorySchema);
 let accounts = mongoose.model("Accounts", accountsSchema);
@@ -469,7 +470,7 @@ app.post("/generateCategoryQr", async (req, res) => {
 });
 app.post("/createStockRecord", async (req, res) => {
   try {
-    const { product_id, type, amount } = req.body;
+    const { product_id, type, amount, author } = req.body;
     // Validate input
     if (!product_id || !type || amount == null) {
       return res
