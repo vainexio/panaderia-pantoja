@@ -477,8 +477,10 @@ app.post("/generateCategoryQr", async (req, res) => {
   }
 });
 app.post("/createStockRecord", async (req, res) => {
+  console.log(req.body);
   try {
     const { product_id, type, amount, author_id } = req.body;
+
     // Validate input
     if (!product_id || !type || amount == null || !author_id) {
       return res
@@ -490,18 +492,33 @@ app.post("/createStockRecord", async (req, res) => {
         .status(400)
         .json({ success: false, error: "Invalid type or amount" });
     }
+
     // Create stock record
-    const newRecord = new stockRecords({ product_id: product_id, type: type, amount: amount, author_id: Number(author_id) });
+    const newRecord = new stockRecords({
+      product_id: product_id,
+      type: type,
+      amount: amount,
+      author_id: Number(author_id),
+    });
     await newRecord.save();
 
     // Adjust product quantity
     const delta = type === "IN" ? amount : -amount;
-    await products.findOneAndUpdate(
+    const updatedProduct = await products.findOneAndUpdate(
       { product_id },
       { $inc: { quantity: delta } },
       { new: true }
     );
-    if (Number(author_id) == 2) { io.emit("notify", { message: "A product was updated", type: "success", duration: 10000, }); }
+
+    // Emit notification with product name
+    if (Number(author_id) === 2 && updatedProduct) {
+      io.emit("notify", {
+        message: `An [${type}] record was added to ${updatedProduct.name}`,
+        type: "success",
+        duration: 10000,
+      });
+    }
+
     return res.status(201).json({
       success: true,
       message: `${type} record created and product quantity updated`,
