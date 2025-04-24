@@ -495,43 +495,60 @@ app.post("/generateCategoryQr", async (req, res) => {
   }
 });
 app.post("/createStockRecord", async (req, res) => {
-  console.log(req.body);
+  const { product_id, type, amount, author_id } = req.body;
+  // … your existing validation here …
+
+  const delta = type === "IN" ? amount : -amount;
+  let updatedProduct;
+
   try {
-    const { product_id, type, amount, author_id } = req.body;
+    if (type === "OUT") {
+      // try atomic decrement only if enough stock
+      updatedProduct = await products.findOneAndUpdate(
+        { product_id, quantity: { $gte: amount } },
+        { $inc: { quantity: delta } },
+        { new: true }
+      );
 
-    // Validate input
-    if (!product_id || !type || amount == null || !author_id) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Missing required fields" });
-    }
-    if (typeof amount !== "number" || (type !== "IN" && type !== "OUT")) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Invalid type or amount" });
+      if (!updatedProduct) {
+        // the atomic update failed — now check why
+        const productExists = await products.findOne({ product_id });
+        if (!productExists) {
+          return res
+            .status(404)
+            .json({ success: false, error: "Product not found" });
+        } else {
+          return res
+            .status(400)
+            .json({ success: false, error: "Insufficient stock" });
+        }
+      }
+    } else {
+      // IN-type: just increment
+      updatedProduct = await products.findOneAndUpdate(
+        { product_id },
+        { $inc: { quantity: delta } },
+        { new: true }
+      );
+      if (!updatedProduct) {
+        return res
+          .status(404)
+          .json({ success: false, error: "Product not found" });
+      }
     }
 
-    // Create stock record
+    // now record the transaction
     const newRecord = new stockRecords({
-      product_id: product_id,
-      type: type,
-      amount: amount,
+      product_id,
+      type,
+      amount,
       author_id: Number(author_id),
     });
     await newRecord.save();
 
-    // Adjust product quantity
-    const delta = type === "IN" ? amount : -amount;
-    const updatedProduct = await products.findOneAndUpdate(
-      { product_id },
-      { $inc: { quantity: delta } },
-      { new: true }
-    );
-
-    // Emit notification with product name
-    if (Number(author_id) === 2 && updatedProduct) {
-      io.emit("reload",{ target: "inventory"});
-      io.emit("reload",{ target: "product", product: updatedProduct});
+    io.emit("reload", { target: "product", product: updatedProduct });
+    if (Number(author_id) === 2) {
+      io.emit("reload", { target: "inventory" });
       io.emit("notify", {
         message: `An [${type}] record was added to ${updatedProduct.name}`,
         type: "info",
@@ -543,10 +560,11 @@ app.post("/createStockRecord", async (req, res) => {
       success: true,
       message: `${type} record created and product quantity updated`,
       record: newRecord,
+      product: updatedProduct,
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ success: false, error: err.message });
+    return res.status(500).json({ success: false, error: err.message });
   }
 });
 
@@ -804,6 +822,34 @@ app.get("/test2", async (req, res) => {
   doc.password = await bcrypt.hash("qrpass", 10);
   await doc.save();
   return doc;
+});
+app.get("/test3", async (req, res) => {
+  // optional: ensure only logged-in users can trigger this
+  if (!req.user) 
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
+
+  try {
+    const result = await stockRecords.updateMany(
+      // match docs where author_id is either undefined or null
+      { 
+        $or: [
+          { author_id: { $exists: false } },
+          { author_id: null }
+        ]
+      },
+      // set author_id to 1
+      { $set: { author_id: 1 } }
+    );
+
+    res.status(200).json({
+      message: "Update complete",
+      matchedCount: result.matchedCount,
+      modifiedCount: result.modifiedCount
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 app.get("/test", async (req, res) => {
   try {

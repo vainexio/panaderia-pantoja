@@ -252,7 +252,7 @@ async function showProductDetails(product) {
       await loadInventory();
     } else {
       setLoading(btn, false);
-      notify("Failed to add record", { type: "error", duration: 5000 });
+      notify(error || "Failed to add record", { type: "error", duration: 5000 });
     }
   });
   //
@@ -262,13 +262,14 @@ async function showProductDetails(product) {
     if (!amount) return;
     const btn = e.submitter;
     setLoading(btn, true);
-    const { success } = await fetch("/createStockRecord", {
+    const { success, error } = await fetch("/createStockRecord", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         product_id: product.product_id,
         type: "OUT",
-        amount,
+        amount: amount,
+        author_id: currentAdmin.id,
       }),
     }).then((r) => r.json());
     if (success) {
@@ -279,7 +280,7 @@ async function showProductDetails(product) {
       await loadInventory();
     } else {
       setLoading(btn, false);
-      notify("Failed to add record", { type: "error", duration: 5000 });
+      notify(error || "Failed to add record", { type: "error", duration: 5000 });
     }
   });
   //
@@ -476,7 +477,7 @@ function buildRecordsColumn(title, records, type, icon) {
         <div class="record-content">
           <h4 class="qty ${cls}">${sign}${r.amount}</h4>
           <div class="date">${r.formattedDateTime} • <b>${r.fromNow}</b></div>
-          <div>By: ${username}</div>
+          <div>By: <b>${username}</b></div>
         </div>
         <button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
           <i class="bi bi-trash3-fill"></i>
