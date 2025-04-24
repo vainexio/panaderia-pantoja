@@ -126,8 +126,9 @@ async function showProductDetails(product) {
     </div>
 
     <div class="submit-container">
-    <button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill"></i> Delete Product</button>
-    <button type="submit" class="action-button"><i class="bi bi-floppy-fill"></i> Save Changes</button>
+    <button class="action-button me-1 qr-gen-btn"><i class="bi bi-qr-code-scan"></i> Generate QR</button>
+    <button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill"></i> Delete</button>
+    <button type="submit" class="action-button""><i class="bi bi-floppy-fill"></i> Save</button>
       </div>
   </form>`;
 
@@ -290,6 +291,26 @@ async function showProductDetails(product) {
     } else {
       setLoading(deleteBtn,false);
       notify("Delete failed: " + (error || "unknown error"), {
+        type: "error",
+        duration: 5000,
+      });
+    }
+  });
+  
+  const genQrButton = editForm.querySelector(".qr-gen-btn");
+  genQrButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const res = await fetch("/generateQr", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ product_id: product.product_id }),
+    });
+    const { success, error } = await res.json();
+
+    if (success) {
+      
+    } else {
+      notify("Generate failed: " + (error || "unknown error"), {
         type: "error",
         duration: 5000,
       });

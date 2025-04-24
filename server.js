@@ -449,7 +449,16 @@ app.post('/createCategory', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 })
-
+app.post('/generateQr', async (req, res) => {
+  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+  try {
+    const { product_id } = req.body;
+    
+    res.status(201).json({ message: method.generateQr() });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
 // Deletions
 app.post('/deleteProduct', async (req, res) => {
   const { product_id } = req.body;
