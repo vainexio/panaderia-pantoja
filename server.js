@@ -347,6 +347,7 @@ app.post("/getProduct", async (req, res) => {
       res.json(foundProducts);
     } else if (type == "single") {
       const foundProduct = await products.findOne({ product_id: req.body.id });
+      if (!foundProduct) return res.status(404).json({ error: "Product not found" });
       res.json(foundProduct);
     }
   } catch (err) {
