@@ -63,3 +63,9 @@ window.addEventListener("offline", () =>
 window.addEventListener("online", () =>
   notify("You are back online", { type: "success", duration: 10000 })
 );
+//
+const socket = io();
+
+socket.on("server-message", (msg) => {
+  notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 10000, });
+});

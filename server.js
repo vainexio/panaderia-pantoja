@@ -10,6 +10,7 @@ const cors = require("cors");
 const fetch = require("node-fetch");
 const moment = require("moment");
 const path = require("path");
+const http = require("http");
 const {
   Document,
   Packer,
@@ -22,13 +23,20 @@ const {
   TableCell,
   WidthType,
 } = require("docx");
+//
 
+const app = express();
+const { Server } = require("socket.io");
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: "*" }, // Allow all origins (or restrict as needed)
+});
+//
 const cookieParser = require("cookie-parser");
 const { v4: uuidv4 } = require("uuid");
 //
 const method = require("./data/functions.js");
 const settings = require("./data/settings.js");
-const app = express();
 app.use(cors());
 const JWT_SECRET = process.env.JWT_SECRET;
 // Connect to MongoDB
@@ -64,7 +72,7 @@ const stockRecordsSchema = new mongoose.Schema({
   type: String,
   amount: Number,
   date: { type: Date, default: Date.now },
-  author_id: String,
+  author_id: Number,
 });
 let categories = mongoose.model("Categories", categorySchema);
 let accounts = mongoose.model("Accounts", accountsSchema);
@@ -470,9 +478,9 @@ app.post("/generateCategoryQr", async (req, res) => {
 });
 app.post("/createStockRecord", async (req, res) => {
   try {
-    const { product_id, type, amount, author } = req.body;
+    const { product_id, type, amount, author_id } = req.body;
     // Validate input
-    if (!product_id || !type || amount == null) {
+    if (!product_id || !type || amount == null || !author_id) {
       return res
         .status(400)
         .json({ success: false, error: "Missing required fields" });
@@ -483,7 +491,7 @@ app.post("/createStockRecord", async (req, res) => {
         .json({ success: false, error: "Invalid type or amount" });
     }
     // Create stock record
-    const newRecord = new stockRecords({ product_id, type, amount });
+    const newRecord = new stockRecords({ product_id, type, amount, author_id });
     await newRecord.save();
 
     // Adjust product quantity
@@ -807,4 +815,20 @@ app.get("/test", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
+});
+//
+
+io.on("connection", (socket) => {
+  console.log("Client connected:", socket.id);
+
+  // Send a notification when connected
+  socket.emit("notify", "Welcome! Real-time updates are active.");
+
+  // Optional: trigger a notification later
+  setTimeout(() => {
+    socket.emit("notify", "A new product was added!");
+  }, 5000);
+});
+server.listen(3002, () => {
+  console.log("Server is running on port", 3002);
 });
