@@ -246,7 +246,6 @@ async function showProductDetails(product) {
     }).then((r) => r.json());
     if (success) {
       inForm.reset();
-      await fetchAndRenderStockRecords(product.product_id);
       setLoading(btn, false);
       notify("Added incoming record", { type: "success", duration: 5000 });
       await loadInventory();
@@ -274,7 +273,6 @@ async function showProductDetails(product) {
     }).then((r) => r.json());
     if (success) {
       outForm.reset();
-      await fetchAndRenderStockRecords(product.product_id);
       setLoading(btn, false);
       notify("Added outgoing record", { type: "success", duration: 5000 });
       await loadInventory();

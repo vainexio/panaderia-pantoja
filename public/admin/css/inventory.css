@@ -29,12 +29,12 @@
 }
 .qr-code {
   margin-top: 0.5rem;
-  width: 70%;
+  width: 50%;
   align-self: center;
   height: auto;
 }
 #downloadQrBtn {
-  width: 70%;
+  width: 50%;
   border-radius: 0px 0px 12px 12px;
 }
 #refreshBtn {
@@ -215,10 +215,10 @@
 
 @media screen and (max-width: 1600px) {
   .qr-code {
-  width: 50%;
+  width: 45%;
 }
 #downloadQrBtn {
-  width: 50%;
+  width: 45%;
 }
   #editProductForm .form-group {
   flex: 1 1 calc(33.333% - 1rem);
