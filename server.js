@@ -242,16 +242,21 @@ app.delete('/removeOtherSessions', async (req, res) => {
 });
 
 // Collect/Get
-app.get('/api/raw-inventory', async (req, res, next) => {
+app.get('/api/raw-inventory', async (req, res) => {
   try {
     const since = new Date();
     since.setDate(since.getDate() - 7);
-    const [ products, stockRecords ] = await Promise.all([
+
+    const [foundProducts, foundStockRecords] = await Promise.all([
       products.find().lean(),
       stockRecords.find({ date: { $gte: since } }).lean()
     ]);
-    res.json({ products, stockRecords });
-  } catch(err){ next(err) }
+
+    res.json({ products: foundProducts, stockRecords: foundStockRecords });
+  } catch (err) {
+    console.error('💥 Error in /api/raw-inventory:', err);
+    res.status(500).json({ error:'Server error', message: err.message });
+  }
 });
 app.post('/getStockRecord', async (req, res) => {
   if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });

@@ -7,6 +7,30 @@
   --secondary-yellow: #ffe365;
   --black: #363636;
 }
+.dashboard .chart-grid {
+  display: grid;
+  height: 100%;
+  padding-right: 3rem;
+  padding-left: 3rem;
+  justify-content: center;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);  /* two cards per row */
+  gap: 1rem;                              /* space between cards */
+}
 
+/* collapse to one column on small screens */
+@media (max-width: 600px) {
+  .dashboard .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* optional: make .chart-card stretch & add padding/border */
+.dashboard .chart-card {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 /* Use this pallets */
 /* Css designs goes below this */
