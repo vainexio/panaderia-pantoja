@@ -1,15 +1,8 @@
 let innerHTML = null
 async function dashboard() {
   let dashboardElement = document.getElementById("dashboard");
-  if (!innerHTML) {
-    innerHTML = dashboardElement.innerHTML
-  } else {
-    dashboardElement.innerHTML = innerHTML
-  }
-  
-  
-  const refresh = document.getElementById("refreshBtn");
-  setLoading(refresh,true)
+  if (!innerHTML) innerHTML = dashboardElement.innerHTML
+  dashboardElement.innerHTML = `<div class="loader mt-5"></div><h4 style="color:white;">Preparing Dashboard</h4>`
   // fetch raw data and categories concurrently
   const [raw, categories] = await Promise.all([
     fetch("/api/raw-inventory").then((r) => r.json()),
@@ -25,7 +18,11 @@ async function dashboard() {
   const now = new Date(),
     sevenAgo = new Date(now);
   sevenAgo.setDate(now.getDate() - 7);
-
+  //
+  dashboardElement.innerHTML = innerHTML
+  //
+  const refresh = document.getElementById("refreshBtn");
+  setLoading(refresh,true)
   // SUMMARY: total products per category
   const totalByCat = products.reduce((acc, p) => {
     acc[p.category_id] = (acc[p.category_id] || 0) + 1;

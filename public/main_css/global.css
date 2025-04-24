@@ -122,7 +122,7 @@ section h1 {
 /* L1 end */
 /* L2 start */
 .loader2 {
-  width: 205px;
+  width: 30%;
   height: 50px;
   box-shadow: 0 3px 0 var(--red);
   position: relative;
