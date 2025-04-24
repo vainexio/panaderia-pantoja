@@ -338,8 +338,8 @@ app.post("/getProduct", async (req, res) => {
       const foundProducts = await products.find().sort({ name: 1 });
       res.json(foundProducts);
     } else if (type == "single") {
-      const foundProducts = await products.findOne({ product_id: req.body.id });
-      res.json(foundProducts);
+      const foundProduct = await products.findOne({ product_id: req.body.id });
+      res.json(foundProduct);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
