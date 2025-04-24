@@ -25,8 +25,8 @@
 }
 .stats-summary {
   display: flex;
-  gap: 2rem;
-  margin-bottom: 1.5rem;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 .stats-summary .stat {
   background: #fafafa;
@@ -46,7 +46,7 @@
 .dashboard .chart-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* always two cards per row */
-  gap: 1rem;
+  gap: 10px;
   width: 100%;
   padding-left: 0;
 }
@@ -59,7 +59,7 @@
 /* Chart cards stretch to fill grid cell */
 .dashboard .chart-card {
   background: #fff;
-  padding: 1rem;
+  padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;

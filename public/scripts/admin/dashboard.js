@@ -85,15 +85,18 @@ async function dashboard() {
   });
 
   // CHART 2: Top-Out Product
-  const top = Object.entries(out7Sum).sort((a, b) => b[1] - a[1])[0];
+  const topOuts = Object.entries(out7Sum)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 10); // Get top 5
+  
   new Chart(document.getElementById("c2"), {
-    type: "doughnut",
-    data: {
-      labels: top ? [prodMap[top[0]].name] : ["None"],
-      datasets: [{ data: top ? [top[1]] : [0] }],
-    },
-    options: { responsive: true },
-  });
+  type: "doughnut",
+  data: {
+    labels: topOuts.map(([id]) => prodMap[id]?.name || "Unknown"),
+    datasets: [{ data: topOuts.map(([_, val]) => val) }],
+  },
+  options: { responsive: true },
+});
 
   // CHART 3: IN vs OUT Volume
   const totalIn = Object.values(inSum).reduce((s, v) => s + v, 0);
