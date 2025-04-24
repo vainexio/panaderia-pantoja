@@ -68,7 +68,39 @@ async function loadInventory(intro) {
       card.addEventListener("click", () => showProductDetails(product));
       scroll.appendChild(card);
     });
+    
+    const originalCategory = categories.find(ctg => ctg.name.toUpperCase() === category);
 
+heading.querySelector(".category-qr-gen-btn").addEventListener("click", async () => {
+  if (!originalCategory) {
+    notify("Unable to find the category ID for: " + category, {
+      type: "error",
+      duration: 5000,
+    });
+    return;
+  }
+
+  const res = await fetch("/generateCategoryQr", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ category_id: originalCategory.category_id }),
+  });
+
+  if (res.ok) {
+    const blob = await res.blob();
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${originalCategory.name.replace(/\s+/g, "_")}_qr_codes.docx`;
+    link.click();
+  } else {
+    const error = await res.json();
+    notify("QR Download Failed: " + (error.message || "unknown error"), {
+      type: "error",
+      duration: 5000,
+    });
+  }
+});
+    
     row.append(heading, scroll);
     inventoryCard.append(row, divider);
   });
