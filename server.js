@@ -330,8 +330,7 @@ app.post("/getStockRecord", async (req, res) => {
   }
 });
 app.post("/getProduct", async (req, res) => {
-  if (!req.user)
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
+  console.log(req.query,req.body)
   try {
     let type = req.query.type;
     if (type == "all") {
