@@ -301,8 +301,7 @@ async function showProductDetails(product) {
 async function fetchAndRenderStockRecords(productId, intro) {
   const recordHolder = detailCard.querySelector(".record-holder");
   if (intro)
-    recordHolder.innerHTML = `<h3 class="m-3">Loading stock records…</h3>`;
-
+    recordHolder.innerHTML = `<div class="loading-holder m-3"><div class="loader3"></div><h4>Loading Records</h4></div>`;
   const res = await fetch("/getStockRecord?type=single", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

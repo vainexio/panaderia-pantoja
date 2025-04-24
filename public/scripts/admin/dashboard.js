@@ -2,7 +2,7 @@ let innerHTML = null
 async function dashboard() {
   let dashboardElement = document.getElementById("dashboard");
   if (!innerHTML) innerHTML = dashboardElement.innerHTML
-  dashboardElement.innerHTML = `<div class="loading-holder"><div class="loader2 inverted m-3"></div><h4 style="color:white;">Loading Dashboard</h4></div>`
+  dashboardElement.innerHTML = `<div class="loading-holder m-3"><div class="loader2 inverted"></div><h4 style="color:white;">Loading Dashboard</h4></div>`
   // fetch raw data and categories concurrently
   const [raw, categories] = await Promise.all([
     fetch("/api/raw-inventory").then((r) => r.json()),
