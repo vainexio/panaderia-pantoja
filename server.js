@@ -294,15 +294,20 @@ app.get("/api/raw-inventory", async (req, res) => {
   }
 });
 app.post("/getAccounts", async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: "Not logged in", redirect: "/" });
-  let user = req.user;
+  if (!req.user) 
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
+
   try {
-    const account = await accounts.find();
-    res.status(200).json({ id: account.id, username: account.username});
+    // projection: only _id and username
+    const list = await accounts.find({}, "id username").lean();
+    // list will be an array of objects like [{ _id: "...", username: "..." }, …]
+    console.log(list)
+    res.status(200).json(list);
   } catch (err) {
+    console.error(err);
     return res
-      .status(404)
-      .json({ message: "Invalid or expired token", redirect: "/" });
+      .status(500)
+      .json({ message: "Server error", redirect: "/" });
   }
 });
 app.post("/getStockRecord", async (req, res) => {
@@ -794,9 +799,9 @@ app.post("/editProduct", async (req, res) => {
 });
 app.get("/test2", async (req, res) => {
   let doc = new accounts(accountsSchema);
-  doc.id = 1;
-  doc.username = "admin";
-  doc.password = await bcrypt.hash("adminpass", 10);
+  doc.id = 2;
+  doc.username = "QR Scanner";
+  doc.password = await bcrypt.hash("qrpass", 10);
   await doc.save();
   return doc;
 });

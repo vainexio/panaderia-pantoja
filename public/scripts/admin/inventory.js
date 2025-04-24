@@ -1,4 +1,4 @@
-let separator, detailCard, currentProduct;
+let separator, detailCard, currentProduct, accounts;
 async function inventoryStart() {
   loadInventory(true);
 }
@@ -15,6 +15,11 @@ async function loadInventory(intro) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
   });
+  accounts = await fetch("/getAccounts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+  accounts = await accounts.json();
   products = await products.json();
   categories = await categories.json();
 
@@ -449,36 +454,37 @@ async function fetchAndRenderStockRecords(productId, intro) {
     });
   });
 }
-async function buildRecordsColumn(title, records, type, icon) {
-  
-  let accounts = await fetch("/getAccounts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  });
-  accounts = await res.json();
+function buildRecordsColumn(title, records, type, icon) {
   const sign = type === "IN" ? "+" : "–";
   const cls = type === "IN" ? "in" : "out";
 
   if (!records.length) {
     return `<h3>${icon} ${title}</h3><p>No record yet.</p>`;
   }
-
+  
+  const usernameById = accounts.reduce((map, a) => {
+  // if your account objects come back with `_id` instead of `id`, use a._id here
+  map[a.id] = a.username;
+  return map;
+}, {});
+  
   const items = records
-    .map(
-      (r) => `
-    <div class="record-item" data-id="${r._id}">
-      <div class="record-content">
-        <h4 class="qty ${cls}">${sign}${r.amount}</h4>
-        <div class="date">${r.formattedDateTime} • <b>${r.fromNow}</b></div>
-        <div>${accounts.find(a => a.id = r.author_id}</b></div>
+  .map(r => {
+    const username = usernameById[r.author_id] || "Unknown";
+    return `
+      <div class="record-item" data-id="${r._id}">
+        <div class="record-content">
+          <h4 class="qty ${cls}">${sign}${r.amount}</h4>
+          <div class="date">${r.formattedDateTime} • <b>${r.fromNow}</b></div>
+          <div>By: ${username}</div>
+        </div>
+        <button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
+          <i class="bi bi-trash3-fill"></i>
+        </button>
       </div>
-      <button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
-        <i class="bi bi-trash3-fill"></i>
-      </button>
-    </div>
-  `
-    )
-    .join("\n");
+    `;
+  })
+  .join("\n");
 
   return `<h3>${icon} ${title}</h3><div class="records-list">${items}</div>`;
 }
