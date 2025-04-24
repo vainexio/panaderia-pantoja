@@ -214,6 +214,12 @@
 }
 
 @media screen and (max-width: 1600px) {
+  .qr-code {
+  width: 50%;
+}
+#downloadQrBtn {
+  width: 50%;
+}
   #editProductForm .form-group {
   flex: 1 1 calc(33.333% - 1rem);
   min-width: 150px;

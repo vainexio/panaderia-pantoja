@@ -21,8 +21,8 @@ async function pingServer() {
 
     if (duration > SLOW_THRESHOLD) {
       notify(
-        `Warning: slow connection detected (${Math.round(duration)} ms)`,
-        { type: "warning", duration: 5000 }
+        `Warning: slow connection detected (${Math.round(duration)}ms)`,
+        { type: "warn", duration: 5000 }
       );
     } else if (!lastPingSuccess || !navigator.onLine) {
       // recovered from failure/offline
@@ -49,7 +49,7 @@ setInterval(pingServer, PING_INTERVAL);
 
 // optional: react to browser offline/online events
 window.addEventListener("offline", () =>
-  notify("You are offline", { type: "error", duration: 10000 })
+  notify("You are offline", { type: "warn", duration: 10000 })
 );
 window.addEventListener("online", () =>
   notify("You are back online", { type: "success", duration: 10000 })

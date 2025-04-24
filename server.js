@@ -440,7 +440,7 @@ app.post("/generateCategoryQr", async (req, res) => {
         {
           children: [
             new Paragraph({
-              text: `QR Codes for ${category.nametoUpperCase()}`,
+              text: `QR Codes for ${category.name.toUpperCase()}`,
               heading: "Heading1",
               alignment: AlignmentType.CENTER,
             }),
