@@ -18,7 +18,7 @@ async function loadInventory(intro) {
   products = await products.json();
   categories = await categories.json();
 
-  inventoryCard.innerHTML = ``
+  inventoryCard.innerHTML = ``;
   const grouped = {};
 
   products.forEach((item) => {
@@ -41,7 +41,9 @@ async function loadInventory(intro) {
 
     const heading = document.createElement("div");
     heading.className = "category-heading";
-    heading.innerHTML = category+` <button class="action-button me-1 category-qr-gen-btn"><i class="bi bi-qr-code-scan"></i> Download QR</button>`;
+    heading.innerHTML =
+      category +
+      ` <button class="action-button me-1 category-qr-gen-btn"><i class="bi bi-qr-code-scan"></i> Download QR</button>`;
 
     const scroll = document.createElement("div");
     scroll.className = "scroll-container";
@@ -68,39 +70,50 @@ async function loadInventory(intro) {
       card.addEventListener("click", () => showProductDetails(product));
       scroll.appendChild(card);
     });
-    
-    const originalCategory = categories.find(ctg => ctg.name.toUpperCase() === category);
 
-heading.querySelector(".category-qr-gen-btn").addEventListener("click", async () => {
-  if (!originalCategory) {
-    notify("Unable to find the category ID for: " + category, {
-      type: "error",
-      duration: 5000,
-    });
-    return;
-  }
+    const originalCategory = categories.find(
+      (ctg) => ctg.name.toUpperCase() === category
+    );
 
-  const res = await fetch("/generateCategoryQr", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ category_id: originalCategory.category_id }),
-  });
+    heading
+      .querySelector(".category-qr-gen-btn")
+      .addEventListener("click", async (e) => {
+        let btn = e.submitter;
+        if (!originalCategory) {
+          setLoading(btn, true);
+          notify("Unable to find the category ID for: " + category, {
+            type: "error",
+            duration: 5000,
+          });
+          return;
+        }
 
-  if (res.ok) {
-    const blob = await res.blob();
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${originalCategory.name.replace(/\s+/g, "_")}_qr_codes.docx`;
-    link.click();
-  } else {
-    const error = await res.json();
-    notify("QR Download Failed: " + (error.message || "unknown error"), {
-      type: "error",
-      duration: 5000,
-    });
-  }
-});
-    
+        const res = await fetch("/generateCategoryQr", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ category_id: originalCategory.category_id }),
+        });
+
+        if (res.ok) {
+          const blob = await res.blob();
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `${originalCategory.name.replace(
+            /\s+/g,
+            "_"
+          )}_qr_codes.pdf`;
+          link.click();
+          setLoading(btn, false);
+        } else {
+          const error = await res.json();
+          notify("QR Download Failed: " + (error.message || "unknown error"), {
+            type: "error",
+            duration: 5000,
+          });
+          setLoading(btn, false);
+        }
+      });
+
     row.append(heading, scroll);
     inventoryCard.append(row, divider);
   });
@@ -353,12 +366,12 @@ async function showProductDetails(product) {
     <img id="qrPreview" src="${qrLink}" class="qr-code" />
     <button id="downloadQrBtn" type="button" class="action-button" title="Open in New Tab" >Open in New Tab</button>
     `;
-      
+
       document.getElementById("downloadQrBtn").addEventListener("click", () => {
         const qrImg = document.getElementById("qrPreview");
         window.open(qrImg.src, "_blank");
       });
-      
+
       setLoading(genQrButton, false);
     } else {
       res = await res.json();

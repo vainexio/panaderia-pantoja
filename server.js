@@ -1,22 +1,33 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const json2xls = require('json2xls');
-const XLSX = require('xlsx');
-const bcrypt = require('bcrypt');
-const fs = require('fs');
-const cors = require('cors');
-const fetch = require('node-fetch');
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const json2xls = require("json2xls");
+const XLSX = require("xlsx");
+const bcrypt = require("bcrypt");
+const fs = require("fs");
+const cors = require("cors");
+const fetch = require("node-fetch");
 const moment = require("moment");
 const path = require("path");
-const { Document, Packer, Paragraph, TextRun, AlignmentType, ImageRun, Table, TableRow, TableCell, WidthType } = require("docx");
+const {
+  Document,
+  Packer,
+  Paragraph,
+  TextRun,
+  AlignmentType,
+  ImageRun,
+  Table,
+  TableRow,
+  TableCell,
+  WidthType,
+} = require("docx");
 
-const cookieParser = require('cookie-parser');
-const { v4: uuidv4 } = require('uuid');
+const cookieParser = require("cookie-parser");
+const { v4: uuidv4 } = require("uuid");
 //
-const method = require('./data/functions.js')
-const settings = require('./data/settings.js')
+const method = require("./data/functions.js");
+const settings = require("./data/settings.js");
 const app = express();
 app.use(cors());
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -54,11 +65,11 @@ const stockRecordsSchema = new mongoose.Schema({
   amount: Number,
   date: { type: Date, default: Date.now },
 });
-let categories = mongoose.model('Categories', categorySchema);
-let accounts = mongoose.model('Accounts', accountsSchema);
-let products = mongoose.model('Products', productsSchema);
-let stockRecords = mongoose.model('Stock Records', stockRecordsSchema);
-let loginSession = mongoose.model('LoginSession', loginSessionSchema);
+let categories = mongoose.model("Categories", categorySchema);
+let accounts = mongoose.model("Accounts", accountsSchema);
+let products = mongoose.model("Products", productsSchema);
+let stockRecords = mongoose.model("Stock Records", stockRecordsSchema);
+let loginSession = mongoose.model("LoginSession", loginSessionSchema);
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -69,76 +80,79 @@ app.use(async (req, res, next) => {
 
   try {
     const payload = jwt.verify(token, JWT_SECRET);
-    req.user = await accounts.findOne({ id: payload.userId});
-    const existingSession = await loginSession.findOne({ device_id: token});
+    req.user = await accounts.findOne({ id: payload.userId });
+    const existingSession = await loginSession.findOne({ device_id: token });
     if (!existingSession) {
-      res.clearCookie('token');
+      res.clearCookie("token");
     } else {
-      req.session = existingSession
+      req.session = existingSession;
     }
   } catch (err) {
-    res.clearCookie('token');
+    res.clearCookie("token");
   }
   next();
 });
 
-app.use(express.static('public', {
-  setHeaders: (res, path) => {
-    if (path.endsWith('.js')) {
-      res.setHeader('Content-Type', 'text/javascript');
-    }
-  }
-}));
+app.use(
+  express.static("public", {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".js")) {
+        res.setHeader("Content-Type", "text/javascript");
+      }
+    },
+  })
+);
 app.use((req, res, next) => {
-  req.clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  req.clientIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   next();
 });
-app.set('trust proxy', true);
+app.set("trust proxy", true);
 app.use(cookieParser());
 //
 
-app.get('/admin-dashboard', async (req, res) => {
-  res.sendFile(__dirname + '/public/admin.html');
+app.get("/admin-dashboard", async (req, res) => {
+  res.sendFile(__dirname + "/public/admin.html");
 });
 /* Global Backend */
-app.get('/currentAccount', async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
-  let user = req.user
+app.get("/currentAccount", async (req, res) => {
+  if (!req.user)
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
+  let user = req.user;
   try {
     const account = await accounts.findOne({ id: user.id });
-    if (!account) return res.status(404).json({ message: 'Account not found', redirect: "/" });
-    
-    const ok = user.password == account.password
-    if (!ok) return res.status(401).send({ message: 'Invalid credentials', redirect: "/"});
-    
+    if (!account)
+      return res
+        .status(404)
+        .json({ message: "Account not found", redirect: "/" });
+
+    const ok = user.password == account.password;
+    if (!ok)
+      return res
+        .status(401)
+        .send({ message: "Invalid credentials", redirect: "/" });
+
     res.status(200).json(account);
-
   } catch (err) {
-    return res.status(404).json({ message: 'Invalid or expired token', redirect: "/" });
+    return res
+      .status(404)
+      .json({ message: "Invalid or expired token", redirect: "/" });
   }
-
 });
-app.post('/login', async (req, res) => {
+app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  const remember = true
+  const remember = true;
   const ip = req.ip;
   const user = await accounts.findOne({ username });
-  if (!user) return res.status(401).send({ message: 'Invalid credentials'});
+  if (!user) return res.status(401).send({ message: "Invalid credentials" });
 
   const ok = await bcrypt.compare(password, user.password);
-  if (!ok) return res.status(401).send({ message: 'Invalid credentials'});
+  if (!ok) return res.status(401).send({ message: "Invalid credentials" });
 
-  const expiresIn = remember
-    ? 30 * 24 * 60 * 60
-    : 60 * 60;
+  const expiresIn = remember ? 30 * 24 * 60 * 60 : 60 * 60;
 
-  const token = jwt.sign(
-    { userId: user.id },
-    JWT_SECRET,
-    { expiresIn }
-  );
-  
-  const existingSession = await loginSession.findOne({ device_id: token});
+  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn });
+
+  const existingSession = await loginSession.findOne({ device_id: token });
   if (!existingSession) {
     const session = new loginSession({
       session_id: method.genId(),
@@ -146,31 +160,34 @@ app.post('/login', async (req, res) => {
       target_id: user.id,
       device_id: token,
     });
-    console.log('new session')
+    console.log("new session");
     await session.save();
   } else if (existingSession) {
-    existingSession.target_id = user.id
-    existingSession.ip_address = ip
-    existingSession.device_id = token
-    existingSession.session_id = method.genId()
-    console.log('old session')
+    existingSession.target_id = user.id;
+    existingSession.ip_address = ip;
+    existingSession.device_id = token;
+    existingSession.session_id = method.genId();
+    console.log("old session");
     await existingSession.save();
   }
-  res.cookie('token', token, {
+  res.cookie("token", token, {
     httpOnly: true,
     maxAge: expiresIn * 1000,
-    sameSite: 'strict', 
+    sameSite: "strict",
   });
-  return res.json({ redirect: '/admin-dashboard', message: 'Login successful' });
+  return res.json({
+    redirect: "/admin-dashboard",
+    message: "Login successful",
+  });
   //res.send({ success: true });
 });
 
-app.post('/getAllSessions', async (req, res) => {
+app.post("/getAllSessions", async (req, res) => {
   try {
     let deviceId = req.session.device_id;
     const { accountId } = req.body;
     if (!accountId) {
-      return res.status(400).json({ error: 'Account ID is required' });
+      return res.status(400).json({ error: "Account ID is required" });
     }
 
     const sessions = await loginSession.find({ target_id: accountId });
@@ -178,22 +195,27 @@ app.post('/getAllSessions', async (req, res) => {
     const sessionsWithLocation = await Promise.all(
       sessions.map(async (session) => {
         try {
-          const ipResponse = await fetch(`http://ip-api.com/json/${session.ip_address}`);
+          const ipResponse = await fetch(
+            `http://ip-api.com/json/${session.ip_address}`
+          );
           const ipData = await ipResponse.json();
           return {
             currentSession: deviceId == session.device_id,
             session_id: session.session_id,
             ip_address: session.ip_address,
-            location: `${ipData.city || 'N/A'}, ${ipData.country || 'N/A'}`,
+            location: `${ipData.city || "N/A"}, ${ipData.country || "N/A"}`,
             device_id: session.device_id,
           };
         } catch (err) {
-          console.error(`Error fetching location for IP ${session.ip_address}:`, err);
+          console.error(
+            `Error fetching location for IP ${session.ip_address}:`,
+            err
+          );
           return {
             currentSession: deviceId == session.device_id,
             session_id: session.session_id,
             ip_address: session.ip_address,
-            location: 'Unknown',
+            location: "Unknown",
             device_id: session.device_id,
           };
         }
@@ -204,11 +226,11 @@ app.post('/getAllSessions', async (req, res) => {
 
     res.json({ loginSessions: sessionsWithLocation });
   } catch (error) {
-    console.error('Error in /getAllSessions:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error in /getAllSessions:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
-app.delete('/removeSession', async (req, res) => {
+app.delete("/removeSession", async (req, res) => {
   try {
     const { sessionId } = req.body;
     if (!sessionId) {
@@ -225,16 +247,16 @@ app.delete('/removeSession', async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-app.delete('/removeOtherSessions', async (req, res) => {
+app.delete("/removeOtherSessions", async (req, res) => {
   try {
     let deviceId = req.cookies.deviceId;
     const { accountId } = req.body;
     if (!accountId) {
       return res.status(400).json({ error: "accountId is required" });
     }
-    const result = await loginSession.deleteMany({ 
+    const result = await loginSession.deleteMany({
       target_id: accountId,
-      device_id: { $ne: deviceId } 
+      device_id: { $ne: deviceId },
     });
     return res.json({ message: `${result.deletedCount} session(s) removed` });
   } catch (error) {
@@ -244,24 +266,25 @@ app.delete('/removeOtherSessions', async (req, res) => {
 });
 
 // Collect/Get
-app.get('/api/raw-inventory', async (req, res) => {
+app.get("/api/raw-inventory", async (req, res) => {
   try {
     const since = new Date();
     since.setDate(since.getDate() - 7);
 
     const [foundProducts, foundStockRecords] = await Promise.all([
       products.find().lean(),
-      stockRecords.find({ date: { $gte: since } }).lean()
+      stockRecords.find({ date: { $gte: since } }).lean(),
     ]);
 
     res.json({ products: foundProducts, stockRecords: foundStockRecords });
   } catch (err) {
-    console.error('💥 Error in /api/raw-inventory:', err);
-    res.status(500).json({ error:'Server error', message: err.message });
+    console.error("💥 Error in /api/raw-inventory:", err);
+    res.status(500).json({ error: "Server error", message: err.message });
   }
 });
-app.post('/getStockRecord', async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+app.post("/getStockRecord", async (req, res) => {
+  if (!req.user)
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
 
   try {
     const { type } = req.query;
@@ -272,7 +295,7 @@ app.post('/getStockRecord', async (req, res) => {
 
     // If `days` is provided (e.g., last 30 days)
     if (days) {
-      const since = moment().subtract(parseInt(days), 'days').startOf('day');
+      const since = moment().subtract(parseInt(days), "days").startOf("day");
       query.date = { $gte: since.toDate() };
     }
 
@@ -286,57 +309,59 @@ app.post('/getStockRecord', async (req, res) => {
 
     const records = await findQuery;
 
-    const data = records.map(r => {
+    const data = records.map((r) => {
       const obj = r.toObject();
-      const m   = moment(r.date);
+      const m = moment(r.date);
 
       return {
         ...obj,
-        fromNow:         m.fromNow(),            // “3 hours ago”
-        formattedDate:   m.format('DD/MM/YY'),   // “23/04/25”
-        formattedTime:   m.format('HH:mm'),      // “14:07”
-        formattedDateTime: m.format('DD/MM/YY HH:mm') // “23/04/25 14:07”
+        fromNow: m.fromNow(), // “3 hours ago”
+        formattedDate: m.format("DD/MM/YY"), // “23/04/25”
+        formattedTime: m.format("HH:mm"), // “14:07”
+        formattedDateTime: m.format("DD/MM/YY HH:mm"), // “23/04/25 14:07”
       };
     });
 
     res.json(data);
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-app.post('/getProduct', async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+app.post("/getProduct", async (req, res) => {
+  if (!req.user)
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
   try {
-    let type = req.query.type
+    let type = req.query.type;
     if (type == "all") {
       const foundProducts = await products.find().sort({ name: 1 });
       res.json(foundProducts);
     } else if (type == "single") {
-      const foundProducts = await products.findOne({product_id: req.body.id});
+      const foundProducts = await products.findOne({ product_id: req.body.id });
       res.json(foundProducts);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-app.post('/getCategory', async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+app.post("/getCategory", async (req, res) => {
+  if (!req.user)
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
   try {
-    let type = req.query.type
+    let type = req.query.type;
     if (type == "all") {
       const foundCtg = await categories.find();
-      res.json(foundCtg)
+      res.json(foundCtg);
     } else if (type == "single") {
-      const foundCtg = await categories.findOne({category_id: req.body.id});
-      res.json(foundCtg)
+      const foundCtg = await categories.findOne({ category_id: req.body.id });
+      res.json(foundCtg);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
-app.get('/getCategories', async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+app.get("/getCategories", async (req, res) => {
+  if (!req.user)
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
   try {
     const foundCtg = await categories.find();
     res.json(foundCtg);
@@ -349,77 +374,114 @@ app.get('/getCategories', async (req, res) => {
 app.post("/generateCategoryQr", async (req, res) => {
   try {
     const { category_id } = req.body;
-
     const category = await categories.findOne({ category_id });
-    if (!category) return res.status(404).json({ message: "Category not found" });
+    if (!category) {
+      return res.status(404).json({ message: "Category not found" });
+    }
 
     const foundProducts = await products.find({ category_id });
-
     const rows = [];
+
     for (let i = 0; i < foundProducts.length; i += 3) {
+      // take up to 3 products and pad with nulls if <3
       const chunk = foundProducts.slice(i, i + 3);
+      while (chunk.length < 3) chunk.push(null);
 
-      const cells = await Promise.all(chunk.map(async (product) => {
-        const qrBuffer = await QRCode.toBuffer(product.product_id, { type: 'png' });
-        const image = new ImageRun({
-          data: qrBuffer,
-          transformation: { width: 150, height: 150 },
-        });
+      const cells = await Promise.all(
+        chunk.map(async (product) => {
+          // empty cell
+          if (!product) {
+            return new TableCell({
+              children: [],
+              width: { size: 33.33, type: WidthType.PERCENTAGE },
+            });
+          }
 
-        return new TableCell({
-          children: [
-            new Paragraph({ children: [image], alignment: AlignmentType.CENTER }),
-            new Paragraph({
-              children: [new TextRun({ text: product.name, bold: true })],
-              alignment: AlignmentType.CENTER,
-            }),
-          ],
-          width: { size: 33.33, type: WidthType.PERCENTAGE },
-        });
-      }));
+          // fetch QR
+          const { imageUrl } = await method.generateQr(product.product_id);
+          const response = await fetch(imageUrl);
+          if (!response.ok) throw new Error("Failed to fetch QR image");
+          const qrBuffer = await response.buffer();
+
+          const image = new ImageRun({
+            data: qrBuffer,
+            transformation: { width: 150, height: 150 },
+          });
+
+          return new TableCell({
+            width: { size: 33.33, type: WidthType.PERCENTAGE },
+            children: [
+              new Paragraph({
+                children: [image],
+                alignment: AlignmentType.CENTER,
+              }),
+              new Paragraph({
+                children: [new TextRun({ text: product.name, bold: true })],
+                alignment: AlignmentType.CENTER,
+              }),
+            ],
+          });
+        })
+      );
 
       rows.push(new TableRow({ children: cells }));
     }
 
+    // build document with a 100%-width table
     const doc = new Document({
-      sections: [{
-        properties: {},
-        children: [
-          new Paragraph({
-            text: `QR Codes for ${category.name}`,
-            heading: "Heading1",
-            alignment: AlignmentType.CENTER,
-          }),
-          new Table({ rows }),
-        ],
-      }],
+      sections: [
+        {
+          children: [
+            new Paragraph({
+              text: `QR Codes for ${category.name}`,
+              heading: "Heading1",
+              alignment: AlignmentType.CENTER,
+            }),
+            new Table({
+              width: { size: 100, type: WidthType.PERCENTAGE },
+              rows,
+            }),
+          ],
+        },
+      ],
     });
 
     const buffer = await Packer.toBuffer(doc);
-    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-    res.setHeader("Content-Disposition", `attachment; filename="${category.name}_qr_codes.docx"`);
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
+    // deliver a .docx (not .pdf)
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${category.name}_qr_codes.docx"`
+    );
     res.send(buffer);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to generate QR doc" });
   }
 });
-app.post('/createStockRecord', async (req, res) => {
+app.post("/createStockRecord", async (req, res) => {
   try {
     const { product_id, type, amount } = req.body;
     // Validate input
     if (!product_id || !type || amount == null) {
-      return res.status(400).json({ success: false, error: 'Missing required fields' });
+      return res
+        .status(400)
+        .json({ success: false, error: "Missing required fields" });
     }
-    if (typeof amount !== 'number' || (type !== 'IN' && type !== 'OUT')) {
-      return res.status(400).json({ success: false, error: 'Invalid type or amount' });
+    if (typeof amount !== "number" || (type !== "IN" && type !== "OUT")) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Invalid type or amount" });
     }
     // Create stock record
     const newRecord = new stockRecords({ product_id, type, amount });
     await newRecord.save();
 
     // Adjust product quantity
-    const delta = type === 'IN' ? amount : -amount;
+    const delta = type === "IN" ? amount : -amount;
     await products.findOneAndUpdate(
       { product_id },
       { $inc: { quantity: delta } },
@@ -436,29 +498,47 @@ app.post('/createStockRecord', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
-app.post('/createProduct', async (req, res) => {
-  if (!req.user) 
-    return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+app.post("/createProduct", async (req, res) => {
+  if (!req.user)
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
 
   try {
-    let { product_name, product_min, product_max, product_category, product_expiry, product_expiry_unit, product_qty } = req.body;
+    let {
+      product_name,
+      product_min,
+      product_max,
+      product_category,
+      product_expiry,
+      product_expiry_unit,
+      product_qty,
+    } = req.body;
 
     product_min = Number(product_min);
     product_max = Number(product_max);
     product_qty = Number(product_qty) || 0;
 
-    if (!product_name || isNaN(product_min) || isNaN(product_max)
-        || !product_category || !product_expiry || !product_expiry_unit) {
+    if (
+      !product_name ||
+      isNaN(product_min) ||
+      isNaN(product_max) ||
+      !product_category ||
+      !product_expiry ||
+      !product_expiry_unit
+    ) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
     if (product_min >= product_max) {
-      return res.status(400).json({ message: "Max. Qty must be greater than Min. Qty" });
+      return res
+        .status(400)
+        .json({ message: "Max. Qty must be greater than Min. Qty" });
     }
 
     const existing = await products.findOne({ name: product_name });
     if (existing) {
-      return res.status(400).json({ message: "A Product with same name already exists!" });
+      return res
+        .status(400)
+        .json({ message: "A Product with same name already exists!" });
     }
 
     const newProduct = new products(productsSchema);
@@ -475,9 +555,9 @@ app.post('/createProduct', async (req, res) => {
     if (product_qty > 0) {
       const rec = new stockRecords({
         product_id: newProduct.product_id,
-        type: 'IN',
+        type: "IN",
         amount: product_qty,
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
       });
       await rec.save();
     }
@@ -488,42 +568,47 @@ app.post('/createProduct', async (req, res) => {
     res.status(500).json({ message: "Internal server error." });
   }
 });
-app.post('/createCategory', async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+app.post("/createCategory", async (req, res) => {
+  if (!req.user)
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
   try {
     const { ctg_name } = req.body;
-    
-    const existingCategory = await categories.findOne({ name: ctg_name.toLowerCase()});
+
+    const existingCategory = await categories.findOne({
+      name: ctg_name.toLowerCase(),
+    });
 
     if (existingCategory) {
       return res.status(400).json({ message: "This category already exists!" });
     }
-    
-    let newCat = new categories(categorySchema)
-    newCat.name = ctg_name.toLowerCase()
-    newCat.category_id = method.genId()
-    
+
+    let newCat = new categories(categorySchema);
+    newCat.name = ctg_name.toLowerCase();
+    newCat.category_id = method.genId();
+
     await newCat.save();
     res.status(201).json({ message: "Category created successfully!" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-})
-app.post('/generateQr', async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: 'Not logged in', redirect: "/" });
+});
+app.post("/generateQr", async (req, res) => {
+  if (!req.user)
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
   try {
     const { product_id } = req.body;
-    let generatedQr = await method.generateQr(product_id)
-    console.log(generatedQr)
+    let generatedQr = await method.generateQr(product_id);
+    console.log(generatedQr);
     res.status(201).json({ message: generatedQr.imageUrl });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-})
+});
 // Deletions
-app.post('/deleteProduct', async (req, res) => {
+app.post("/deleteProduct", async (req, res) => {
   const { product_id } = req.body;
-  if (!product_id) return res.json({ success: false, error: "No product ID provided" });
+  if (!product_id)
+    return res.json({ success: false, error: "No product ID provided" });
 
   try {
     // Delete the product
@@ -543,20 +628,23 @@ app.post('/deleteProduct', async (req, res) => {
   }
 });
 
-
-app.post('/deleteStockRecord', async (req, res) => {
+app.post("/deleteStockRecord", async (req, res) => {
   try {
     const { id } = req.body;
     if (!id) {
-      return res.status(400).json({ success: false, error: 'Missing record id' });
+      return res
+        .status(400)
+        .json({ success: false, error: "Missing record id" });
     }
     // Find record to adjust product quantity
     const rec = await stockRecords.findById(id);
     if (!rec) {
-      return res.status(404).json({ success: false, error: 'Record not found' });
+      return res
+        .status(404)
+        .json({ success: false, error: "Record not found" });
     }
     // Reverse the quantity change
-    const delta = rec.type === 'IN' ? -rec.amount : rec.amount;
+    const delta = rec.type === "IN" ? -rec.amount : rec.amount;
     await products.findOneAndUpdate(
       { product_id: rec.product_id },
       { $inc: { quantity: delta } }
@@ -569,7 +657,7 @@ app.post('/deleteStockRecord', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
-app.delete('/deleteCategory', async (req, res) => {
+app.delete("/deleteCategory", async (req, res) => {
   try {
     const { catName } = req.body;
     if (!catName) {
@@ -585,21 +673,21 @@ app.delete('/deleteCategory', async (req, res) => {
     // 2) Check if any product uses this category_id
     const inUse = await products.exists({ category_id: category.category_id });
     if (inUse) {
-      return res.status(400).json({ 
-        error: "Cannot delete — there are products associated with this category" 
+      return res.status(400).json({
+        error:
+          "Cannot delete — there are products associated with this category",
       });
     }
 
     // 3) Safe to delete
     await categories.deleteOne({ _id: category._id });
     return res.json({ message: "Category removed" });
-
   } catch (error) {
     console.error("Error in /deleteCategory:", error);
     res.status(500).json({ error: "Server error" });
   }
 });
-app.post('/updateProduct', async (req, res) => {
+app.post("/updateProduct", async (req, res) => {
   const { id, name, category, min, max, expiry, expiry_unit } = req.body;
   try {
     const updated = await products.findByIdAndUpdate(
@@ -612,7 +700,7 @@ app.post('/updateProduct', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-app.delete('/deleteProduct/:id', async (req, res) => {
+app.delete("/deleteProduct/:id", async (req, res) => {
   try {
     await products.findByIdAndDelete(req.params.id);
     res.json({ success: true });
@@ -633,15 +721,22 @@ app.post("/editProduct", async (req, res) => {
     const doc = await products.findOneAndUpdate(
       { product_id: product_id },
       { name, min, max },
-      { new: true }           // return the updated doc
+      { new: true } // return the updated doc
     );
-    
+
     if (min >= max) {
-      return res.status(400).json({ success: false, error: "Max. Qty must be greater than Min. Qty" });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          error: "Max. Qty must be greater than Min. Qty",
+        });
     }
 
     if (!doc) {
-      return res.status(404).json({ success: false, error: "Product not found" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Product not found" });
     }
 
     return res.json({ success: true });
@@ -650,15 +745,15 @@ app.post("/editProduct", async (req, res) => {
     return res.status(500).json({ success: false, error: "Server error" });
   }
 });
-app.get('/test2', async (req, res) => {
-  let doc = new accounts(accountsSchema)
+app.get("/test2", async (req, res) => {
+  let doc = new accounts(accountsSchema);
   doc.id = 1;
-  doc.username = "admin"
-  doc.password = await bcrypt.hash("adminpass", 10)
+  doc.username = "admin";
+  doc.password = await bcrypt.hash("adminpass", 10);
   await doc.save();
-  return doc
+  return doc;
 });
-app.get('/test', async (req, res) => {
+app.get("/test", async (req, res) => {
   try {
     const now = new Date();
 
@@ -667,33 +762,33 @@ app.get('/test', async (req, res) => {
         product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
         type: "IN",
         amount: 50,
-        date: new Date(now.getTime() - 10 * 60 * 1000) // 10 minutes ago
+        date: new Date(now.getTime() - 10 * 60 * 1000), // 10 minutes ago
       },
       {
         product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
         type: "OUT",
         amount: 10,
-        date: new Date(now.getTime() - 5 * 60 * 1000) // 5 minutes ago
+        date: new Date(now.getTime() - 5 * 60 * 1000), // 5 minutes ago
       },
       {
         product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
         type: "IN",
         amount: 200,
-        date: new Date(now.getTime() - 60 * 60 * 1000) // 1 hour ago
+        date: new Date(now.getTime() - 60 * 60 * 1000), // 1 hour ago
       },
       {
         product_id: "Kq6QIcrQxDNLWcrdpezQ8k3zy6tq2PUn",
         type: "OUT",
         amount: 5,
-        date: new Date(now) // current time
-      }
+        date: new Date(now), // current time
+      },
     ];
 
     const created = await stockRecords.insertMany(samples);
 
     res.json({
       message: `${created.length} sample records created.`,
-      records: created
+      records: created,
     });
   } catch (err) {
     console.error("Error seeding stockRecords:", err);
