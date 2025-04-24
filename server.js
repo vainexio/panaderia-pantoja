@@ -293,6 +293,18 @@ app.get("/api/raw-inventory", async (req, res) => {
     res.status(500).json({ error: "Server error", message: err.message });
   }
 });
+app.post("/getAccounts", async (req, res) => {
+  if (!req.user) return res.status(401).send({ message: "Not logged in", redirect: "/" });
+  let user = req.user;
+  try {
+    const account = await accounts.find();
+    res.status(200).json({ id: account.id, username: account.username});
+  } catch (err) {
+    return res
+      .status(404)
+      .json({ message: "Invalid or expired token", redirect: "/" });
+  }
+});
 app.post("/getStockRecord", async (req, res) => {
   if (!req.user)
     return res.status(401).send({ message: "Not logged in", redirect: "/" });
