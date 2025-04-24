@@ -512,6 +512,7 @@ app.post("/createStockRecord", async (req, res) => {
 
     // Emit notification with product name
     if (Number(author_id) === 2 && updatedProduct) {
+      io.emit("update");
       io.emit("notify", {
         message: `An [${type}] record was added to ${updatedProduct.name}`,
         type: "success",
