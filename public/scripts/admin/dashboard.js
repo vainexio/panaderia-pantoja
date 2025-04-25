@@ -57,14 +57,29 @@ async function dashboard() {
   const soonThresh = new Date(now);
   soonThresh.setDate(now.getDate() + 7);
   const expSet = new Set();
-  ins.forEach((r) => {
-    const p = prodMap[r.product_id];
-    if (!p) return;
-    const dt = new Date(r.date);
-    dt.setDate(dt.getDate() + p.expiry);
-    if (dt > now && dt <= soonThresh && currentStock[r.product_id] > 0)
-      expSet.add(r.product_id);
-  });
+ins.forEach((r) => {
+  const p = prodMap[r.product_id];
+  if (!p || !p.expiry || !p.expiry_unit) return;
+
+  const dt = new Date(r.date);
+  switch (p.expiry_unit.toLowerCase()) {
+    case "days":
+      dt.setDate(dt.getDate() + p.expiry);
+      break;
+    case "months":
+      dt.setMonth(dt.getMonth() + p.expiry);
+      break;
+    case "years":
+      dt.setFullYear(dt.getFullYear() + p.expiry);
+      break;
+    default:
+      dt.setDate(dt.getDate() + p.expiry); // fallback to days
+  }
+
+  if (dt > now && dt <= soonThresh && currentStock[r.product_id] > 0) {
+    expSet.add(r.product_id);
+  }
+});
   const expList = document.getElementById("expiringList");
   expSet.forEach((id) => {
     const li = document.createElement("li");
