@@ -137,7 +137,7 @@ app.get('/download-inventory', async (req, res) => {
       stockRecords.find({ date: { $gte: since } }).lean(),
     ]);
 
-    // Organize
+    // Organize data
     const prodsByCat = allCats.reduce((acc, c) => {
       acc[c.category_id] = allProds.filter(p => p.category_id === c.category_id);
       return acc;
@@ -156,86 +156,112 @@ app.get('/download-inventory', async (req, res) => {
 
     allCats.forEach(cat => {
       const sheet = wb.addWorksheet(cat.name || cat.category_id);
-      let col = 1;
+
+      // We'll lay out products side by side, starting at col 1
+      let startCol = 1;
+      const gap = 2; // blank columns between products
 
       prodsByCat[cat.category_id].forEach(p => {
-        // --- DETAILS BLOCK ---
-        const startCol = col;
-        // Header: product name
-        const hdr = sheet.getRow(1);
-        hdr.getCell(col).value = p.name;
-        hdr.getCell(col).font = { bold: true };
-        // Fields below
-        const details = [ ['Name', p.name], ['Quantity', p.quantity], ['Min', p.min], ['Max', p.max], ['Expiry', `${p.expiry} ${p.expiry_unit}`] ];
+        // --- Product Header ---
+        sheet.mergeCells(1, startCol, 1, startCol + 3);
+        const titleCell = sheet.getCell(1, startCol);
+        titleCell.value = p.name;
+        titleCell.font = { bold: true, size: 12 };
+        // Add border around title
+        ['top','left','bottom','right'].forEach(side => {
+          titleCell.border = titleCell.border || {};
+          titleCell.border[side] = { style: 'thin' };
+        });
+
+        // --- Details (row 2) ---
+        const details = [ ['Quantity', p.quantity], ['Min', p.min], ['Max', p.max], ['Expiry', `${p.expiry} ${p.expiry_unit}`] ];
         details.forEach(([f, v], i) => {
-  const row = sheet.getRow(2 + i);
-  row.getCell(col).value     = f;
-  row.getCell(col + 1).value = v;
-});
-// then advance by 2 columns instead of 1
-col += 2;
-        // Add border around details
-        const endRow = 2 + details.length - 1;
-        for(let r=1; r<=endRow; r++){
-          ['top','left','bottom','right'].forEach(side => {
-            sheet.getRow(r).getCell(col).border = { [side]: { style: 'thin' } };
-            sheet.getRow(r).getCell(col-1).border = { [side]: { style: 'thin' } };
-          });
-        }
+          const cellLabel = sheet.getCell(2 + i, startCol);
+          const cellVal   = sheet.getCell(2 + i, startCol + 1);
+          cellLabel.value = f;
+          cellVal.value   = v;
+          // border
+          [cellLabel, cellVal].forEach(cell => cell.border = { top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
+        });
 
-        // Move to next block: leave one blank column
-        col += 2;
-
-        // --- RECORDS BLOCK ---
-        // IN header (merged across two cols)
-        sheet.mergeCells(1, col, 1, col+1);
-        const inHdr = sheet.getCell(1, col);
+        // --- Records Header (IN/OUT) start at row after details ---
+        const recHeaderRow = 2 + details.length + 1;
+        // IN header
+        sheet.mergeCells(recHeaderRow, startCol, recHeaderRow, startCol + 1);
+        const inHdr = sheet.getCell(recHeaderRow, startCol);
         inHdr.value = 'IN'; inHdr.fill = { type:'pattern',pattern:'solid',fgColor:{argb:'FFC6EFCE'} }; inHdr.font={bold:true};
         // OUT header
-        sheet.mergeCells(1, col+2, 1, col+3);
-        const outHdr = sheet.getCell(1, col+2);
+        sheet.mergeCells(recHeaderRow, startCol + 2, recHeaderRow, startCol + 3);
+        const outHdr = sheet.getCell(recHeaderRow, startCol + 2);
         outHdr.value = 'OUT'; outHdr.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFF2DCDB'}}; outHdr.font={bold:true};
 
-        // sub-headers Date/Amount
+        // Sub-headers Date/Amount
+        const subRow = recHeaderRow + 1;
         ['Date','Amount'].forEach((h,i) => {
-          const c1 = sheet.getCell(2, col + i);
+          const c1 = sheet.getCell(subRow, startCol + i);
           c1.value = h; c1.font={bold:true};
-          const c2 = sheet.getCell(2, col+2 + i);
+          const c2 = sheet.getCell(subRow, startCol + 2 + i);
           c2.value = h; c2.font={bold:true};
         });
 
-        // fill records
-        for(let i=0; i<maxRecs; i++){
-          const rec = recsByProd[p.product_id]||[];
-          const inRec = rec.filter(r=>r.type==='IN')[i];
-          const outRec = rec.filter(r=>r.type==='OUT')[i];
-          const rowIndex = 3 + i;
-          // IN
-          if(inRec){ sheet.getCell(rowIndex,col).value = inRec.date.toISOString().slice(0,10); sheet.getCell(rowIndex,col+1).value=inRec.amount; }
-          // OUT
-          if(outRec){ sheet.getCell(rowIndex,col+2).value = outRec.date.toISOString().slice(0,10); sheet.getCell(rowIndex,col+3).value=outRec.amount; }
-        }
-
-        // border records
-        const recEndRow = 3 + maxRecs -1;
-        for(let c=col; c<col+4; c++){
-          for(let r=1; r<=recEndRow; r++){
-            sheet.getCell(r,c).border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} };
+        // --- FIFO Logic and record rows ---
+        const ins = (recsByProd[p.product_id]||[]).filter(r=>r.type==='IN');
+        const outs = (recsByProd[p.product_id]||[]).filter(r=>r.type==='OUT');
+        let queue = ins.map(r=>({ date:new Date(r.date), amount:r.amount }));
+        outs.forEach(o=>{
+          let amt = o.amount;
+          while(amt>0 && queue.length){
+            if(queue[0].amount > amt) { queue[0].amount -= amt; amt=0; }
+            else { amt -= queue[0].amount; queue.shift(); }
           }
-        }
+        });
+        
+        ins.forEach((r,i) => {
+          const rowIdx = subRow + 1 + i;
+          const inDateCell = sheet.getCell(rowIdx, startCol);
+          const inAmtCell  = sheet.getCell(rowIdx, startCol + 1);
+          const statusCell = sheet.getCell(rowIdx, startCol + 2);
 
-        // step past records + spacer col
-        col += 5;
+          inDateCell.value = new Date(r.date).toISOString().slice(0,10);
+          inAmtCell.value  = r.amount;
+          // expiry calculation
+          const expDate = new Date(r.date);
+          if(p.expiry_unit==='months') expDate.setMonth(expDate.getMonth()+p.expiry);
+          else if(p.expiry_unit==='years') expDate.setFullYear(expDate.getFullYear()+p.expiry);
+          else expDate.setDate(expDate.getDate()+p.expiry);
+
+          if(queue.find(q=>q.date.getTime()===new Date(r.date).getTime())){
+            statusCell.value = `Expires on ${expDate.toISOString().slice(0,10)}`;
+          } else {
+            statusCell.value = 'No longer on stock';
+            [inDateCell, inAmtCell, statusCell].forEach(c=>c.font={color:{argb:'FFFF0000'}});
+          }
+          // border each
+          [inDateCell,inAmtCell,statusCell].forEach(c=>c.border={top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'}});
+        });
+
+        outs.forEach((r,i) => {
+          const rowIdx = subRow + 1 + i;
+          const outDateCell = sheet.getCell(rowIdx, startCol + 2);
+          const outAmtCell  = sheet.getCell(rowIdx, startCol + 3);
+          outDateCell.value = new Date(r.date).toISOString().slice(0,10);
+          outAmtCell.value  = r.amount;
+          [outDateCell,outAmtCell].forEach(c=>c.border={top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'}});
+        });
+
+        // Expand a blank column gap
+        startCol += 4 + gap;
       });
 
-      // auto-width
-      sheet.columns.forEach(c => { let m=10; c.eachCell(cell=>{m=Math.max(m, (cell.value||'').toString().length)}); c.width=m+2; });
+      // Auto-size all used columns
+      sheet.columns.forEach(col => { let m=10; col.eachCell(cell=>{m=Math.max(m, (cell.value||'').toString().length)}); col.width=m+2; });
     });
 
-    // send
+    // Send workbook
     res.setHeader('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.setHeader('Content-Disposition', `attachment; filename=inventory_${new Date().toISOString().slice(0,10)}.xlsx`);
-    await wb.xlsx.write(res); res.end();
+    await wb.xlsx.write(res);
+    res.end();
   } catch(err) {
     console.error('Error generating Excel:',err);
     res.status(500).send('Server error');
