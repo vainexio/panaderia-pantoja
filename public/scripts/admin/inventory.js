@@ -5,38 +5,6 @@ async function inventoryStart() {
 async function loadInventory(intro, filter = "") {
   const separator = document.getElementById("stock-separator");
   const inventoryCard = document.getElementById("inventory-card");
-
-  let searchBarGroup = inventoryCard.parentNode.querySelector(".search-input-group");
-if (!searchBarGroup) {
-  // build Bootstrap input-group wrapper
-  searchBarGroup = document.createElement("div");
-  searchBarGroup.className = "input-group mb-3 search-input-group";
-
-  // icon span
-  const span = document.createElement("span");
-  span.className = "input-group-text bg-white";
-  span.innerHTML = '<i class="bi bi-search"></i>';
-
-  // the actual search input
-  const searchInput = document.createElement("input");
-  searchInput.id = "inventory-search";
-  searchInput.type = "search";
-  searchInput.className = "form-control";
-  searchInput.placeholder = "Search products…";
-  searchInput.setAttribute("aria-label", "Search products");
-
-  // assemble
-  searchBarGroup.append(span, searchInput);
-
-  // insert on parent, before the inventory card
-  inventoryCard.parentNode.insertBefore(searchBarGroup, inventoryCard);
-
-  // wire up filter
-  searchInput.addEventListener("input", () => {
-    loadInventory(false, searchInput.value.trim().toLowerCase());
-  });
-}
-
   // 2) Show loading indicator on first load
   if (intro) {
     inventoryCard.innerHTML = `

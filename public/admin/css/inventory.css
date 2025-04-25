@@ -11,21 +11,21 @@
 .category-row {
   margin-bottom: 10px;
 }
-.stock-separator {
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  width: 100%;
-  height: 100%;
-}
 .inventory-page {
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  align-items: flex-end;    /* left on the cross axis */
+  justify-content: flex-start;/* top on the main axis */
   width: 100%;
   height: 100%;
 }
-
+.stock-separator {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+}
 .qr-container {
   display: flex;
   flex-direction: column;
@@ -49,7 +49,6 @@
 }
 .inventory-card {
   width: 98%;
-  min-height: 9%;
   padding: 1rem;
   border-radius: 16px;
   background-color: transparent;
