@@ -127,98 +127,118 @@ app.get("/admin-dashboard", async (req, res) => {
   res.sendFile(__dirname + "/public/admin.html");
 });
 /* Global Backend */
-// Route to generate and send Excel file
 app.get('/download-inventory', async (req, res) => {
   try {
-    // 1) Fetch all categories, products, and recent stockRecords
-    const since = new Date();
-    since.setDate(since.getDate() - 7);
-
-    const [foundCategories, foundProducts, foundStockRecords] = await Promise.all([
+    // Fetch categories, products, and last 7 days of records
+    const since = new Date(); since.setDate(since.getDate() - 7);
+    const [allCats, allProds, allRecs] = await Promise.all([
       categories.find().lean(),
       products.find().lean(),
       stockRecords.find({ date: { $gte: since } }).lean(),
     ]);
 
-    // 2) Organize data
-    const prodsByCat = foundCategories.reduce((acc, c) => {
-      acc[c.category_id] = foundProducts.filter(p => p.category_id === c.category_id);
+    // Organize
+    const prodsByCat = allCats.reduce((acc, c) => {
+      acc[c.category_id] = allProds.filter(p => p.category_id === c.category_id);
       return acc;
     }, {});
-
-    const recsByProd = foundStockRecords.reduce((acc, r) => {
+    const recsByProd = allRecs.reduce((acc, r) => {
       acc[r.product_id] = acc[r.product_id] || [];
       acc[r.product_id].push(r);
       return acc;
     }, {});
+    const allProductsList = Object.values(prodsByCat).flat();
+    const maxRecs = Math.max(0, ...allProductsList.map(p => (recsByProd[p.product_id]||[]).length));
 
-    const maxRecs = Math.max(0, ...Object.values(prodsByCat).flat().map(
-      list => list.reduce((max, p) => Math.max(max, (recsByProd[p.product_id]||[]).length), 0)
-    ));
-
-    // 3) Create workbook
+    // Create workbook
     const wb = new ExcelJS.Workbook();
-    wb.creator = 'YourAppName';
-    wb.created = new Date();
+    wb.creator = 'YourApp'; wb.created = new Date();
 
-    foundCategories.forEach(cat => {
+    allCats.forEach(cat => {
       const sheet = wb.addWorksheet(cat.name || cat.category_id);
+      let col = 1;
 
-      // Header row: product names
-      const header = ['Field/Product'].concat(prodsByCat[cat.category_id].map(p => p.name));
-      const headerRow = sheet.addRow(header);
-      headerRow.eachCell(cell => {
-        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCCE5FF' } };
-        cell.font = { bold: true };
-      });
+      prodsByCat[cat.category_id].forEach(p => {
+        // --- DETAILS BLOCK ---
+        const startCol = col;
+        // Header: product name
+        const hdr = sheet.getRow(1);
+        hdr.getCell(col).value = p.name;
+        hdr.getCell(col).font = { bold: true };
+        // Fields below
+        const details = [ ['Name', p.name], ['Quantity', p.quantity], ['Min', p.min], ['Max', p.max], ['Expiry', `${p.expiry} ${p.expiry_unit}`] ];
+        details.forEach(([f, v], i) => {
+  const row = sheet.getRow(2 + i);
+  row.getCell(col).value     = f;
+  row.getCell(col + 1).value = v;
+});
+// then advance by 2 columns instead of 1
+col += 2;
+        // Add border around details
+        const endRow = 2 + details.length - 1;
+        for(let r=1; r<=endRow; r++){
+          ['top','left','bottom','right'].forEach(side => {
+            sheet.getRow(r).getCell(col).border = { [side]: { style: 'thin' } };
+            sheet.getRow(r).getCell(col-1).border = { [side]: { style: 'thin' } };
+          });
+        }
 
-      // Product detail rows
-      const fields = ['product_id','name','quantity','min','max','expiry','expiry_unit'];
-      fields.forEach(field => {
-        const row = [field].concat(
-          prodsByCat[cat.category_id].map(p => p[field])
-        );
-        sheet.addRow(row);
-      });
+        // Move to next block: leave one blank column
+        col += 2;
 
-      // Spacer row
-      sheet.addRow([]);
+        // --- RECORDS BLOCK ---
+        // IN header (merged across two cols)
+        sheet.mergeCells(1, col, 1, col+1);
+        const inHdr = sheet.getCell(1, col);
+        inHdr.value = 'IN'; inHdr.fill = { type:'pattern',pattern:'solid',fgColor:{argb:'FFC6EFCE'} }; inHdr.font={bold:true};
+        // OUT header
+        sheet.mergeCells(1, col+2, 1, col+3);
+        const outHdr = sheet.getCell(1, col+2);
+        outHdr.value = 'OUT'; outHdr.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFF2DCDB'}}; outHdr.font={bold:true};
 
-      // Records section header
-      const recHeader = ['Record #'].concat(prodsByCat[cat.category_id].map(() => ''));
-      const recHeaderRow = sheet.addRow(recHeader);
-      recHeaderRow.getCell(1).font = { italic: true };
-
-      // Record rows
-      for (let i = 0; i < maxRecs; i++) {
-        const row = [`#${i+1}`];
-        prodsByCat[cat.category_id].forEach(p => {
-          const rec = (recsByProd[p.product_id] || [])[i];
-          row.push(rec ? `${rec.date.toISOString().slice(0,10)} ${rec.type} ${rec.amount}` : '');
+        // sub-headers Date/Amount
+        ['Date','Amount'].forEach((h,i) => {
+          const c1 = sheet.getCell(2, col + i);
+          c1.value = h; c1.font={bold:true};
+          const c2 = sheet.getCell(2, col+2 + i);
+          c2.value = h; c2.font={bold:true};
         });
-        sheet.addRow(row);
-      }
 
-      // Auto-size columns
-      sheet.columns.forEach(col => {
-        let maxLength = 10;
-        col.eachCell(cell => {
-          const val = cell.value ? cell.value.toString() : '';
-          maxLength = Math.max(maxLength, val.length);
-        });
-        col.width = maxLength + 2;
+        // fill records
+        for(let i=0; i<maxRecs; i++){
+          const rec = recsByProd[p.product_id]||[];
+          const inRec = rec.filter(r=>r.type==='IN')[i];
+          const outRec = rec.filter(r=>r.type==='OUT')[i];
+          const rowIndex = 3 + i;
+          // IN
+          if(inRec){ sheet.getCell(rowIndex,col).value = inRec.date.toISOString().slice(0,10); sheet.getCell(rowIndex,col+1).value=inRec.amount; }
+          // OUT
+          if(outRec){ sheet.getCell(rowIndex,col+2).value = outRec.date.toISOString().slice(0,10); sheet.getCell(rowIndex,col+3).value=outRec.amount; }
+        }
+
+        // border records
+        const recEndRow = 3 + maxRecs -1;
+        for(let c=col; c<col+4; c++){
+          for(let r=1; r<=recEndRow; r++){
+            sheet.getCell(r,c).border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} };
+          }
+        }
+
+        // step past records + spacer col
+        col += 5;
       });
+
+      // auto-width
+      sheet.columns.forEach(c => { let m=10; c.eachCell(cell=>{m=Math.max(m, (cell.value||'').toString().length)}); c.width=m+2; });
     });
 
-    // 4) Write workbook to buffer & send
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    // send
+    res.setHeader('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.setHeader('Content-Disposition', `attachment; filename=inventory_${new Date().toISOString().slice(0,10)}.xlsx`);
-
-    await wb.xlsx.write(res);
-    res.end();
-  } catch (err) {
-    console.error('Error generating Excel:', err);
-    res.status(500).send('Server error generating Excel');
+    await wb.xlsx.write(res); res.end();
+  } catch(err) {
+    console.error('Error generating Excel:',err);
+    res.status(500).send('Server error');
   }
 });
 
