@@ -21,23 +21,7 @@ async function dashboard() {
   //
   dashboardElement.innerHTML = innerHTML
   //
-  const downloadData = document.getElementById('downloadAllData');
-
-downloadData.addEventListener('click', () => {
-  let filter;
-  const select = document.getElementById('filterSelect');
-  if (select) {
-    filter = select.value;
-  } else {
-    const options = ['Today','Last 7 days','This Year','Last Year','All'];
-    const choice = window.prompt(
-      'Enter filter: ' + options.join(', '),
-      'Last 7 days'
-    );
-    filter = options.includes(choice) ? choice : 'Last 7 days';
-  }
-  window.location = `/download-inventory?filter=${encodeURIComponent(filter)}`;
-});
+  const refresh = document.getElementById("refreshBtn");
   setLoading(refresh,true)
   // SUMMARY: total products per category
   const totalByCat = products.reduce((acc, p) => {

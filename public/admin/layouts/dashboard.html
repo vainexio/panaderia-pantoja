@@ -1,6 +1,27 @@
 <section id="dashboard" class="dashboard section-content">
-  <button id="refreshBtn" type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
-  <button id="downloadAllData" type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-download"></i> Download All Data</button>
+  <form id="categoryForm" class="product-form mb-4" style="max-width: 700px;">
+    <div class="form-group">
+      <div style="display: flex; flex-direction: row;">
+        <select id="filter_download" name="filter_download" required>
+          <option value="today">Today</option>
+          <option value="last 7 days">Last 7 Days</option>
+          <option value="this year">This Year</option>
+          <option value="last year">Last Year</option>
+          <option value="all">All</option>
+        </select>
+      </div>
+    </div>
+    <button
+      id="downloadAllData"
+      type="submit"
+      class="action-button black-loading stock-record-btn"
+    >
+      <i class="bi bi-download"></i> Download All Data
+    </button>
+    <button id="refreshBtn" class="action-button black-loading stock-record-btn">
+    <i class="bi bi-arrow-clockwise"></i> Refresh
+  </button>
+  </form>
   <div class="stats-summary">
     <div class="stat">
       <h4>Total Products per Category</h4>
