@@ -1,130 +1,132 @@
-let inventoryCard, detailCard, currentProduct, accounts;
+let separator, detailCard, currentProduct, accounts;
 async function inventoryStart() {
   loadInventory(true);
 }
-async function loadInventory(intro, filter = "") {
-  const separator = document.getElementById("stock-separator");
-  const inventoryCard = document.getElementById("inventory-card");
-  // 2) Show loading indicator on first load
-  if (intro) {
-    inventoryCard.innerHTML = `
-      <div class="loading-holder">
-        <div class="loader2"></div>
-        <h4>Loading Inventory</h4>
-      </div>`;
-  }
+async function loadInventory(intro) {
+  separator = document.getElementById("stock-separator");
+  let inventoryCard = document.getElementById("inventory-card");
+  if (intro)
+    inventoryCard.innerHTML = `<div class="loading-holder"><div class="loader2"></div><h4>Loading Inventory</h4></div>`;
+  let products = await fetch("/getProduct?type=all", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+  let categories = await fetch("/getCategory?type=all", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+  accounts = await fetch("/getAccounts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+  accounts = await accounts.json();
+  products = await products.json();
+  categories = await categories.json();
 
-  // 3) Fetch data
-  let [prodRes, ctgRes, accRes] = await Promise.all([
-    fetch("/getProduct?type=all", { method: "POST", headers: { "Content-Type": "application/json" } }),
-    fetch("/getCategory?type=all", { method: "POST", headers: { "Content-Type": "application/json" } }),
-    fetch("/getAccounts",   { method: "POST", headers: { "Content-Type": "application/json" } }),
-  ]);
-
-  let [products, categories, accounts] = await Promise.all([
-    prodRes.json(), ctgRes.json(), accRes.json()
-  ]);
-
-  // 4) Filter products by search term
-  if (filter) {
-    products = products.filter(p =>
-      p.name.toLowerCase().includes(filter)
-    );
-  }
-
-  // 5) Group by category
+  inventoryCard.innerHTML = ``;
   const grouped = {};
-  products.forEach(item => {
-    let category = categories.find(ctg => ctg.category_id == item.category_id);
+
+  products.forEach((item) => {
+    let category = categories.find(
+      (ctg) => ctg.category_id == item.category_id
+    );
     if (!category) category = { name: "Unknown Category" };
     const ctgName = category.name.toUpperCase();
+
     if (!grouped[ctgName]) grouped[ctgName] = [];
     grouped[ctgName].push(item);
   });
 
-  // 6) Render
-  inventoryCard.innerHTML = "";
   Object.entries(grouped).forEach(([category, items]) => {
-    if (!items.length) return;        // skip empty after filter
-
     const row = document.createElement("div");
     row.className = "category-row";
 
+    const divider = document.createElement("div");
+    //divider.className = "divider";
+
     const heading = document.createElement("div");
     heading.className = "category-heading";
-    heading.innerHTML = category + `
-      <button class="action-button me-1 category-qr-gen-btn">
-        <i class="bi bi-qr-code-scan"></i> Download QR
-      </button>`;
+    heading.innerHTML =
+      category +
+      ` <button class="action-button me-1 category-qr-gen-btn"><i class="bi bi-qr-code-scan"></i> Download QR</button>`;
 
     const scroll = document.createElement("div");
     scroll.className = "scroll-container";
-    scroll.addEventListener("wheel", e => {
+
+    scroll.addEventListener("wheel", function (e) {
+      // Only scroll horizontally if it's overflowing
       if (scroll.scrollWidth > scroll.clientWidth) {
-        e.preventDefault();
+        e.preventDefault(); // prevent vertical scroll
         scroll.scrollLeft += e.deltaY;
       }
     });
 
-    items.forEach(product => {
-      const status = product.min <= product.quantity
-        ? `<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>`
-        : `<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>`;
-
+    items.forEach((product) => {
+      let status =
+        product.min <= product.quantity
+          ? `<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>`
+          : `<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>`;
       const card = document.createElement("div");
+      card.style.color =
+        product.min > product.quantity ? "var(--red)" : "var(--black)";
       card.className = "product-card";
-      card.style.color = product.min > product.quantity ? "var(--red)" : "var(--black)";
-      card.innerHTML = `
-        <div><h5>${product.name}</h5></div>
-        <div class="divider"></div>
-        <div>Qty: ${product.quantity} ${status}</div>
-        <div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
+      card.innerHTML = `<div><h5>${product.name}</h5><div class="divider"></div><div>Qty: ${product.quantity} ${status}</div><div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
 
       card.addEventListener("click", () => showProductDetails(product));
       scroll.appendChild(card);
     });
 
-    // QR button
-    const originalCategory = categories.find(ctg => ctg.name.toUpperCase() === category);
+    const originalCategory = categories.find(
+      (ctg) => ctg.name.toUpperCase() === category
+    );
     const qrBtn = heading.querySelector(".category-qr-gen-btn");
-    qrBtn.addEventListener("click", async () => {
-      setLoading(qrBtn, true);
-      if (!originalCategory) {
-        notify("Unable to find the category ID for: " + category, { type: "error", duration: 5000 });
-        setLoading(qrBtn, false);
-        return;
-      }
-      notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 10000 });
-      const res = await fetch("/generateCategoryQr", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category_id: originalCategory.category_id })
-      });
-      if (res.ok) {
-        notify("Initiating Download", { type: "success", duration: 5000 });
-        const blob = await res.blob();
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `${originalCategory.name.replace(/\s+/g, "_")}_qr_codes.docx`;
-        link.click();
-      } else {
-        const error = await res.json();
-        notify("QR Download Failed: " + (error.message || "unknown error"), { type: "error", duration: 5000 });
-      }
-      setLoading(qrBtn, false);
-    });
 
-    inventoryCard.append(row, heading, scroll);
+    qrBtn.addEventListener("click", async (e) => {
+        setLoading(qrBtn, true);
+        if (!originalCategory) {
+          notify("Unable to find the category ID for: " + category, {
+            type: "error",
+            duration: 5000,
+          });
+          return;
+        }
+      notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 10000, });
+
+        const res = await fetch("/generateCategoryQr", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ category_id: originalCategory.category_id }),
+        });
+
+        if (res.ok) {
+          notify("Initiating Download", { type: "success", duration: 5000, });
+          const blob = await res.blob();
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `${originalCategory.name.replace(
+            /\s+/g,
+            "_"
+          )}_qr_codes.docx`;
+          link.click();
+          setLoading(qrBtn, false);
+        } else {
+          const error = await res.json();
+          notify("QR Download Failed: " + (error.message || "unknown error"), {
+            type: "error",
+            duration: 5000,
+          });
+          setLoading(qrBtn, false);
+        }
+      });
+
+    row.append(heading, scroll);
+    inventoryCard.append(row, divider);
   });
 }
-
-// on initial load
-document.addEventListener("DOMContentLoaded", () => loadInventory(true));
-
 //
 async function showProductDetails(product) {
   currentProduct = product
-  inventoryCard.style.display = "none";
+  separator.style.display = "none";
   detailCard = document.querySelector(".product-details-card");
   detailCard.innerHTML = "";
   detailCard.style.display = "flex";
@@ -134,7 +136,7 @@ async function showProductDetails(product) {
   backBtn.className = "action-button back-button";
   backBtn.addEventListener("click", () => {
     detailCard.style.display = "none";
-    inventoryCard.style.display = "";
+    separator.style.display = "";
     currentProduct = null
   });
   detailCard.appendChild(backBtn);
@@ -224,7 +226,7 @@ async function showProductDetails(product) {
   right.appendChild(recordHolder2);
   detailWrapper.append(left, right);
   detailCard.appendChild(detailWrapper);
-  inventoryCard.parentNode.appendChild(detailCard);
+  separator.parentNode.appendChild(detailCard);
 
   inForm.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -342,7 +344,7 @@ async function showProductDetails(product) {
         duration: 5000,
       });
       detailCard.style.display = "none";
-      inventoryCard.style.display = "";
+      separator.style.display = "";
     } else {
       setLoading(deleteBtn, false);
       notify("Delete failed: " + (error || "unknown error"), {
