@@ -37,8 +37,13 @@
   width: 50%;
   border-radius: 0px 0px 12px 12px;
 }
-#refreshBtn {
+#refreshBtn, #downloadAllData {
   margin: 10px;
+  margin-left: 2px;
+  margin-right: 2px;
+}
+#download-data-form {
+  max-width: 250px;
 }
 .inventory-card {
   width: 98%;

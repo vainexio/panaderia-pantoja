@@ -1,26 +1,19 @@
 <section id="dashboard" class="dashboard section-content">
-  <form id="categoryForm" class="product-form mb-4" style="max-width: 700px;">
-    <div class="form-group">
+  <form id="downloadDataForm" class="mb-4" style="max-width: 1000px;">
+    <div class="form-group" id="download-data-form">
       <div style="display: flex; flex-direction: row;">
         <select id="filter_download" name="filter_download" required>
           <option value="today">Today</option>
           <option value="last 7 days">Last 7 Days</option>
+          <option value="last 30 days">Last 30 Days</option>
           <option value="this year">This Year</option>
           <option value="last year">Last Year</option>
           <option value="all">All</option>
         </select>
       </div>
     </div>
-    <button
-      id="downloadAllData"
-      type="submit"
-      class="action-button black-loading stock-record-btn"
-    >
-      <i class="bi bi-download"></i> Download All Data
-    </button>
-    <button id="refreshBtn" class="action-button black-loading stock-record-btn">
-    <i class="bi bi-arrow-clockwise"></i> Refresh
-  </button>
+    <button id="downloadAllData" type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-download"></i> Download Excel</button>
+    <button id="refreshBtn" class="action-button black-loading stock-record-btn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
   </form>
   <div class="stats-summary">
     <div class="stat">
