@@ -153,14 +153,26 @@ async function dashboard() {
   });
   
   const form = document.getElementById('downloadDataForm');
+let isCooldown = false;
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault(); // prevent default form submission
-    const filter = document.getElementById('filter_download').value;
-    if (!filter) return;
+form.addEventListener('submit', (e) => {
+  e.preventDefault(); // prevent default form submission
 
-    window.location = `/download-inventory?filter=${encodeURIComponent(filter)}`;
-  });
+  if (isCooldown) {
+    notify("Please wait 30 seconds before downloading again.", { type: "warn", duration: 5000 });
+    return;
+  }
+
+  const filter = document.getElementById('filter_download').value;
+  if (!filter) return;
+
+  window.location = `/download-inventory?filter=${encodeURIComponent(filter)}`;
+  isCooldown = true;
+
+  setTimeout(() => {
+    isCooldown = false;
+  }, 30000); // 30 seconds
+});
   setLoading(refresh, false);
 }
 

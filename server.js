@@ -184,7 +184,7 @@ app.get('/download-inventory', async (req, res) => {
 
     // build one sheet per category
     allCats.forEach(cat => {
-      const sheet = wb.addWorksheet(cat.name || cat.category_id);
+      const sheet = wb.addWorksheet(cat.name.toUpperCase() || cat.category_id);
       const prods = prodsByCat[cat.category_id] || [];
 
       // error trap: no products
@@ -307,7 +307,7 @@ app.get('/download-inventory', async (req, res) => {
     });
 
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', `attachment; filename=inventory_${new Date().toISOString().slice(0,10)}.xlsx`);
+    res.setHeader('Content-Disposition', `attachment; filename=inventory_${new Date().toISOString().slice(0,10)} (${filter}).xlsx`);
     await wb.xlsx.write(res);
     res.end();
   } catch (err) {
