@@ -129,11 +129,33 @@ app.get("/admin-dashboard", async (req, res) => {
 /* Global Backend */
 app.get('/download-inventory', async (req, res) => {
   try {
-    const since = new Date(); since.setDate(since.getDate() - 7);
+    // read filter from query string (e.g. ?filter=Today)
+    const filter = req.query.filter || 'Last 7 days';
+    const now = new Date();
+
+    // map filter names to date ranges
+    const ranges = {
+      'Today': () => ({ start: new Date(now.setHours(0,0,0,0)), end: new Date() }),
+      'Last 7 days': () => ({ start: new Date(Date.now() - 7*24*60*60*1000), end: new Date() }),
+      'This Year': () => ({ start: new Date(now.getFullYear(), 0, 1), end: new Date() }),
+      'Last Year': () => ({
+        start: new Date(now.getFullYear()-1, 0, 1),
+        end: new Date(now.getFullYear()-1, 11, 31, 23, 59, 59)
+      }),
+      'All':    () => null
+    };
+
+    // compute date condition if needed
+    const range = ranges[filter] ? ranges[filter]() : ranges['Last 7 days']();
+    const dateQuery = range
+      ? { date: { ...(range.start ? { $gte: range.start } : {}), ...(range.end ? { $lte: range.end } : {}) } }
+      : {};
+
+    // fetch data
     const [allCats, allProds, allRecs] = await Promise.all([
       categories.find().lean(),
       products.find().lean(),
-      stockRecords.find({ date: { $gte: since } }).lean(),
+      stockRecords.find(dateQuery).lean(),
     ]);
 
     const prodsByCat = allCats.reduce((acc, c) => {
@@ -749,6 +771,7 @@ app.post("/createProduct", async (req, res) => {
         type: "IN",
         amount: product_qty,
         date: new Date().toISOString(),
+        author_id: 1,
       });
       await rec.save();
     }
