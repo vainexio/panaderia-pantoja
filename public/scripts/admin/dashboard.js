@@ -10,15 +10,6 @@ async function dashboard() {
   ]);
   const { products, stockRecords } = raw;
   //
-  const form = document.getElementById('downloadDataForm');
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault(); // prevent default form submission
-    const filter = document.getElementById('filter_download').value;
-    if (!filter) return;
-
-    window.location = `/download-inventory?filter=${encodeURIComponent(filter)}`;
-  });
   // map category_id to name
   const catMap = Object.fromEntries(
     categories.map((c) => [c.category_id, c.name])
@@ -159,6 +150,16 @@ async function dashboard() {
   });
   refresh.addEventListener("click", async () => {
     await dashboard();
+  });
+  
+  const form = document.getElementById('downloadDataForm');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault(); // prevent default form submission
+    const filter = document.getElementById('filter_download').value;
+    if (!filter) return;
+
+    window.location = `/download-inventory?filter=${encodeURIComponent(filter)}`;
   });
   setLoading(refresh, false);
 }
