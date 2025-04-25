@@ -129,7 +129,6 @@ app.get("/admin-dashboard", async (req, res) => {
 /* Global Backend */
 app.get('/download-inventory', async (req, res) => {
   try {
-    // Fetch categories, products, and last 7 days of records
     const since = new Date(); since.setDate(since.getDate() - 7);
     const [allCats, allProds, allRecs] = await Promise.all([
       categories.find().lean(),
@@ -137,7 +136,6 @@ app.get('/download-inventory', async (req, res) => {
       stockRecords.find({ date: { $gte: since } }).lean(),
     ]);
 
-    // Organize data
     const prodsByCat = allCats.reduce((acc, c) => {
       acc[c.category_id] = allProds.filter(p => p.category_id === c.category_id);
       return acc;
@@ -150,118 +148,99 @@ app.get('/download-inventory', async (req, res) => {
     const allProductsList = Object.values(prodsByCat).flat();
     const maxRecs = Math.max(0, ...allProductsList.map(p => (recsByProd[p.product_id]||[]).length));
 
-    // Create workbook
     const wb = new ExcelJS.Workbook();
     wb.creator = 'YourApp'; wb.created = new Date();
 
     allCats.forEach(cat => {
       const sheet = wb.addWorksheet(cat.name || cat.category_id);
-
-      // We'll lay out products side by side, starting at col 1
       let startCol = 1;
-      const gap = 2; // blank columns between products
+      const gap = 2;
 
       prodsByCat[cat.category_id].forEach(p => {
-        // --- Product Header ---
-        sheet.mergeCells(1, startCol, 1, startCol + 3);
+        // Product title
+        sheet.mergeCells(1, startCol, 1, startCol + 5);
         const titleCell = sheet.getCell(1, startCol);
         titleCell.value = p.name;
         titleCell.font = { bold: true, size: 12 };
-        // Add border around title
         ['top','left','bottom','right'].forEach(side => {
           titleCell.border = titleCell.border || {};
           titleCell.border[side] = { style: 'thin' };
         });
 
-        // --- Details (row 2) ---
+        // Details
         const details = [ ['Quantity', p.quantity], ['Min', p.min], ['Max', p.max], ['Expiry', `${p.expiry} ${p.expiry_unit}`] ];
         details.forEach(([f, v], i) => {
-          const cellLabel = sheet.getCell(2 + i, startCol);
-          const cellVal   = sheet.getCell(2 + i, startCol + 1);
-          cellLabel.value = f;
-          cellVal.value   = v;
-          // border
-          [cellLabel, cellVal].forEach(cell => cell.border = { top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
+          const labelCell = sheet.getCell(2 + i, startCol);
+          const valueCell = sheet.getCell(2 + i, startCol + 1);
+          labelCell.value = f;
+          valueCell.value = v;
+          [labelCell, valueCell].forEach(c => c.border = { top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
         });
 
-        // --- Records Header (IN/OUT) start at row after details ---
+        // Records header row
         const recHeaderRow = 2 + details.length + 1;
-        // IN header
-        sheet.mergeCells(recHeaderRow, startCol, recHeaderRow, startCol + 1);
+        // IN header now spans 3 columns: Date, Amount, Expiry
+        sheet.mergeCells(recHeaderRow, startCol, recHeaderRow, startCol + 2);
         const inHdr = sheet.getCell(recHeaderRow, startCol);
         inHdr.value = 'IN'; inHdr.fill = { type:'pattern',pattern:'solid',fgColor:{argb:'FFC6EFCE'} }; inHdr.font={bold:true};
-        // OUT header
-        sheet.mergeCells(recHeaderRow, startCol + 2, recHeaderRow, startCol + 3);
-        const outHdr = sheet.getCell(recHeaderRow, startCol + 2);
+        // OUT header shifted right, spans 2 columns
+        sheet.mergeCells(recHeaderRow, startCol + 4, recHeaderRow, startCol + 5);
+        const outHdr = sheet.getCell(recHeaderRow, startCol + 4);
         outHdr.value = 'OUT'; outHdr.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFF2DCDB'}}; outHdr.font={bold:true};
 
-        // Sub-headers Date/Amount
+        // Sub-headers
         const subRow = recHeaderRow + 1;
+        ['Date','Amount','Expiry'].forEach((h,i) => {
+          const cell = sheet.getCell(subRow, startCol + i);
+          cell.value = h; cell.font={bold:true}; cell.border = { top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} };
+        });
         ['Date','Amount'].forEach((h,i) => {
-          const c1 = sheet.getCell(subRow, startCol + i);
-          c1.value = h; c1.font={bold:true};
-          const c2 = sheet.getCell(subRow, startCol + 2 + i);
-          c2.value = h; c2.font={bold:true};
+          const cell = sheet.getCell(subRow, startCol + 4 + i);
+          cell.value = h; cell.font={bold:true}; cell.border = { top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} };
         });
 
-        // --- FIFO Logic and record rows ---
+        // FIFO Logic and record rows
         const ins = (recsByProd[p.product_id]||[]).filter(r=>r.type==='IN');
         const outs = (recsByProd[p.product_id]||[]).filter(r=>r.type==='OUT');
         let queue = ins.map(r=>({ date:new Date(r.date), amount:r.amount }));
-        outs.forEach(o=>{
-          let amt = o.amount;
-          while(amt>0 && queue.length){
-            if(queue[0].amount > amt) { queue[0].amount -= amt; amt=0; }
-            else { amt -= queue[0].amount; queue.shift(); }
-          }
-        });
-        
+        outs.forEach(o=>{ let amt=o.amount; while(amt>0 && queue.length){ if(queue[0].amount>amt){queue[0].amount-=amt;amt=0;}else{amt-=queue[0].amount;queue.shift();}}});
+
         ins.forEach((r,i) => {
           const rowIdx = subRow + 1 + i;
-          const inDateCell = sheet.getCell(rowIdx, startCol);
-          const inAmtCell  = sheet.getCell(rowIdx, startCol + 1);
-          const statusCell = sheet.getCell(rowIdx, startCol + 2);
-
-          inDateCell.value = new Date(r.date).toISOString().slice(0,10);
-          inAmtCell.value  = r.amount;
-          // expiry calculation
-          const expDate = new Date(r.date);
+          const dateCell   = sheet.getCell(rowIdx, startCol);
+          const amtCell    = sheet.getCell(rowIdx, startCol + 1);
+          const expiryCell = sheet.getCell(rowIdx, startCol + 2);
+          dateCell.value   = new Date(r.date).toISOString().slice(0,10);
+          amtCell.value    = r.amount;
+          const expDate    = new Date(r.date);
           if(p.expiry_unit==='months') expDate.setMonth(expDate.getMonth()+p.expiry);
           else if(p.expiry_unit==='years') expDate.setFullYear(expDate.getFullYear()+p.expiry);
           else expDate.setDate(expDate.getDate()+p.expiry);
-
-          if(queue.find(q=>q.date.getTime()===new Date(r.date).getTime())){
-            statusCell.value = `Expires on ${expDate.toISOString().slice(0,10)}`;
-          } else {
-            statusCell.value = 'No longer on stock';
-            [inDateCell, inAmtCell, statusCell].forEach(c=>c.font={color:{argb:'FFFF0000'}});
-          }
-          // border each
-          [inDateCell,inAmtCell,statusCell].forEach(c=>c.border={top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'}});
+          if(queue.find(q=>q.date.getTime()===new Date(r.date).getTime())) expiryCell.value = expDate.toISOString().slice(0,10);
+          else { expiryCell.value='No longer on stock';[dateCell,amtCell,expiryCell].forEach(c=>c.font={color:{argb:'FFFF0000'}}); }
+          [dateCell,amtCell,expiryCell].forEach(c=>c.border={top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'}});
         });
 
         outs.forEach((r,i) => {
           const rowIdx = subRow + 1 + i;
-          const outDateCell = sheet.getCell(rowIdx, startCol + 2);
-          const outAmtCell  = sheet.getCell(rowIdx, startCol + 3);
-          outDateCell.value = new Date(r.date).toISOString().slice(0,10);
-          outAmtCell.value  = r.amount;
-          [outDateCell,outAmtCell].forEach(c=>c.border={top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'}});
+          const dateCell = sheet.getCell(rowIdx, startCol + 4);
+          const amtCell  = sheet.getCell(rowIdx, startCol + 5);
+          dateCell.value = new Date(r.date).toISOString().slice(0,10);
+          amtCell.value  = r.amount;
+          [dateCell,amtCell].forEach(c=>c.border={top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'}});
         });
 
-        // Expand a blank column gap
-        startCol += 4 + gap;
+        // Advance startCol for next product
+        startCol += 6 + gap;
       });
 
-      // Auto-size all used columns
-      sheet.columns.forEach(col => { let m=10; col.eachCell(cell=>{m=Math.max(m, (cell.value||'').toString().length)}); col.width=m+2; });
+      // Auto-size columns
+      sheet.columns.forEach(col => { let m=10; col.eachCell(cell=>{m=Math.max(m,(cell.value||'').toString().length)}); col.width=m+2; });
     });
 
-    // Send workbook
     res.setHeader('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.setHeader('Content-Disposition', `attachment; filename=inventory_${new Date().toISOString().slice(0,10)}.xlsx`);
-    await wb.xlsx.write(res);
-    res.end();
+    await wb.xlsx.write(res); res.end();
   } catch(err) {
     console.error('Error generating Excel:',err);
     res.status(500).send('Server error');
