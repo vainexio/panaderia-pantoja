@@ -11,6 +11,7 @@ const fetch = require("node-fetch");
 const moment = require("moment");
 const path = require("path");
 const http = require("http");
+const ExcelJS = require('exceljs');
 const {
   Document,
   Packer,
@@ -126,6 +127,101 @@ app.get("/admin-dashboard", async (req, res) => {
   res.sendFile(__dirname + "/public/admin.html");
 });
 /* Global Backend */
+// Route to generate and send Excel file
+app.get('/download-inventory', async (req, res) => {
+  try {
+    // 1) Fetch all categories, products, and recent stockRecords
+    const since = new Date();
+    since.setDate(since.getDate() - 7);
+
+    const [foundCategories, foundProducts, foundStockRecords] = await Promise.all([
+      categories.find().lean(),
+      products.find().lean(),
+      stockRecords.find({ date: { $gte: since } }).lean(),
+    ]);
+
+    // 2) Organize data
+    const prodsByCat = foundCategories.reduce((acc, c) => {
+      acc[c.category_id] = foundProducts.filter(p => p.category_id === c.category_id);
+      return acc;
+    }, {});
+
+    const recsByProd = foundStockRecords.reduce((acc, r) => {
+      acc[r.product_id] = acc[r.product_id] || [];
+      acc[r.product_id].push(r);
+      return acc;
+    }, {});
+
+    const maxRecs = Math.max(0, ...Object.values(prodsByCat).flat().map(
+      list => list.reduce((max, p) => Math.max(max, (recsByProd[p.product_id]||[]).length), 0)
+    ));
+
+    // 3) Create workbook
+    const wb = new ExcelJS.Workbook();
+    wb.creator = 'YourAppName';
+    wb.created = new Date();
+
+    foundCategories.forEach(cat => {
+      const sheet = wb.addWorksheet(cat.name || cat.category_id);
+
+      // Header row: product names
+      const header = ['Field/Product'].concat(prodsByCat[cat.category_id].map(p => p.name));
+      const headerRow = sheet.addRow(header);
+      headerRow.eachCell(cell => {
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFCCE5FF' } };
+        cell.font = { bold: true };
+      });
+
+      // Product detail rows
+      const fields = ['product_id','name','quantity','min','max','expiry','expiry_unit'];
+      fields.forEach(field => {
+        const row = [field].concat(
+          prodsByCat[cat.category_id].map(p => p[field])
+        );
+        sheet.addRow(row);
+      });
+
+      // Spacer row
+      sheet.addRow([]);
+
+      // Records section header
+      const recHeader = ['Record #'].concat(prodsByCat[cat.category_id].map(() => ''));
+      const recHeaderRow = sheet.addRow(recHeader);
+      recHeaderRow.getCell(1).font = { italic: true };
+
+      // Record rows
+      for (let i = 0; i < maxRecs; i++) {
+        const row = [`#${i+1}`];
+        prodsByCat[cat.category_id].forEach(p => {
+          const rec = (recsByProd[p.product_id] || [])[i];
+          row.push(rec ? `${rec.date.toISOString().slice(0,10)} ${rec.type} ${rec.amount}` : '');
+        });
+        sheet.addRow(row);
+      }
+
+      // Auto-size columns
+      sheet.columns.forEach(col => {
+        let maxLength = 10;
+        col.eachCell(cell => {
+          const val = cell.value ? cell.value.toString() : '';
+          maxLength = Math.max(maxLength, val.length);
+        });
+        col.width = maxLength + 2;
+      });
+    });
+
+    // 4) Write workbook to buffer & send
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=inventory_${new Date().toISOString().slice(0,10)}.xlsx`);
+
+    await wb.xlsx.write(res);
+    res.end();
+  } catch (err) {
+    console.error('Error generating Excel:', err);
+    res.status(500).send('Server error generating Excel');
+  }
+});
+
 app.get("/currentAccount", async (req, res) => {
   if (!req.user) return res.status(401).send({ message: "Not logged in", redirect: "/" });
   let user = req.user;

@@ -22,6 +22,10 @@ async function dashboard() {
   dashboardElement.innerHTML = innerHTML
   //
   const refresh = document.getElementById("refreshBtn");
+  const downloadData = document.getElementById("downloadAllData");
+  downloadData.addEventListener('click', () => {
+  window.location = '/download-inventory';
+});
   setLoading(refresh,true)
   // SUMMARY: total products per category
   const totalByCat = products.reduce((acc, p) => {
