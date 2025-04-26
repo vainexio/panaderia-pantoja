@@ -1,5 +1,6 @@
 async function adminSettings() {
   try {
+    accountCreation();
     document.getElementById("doc_settings_first_name").value =
       currentAdmin.username;
     document.getElementById("doc_settings_id").value = currentAdmin.id;
@@ -87,39 +88,40 @@ async function adminSettings() {
         setLoading(removeAllBtn, false);
       });
     }
+
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 async function accountCreation() {
-  if (!window.accountCreationForm) {
-    window.accountCreationForm = true;
-
-    document
+  document
       .getElementById("accountCreationForm")
       .addEventListener("submit", async function (event) {
         event.preventDefault();
-
+        let btn = event.submitter;
+        setLoading(btn, true);
         const formData = Object.fromEntries(
           new FormData(event.target).entries()
         );
-        const notification = document.getElementById("patient_regis_notif");
 
-        const response = await fetch("/registerPatient", {
+        const response = await fetch("/createAccount", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
 
         if (response.ok) {
-          notify("Account created", { type: "success", duration: 5000, });
+          notify("Account created", { type: "success", duration: 5000 });
+          document.getElementById("accountCreationForm").reset();
         } else {
           const error = await response.json();
-          notify(error.message || "Failed to create account", { type: "error", duration: 5000, });
+          notify(error.message || "Failed to create account", {
+            type: "error",
+            duration: 5000,
+          });
         }
-        document.getElementById("accountCreationForm").reset();
+        setLoading(btn, false);
       });
-  }
 }
 document.addEventListener("DOMContentLoaded", async function () {
   waitUntilReady(adminSettings);
