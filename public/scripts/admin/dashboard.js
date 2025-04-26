@@ -1,8 +1,8 @@
-let innerHTML = null
+let innerHTML = null;
 async function dashboard() {
   let dashboardElement = document.getElementById("dashboard");
-  if (!innerHTML) innerHTML = dashboardElement.innerHTML
-  dashboardElement.innerHTML = `<div class="loading-holder m-3"><div class="loader2 inverted"></div><h4 style="color:white;">Loading Dashboard</h4></div>`
+  if (!innerHTML) innerHTML = dashboardElement.innerHTML;
+  dashboardElement.innerHTML = `<div class="loading-holder m-3"><div class="loader2 inverted"></div><h4 style="color:white;">Loading Dashboard</h4></div>`;
   // fetch raw data and categories concurrently
   const [raw, categories] = await Promise.all([
     fetch("/api/raw-inventory").then((r) => r.json()),
@@ -19,10 +19,9 @@ async function dashboard() {
     sevenAgo = new Date(now);
   sevenAgo.setDate(now.getDate() - 7);
   //
-  dashboardElement.innerHTML = innerHTML
+  dashboardElement.innerHTML = innerHTML;
   //
   const refresh = document.getElementById("refreshBtn");
-  setLoading(refresh,true)
   // SUMMARY: total products per category
   const totalByCat = products.reduce((acc, p) => {
     acc[p.category_id] = (acc[p.category_id] || 0) + 1;
@@ -57,29 +56,29 @@ async function dashboard() {
   const soonThresh = new Date(now);
   soonThresh.setDate(now.getDate() + 7);
   const expSet = new Set();
-ins.forEach((r) => {
-  const p = prodMap[r.product_id];
-  if (!p || !p.expiry || !p.expiry_unit) return;
+  ins.forEach((r) => {
+    const p = prodMap[r.product_id];
+    if (!p || !p.expiry || !p.expiry_unit) return;
 
-  const dt = new Date(r.date);
-  switch (p.expiry_unit.toLowerCase()) {
-    case "days":
-      dt.setDate(dt.getDate() + p.expiry);
-      break;
-    case "months":
-      dt.setMonth(dt.getMonth() + p.expiry);
-      break;
-    case "years":
-      dt.setFullYear(dt.getFullYear() + p.expiry);
-      break;
-    default:
-      dt.setDate(dt.getDate() + p.expiry); // fallback to days
-  }
+    const dt = new Date(r.date);
+    switch (p.expiry_unit.toLowerCase()) {
+      case "days":
+        dt.setDate(dt.getDate() + p.expiry);
+        break;
+      case "months":
+        dt.setMonth(dt.getMonth() + p.expiry);
+        break;
+      case "years":
+        dt.setFullYear(dt.getFullYear() + p.expiry);
+        break;
+      default:
+        dt.setDate(dt.getDate() + p.expiry); // fallback to days
+    }
 
-  if (dt > now && dt <= soonThresh && currentStock[r.product_id] > 0) {
-    expSet.add(r.product_id);
-  }
-});
+    if (dt > now && dt <= soonThresh && currentStock[r.product_id] > 0) {
+      expSet.add(r.product_id);
+    }
+  });
   const expList = document.getElementById("expiringList");
   expSet.forEach((id) => {
     const li = document.createElement("li");
@@ -101,17 +100,17 @@ ins.forEach((r) => {
 
   // CHART 2: Top-Out Product
   const topOuts = Object.entries(out7Sum)
-  .sort((a, b) => b[1] - a[1])
-  .slice(0, 10); // Get top 5
-  
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 10); // Get top 5
+
   new Chart(document.getElementById("c2"), {
-  type: "doughnut",
-  data: {
-    labels: topOuts.map(([id]) => prodMap[id]?.name || "Unknown"),
-    datasets: [{ data: topOuts.map(([_, val]) => val) }],
-  },
-  options: { responsive: true },
-});
+    type: "doughnut",
+    data: {
+      labels: topOuts.map(([id]) => prodMap[id]?.name || "Unknown"),
+      datasets: [{ data: topOuts.map(([_, val]) => val) }],
+    },
+    options: { responsive: true },
+  });
 
   // CHART 3: IN vs OUT Volume
   const totalIn = Object.values(inSum).reduce((s, v) => s + v, 0);
@@ -166,29 +165,35 @@ ins.forEach((r) => {
   refresh.addEventListener("click", async () => {
     await dashboard();
   });
-  
-  const form = document.getElementById('downloadDataForm');
-let isCooldown = false;
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault(); // prevent default form submission
+  const downloadForm = document.getElementById("downloadDataForm");
+  let isCooldown = false;
 
-  if (isCooldown) {
-    notify("Please wait 30 seconds before downloading again.", { type: "warn", duration: 5000 });
-    return;
-  }
+  downloadForm.addEventListener("submit", (e) => {
+    e.preventDefault(); // prevent default form submission
+    let btn = e.submitter;
+    if (isCooldown) {
+      notify("Please wait 30 seconds before downloading again.", {
+        type: "warn",
+        duration: 5000,
+      });
+      return;
+    }
+    setLoading(btn,true)
 
-  const filter = document.getElementById('filter_download').value;
-  if (!filter) return;
+    const filter = document.getElementById("filter_download").value;
+    if (!filter) return;
 
-  window.location = `/download-inventory?filter=${encodeURIComponent(filter)}`;
-  isCooldown = true;
+    window.location = `/download-inventory?filter=${encodeURIComponent(
+      filter
+    )}`;
+    setLoading(btn, false);
+    isCooldown = true;
 
-  setTimeout(() => {
-    isCooldown = false;
-  }, 30000); // 30 seconds
-});
-  setLoading(refresh, false);
+    setTimeout(() => {
+      isCooldown = false;
+    }, 30000); // 30 seconds
+  });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
