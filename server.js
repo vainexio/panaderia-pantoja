@@ -24,8 +24,6 @@ const {
   TableCell,
   WidthType,
 } = require("docx");
-//
-
 const app = express();
 const { Server } = require("socket.io");
 const server = http.createServer(app);
