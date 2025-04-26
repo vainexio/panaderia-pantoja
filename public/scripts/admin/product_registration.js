@@ -105,7 +105,7 @@ async function productRegistration() {
           notify("Product registered", { type: "success", duration: 5000 });
           document.getElementById("productForm").reset();
           setLoading(btn, false);
-          loadInventory();
+          loadInventory(false,true);
         } else {
           const error = await response.json();
           notify(error.message || "Failed to register product.", {

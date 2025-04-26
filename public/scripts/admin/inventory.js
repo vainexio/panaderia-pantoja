@@ -14,7 +14,11 @@ async function loadInventory(intro,newData) {
   if (searchInput && !searchInput.dataset.bound) {
     searchInput.addEventListener("input", () => loadInventory(false));
     filterSelect.addEventListener("change", () => loadInventory(false));
-    refreshBtn.addEventListener("click", () => loadInventory(true,true));
+    refreshBtn.addEventListener("click", async () => {
+      setLoading(refreshBtn,true)
+      await loadInventory(true,true)
+      setLoading(refreshBtn,false)
+    });
     searchInput.dataset.bound = "1";
   }
   if (intro) {
