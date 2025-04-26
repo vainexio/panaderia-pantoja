@@ -1,91 +1,154 @@
 let separator, detailCard, currentProduct, accounts;
 async function inventoryStart() {
-  document.getElementById("inventory-search").addEventListener("input", () => renderInventory());
-  document.getElementById("inventory-mode").addEventListener("change", () => renderInventory());
-  document.getElementById("refresh-inventory").addEventListener("click", () => loadInventory(true));
-  loadInventory(true);
+  loadInventory(true,true);
 }
 window._INV_DATA = { products: [], categories: [] };
 
-  // 1) loadInventory fetches and updates cache, then renders
-  async function loadInventory(intro = true) {
+async function loadInventory(intro,newData) {
+  separator = document.getElementById("stock-separator");
+  const searchInput  = document.getElementById("inventory-search");
+  const filterSelect = document.getElementById("inventory-filter");
+  const refreshBtn   = document.getElementById("inventory-refresh");
+
+  // bind controls only once
+  if (searchInput && !searchInput.dataset.bound) {
+    searchInput.addEventListener("input", () => loadInventory(false));
+    filterSelect.addEventListener("change", () => loadInventory(false));
+    refreshBtn.addEventListener("click", () => loadInventory(true,true));
+    searchInput.dataset.bound = "1";
+  }
+  if (intro) {
     const inventoryCard = document.getElementById("inventory-card");
-    if (intro) {
-      inventoryCard.innerHTML = '<div class="loading-holder"><div class="loader2"></div><h4>Loading Inventory</h4></div>';
-    }
-
-    const [prodRes, ctgRes] = await Promise.all([
+    inventoryCard.innerHTML = `<div class="loading-holder"><div class="loader2"></div><h4>Loading Inventory</h4></div>`;
+  }
+  if (newData) {
+    const [prodRes, ctgRes, accs] = await Promise.all([
       fetch("/getProduct?type=all", { method: "POST", headers: {"Content-Type":"application/json"} }),
-      fetch("/getCategory?type=all", { method: "POST", headers: {"Content-Type":"application/json"} })
+      fetch("/getCategory?type=all", { method: "POST", headers: {"Content-Type":"application/json"} }),
+      fetch("/getAccounts", { method: "POST", headers: { "Content-Type": "application/json" } })
     ]);
-    const [products, categories] = await Promise.all([prodRes.json(), ctgRes.json()]);
+    const [products, categories] = await Promise.all([ prodRes.json(), ctgRes.json(), accs.json() ]);
 
-    // update cache
     window._INV_DATA.products   = products;
     window._INV_DATA.categories = categories;
-
-    // render using current filter values
-    renderInventory();
   }
 
-  // 2) renderInventory reads from cache and applies search + mode filters
-  function renderInventory() {
-    const { products, categories } = window._INV_DATA;
-    const inventoryCard = document.getElementById("inventory-card");
-    const filterText = document.getElementById("inventory-search").value.trim().toLowerCase();
-    const mode       = document.getElementById("inventory-mode").value;  // "all" | "low" | "high"
+  renderInventory();
+}
 
-    // group after filtering
-    const grouped = {};
-    products.forEach(item => {
-      // text filter
-      if (filterText && !item.name.toLowerCase().includes(filterText)) return;
+function renderInventory() {
+  const { products, categories } = window._INV_DATA;
+  const inventoryCard = document.getElementById("inventory-card");
+  const filterText = document.getElementById("inventory-search").value.trim().toLowerCase();
+  const filterMode = document.getElementById("inventory-filter").value;
 
-      // find category name
-      let ctg = categories.find(c=>c.category_id==item.category_id);
-      const ctgName = (ctg?ctg.name:"Unknown").toUpperCase();
+  // apply filters
+  let filtered = products.filter(p => {
+    if (filterText && !p.name.toLowerCase().includes(filterText)) return false;
+    if (filterMode === "low"  && p.quantity >= p.min) return false;
+    if (filterMode === "high" && p.quantity <= p.max) return false;
+    return true;
+  });
 
-      // mode filter
-      if (mode === "low"  && item.quantity >= item.min) return;
-      if (mode === "high" && item.quantity <= item.max) return;
+  // group by category
+  const grouped = {};
+  filtered.forEach(item => {
+    let ctg = categories.find(c => c.category_id == item.category_id) || { name: "Unknown Category" };
+    const ctgName = ctg.name.toUpperCase();
+    if (!grouped[ctgName]) grouped[ctgName] = [];
+    grouped[ctgName].push(item);
+  });
 
-      (grouped[ctgName] = grouped[ctgName] || []).push(item);
+  // render groups
+  inventoryCard.innerHTML = "";
+  Object.entries(grouped).forEach(([category, items]) => {
+    if (!items.length) return;
 
+    const row = document.createElement("div");
+    row.className = "category-row";
+
+    const heading = document.createElement("div");
+    heading.className = "category-heading";
+    heading.innerHTML = category + `
+      <button class="action-button me-1 category-qr-gen-btn">
+        <i class="bi bi-qr-code-scan"></i> Download QR
+      </button>`;
+
+    const scroll = document.createElement("div");
+    scroll.className = "scroll-container";
+    scroll.addEventListener("wheel", e => {
+      if (scroll.scrollWidth > scroll.clientWidth) {
+        e.preventDefault();
+        scroll.scrollLeft += e.deltaY;
+      }
     });
 
-    // render DOM
-    inventoryCard.innerHTML = "";
-    Object.entries(grouped).forEach(([ctgName, items]) => {
-      if (!items.length) return;
-      const heading = document.createElement("div");
-      heading.className = "category-heading";
-      heading.textContent = ctgName;
+    items.forEach((product) => {
+      const iconStatus =
+        product.min > product.quantity
+          ? '<i class="bi bi-arrow-down"></i>'
+          : product.max < product.quantity
+          ? '<i class="bi bi-arrow-up"></i>'
+          : '';
+      const status =
+        product.min > product.quantity
+          ? '<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>'
+          : product.max < product.quantity
+          ? '<i class="bi bi-exclamation-circle-fill" title="High stocks" style="color:var(--red);"></i>'
+          : '<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>';
 
-      const scroll = document.createElement("div");
-      scroll.className = "scroll-container";
-      scroll.addEventListener("wheel", e => {
-        if (scroll.scrollWidth>scroll.clientWidth) {
-          e.preventDefault();
-          scroll.scrollLeft += e.deltaY;
-        }
-      });
-
-      items.forEach(p => {
-        const card = document.createElement("div");
-        card.className="product-card";
-        const status = p.min>p.quantity ? "Low" : p.max<p.quantity ? "High" : "Good";
-        card.innerHTML = `<h5>${p.name}</h5>
-                          <div>Qty: ${p.quantity} (${status})</div>
-                          <div>Min: ${p.min} Max: ${p.max}</div>`;
-        scroll.appendChild(card);
-      });
-
-      const row = document.createElement("div");
-      row.className="category-row";
-      row.append(heading, scroll);
-      inventoryCard.appendChild(row);
+      const card = document.createElement("div");
+      card.className = "product-card";
+      card.style.color =
+        product.min > product.quantity || product.max < product.quantity
+          ? "var(--red)"
+          : "var(--black)";
+      card.innerHTML = `
+        <div>
+          <h5>${iconStatus} ${product.name}</h5>
+          <div class="divider"></div>
+          <div>Qty: ${product.quantity} ${status}</div>
+          <div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>
+        </div>
+      `;
+      card.addEventListener("click", () => showProductDetails(product));
+      scroll.appendChild(card);
     });
-  }
+
+    // QR button logic unchanged
+    const originalCategory = categories.find(ctg => ctg.name.toUpperCase() === category);
+    const qrBtn = heading.querySelector(".category-qr-gen-btn");
+    qrBtn.addEventListener("click", async () => {
+      setLoading(qrBtn, true);
+      if (!originalCategory) {
+        notify("Unable to find the category ID for: " + category, { type: "error", duration: 5000 });
+        setLoading(qrBtn, false);
+        return;
+      }
+      notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 10000 });
+      const res = await fetch("/generateCategoryQr", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category_id: originalCategory.category_id })
+      });
+      if (res.ok) {
+        notify("Initiating Download", { type: "success", duration: 5000 });
+        const blob = await res.blob();
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${originalCategory.name.replace(/\s+/g, "_")}_qr_codes.docx`;
+        link.click();
+      } else {
+        const error = await res.json();
+        notify("QR Download Failed: " + (error.message || "unknown error"), { type: "error", duration: 5000 });
+      }
+      setLoading(qrBtn, false);
+    });
+
+    row.append(heading, scroll);
+    inventoryCard.append(row, document.createElement("div") /* divider */);
+  });
+}
 //
 async function showProductDetails(product) {
   currentProduct = product
@@ -232,7 +295,7 @@ async function showProductDetails(product) {
       inForm.reset();
       setLoading(btn, false);
       notify("Added incoming record", { type: "success", duration: 5000 });
-      await loadInventory();
+      await loadInventory(false,true);
     } else {
       setLoading(btn, false);
       notify(error || "Failed to add record", { type: "error", duration: 5000 });
@@ -259,7 +322,7 @@ async function showProductDetails(product) {
       outForm.reset();
       setLoading(btn, false);
       notify("Added outgoing record", { type: "success", duration: 5000 });
-      await loadInventory();
+      await loadInventory(false,true);
     } else {
       setLoading(btn, false);
       notify(error || "Failed to add record", { type: "error", duration: 5000 });
@@ -294,7 +357,7 @@ async function showProductDetails(product) {
         duration: 5000,
       });
       setLoading(btn, false);
-      await loadInventory();
+      await loadInventory(false,true);
     } else {
       setLoading(btn, false);
       console.log(error);
@@ -322,7 +385,7 @@ async function showProductDetails(product) {
     const { success, error } = await res.json();
 
     if (success) {
-      await loadInventory();
+      await loadInventory(false,true);
       setLoading(deleteBtn, false);
       notify("Product deleted successfully", {
         type: "success",
@@ -431,7 +494,7 @@ async function fetchAndRenderStockRecords(productId, intro) {
         await fetchAndRenderStockRecords(productId);
         notify("Record deleted", { type: "success", duration: 5000 });
         setLoading(btn, false);
-        await loadInventory();
+        await loadInventory(false,true);
       } else {
         alert("Error deleting record");
       }

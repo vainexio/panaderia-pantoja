@@ -1,16 +1,23 @@
+<!-- HTML: add these filter controls above your inventory-card, inside .inventory-separator -->
 <section id="inventory" class="inventory section-content">
   <div class="inventory-page">
     <div class="inventory-separator" id="stock-separator">
-      <!-- filter controls will be injected here -->
-      <div id="filter-controls" class="mb-3 d-flex gap-2">
-        <input id="inventory-search" type="search" class="form-control w-auto" placeholder="Search…" />
-        <select id="inventory-mode" class="form-select w-auto">
-          <option value="all">All</option>
+
+      <!-- ── Filter Controls ── -->
+      <div class="d-flex mb-3 align-items-center gap-2">
+        <div class="input-group input-group-sm w-auto">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input id="inventory-search" type="search" class="form-control" placeholder="Search products…" />
+        </div>
+        <select id="inventory-filter" class="form-select form-select-sm w-auto">
+          <option value="all">All Stocks</option>
           <option value="low">Low Stocks</option>
           <option value="high">High Stocks</option>
         </select>
-        <button id="refresh-inventory" class="btn btn-secondary">Refresh</button>
+        <button id="inventory-refresh" class="action-button">Refresh</button>
       </div>
+      <!-- ── end controls ── -->
+
       <div class="inventory-card" id="inventory-card"></div>
     </div>
     <div class="product-details-card" style="display: none"></div>
