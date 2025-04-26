@@ -3,9 +3,8 @@ async function adminSettings() {
     accountCreation();
     document.getElementById("admin_settings_first_name").value = currentAdmin.username;
     document.getElementById("admin_settings_id").value = currentAdmin.id;
-    document.getElementById("admin_settings_acc_level").value = "Level "+currentAdmin.userLevel;
-    
-    
+    document.getElementById("admin_settings_acc_level").value = currentAdmin.userLevel;
+
     const sessionResponse = await fetch("/getAllSessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -22,7 +21,6 @@ async function adminSettings() {
 
     let tableHTML = `
       <div class="table-responsive">
-        <button id="remove-other-sessions" class="btn btn-danger mb-3">Logout Other Devices</button>
         <table class="table table-striped table-bordered">
           <thead class="thead-dark">
             <tr>
@@ -74,95 +72,63 @@ async function adminSettings() {
       });
     });
 
-    const removeAllBtn = document.getElementById("remove-other-sessions");
-    if (removeAllBtn) {
-      removeAllBtn.addEventListener("click", async function () {
-        setLoading(removeAllBtn, true);
-        await removeOtherSessions(currentAdmin.id, adminSettings);
-        notify("Other devices were removed", {
-          type: "success",
-          duration: 5000,
+    document
+      .getElementById("settingsForm")
+      .addEventListener("submit", async function (event) {
+        event.preventDefault();
+        let btn = event.submitter;
+        setLoading(btn,true)
+        const formData = Object.fromEntries(
+          new FormData(event.target).entries()
+        );
+        let accountData = await fetch("/currentAccount");
+        if (accountData.ok) {
+          accountData = await accountData.json();
+          currentAdmin = accountData;
+        } else return;
+
+        const response = await fetch("/updateAccount", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ accountData, formData }),
         });
-        setLoading(removeAllBtn, false);
-      });
-    }
-    
-    document.getElementById("settingsForm").addEventListener("submit", async function (event) {
-      event.preventDefault();
-    if (formDebounce) return
-    formDebounce = true
 
-      const formData = Object.fromEntries(new FormData(event.target).entries());
-    
-    let accountData = await fetch("/currentAccount?type="+formData.account_type.toLowerCase())
-    if (accountData.ok) {
-      accountData = await accountData.json()
-      if (formData.account_type == "Doctor") currentDoctor = accountData
-      else if (formData.account_type == "Patient") currentPatient = accountData
-    } else return
-    
-      const notification = document.getElementById(
-        formData.account_type + "_settings_notif"
-      );
-
-      const response = await fetch("/updateAccount", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ accountData, formData }),
-      });
-
-      if (response.ok) {
-        notification.textContent = "Successfully updated account details.";
-        notification.className = "alert alert-success mt-3 rounded-3";
-      } else {
-        const error = await response.json();
-        notification.textContent =
-          error.message || "Failed to update account details.";
-        notification.className = "alert alert-danger mt-3 rounded-3";
-      }
-
-      setTimeout(function () {
-        if (notification.textContent.length > 0) {
-          notification.textContent = "";
-          notification.className = "";
-          formDebounce = false
+        if (response.ok) {
+          notify("Account details updated", { type: "success", duration: 5000 });
+        } else {
+          const error = await response.json();
+          notify(error.message || "Failed to update account details.", { type: "error", duration: 5000 });
         }
-      }, 3000);
-    });
-
+      setLoading(btn,false)
+      });
   } catch (error) {
     console.error("Error fetching data:", error);
   }
 }
 async function accountCreation() {
   document
-      .getElementById("accountCreationForm")
-      .addEventListener("submit", async function (event) {
-        event.preventDefault();
-        let btn = event.submitter;
-        setLoading(btn, true);
-        const formData = Object.fromEntries(
-          new FormData(event.target).entries()
-        );
+    .getElementById("accountCreationForm")
+    .addEventListener("submit", async function (event) {
+      event.preventDefault();
+      let btn = event.submitter;
+      setLoading(btn, true);
+      const formData = Object.fromEntries(new FormData(event.target).entries());
 
-        const response = await fetch("/createAccount", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          notify("Account created", { type: "success", duration: 5000 });
-          document.getElementById("accountCreationForm").reset();
-        } else {
-          const error = await response.json();
-          notify(error.message || "Failed to create account", {
-            type: "error",
-            duration: 5000,
-          });
-        }
-        setLoading(btn, false);
+      const response = await fetch("/createAccount", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
+
+      if (response.ok) {
+        notify("Account created", { type: "success", duration: 5000 });
+        document.getElementById("accountCreationForm").reset();
+      } else {
+        const error = await response.json();
+        notify(error.message || "Failed to create account", {type: "error",duration: 5000,});
+      }
+      setLoading(btn, false);
+    });
 }
 document.addEventListener("DOMContentLoaded", async function () {
   waitUntilReady(adminSettings);

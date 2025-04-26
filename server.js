@@ -885,6 +885,7 @@ app.post("/generateQr", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 // Deletions
 app.post("/deleteProduct", async (req, res) => {
   const { product_id } = req.body;
@@ -908,7 +909,6 @@ app.post("/deleteProduct", async (req, res) => {
     res.json({ success: false, error: "Server error" });
   }
 });
-
 app.post("/deleteStockRecord", async (req, res) => {
   try {
     const { id } = req.body;
@@ -991,6 +991,29 @@ app.delete("/deleteProduct/:id", async (req, res) => {
 });
 
 // Updates
+app.post('/updateAccount', async (req, res) => {
+  const { accountData, formData } = req.body;
+  
+  let account = await accounts.findOne({ id: accountData.id })
+  if (!account) return res.status(404).json({ message: "No account found" });
+  account.username = formData.username
+  
+  if (!formData.password) {
+    await account.save()
+    return res.status(200).json({ message: 'Account updated successfully' });
+  }
+  
+  const isMatch = await bcrypt.compare(formData.old_password, account.password);
+  if (!isMatch) return res.status(401).json({ message: 'Incorrect password' });
+  
+  if (formData.password !== formData.confirm_password) res.status(401).json({ message: 'New password conirmation did not match.' });
+  
+  const hashedPassword = await bcrypt.hash(formData.password, 10);
+  account.password = hashedPassword
+  await account.save()
+  
+  return res.status(200).json({ message: 'Account updated successfully' });
+});
 app.post("/editProduct", async (req, res) => {
   try {
     const { product_id, name, min, max } = req.body;
