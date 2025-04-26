@@ -471,12 +471,9 @@ app.delete("/removeSession", async (req, res) => {
 // Collect/Get
 app.get("/api/raw-inventory", async (req, res) => {
   try {
-    const since = new Date();
-    since.setDate(since.getDate() - 7);
-
     const [foundProducts, foundStockRecords] = await Promise.all([
-      products.find().lean(),
-      stockRecords.find({ date: { $gte: since } }).lean(),
+      products.find(),
+      stockRecords.find(),
     ]);
 
     res.json({ products: foundProducts, stockRecords: foundStockRecords });
