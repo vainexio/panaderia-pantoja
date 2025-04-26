@@ -1,10 +1,11 @@
 async function adminSettings() {
   try {
     accountCreation();
-    document.getElementById("doc_settings_first_name").value =
-      currentAdmin.username;
-    document.getElementById("doc_settings_id").value = currentAdmin.id;
-
+    document.getElementById("admin_settings_first_name").value = currentAdmin.username;
+    document.getElementById("admin_settings_id").value = currentAdmin.id;
+    document.getElementById("admin_settings_acc_level").value = "Level "+currentAdmin.userLevel;
+    
+    
     const sessionResponse = await fetch("/getAllSessions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -33,9 +34,6 @@ async function adminSettings() {
           <tbody>
     `;
     loginSessions.forEach((session) => {
-      if (session.currentSession) {
-        document.getElementById("doc_session_id").value = session.session_id;
-      }
       const rowClass = session.currentSession ? "table-primary" : "";
       const button = !session.currentSession
         ? `<button class="btn btn-sm btn-danger remove-session-btn" data-session-id="${session.session_id}">Remove Device</button>`
@@ -88,6 +86,49 @@ async function adminSettings() {
         setLoading(removeAllBtn, false);
       });
     }
+    
+    document.getElementById("settingsForm").addEventListener("submit", async function (event) {
+      event.preventDefault();
+    if (formDebounce) return
+    formDebounce = true
+
+      const formData = Object.fromEntries(new FormData(event.target).entries());
+    
+    let accountData = await fetch("/currentAccount?type="+formData.account_type.toLowerCase())
+    if (accountData.ok) {
+      accountData = await accountData.json()
+      if (formData.account_type == "Doctor") currentDoctor = accountData
+      else if (formData.account_type == "Patient") currentPatient = accountData
+    } else return
+    
+      const notification = document.getElementById(
+        formData.account_type + "_settings_notif"
+      );
+
+      const response = await fetch("/updateAccount", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ accountData, formData }),
+      });
+
+      if (response.ok) {
+        notification.textContent = "Successfully updated account details.";
+        notification.className = "alert alert-success mt-3 rounded-3";
+      } else {
+        const error = await response.json();
+        notification.textContent =
+          error.message || "Failed to update account details.";
+        notification.className = "alert alert-danger mt-3 rounded-3";
+      }
+
+      setTimeout(function () {
+        if (notification.textContent.length > 0) {
+          notification.textContent = "";
+          notification.className = "";
+          formDebounce = false
+        }
+      }, 3000);
+    });
 
   } catch (error) {
     console.error("Error fetching data:", error);

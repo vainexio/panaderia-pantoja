@@ -1,33 +1,33 @@
 <section id="settings" class="settings section-content">
   <div class="container m-auto">
-    <div class="doctor-settings-card">
+    <div class="admin-settings-card">
       <header class="form-header">
         <h1>Account Settings</h1>
       </header>
       <form id="settingsForm" class="settings-form">
         <div class="form-group">
           <label for="first_name">Username</label>
-          <input type="text" id="doc_settings_first_name" name="first_name" value=""/>
+          <input type="text" id="admin_settings_first_name" name="first_name" value=""/>
         </div>
         <div class="form-group">
           <label for="first_name">Account ID</label>
-          <input type="text" id="doc_settings_id" name="id" value="" readonly/>
+          <input type="text" id="admin_settings_settings_id" name="id" value="" readonly/>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
           <div id="password-fields" style="display: none;">
-            <input type="text" id="doc_settings_old_password" name="old_password" placeholder="Old Password" required disabled/>
-            <input class="mt-1" type="text" id="doc_settings_new_password" name="password" placeholder="New Password" required disabled/>
-            <input class="mt-1" type="text" id="doc_settings_confirm_password" name="confirm_password" placeholder="Confirm Password" required disabled/>
+            <input type="text" id="admin_settings_old_password" name="old_password" placeholder="Old Password" required disabled/>
+            <input class="mt-1" type="text" id="admin_settings_new_password" name="password" placeholder="New Password" required disabled/>
+            <input class="mt-1" type="text" id="admin_settings_confirm_password" name="confirm_password" placeholder="Confirm Password" required disabled/>
           </div>
           <button class="action-button mt-1" id="toggle-password-btn" type="button">Change Password</button>
         </div>
         <div class="form-group">
-          <label for="doc_session_id">Session ID</label>
-          <input type="text" id="doc_session_id" name="id" value="" readonly/>
+          <label for="admin_settings_acc_level">Account Level</label>
+          <input type="text" id="admin_settings_acc_level" name="doc_acc_level" value="" readonly/>
         </div>
         <div class="submit-container">
-          <button type="submit" class="action-button" disabled> Save Changes</button>
+          <button type="submit" class="action-button"> Save Changes</button>
         </div>
       </form>
       

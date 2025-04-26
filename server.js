@@ -42,7 +42,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 if (process.env.MONGOOSE) mongoose.connect(process.env.MONGOOSE);
 
 const accountsSchema = new mongoose.Schema({
-  id: String,
+  id: Number,
   username: String,
   password: String,
   userLevel: Number,
@@ -446,23 +446,6 @@ app.delete("/removeSession", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-app.delete("/removeOtherSessions", async (req, res) => {
-  try {
-    let deviceId = req.cookies.deviceId;
-    const { accountId } = req.body;
-    if (!accountId) {
-      return res.status(400).json({ error: "accountId is required" });
-    }
-    const result = await loginSession.deleteMany({
-      target_id: accountId,
-      device_id: { $ne: deviceId },
-    });
-    return res.json({ message: `${result.deletedCount} session(s) removed` });
-  } catch (error) {
-    console.error("Error in /removeOtherSessions:", error);
-    res.status(500).json({ error: "Server error" });
-  }
-});
 
 // Collect/Get
 app.get("/api/raw-inventory", async (req, res) => {
@@ -758,41 +741,43 @@ app.post("/createStockRecord", async (req, res) => {
 app.post('/createAccount', async (req, res) => {
   try {
     const { username, acc_level, password, confirm_password } = req.body;
-    console.log(req.body)
-    
+    console.log(req.body);
+
     if (!username || !acc_level || !password || !confirm_password) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    
+
     if (confirm_password !== password) {
       return res.status(400).json({ message: "Password confirmation do not match" });
     }
 
-    const existing = await accounts.findOne({username: username});
+    const existing = await accounts.findOne({ username: username.toLowerCase() });
 
     if (existing) {
       return res.status(400).json({ message: "An account with same username already exists" });
     }
 
-    // UUID
-    const acc_id = method.genId();
+    // Get the highest existing ID
+    const latestAccount = await accounts.findOne().sort({ id: -1 }).exec();
+    const acc_id = latestAccount ? latestAccount.id + 1 : 1;
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new patient
-    let newAcc = new accounts()
-    newAcc.id = acc_id
-    newAcc.username = username
-    newAcc.password = hashedPassword
-    newAcc.userLevel = Number(acc_level)
+    let newAcc = new accounts();
+    newAcc.id = acc_id;
+    newAcc.username = username.toLowerCase();
+    newAcc.password = hashedPassword;
+    newAcc.userLevel = Number(acc_level);
 
     await newAcc.save();
 
-    res.status(201).json({ message: "Accounted created" });
+    res.status(201).json({ message: "Account created" });
   } catch (error) {
     console.error("Error creating account:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 });
+
 app.post("/createProduct", async (req, res) => {
   if (!req.user)
     return res.status(401).send({ message: "Not logged in", redirect: "/" });
