@@ -62,15 +62,17 @@ async function loadInventory(intro) {
     });
 
     items.forEach((product) => {
+      let iconStatus = product.min > product.quantity ? `<i class="bi bi-arrow-down"></i>`
+      : product.max < product.quantity ? `<i class="bi bi-arrow-up"></i>` : ''
       let status =
-        product.min <= product.quantity
-          ? `<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>`
-          : `<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>`;
+        product.min > product.quantity ? `<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>`
+      : product.max < product.quantity ? `<i class="bi bi-exclamation-circle-fill" title="High stocks" style="color:var(--red);"></i>`
+      : `<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>`
       const card = document.createElement("div");
       card.style.color =
-        product.min > product.quantity ? "var(--red)" : "var(--black)";
+        product.min > product.quantity || product.max < product.quantity ? "var(--red)" : "var(--black)";
       card.className = "product-card";
-      card.innerHTML = `<div><h5>${product.name}</h5><div class="divider"></div><div>Qty: ${product.quantity} ${status}</div><div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
+      card.innerHTML = `<div><h5>${iconStatus} ${product.name}</h5><div class="divider"></div><div>Qty: ${product.quantity} ${status}</div><div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
 
       card.addEventListener("click", () => showProductDetails(product));
       scroll.appendChild(card);
@@ -312,9 +314,9 @@ async function showProductDetails(product) {
     const name = editForm.product_name.value.trim();
     const min = +editForm.product_min.value;
     const max = +editForm.product_max.value;
-    const expiry = editForm.expiry.value;
-    const expiry_unit = editForm.expiry_unit.value;
-    if (!name || min < 0 || max < 0) {
+    const expiry = +editForm.product_expiry.value;
+    const expiry_unit = editForm.product_expiry_unit.value;
+    if (!name || min < 0 || max < 0 || expiry < 0 || !expiry_unit) {
       return alert("Please fill out all fields correctly.");
     }
 
