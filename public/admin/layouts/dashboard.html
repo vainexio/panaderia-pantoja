@@ -14,20 +14,15 @@
     <button id="downloadAllData" type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-download"></i> Download Excel</button>
     <button id="refreshBtn" class="action-button black-loading stock-record-btn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
   </form>
-  <div class="stats-summary">
-  <div class="stat">
-    <h4>Total Products per Category</h4>
-    <ul id="totalByCat"></ul>
-  </div>
-  <div class="stat">
-    <h4>Low-Stock Products</h4>
-    <p id="lowCount"></p>
-  </div>
-  <div class="stat">
-    <h4>Expiring Soon (7d)</h4>
-    <ul id="expiringList"></ul>
-  </div>
+  <div class="stat-grid"></div>
 </div>
+  <div class="form-group mb-4">
+    <label for="chartCategoryFilter" style="color:white;margin-right:8px;">Filter charts by category:</label>
+    <select id="chartCategoryFilter">
+      <option value="all">All categories</option>
+      <!-- JS will populate the rest -->
+    </select>
+  </div>
 
 <div class="chart-grid">
 </div>

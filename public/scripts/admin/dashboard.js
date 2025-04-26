@@ -21,142 +21,108 @@ async function dashboard() {
   dashboardElement.innerHTML = innerHTML;
   //
   const refresh = document.getElementById("refreshBtn");
-  // SUMMARY: total products per category
-  const totalByCat = products.reduce((acc, p) => {
-    acc[p.category_id] = (acc[p.category_id] || 0) + 1;
-    return acc;
-  }, {});
-  const totalList = document.getElementById("totalByCat");
-  Object.entries(totalByCat).forEach(([cid, count]) => {
-    const li = document.createElement("li");
-    li.textContent = `${
-      catMap[cid].toUpperCase() || cid.toUpperCase()
-    }: ${count}`;
-    totalList.appendChild(li);
-  });
+  // STATS SUMMARY
+;(function(){
+  const statGrid = document.querySelector('.stat-grid');
 
-  // SUMMARY: low-stock count
-  const lowProducts = products.filter((p) => p.quantity < p.min);
-  document.getElementById("lowCount").textContent = lowProducts.length;
+  function makeStatCard(title, content){
+    const card = document.createElement('div');
+    card.className = 'stat-card';
+    card.innerHTML = `<h4>${title}</h4><div class="stat-content">${content}</div>`;
+    statGrid.appendChild(card);
+  }
 
-  // SUMMARY: expiring soon
-  const ins = stockRecords.filter((r) => r.type === "IN");
-  const outs = stockRecords.filter((r) => r.type === "OUT");
-  const sumBy = (arr) =>
-    arr.reduce((a, r) => {
-      a[r.product_id] = (a[r.product_id] || 0) + r.amount;
-      return a;
-    }, {});
-  const inSum = sumBy(ins),
-    outSum = sumBy(outs);
-  const currentStock = Object.fromEntries(
-    Object.keys(inSum).map((id) => [id, inSum[id] - (outSum[id] || 0)])
+  const totalProducts = products.length;
+  const totalInStock = stockRecords.reduce((sum, r)=>r.type==='IN'?sum+r.amount:sum, 0) -
+                       stockRecords.reduce((sum, r)=>r.type==='OUT'?sum+r.amount:sum, 0);
+
+  const lowThreshold = 10;
+  const highThreshold = 50;
+
+  const lowStockProducts = products.filter(p=>p.quantity<=lowThreshold);
+  const highStockProducts = products.filter(p=>p.quantity>=highThreshold);
+
+  makeStatCard('Total Products', totalProducts);
+  makeStatCard('Total Stock', totalInStock);
+
+  makeStatCard('Low-stock Products', 
+    lowStockProducts.length 
+      ? `<ul>${lowStockProducts.map(p=>`<li>${p.name} (${p.quantity})</li>`).join('')}</ul>` 
+      : `<p>None</p>`
   );
-  const soonThresh = new Date(now);
-  soonThresh.setDate(now.getDate() + 7);
-  const expSet = new Set();
-  ins.forEach((r) => {
-    const p = prodMap[r.product_id];
-    if (!p || !p.expiry || !p.expiry_unit) return;
 
-    const dt = new Date(r.date);
-    switch (p.expiry_unit.toLowerCase()) {
-      case "days":
-        dt.setDate(dt.getDate() + p.expiry);
-        break;
-      case "months":
-        dt.setMonth(dt.getMonth() + p.expiry);
-        break;
-      case "years":
-        dt.setFullYear(dt.getFullYear() + p.expiry);
-        break;
-      default:
-        dt.setDate(dt.getDate() + p.expiry); // fallback to days
-    }
-
-    if (dt > now && dt <= soonThresh && currentStock[r.product_id] > 0) {
-      expSet.add(r.product_id);
-    }
-  });
-  const expList = document.getElementById("expiringList");
-  expSet.forEach((id) => {
-    const li = document.createElement("li");
-    li.textContent = prodMap[id].name;
-    expList.appendChild(li);
-  });
+  makeStatCard('High-stock Products', 
+    highStockProducts.length 
+      ? `<ul>${highStockProducts.map(p=>`<li>${p.name} (${p.quantity})</li>`).join('')}</ul>` 
+      : `<p>None</p>`
+  );
+})();
 
   // PUT CHARTS HERE
   ;(function(){
-    // ensure Chart.js is loaded
-    if (typeof Chart === 'undefined') {
-      console.error('Chart.js not found – be sure to include it via <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>"');
-      return;
-    }
+  if (typeof Chart === 'undefined') {
+    console.error('Chart.js not found – include via <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>');
+    return;
+  }
 
-    const chartGrid = document.querySelector('.chart-grid');
+  const chartGrid     = document.querySelector('.chart-grid');
+  const catFilterElem = document.getElementById('chartCategoryFilter');
 
-    // helper to create a card+canvas
-    function makeChartCard(title, id) {
-      const card = document.createElement('div');
-      card.className = 'chart-card';
-      card.innerHTML = `<h3>${title}</h3><canvas id="${id}"></canvas>`;
-      chartGrid.appendChild(card);
-      return document.getElementById(id).getContext('2d');
-    }
+  // --- helper to create a card + canvas and return its 2D context ---
+  function makeChartCard(title, id){
+    const card = document.createElement('div');
+    card.className = 'chart-card';
+    card.innerHTML = `<h5>${title}</h5><canvas id="${id}"></canvas>`;
+    chartGrid.appendChild(card);
+    return document.getElementById(id).getContext('2d');
+  }
 
-    // prepare 7-day labels
-    const labels7 = [];
-    for (let d = new Date(sevenAgo); d <= now; d.setDate(d.getDate()+1)) {
-      labels7.push(d.toISOString().slice(0,10));
-    }
+  // populate category dropdown
+  catFilterElem.innerHTML = `<option value="all">ALL CATEGORIES</option>` +
+    categories.map(c=>`<option value="${c.category_id}">${c.name.toUpperCase()}</option>`).join('');
 
-    // filter last 7d records
-    const recent = stockRecords.filter(r => {
-      const d = new Date(r.date);
-      return d >= sevenAgo && d <= now;
-    });
+  // build 7-day labels
+  const labels7 = [];
+  for(let d=new Date(sevenAgo); d<=now; d.setDate(d.getDate()+1)){
+    labels7.push(d.toISOString().slice(0,10));
+  }
+  const recent = stockRecords.filter(r=>{
+    const d=new Date(r.date);
+    return d>=sevenAgo && d<=now;
+  });
 
-    // 1) 7-Day Incoming vs Outgoing per Product (one chart per product)
-    products.forEach(p => {
-      const pid = p.product_id;
-      const ctx = makeChartCard(
-        `7-Day IN vs OUT — ${p.name}`,
-        `chart-inout-${pid}`
-      );
-      // initialize daily buckets
-      const ins = {}, outs = {};
-      labels7.forEach(d => { ins[d] = 0; outs[d] = 0; });
-      // sum only this product’s records
-      recent.forEach(r => {
-        if (r.product_id !== pid) return;
-        const day = new Date(r.date).toISOString().slice(0,10);
-        if (r.type === 'IN')  ins[day] += r.amount;
-        else                  outs[day] += r.amount;
+  function clearProductCharts(){
+    document.querySelectorAll('[id^="chart-inout-"]').forEach(c=>c.closest('.chart-card').remove());
+  }
+
+  function renderProductCharts(catId){
+    clearProductCharts();
+    products
+      .filter(p=>catId==='all'||p.category_id===catId)
+      .forEach(p=>{
+        const pid = p.product_id;
+        const ctx = makeChartCard(`${p.name} (7-Day IN vs OUT)`, `chart-inout-${pid}`);
+        const ins={}, outs={};
+        labels7.forEach(d=>{ins[d]=0;outs[d]=0;});
+        recent.forEach(r=>{
+          if(r.product_id!==pid) return;
+          const day=new Date(r.date).toISOString().slice(0,10);
+          (r.type==='IN'?ins:outs)[day]+=r.amount;
+        });
+        new Chart(ctx,{
+          type:'line',
+          data:{ labels:labels7, datasets:[
+            {label:'IN',  data:labels7.map(d=>ins[d]),  fill:false},
+            {label:'OUT', data:labels7.map(d=>outs[d]), fill:false}
+          ]},
+          options:{responsive:true}
+        });
       });
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: labels7,
-          datasets: [
-            { label: 'IN',  data: labels7.map(d => ins[d]),  fill: false },
-            { label: 'OUT', data: labels7.map(d => outs[d]), fill: false }
-          ]
-        },
-        options: { responsive: true }
-      });
-    });
+  }
 
-    // aggregate per product over 7d
-    const sumByProd = (type)=>{
-      return recent
-        .filter(r=>r.type===type)
-        .reduce((acc,r)=>{
-          acc[r.product_id]=(acc[r.product_id]||0)+r.amount;
-          return acc;
-        }, {});
-    };
-    const in7 = sumByProd('IN'), out7 = sumByProd('OUT');
-
+  // initial draw & on-change
+  renderProductCharts(catFilterElem.value);
+  catFilterElem.addEventListener('change',()=>renderProductCharts(catFilterElem.value));
     // 2) Top 10 outgoing products
     {
       const sorted = Object.entries(out7)
