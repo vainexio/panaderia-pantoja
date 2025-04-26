@@ -2,7 +2,7 @@ let separator, detailCard, currentProduct, accounts;
 async function inventoryStart() {
   loadInventory(true,true);
 }
-window._INV_DATA = { products: [], categories: [] };
+window._INV_DATA = { products: [], categories: [], accounts: [] };
 
 async function loadInventory(intro,newData) {
   separator = document.getElementById("stock-separator");
@@ -27,10 +27,11 @@ async function loadInventory(intro,newData) {
       fetch("/getCategory?type=all", { method: "POST", headers: {"Content-Type":"application/json"} }),
       fetch("/getAccounts", { method: "POST", headers: { "Content-Type": "application/json" } })
     ]);
-    const [products, categories] = await Promise.all([ prodRes.json(), ctgRes.json(), accs.json() ]);
+    const [products, categories, foundAccs] = await Promise.all([ prodRes.json(), ctgRes.json(), accs.json() ]);
 
     window._INV_DATA.products   = products;
     window._INV_DATA.categories = categories;
+    accounts = foundAccs;
   }
 
   renderInventory();
