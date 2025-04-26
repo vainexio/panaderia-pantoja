@@ -91,7 +91,36 @@ async function adminSettings() {
     console.error("Error fetching data:", error);
   }
 }
+async function accountCreation() {
+  if (!window.accountCreationForm) {
+    window.accountCreationForm = true;
 
+    document
+      .getElementById("accountCreationForm")
+      .addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const formData = Object.fromEntries(
+          new FormData(event.target).entries()
+        );
+        const notification = document.getElementById("patient_regis_notif");
+
+        const response = await fetch("/registerPatient", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          notify("Account created", { type: "success", duration: 5000, });
+        } else {
+          const error = await response.json();
+          notify(error.message || "Failed to create account", { type: "error", duration: 5000, });
+        }
+        document.getElementById("accountCreationForm").reset();
+      });
+  }
+}
 document.addEventListener("DOMContentLoaded", async function () {
   waitUntilReady(adminSettings);
 });

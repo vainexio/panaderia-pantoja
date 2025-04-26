@@ -4,7 +4,6 @@
       <header class="form-header">
         <h1>Account Settings</h1>
       </header>
-
       <form id="settingsForm" class="settings-form">
         <div class="form-group">
           <label for="first_name">Username</label>
@@ -32,7 +31,40 @@
         </div>
       </form>
       
-    <div id="Doctor_settings_notif" class="notification" role="alert"></div>
+    <header class="form-header">
+      <h1>Create an Account</h1>
+      <p>Fill in the details below to create a new account</p>
+    </header>
+    <form id="accountCreationForm" class="settings-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="acc_type">Account Level</label>
+        <select id="acc_type" name="acc_type" required>
+          <option value="">Select</option>
+          <option value="3">Level 3 (can manage inventory &amp; accounts)</option>
+          <option value="2">Level 2 (can manage inventory)</option>
+          <option value="1">Level 1 (can view inventory)</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" minlength="8" required/>
+      </div>
+      
+      <div class="form-group">
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" required/>
+      </div>
+      
+      <div class="submit-container">
+        <button type="submit" class="action-button">Create Account</button>
+      </div>
+    </form>
     </div>
     <header class="form-header">
       <h1>Where You're Logged In</h1>

@@ -45,7 +45,7 @@ const accountsSchema = new mongoose.Schema({
   id: Number,
   username: String,
   password: String,
-  userType: String,
+  userLevel: Number,
 });
 const loginSessionSchema = new mongoose.Schema({
   session_id: String,
