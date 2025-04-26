@@ -1,7 +1,7 @@
 async function adminSettings() {
   try {
     accountCreation();
-    document.getElementById("admin_settings_first_name").value = currentAdmin.username;
+    document.getElementById("admin_settings_username").value = currentAdmin.username;
     document.getElementById("admin_settings_id").value = currentAdmin.id;
     document.getElementById("admin_settings_acc_level").value = currentAdmin.userLevel;
 

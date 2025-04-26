@@ -174,9 +174,30 @@ async function showProductDetails(product) {
     </div>
     
     <div class="form-group">
-      <label for="product_expiry">Product Expiry</label>
-      <input type="text" id="product_expiry" name="product_expiry" value="${product.expiry} ${product.expiry_unit}" readonly />
-    </div>
+          <label for="product_expiry">Product Expiry</label>
+          <div style="display: flex; flex-direction: row">
+            <input
+              class="me-1"
+              type="number"
+              id="product_expiry"
+              name="product_expiry"
+              min="1"
+              value="${product.expiry}"
+              autocomplete="off"
+              required
+            />
+
+            <select
+              id="product_expiry_unit"
+              name="product_expiry_unit"
+              required
+            >
+              <option value="days" ${(product.expiry_unit == "days" ? "selected" : "")}>Day(s)</option>
+              <option value="months" ${(product.expiry_unit == "months" ? "selected" : "")}>Month(s)</option>
+              <option value="years" ${(product.expiry_unit == "years" ? "selected" : "")}>Year(s)</option>
+            </select>
+          </div>
+        </div>
 
     <div class="submit-container">
     <button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill" title="Delete Product"></i></button>
@@ -291,7 +312,8 @@ async function showProductDetails(product) {
     const name = editForm.product_name.value.trim();
     const min = +editForm.product_min.value;
     const max = +editForm.product_max.value;
-
+    const expiry = editForm.expiry.value;
+    const expiry_unit = editForm.expiry_unit.value;
     if (!name || min < 0 || max < 0) {
       return alert("Please fill out all fields correctly.");
     }
@@ -299,7 +321,7 @@ async function showProductDetails(product) {
     const res = await fetch("/editProduct", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ product_id, name, min, max }),
+      body: JSON.stringify({ product_id, name, min, max, expiry, expiry_unit }),
     });
     const { success, error } = await res.json();
 

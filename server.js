@@ -1016,7 +1016,7 @@ app.post('/updateAccount', async (req, res) => {
 });
 app.post("/editProduct", async (req, res) => {
   try {
-    const { product_id, name, min, max } = req.body;
+    const { product_id, name, min, max, expiry, expiry_unit } = req.body;
     if (!product_id || typeof name !== "string" || min == null || max == null) {
       return res.status(400).json({ success: false, error: "Invalid payload" });
     }
@@ -1024,7 +1024,7 @@ app.post("/editProduct", async (req, res) => {
     // find by _id (or adjust field if you use a different unique key)
     const doc = await products.findOneAndUpdate(
       { product_id: product_id },
-      { name, min, max },
+      { name, min, max, expiry, expiry_unit },
       { new: true } // return the updated doc
     );
 
