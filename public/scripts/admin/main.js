@@ -59,6 +59,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.getElementById(layouts[i] + "_holder").innerHTML = data;
   }
   showSection("inventory");
+  
+  if (currentAdmin.userLevel < 2) {
+    const productCreationNav = document.getElementById("product_registration_nav");
+    productCreationNav.style.display = "none";
+  }
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.addEventListener("click", function () {
       document

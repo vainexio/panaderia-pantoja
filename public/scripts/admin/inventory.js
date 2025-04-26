@@ -74,10 +74,13 @@ function renderInventory() {
 
     const heading = document.createElement("div");
     heading.className = "category-heading";
-    heading.innerHTML = category + `
+    heading.innerHTML = category
+    if (currentAdmin.userLevel >= 2) {
+      heading.innerHTML += `
       <button class="action-button me-1 category-qr-gen-btn">
         <i class="bi bi-qr-code-scan"></i> Download QR
       </button>`;
+    }
 
     const scroll = document.createElement("div");
     scroll.className = "scroll-container";
@@ -123,7 +126,7 @@ function renderInventory() {
     // QR button logic unchanged
     const originalCategory = categories.find(ctg => ctg.name.toUpperCase() === category);
     const qrBtn = heading.querySelector(".category-qr-gen-btn");
-    qrBtn.addEventListener("click", async () => {
+    qrBtn?.addEventListener("click", async () => {
       setLoading(qrBtn, true);
       if (!originalCategory) {
         notify("Unable to find the category ID for: " + category, { type: "error", duration: 5000 });
@@ -156,6 +159,7 @@ function renderInventory() {
 }
 //
 async function showProductDetails(product) {
+  if (currentAdmin.userLevel < 2) return;
   currentProduct = product
   separator.style.display = "none";
   detailCard = document.querySelector(".product-details-card");

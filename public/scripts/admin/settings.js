@@ -1,6 +1,11 @@
 async function adminSettings() {
   try {
-    accountCreation();
+    if (currentAdmin.userLevel >= 3) {
+      accountCreation();
+    } else {
+      document.getElementById("accountCreationForm").style.display = "none"
+      document.getElementById("accCreationHeader").style.display = "none"
+    }
     document.getElementById("admin_settings_username").value = currentAdmin.username;
     document.getElementById("admin_settings_id").value = currentAdmin.id;
     document.getElementById("admin_settings_acc_level").value = currentAdmin.userLevel;
