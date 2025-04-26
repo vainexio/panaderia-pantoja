@@ -1,130 +1,91 @@
 let separator, detailCard, currentProduct, accounts;
 async function inventoryStart() {
+  document.getElementById("inventory-search").addEventListener("input", () => renderInventory());
+  document.getElementById("inventory-mode").addEventListener("change", () => renderInventory());
+  document.getElementById("refresh-inventory").addEventListener("click", () => loadInventory(true));
   loadInventory(true);
 }
-async function loadInventory(intro) {
-  separator = document.getElementById("stock-separator");
-  let inventoryCard = document.getElementById("inventory-card");
-  if (intro)
-    inventoryCard.innerHTML = `<div class="loading-holder"><div class="loader2"></div><h4>Loading Inventory</h4></div>`;
-  let products = await fetch("/getProduct?type=all", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  });
-  let categories = await fetch("/getCategory?type=all", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  });
-  accounts = await fetch("/getAccounts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  });
-  accounts = await accounts.json();
-  products = await products.json();
-  categories = await categories.json();
+window._INV_DATA = { products: [], categories: [] };
 
-  inventoryCard.innerHTML = ``;
-  const grouped = {};
+  // 1) loadInventory fetches and updates cache, then renders
+  async function loadInventory(intro = true) {
+    const inventoryCard = document.getElementById("inventory-card");
+    if (intro) {
+      inventoryCard.innerHTML = '<div class="loading-holder"><div class="loader2"></div><h4>Loading Inventory</h4></div>';
+    }
 
-  products.forEach((item) => {
-    let category = categories.find(
-      (ctg) => ctg.category_id == item.category_id
-    );
-    if (!category) category = { name: "Unknown Category" };
-    const ctgName = category.name.toUpperCase();
+    const [prodRes, ctgRes] = await Promise.all([
+      fetch("/getProduct?type=all", { method: "POST", headers: {"Content-Type":"application/json"} }),
+      fetch("/getCategory?type=all", { method: "POST", headers: {"Content-Type":"application/json"} })
+    ]);
+    const [products, categories] = await Promise.all([prodRes.json(), ctgRes.json()]);
 
-    if (!grouped[ctgName]) grouped[ctgName] = [];
-    grouped[ctgName].push(item);
-  });
+    // update cache
+    window._INV_DATA.products   = products;
+    window._INV_DATA.categories = categories;
 
-  Object.entries(grouped).forEach(([category, items]) => {
-    const row = document.createElement("div");
-    row.className = "category-row";
+    // render using current filter values
+    renderInventory();
+  }
 
-    const divider = document.createElement("div");
-    //divider.className = "divider";
+  // 2) renderInventory reads from cache and applies search + mode filters
+  function renderInventory() {
+    const { products, categories } = window._INV_DATA;
+    const inventoryCard = document.getElementById("inventory-card");
+    const filterText = document.getElementById("inventory-search").value.trim().toLowerCase();
+    const mode       = document.getElementById("inventory-mode").value;  // "all" | "low" | "high"
 
-    const heading = document.createElement("div");
-    heading.className = "category-heading";
-    heading.innerHTML =
-      category +
-      ` <button class="action-button me-1 category-qr-gen-btn"><i class="bi bi-qr-code-scan"></i> Download QR</button>`;
+    // group after filtering
+    const grouped = {};
+    products.forEach(item => {
+      // text filter
+      if (filterText && !item.name.toLowerCase().includes(filterText)) return;
 
-    const scroll = document.createElement("div");
-    scroll.className = "scroll-container";
+      // find category name
+      let ctg = categories.find(c=>c.category_id==item.category_id);
+      const ctgName = (ctg?ctg.name:"Unknown").toUpperCase();
 
-    scroll.addEventListener("wheel", function (e) {
-      // Only scroll horizontally if it's overflowing
-      if (scroll.scrollWidth > scroll.clientWidth) {
-        e.preventDefault(); // prevent vertical scroll
-        scroll.scrollLeft += e.deltaY;
-      }
+      // mode filter
+      if (mode === "low"  && item.quantity >= item.min) return;
+      if (mode === "high" && item.quantity <= item.max) return;
+
+      (grouped[ctgName] = grouped[ctgName] || []).push(item);
+
     });
 
-    items.forEach((product) => {
-      let iconStatus = product.min > product.quantity ? `<i class="bi bi-arrow-down"></i>`
-      : product.max < product.quantity ? `<i class="bi bi-arrow-up"></i>` : ''
-      let status =
-        product.min > product.quantity ? `<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>`
-      : product.max < product.quantity ? `<i class="bi bi-exclamation-circle-fill" title="High stocks" style="color:var(--red);"></i>`
-      : `<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>`
-      const card = document.createElement("div");
-      card.style.color =
-        product.min > product.quantity || product.max < product.quantity ? "var(--red)" : "var(--black)";
-      card.className = "product-card";
-      card.innerHTML = `<div><h5>${iconStatus} ${product.name}</h5><div class="divider"></div><div>Qty: ${product.quantity} ${status}</div><div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>`;
+    // render DOM
+    inventoryCard.innerHTML = "";
+    Object.entries(grouped).forEach(([ctgName, items]) => {
+      if (!items.length) return;
+      const heading = document.createElement("div");
+      heading.className = "category-heading";
+      heading.textContent = ctgName;
 
-      card.addEventListener("click", () => showProductDetails(product));
-      scroll.appendChild(card);
-    });
-
-    const originalCategory = categories.find(
-      (ctg) => ctg.name.toUpperCase() === category
-    );
-    const qrBtn = heading.querySelector(".category-qr-gen-btn");
-
-    qrBtn.addEventListener("click", async (e) => {
-        setLoading(qrBtn, true);
-        if (!originalCategory) {
-          notify("Unable to find the category ID for: " + category, {
-            type: "error",
-            duration: 5000,
-          });
-          return;
-        }
-      notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 10000, });
-
-        const res = await fetch("/generateCategoryQr", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ category_id: originalCategory.category_id }),
-        });
-
-        if (res.ok) {
-          notify("Initiating Download", { type: "success", duration: 5000, });
-          const blob = await res.blob();
-          const link = document.createElement("a");
-          link.href = URL.createObjectURL(blob);
-          link.download = `${originalCategory.name.replace(
-            /\s+/g,
-            "_"
-          )}_qr_codes.docx`;
-          link.click();
-          setLoading(qrBtn, false);
-        } else {
-          const error = await res.json();
-          notify("QR Download Failed: " + (error.message || "unknown error"), {
-            type: "error",
-            duration: 5000,
-          });
-          setLoading(qrBtn, false);
+      const scroll = document.createElement("div");
+      scroll.className = "scroll-container";
+      scroll.addEventListener("wheel", e => {
+        if (scroll.scrollWidth>scroll.clientWidth) {
+          e.preventDefault();
+          scroll.scrollLeft += e.deltaY;
         }
       });
 
-    row.append(heading, scroll);
-    inventoryCard.append(row, divider);
-  });
-}
+      items.forEach(p => {
+        const card = document.createElement("div");
+        card.className="product-card";
+        const status = p.min>p.quantity ? "Low" : p.max<p.quantity ? "High" : "Good";
+        card.innerHTML = `<h5>${p.name}</h5>
+                          <div>Qty: ${p.quantity} (${status})</div>
+                          <div>Min: ${p.min} Max: ${p.max}</div>`;
+        scroll.appendChild(card);
+      });
+
+      const row = document.createElement("div");
+      row.className="category-row";
+      row.append(heading, scroll);
+      inventoryCard.appendChild(row);
+    });
+  }
 //
 async function showProductDetails(product) {
   currentProduct = product

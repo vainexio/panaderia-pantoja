@@ -1,13 +1,18 @@
 <section id="inventory" class="inventory section-content">
-  <!-- Don't change the id and class -->
   <div class="inventory-page">
-    <div class="separator" id="stock-separator">
+    <div class="inventory-separator" id="stock-separator">
+      <!-- filter controls will be injected here -->
+      <div id="filter-controls" class="mb-3 d-flex gap-2">
+        <input id="inventory-search" type="search" class="form-control w-auto" placeholder="Search…" />
+        <select id="inventory-mode" class="form-select w-auto">
+          <option value="all">All</option>
+          <option value="low">Low Stocks</option>
+          <option value="high">High Stocks</option>
+        </select>
+        <button id="refresh-inventory" class="btn btn-secondary">Refresh</button>
+      </div>
       <div class="inventory-card" id="inventory-card"></div>
-      <!--<form id="batchRecordForm" class="create-stock-record">
-        <div id="recordsContainer"></div>-->
-      </form>
     </div>
-
     <div class="product-details-card" style="display: none"></div>
   </div>
 </section>
