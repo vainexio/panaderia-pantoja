@@ -158,11 +158,27 @@ app.get('/download-inventory', async (req, res) => {
     }
     const dateQuery = since ? { date: { $gte: since } } : {};
 
-    const [allCats, allProds, allRecs] = await Promise.all([
+    // fetch categories, products, and windowed records
+    const [ allCats, allProds, windowedRecs ] = await Promise.all([
       categories.find().lean(),
       products.find().lean(),
       stockRecords.find(dateQuery).lean(),
     ]);
+
+    // fetch all records for FIFO seeding
+    const allRecs = await stockRecords.find().lean();
+
+    // group by product for windowed display
+    const recsWindowByProd = windowedRecs.reduce((acc, r) => {
+      (acc[r.product_id] = acc[r.product_id] || []).push(r);
+      return acc;
+    }, {});
+
+    // group all records by product for FIFO queue
+    const recsAllByProd = allRecs.reduce((acc, r) => {
+      (acc[r.product_id] = acc[r.product_id] || []).push(r);
+      return acc;
+    }, {});
 
     // group products by category
     const prodsByCat = allCats.reduce((acc, c) => {
@@ -170,131 +186,132 @@ app.get('/download-inventory', async (req, res) => {
       return acc;
     }, {});
 
-    // group records by product
-    const recsByProd = allRecs.reduce((acc, r) => {
-      acc[r.product_id] = acc[r.product_id] || [];
-      acc[r.product_id].push(r);
-      return acc;
-    }, {});
-
     const wb = new ExcelJS.Workbook();
     wb.creator = 'YourApp';
     wb.created = new Date();
 
-    // build one sheet per category
     allCats.forEach(cat => {
       const sheet = wb.addWorksheet(cat.name.toUpperCase() || cat.category_id);
       const prods = prodsByCat[cat.category_id] || [];
-
-      // error trap: no products
-      if (prods.length === 0) {
+      if (!prods.length) {
         sheet.getCell(1,1).value = 'No products in this category';
         sheet.getCell(1,1).font = { italic: true, color: { argb: 'FF888888' } };
-        return; // skip to next category
+        return;
       }
 
       let startCol = 1;
       const gap = 2;
 
-      // determine max records for layout
-      const allProductsList = prods;
-      const maxRecs = Math.max(0, ...allProductsList.map(p => (recsByProd[p.product_id]||[]).length));
-
       prods.forEach(p => {
         const blockStartRow = 1;
         const blockStartCol = startCol;
 
-        // Title
+        // Title & details
         sheet.mergeCells(1, startCol, 1, startCol + 5);
         const title = sheet.getCell(1, startCol);
         title.value = p.name;
         title.font = { bold: true, size: 12 };
 
-        // Details
-        const details = [
-          ['Quantity', p.quantity],
-          ['Min', p.min],
-          ['Max', p.max],
-          ['Expiry', `${p.expiry} ${p.expiry_unit}`]
-        ];
-        details.forEach(([f, v], i) => {
+        const details = [ ['Quantity', p.quantity], ['Min', p.min], ['Max', p.max], ['Expiry', `${p.expiry} ${p.expiry_unit}`] ];
+        details.forEach(([f,v],i) => {
           const lbl = sheet.getCell(2 + i, startCol);
           const val = sheet.getCell(2 + i, startCol + 1);
-          lbl.value = f;
-          val.value = v;
-          [lbl, val].forEach(c => c.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } });
+          lbl.value = f; val.value = v;
+          [lbl,val].forEach(c=>c.border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
         });
 
-        // Records header
+        // Record headers
         const recHeaderRow = 2 + details.length + 1;
         sheet.mergeCells(recHeaderRow, startCol, recHeaderRow, startCol + 2);
         const inHdr = sheet.getCell(recHeaderRow, startCol);
-        inHdr.value = 'IN';
-        inHdr.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFC6EFCE' } };
-        inHdr.font = { bold: true };
-
+        inHdr.value = 'IN'; inHdr.fill = { type:'pattern',pattern:'solid',fgColor:{argb:'FFC6EFCE'} }; inHdr.font={bold:true};
         sheet.mergeCells(recHeaderRow, startCol + 4, recHeaderRow, startCol + 5);
         const outHdr = sheet.getCell(recHeaderRow, startCol + 4);
-        outHdr.value = 'OUT';
-        outHdr.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2DCDB' } };
-        outHdr.font = { bold: true };
+        outHdr.value = 'OUT'; outHdr.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFF2DCDB'}}; outHdr.font={bold:true};
 
-        // Subheaders
         const subRow = recHeaderRow + 1;
-        ['Date','Amount','Expiry'].forEach((h, i) => {
+        ['Date','Amount','Expiry'].forEach((h,i)=>{
           const cell = sheet.getCell(subRow, startCol + i);
-          cell.value = h;
-          cell.font = { bold: true };
-          cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+          cell.value = h; cell.font={bold:true}; cell.border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} };
         });
-        ['Date','Amount'].forEach((h, i) => {
+        ['Date','Amount'].forEach((h,i)=>{
           const cell = sheet.getCell(subRow, startCol + 4 + i);
-          cell.value = h;
-          cell.font = { bold: true };
-          cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+          cell.value = h; cell.font={bold:true}; cell.border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} };
         });
 
-        // FIFO logic
-        const ins = (recsByProd[p.product_id]||[]).filter(r => r.type === 'IN');
-        const outs = (recsByProd[p.product_id]||[]).filter(r => r.type === 'OUT');
-        let queue = ins.map(r => ({ date: new Date(r.date), amount: r.amount }));
-        outs.forEach(o => {
-          let amt = o.amount;
-          while (amt > 0 && queue.length) {
-            if (queue[0].amount > amt) { queue[0].amount -= amt; amt = 0; }
-            else { amt -= queue[0].amount; queue.shift(); }
+        // FIFO seed from all records before `since`
+        const allForThis = recsAllByProd[p.product_id]||[];
+        const priorIns  = since ? allForThis.filter(r=>r.type==='IN'  && new Date(r.date) < since) : allForThis.filter(r=>r.type==='IN');
+        const priorOuts = since ? allForThis.filter(r=>r.type==='OUT' && new Date(r.date) < since) : allForThis.filter(r=>r.type==='OUT');
+
+        let queue = priorIns.map(r=>({ date:new Date(r.date), amount:r.amount }));
+        priorOuts.forEach(o=>{
+          let amt=o.amount;
+          while(amt>0 && queue.length){
+            if(queue[0].amount>amt){ queue[0].amount-=amt; amt=0; }
+            else { amt-=queue[0].amount; queue.shift(); }
           }
         });
 
-        // Fill IN rows
-        ins.forEach((r, i) => {
+        // windowed INs and OUTs
+        const insWindow  = (recsWindowByProd[p.product_id]||[]).filter(r=>r.type==='IN');
+        const outsWindow = (recsWindowByProd[p.product_id]||[]).filter(r=>r.type==='OUT');
+
+        // add windowed INs into queue before applying OUTs so partial remains are tracked
+        insWindow.forEach(r => queue.push({ date: new Date(r.date), amount: r.amount }));
+
+        // consume queue by windowed OUTs
+        outsWindow.forEach(o=>{
+          let amt=o.amount;
+          while(amt>0 && queue.length){
+            if(queue[0].amount>amt){ queue[0].amount-=amt; amt=0; }
+            else { amt-=queue[0].amount; queue.shift(); }
+          }
+        });
+
+        // Fill IN rows; only use "No longer on stock" when filter is 'all'
+        insWindow.forEach((r,i)=>{
           const rowIdx = subRow + 1 + i;
           const cDate = sheet.getCell(rowIdx, startCol);
           const cAmt  = sheet.getCell(rowIdx, startCol + 1);
           const cExp  = sheet.getCell(rowIdx, startCol + 2);
+
           cDate.value = new Date(r.date).toISOString().slice(0,10);
           cAmt.value  = r.amount;
+
           const expDate = new Date(r.date);
           if (p.expiry_unit==='months') expDate.setMonth(expDate.getMonth()+p.expiry);
           else if (p.expiry_unit==='years') expDate.setFullYear(expDate.getFullYear()+p.expiry);
           else expDate.setDate(expDate.getDate()+p.expiry);
-          if (queue.find(q => q.date.getTime()===new Date(r.date).getTime())) cExp.value = expDate.toISOString().slice(0,10);
-          else { cExp.value = 'No longer on stock'; [cDate,cAmt,cExp].forEach(c=>c.font={ color:{ argb:'FFFF0000' }}); }
-          [cDate,cAmt,cExp].forEach(c=>c.border={ ...c.border, top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
+
+          if (filter === 'all') {
+            // mark based on queue
+            const still = queue.find(q=>q.date.getTime()===new Date(r.date).getTime());
+            if (still) cExp.value = expDate.toISOString().slice(0,10);
+            else {
+              cExp.value = 'No longer on stock';
+              [cDate,cAmt,cExp].forEach(c=>c.font={ color:{ argb:'FFFF0000' }});
+            }
+          } else {
+            // for any limited window, always show expiry date
+            cExp.value = expDate.toISOString().slice(0,10);
+          }
+
+          [cDate,cAmt,cExp].forEach(c=>c.border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
         });
 
         // Fill OUT rows
-        outs.forEach((r, i) => {
+        outsWindow.forEach((r,i)=>{
           const rowIdx = subRow + 1 + i;
           const oDate = sheet.getCell(rowIdx, startCol + 4);
           const oAmt  = sheet.getCell(rowIdx, startCol + 5);
           oDate.value = new Date(r.date).toISOString().slice(0,10);
           oAmt.value  = r.amount;
-          [oDate,oAmt].forEach(c=>c.border={ ...c.border, top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
+          [oDate,oAmt].forEach(c=>c.border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
         });
 
         // Outer thick border
-        const blockEndRow = recHeaderRow + 1 + Math.max(ins.length, outs.length);
+        const blockEndRow = subRow + Math.max(insWindow.length, outsWindow.length);
         const blockEndCol = startCol + 5;
         setOuterBorder(sheet, blockStartRow, blockEndRow, blockStartCol, blockEndCol);
 
@@ -302,7 +319,11 @@ app.get('/download-inventory', async (req, res) => {
       });
 
       // auto-width
-      sheet.columns.forEach(col => { let m=10; col.eachCell(cell => { m = Math.max(m, (cell.value||'').toString().length); }); col.width = m + 2; });
+      sheet.columns.forEach(col => {
+        let m = 10;
+        col.eachCell(cell => { m = Math.max(m, (cell.value||'').toString().length); });
+        col.width = m + 2;
+      });
     });
 
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -314,6 +335,7 @@ app.get('/download-inventory', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 app.get("/currentAccount", async (req, res) => {
   if (!req.user) return res.status(401).send({ message: "Not logged in", redirect: "/" });
   let user = req.user;
