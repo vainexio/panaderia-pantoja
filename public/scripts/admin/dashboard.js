@@ -47,13 +47,13 @@ async function dashboard() {
   // render Total Products & Total Stock as transparent, big white numbers
   makeStatCard(
     'Total Products',
-    `<p style="font-size:2rem; font-weight:bold; margin:0;">${totalProducts}</p>`,
+    `<p style="font-size:3rem; font-weight:bold; color:white; margin:0;">${totalProducts}</p>`,
     /*isTransparent=*/true,
     /*isBigWhite=*/true
   );
   makeStatCard(
     'Total Stock',
-    `<p style="font-size:2rem; font-weight:bold; margin:0;">${totalStock}</p>`,
+    `<p style="font-size:3rem; font-weight:bold; color:white; margin:0;">${totalStock}</p>`,
     /*isTransparent=*/true,
     /*isBigWhite=*/true
   );
@@ -121,7 +121,7 @@ async function dashboard() {
       .filter(p=>catId==='all'||p.category_id===catId)
       .forEach(p=>{
         const pid = p.product_id;
-        const ctx = makeChartCard(`${p.name} (7-Day IN vs OUT)`, `chart-inout-${pid}`);
+        const ctx = makeChartCard(`${p.name}`, `chart-inout-${pid}`);
         const ins={}, outs={};
         labels7.forEach(d=>{ins[d]=0;outs[d]=0;});
         recent.forEach(r=>{
