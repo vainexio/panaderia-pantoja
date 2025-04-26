@@ -28,7 +28,7 @@ const app = express();
 const { Server } = require("socket.io");
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "*" },
+  cors: { origin: "*" }, 
 });
 //
 const cookieParser = require("cookie-parser");
@@ -123,9 +123,6 @@ app.get("/ping", (req, res) => {
   return res.json({ pong: true, ts: Date.now() });
 });
 app.get("/admin-dashboard", async (req, res) => {
-  res.sendFile(__dirname + "/public/admin.html");
-});
-app.get("/viewer-dashboard", async (req, res) => {
   res.sendFile(__dirname + "/public/admin.html");
 });
 /* Global Backend */
@@ -471,9 +468,12 @@ app.delete("/removeSession", async (req, res) => {
 // Collect/Get
 app.get("/api/raw-inventory", async (req, res) => {
   try {
+    const since = new Date();
+    since.setDate(since.getDate() - 7);
+
     const [foundProducts, foundStockRecords] = await Promise.all([
-      products.find(),
-      stockRecords.find(),
+      products.find().lean(),
+      stockRecords.find({ date: { $gte: since } }).lean(),
     ]);
 
     res.json({ products: foundProducts, stockRecords: foundStockRecords });

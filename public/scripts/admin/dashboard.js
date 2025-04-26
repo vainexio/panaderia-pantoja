@@ -25,35 +25,55 @@ async function dashboard() {
 ;(function(){
   const statGrid = document.querySelector('.stat-grid');
 
-  function makeStatCard(title, content){
+  function makeStatCard(title, contentHTML, isTransparent=false, isBigWhite=false) {
     const card = document.createElement('div');
-    card.className = 'stat-card';
-    card.innerHTML = `<h4>${title}</h4><div class="stat-content">${content}</div>`;
+    card.className = 'stat-card' + (isTransparent ? ' transparent-card' : '');
+    // build inner HTML
+    let titleStyle   = isBigWhite ? 'color:white; font-weight:normal;' : '';
+    let contentStyle = isBigWhite ? 'color:white;' : '';
+    card.innerHTML = `
+      <h4 style="${titleStyle}">${title}</h4>
+      <div class="stat-content" style="${contentStyle}">
+        ${contentHTML}
+      </div>`;
     statGrid.appendChild(card);
   }
 
   const totalProducts = products.length;
-  const totalInStock = stockRecords.reduce((sum, r)=>r.type==='IN'?sum+r.amount:sum, 0) -
-                       stockRecords.reduce((sum, r)=>r.type==='OUT'?sum+r.amount:sum, 0);
+  const totalIn  = stockRecords.filter(r=>r.type==='IN').reduce((s,r)=>s+r.amount,0);
+  const totalOut = stockRecords.filter(r=>r.type==='OUT').reduce((s,r)=>s+r.amount,0);
+  const totalStock = totalIn - totalOut;
 
-  const lowThreshold = 10;
-  const highThreshold = 50;
-
-  const lowStockProducts = products.filter(p=>p.quantity<=lowThreshold);
-  const highStockProducts = products.filter(p=>p.quantity>=highThreshold);
-
-  makeStatCard('Total Products', totalProducts);
-  makeStatCard('Total Stock', totalInStock);
-
-  makeStatCard('Low-stock Products', 
-    lowStockProducts.length 
-      ? `<ul>${lowStockProducts.map(p=>`<li>${p.name} (${p.quantity})</li>`).join('')}</ul>` 
-      : `<p>None</p>`
+  // render Total Products & Total Stock as transparent, big white numbers
+  makeStatCard(
+    'Total Products',
+    `<p style="font-size:2rem; font-weight:bold; margin:0;">${totalProducts}</p>`,
+    /*isTransparent=*/true,
+    /*isBigWhite=*/true
+  );
+  makeStatCard(
+    'Total Stock',
+    `<p style="font-size:2rem; font-weight:bold; margin:0;">${totalStock}</p>`,
+    /*isTransparent=*/true,
+    /*isBigWhite=*/true
   );
 
-  makeStatCard('High-stock Products', 
-    highStockProducts.length 
-      ? `<ul>${highStockProducts.map(p=>`<li>${p.name} (${p.quantity})</li>`).join('')}</ul>` 
+  // now the low/high stock (unchanged styling)
+  const lowThreshold  = 10;
+  const highThreshold = 50;
+  const lowStockProducts  = products.filter(p=>p.quantity<=lowThreshold);
+  const highStockProducts = products.filter(p=>p.quantity>=highThreshold);
+
+  makeStatCard(
+    'Low-stock Products',
+    lowStockProducts.length
+      ? `<ul>${lowStockProducts.map(p=>`<li>${p.name} (${p.quantity})</li>`).join('')}</ul>`
+      : `<p>None</p>`
+  );
+  makeStatCard(
+    'High-stock Products',
+    highStockProducts.length
+      ? `<ul>${highStockProducts.map(p=>`<li>${p.name} (${p.quantity})</li>`).join('')}</ul>`
       : `<p>None</p>`
   );
 })();
@@ -123,50 +143,6 @@ async function dashboard() {
   // initial draw & on-change
   renderProductCharts(catFilterElem.value);
   catFilterElem.addEventListener('change',()=>renderProductCharts(catFilterElem.value));
-    // 2) Top 10 outgoing products
-    {
-      const sorted = Object.entries(out7)
-        .sort((a,b)=>b[1]-a[1])
-        .slice(0,10);
-      const labels = sorted.map(([id])=>prodMap[id]?.name||id);
-      const data   = sorted.map(([,v])=>v);
-      const ctx = makeChartCard('7-Day Top 10 OUT', 'chart-top-out');
-      new Chart(ctx, { type:'bar', data:{ labels, datasets:[{ label:'OUT', data }] }, options:{ indexAxis:'y', responsive:true } });
-    }
-
-    // 3) Top 10 incoming products
-    {
-      const sorted = Object.entries(in7)
-        .sort((a,b)=>b[1]-a[1])
-        .slice(0,10);
-      const labels = sorted.map(([id])=>prodMap[id]?.name||id);
-      const data   = sorted.map(([,v])=>v);
-      const ctx = makeChartCard('7-Day Top 10 IN', 'chart-top-in');
-      new Chart(ctx, { type:'bar', data:{ labels, datasets:[{ label:'IN', data }] }, options:{ indexAxis:'y', responsive:true } });
-    }
-
-    // 4) Total Products per Category
-    {
-      const labels = Object.keys(totalByCat).map(cid=>catMap[cid].toUpperCase());
-      const data   = Object.values(totalByCat);
-      const ctx = makeChartCard('Total Products per Category', 'chart-total-cat');
-      new Chart(ctx, { type:'pie', data:{ labels, datasets:[{ data }] }, options:{ responsive:true } });
-    }
-
-    // 5) Low-stock vs High-stock count
-    {
-      const lowCount  = products.filter(p=>p.quantity < p.min).length;
-      const highCount = products.filter(p=>p.quantity > p.max).length;
-      const ctx = makeChartCard('Low vs High Stock', 'chart-low-high');
-      new Chart(ctx,{
-        type:'bar',
-        data:{
-          labels:['Low stock','High stock'],
-          datasets:[{ label:'Products', data:[lowCount,highCount] }]
-        },
-        options:{ responsive:true }
-      });
-    }
   })();
 
   //
