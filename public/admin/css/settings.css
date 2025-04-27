@@ -17,16 +17,6 @@
   max-width: 1000px;
     margin: auto;
 }
-.admin-settings-card {
-    width: 90%;
-    max-width: 1000px;
-    min-height: 100%;
-    margin: auto;
-    border-radius: 16px;
-    background-color: transparent;
-    display: flex;
-    flex-direction: column;
-}
 #accountCreationForm .form-group,
 #settingsForm .form-group {
   flex: 1 1 calc(50% - 0.5rem);

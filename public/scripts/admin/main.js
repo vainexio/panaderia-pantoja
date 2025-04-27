@@ -1,5 +1,5 @@
 let ready = false;
-let currentAdmin;
+window.currentAdmin = null;
 function setLoading(button, isLoading) {
   let isBlack = button.matches(".black-loading")
   if (isLoading) {
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     return;
   }
 
-  let layouts = ["dashboard", "inventory", "product_registration", "settings"];
+  let layouts = ["dashboard", "inventory", "product_registration", "account_management", "settings"];
   for (let i in layouts) {
     console.log(layouts[i]);
     let response = await fetch("../admin/layouts/" + layouts[i] + ".html");
