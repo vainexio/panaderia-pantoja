@@ -1,5 +1,10 @@
 async function adminSettings() {
   try {
+    if (currentAdmin.userLevel < 3) {
+      document.getElementById("admin_settings_username").readOnly = true;
+      document.getElementById("toggle-password-btn").disabled = true;
+      document.getElementById("saveChangesButton").disabled = true;
+    }
     document.getElementById("admin_settings_username").value = currentAdmin.username;
     document.getElementById("admin_settings_id").value = currentAdmin.id;
     document.getElementById("admin_settings_acc_level").value = currentAdmin.userLevel;

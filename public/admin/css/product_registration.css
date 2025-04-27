@@ -61,7 +61,14 @@
   border-radius: 8px;
   font-size: 1rem;
 }
-
+@media screen and (max-width: 1024px) {
+  .register-card {
+  width: 60%;
+  }
+  .categories-card {
+  width: 35%;
+  }
+}
 @media (max-width: 768px) {
   .register-card {
     width: 100%;

@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const accsNav = document.getElementById("account_management_nav");
     accsNav.style.display = "none";
   }
-  else if (currentAdmin.userLevel < 2) {
+  if (currentAdmin.userLevel < 2) {
     const productCreationNav = document.getElementById("product_registration_nav");
     productCreationNav.style.display = "none";
   }
