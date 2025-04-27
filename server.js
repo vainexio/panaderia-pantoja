@@ -215,7 +215,7 @@ app.get('/download-inventory', async (req, res) => {
           ['Quantity', p.quantity],
           ['Min', p.min],
           ['Max', p.max],
-          ['Expiry', `${p.expiry} ${p.expiry_unit}]`]
+          ['Expiry', `${p.expiry} ${p.expiry_unit}`]
         ];
         details.forEach(([f, v], i) => {
           const lbl = sheet.getCell(2 + i, startCol);
