@@ -1,5 +1,5 @@
 let ready = false;
-window.currentAdmin = null;
+let currentAdmin;
 function setLoading(button, isLoading) {
   let isBlack = button.matches(".black-loading")
   if (isLoading) {

@@ -331,7 +331,45 @@ app.get('/download-inventory', async (req, res) => {
   }
 });
 
+app.get('/accounts', async (req, res) => {
+  try {
+    const foundAccounts = await accounts.find().sort({ id: 1 }).select('-_id id username userLevel');
+    res.json(foundAccounts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Could not retrieve accounts.' });
+  }
+});
 
+// Update account level
+app.put('/accounts/:id', async (req, res) => {
+  try {
+    const accId = Number(req.params.id);
+    const { userLevel } = req.body;
+    if (typeof userLevel !== 'number') {
+      return res.status(400).json({ message: 'userLevel must be a number' });
+    }
+    const updated = await accounts.findOneAndUpdate({ id: accId }, { userLevel }, { new: true });
+    if (!updated) return res.status(404).json({ message: 'Account not found' });
+    res.json({ message: 'Account updated', account: { id: updated.id, username: updated.username, userLevel: updated.userLevel } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Could not update account.' });
+  }
+});
+
+// Delete account
+app.delete('/accounts/:id', async (req, res) => {
+  try {
+    const accId = Number(req.params.id);
+    const deleted = await accounts.findOneAndDelete({ id: accId });
+    if (!deleted) return res.status(404).json({ message: 'Account not found' });
+    res.json({ message: 'Account deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Could not delete account.' });
+  }
+});
 app.get("/currentAccount", async (req, res) => {
   if (!req.user) return res.status(401).send({ message: "Not logged in", redirect: "/" });
   let user = req.user;
