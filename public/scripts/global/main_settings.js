@@ -43,7 +43,6 @@ async function mainSettings() {
   let toggleDebounce = false
   let formDebounce = false
   document.getElementById('toggle-password-btn').addEventListener('click', function() {
-    if (currentAdmin.userLevel < 3) return notify("You don't have permission to change account password", { type: "error", duration: 5000 });
     if (toggleDebounce) return
     toggleDebounce = true
     var passwordFields = document.getElementById('password-fields');

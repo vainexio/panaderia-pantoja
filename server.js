@@ -345,27 +345,34 @@ app.get('/accounts', async (req, res) => {
 app.put('/accounts/:id', async (req, res) => {
   try {
     const accId = Number(req.params.id);
-    const { userLevel } = req.body;
-    if (typeof userLevel !== 'number') {
-      return res.status(400).json({ message: 'userLevel must be a number' });
+    const update = { username: req.body.username, userLevel: req.body.userLevel };
+
+    if (req.body.password) {
+      update.password = await bcrypt.hash(req.body.password, 10);
     }
-    const updated = await accounts.findOneAndUpdate({ id: accId }, { userLevel }, { new: true });
+
+    const updated = await accounts.findOneAndUpdate({ id: accId }, update, { new: true });
     if (!updated) return res.status(404).json({ message: 'Account not found' });
-    res.json({ message: 'Account updated', account: { id: updated.id, username: updated.username, userLevel: updated.userLevel } });
+    res.json({ message: 'Account updated' });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Could not update account.' });
+    res.status(500).json({ message: 'Internal error updating account.' });
   }
 });
 
+// Delete Account (with cascade and protected ID=1)
 app.delete('/accounts/:id', async (req, res) => {
   try {
     const accId = Number(req.params.id);
+    if (accId === 1 || accId === 2) return res.status(403).json({ message: 'Cannot delete: this account is set by default.' });
+
     const deleted = await accounts.findOneAndDelete({ id: accId });
     if (!deleted) return res.status(404).json({ message: 'Account not found' });
-    // Cascade: remove login sessions for this account
+
+    // Cascade delete login sessions
     await loginSession.deleteMany({ target_id: req.params.id });
-    res.json({ message: 'Account and associated sessions deleted' });
+
+    res.json({ message: 'Account deleted' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Could not delete account.' });

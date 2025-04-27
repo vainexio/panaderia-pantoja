@@ -8,7 +8,12 @@ async function loadAccounts() {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="align-middle">${acc.id}</td>
-      <td class="align-middle">${acc.username}</td>
+      <td class="align-middle">
+        <input type="text" class="form-control username-input" data-id="${acc.id}" value="${acc.username}" />
+      </td>
+      <td class="align-middle text-center">
+        <input type="password" class="form-control password-input" data-id="${acc.id}" placeholder="New password" />
+      </td>
       <td class="align-middle text-center">
         <select class="form-control level-select" data-id="${acc.id}">
           <option value="1" ${acc.userLevel==1?'selected':''}>1</option>
@@ -23,8 +28,8 @@ async function loadAccounts() {
     `;
     tbody.appendChild(tr);
   });
-
-  // attach events
+  
+  // delete events
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
@@ -46,17 +51,27 @@ async function loadAccounts() {
     });
   });
 
+  // save (update) events now include username & password
   document.querySelectorAll('.save-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
       const select = document.querySelector(`.level-select[data-id='${id}']`);
       const level = select.value;
+      const usernameInput = document.querySelector(`.username-input[data-id='${id}']`);
+      const newUsername = usernameInput.value.trim();
+      const passwordInput = document.querySelector(`.password-input[data-id='${id}']`);
+      const newPassword = passwordInput.value;
+
+      const payload = { userLevel: Number(level), username: newUsername };
+      // only send password if user entered one
+      if (newPassword) payload.password = newPassword;
+
       setLoading(btn, true);
       try {
         const res = await fetch(`/accounts/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userLevel: Number(level) })
+          body: JSON.stringify(payload)
         });
         if (res.ok) {
           notify(`Account ${id} updated`, { type: 'success', duration: 5000 });
