@@ -5,31 +5,36 @@ async function loadAccounts() {
   tbody.innerHTML = '';
 
   accounts.forEach(acc => {
+    const isProtected = acc.id === 1 || acc.id === 2;
+    const actionCell = isProtected
+      ? '<td class="align-middle text-center"><i>Default Account</i></td>'
+      : `<td class="align-middle text-center">
+          <button class="btn btn-sm btn-success save-btn mr-1" data-id="${acc.id}">Save</button>
+          <button class="btn btn-sm btn-danger delete-btn" data-id="${acc.id}">Delete</button>
+        </td>`;
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td class="align-middle">${acc.id}</td>
       <td class="align-middle">
-        <input type="text" class="form-control username-input" data-id="${acc.id}" value="${acc.username}" />
+        <input type="text" class="form-control username-input" data-id="${acc.id}" value="${acc.username}" ${isProtected? 'disabled': ''} />
       </td>
       <td class="align-middle text-center">
-        <input type="password" class="form-control password-input" data-id="${acc.id}" placeholder="New password" />
+        <input type="password" class="form-control password-input" data-id="${acc.id}" placeholder="New password" ${isProtected? 'disabled': ''} />
       </td>
       <td class="align-middle text-center">
-        <select class="form-control level-select" data-id="${acc.id}">
+        <select class="form-control level-select" data-id="${acc.id}" ${isProtected? 'disabled': ''}>
           <option value="1" ${acc.userLevel==1?'selected':''}>1</option>
           <option value="2" ${acc.userLevel==2?'selected':''}>2</option>
           <option value="3" ${acc.userLevel==3?'selected':''}>3</option>
         </select>
       </td>
-      <td class="align-middle text-center">
-        <button class="btn btn-sm btn-success save-btn mr-1" data-id="${acc.id}">Save</button>
-        <button class="btn btn-sm btn-danger delete-btn" data-id="${acc.id}">Delete</button>
-      </td>
+      ${actionCell}
     `;
     tbody.appendChild(tr);
   });
-  
-  // delete events
+
+  // attach delete events
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
@@ -51,7 +56,7 @@ async function loadAccounts() {
     });
   });
 
-  // save (update) events now include username & password
+  // attach save events
   document.querySelectorAll('.save-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
@@ -63,7 +68,6 @@ async function loadAccounts() {
       const newPassword = passwordInput.value;
 
       const payload = { userLevel: Number(level), username: newUsername };
-      // only send password if user entered one
       if (newPassword) payload.password = newPassword;
 
       setLoading(btn, true);
