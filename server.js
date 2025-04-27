@@ -358,13 +358,14 @@ app.put('/accounts/:id', async (req, res) => {
   }
 });
 
-// Delete account
 app.delete('/accounts/:id', async (req, res) => {
   try {
     const accId = Number(req.params.id);
     const deleted = await accounts.findOneAndDelete({ id: accId });
     if (!deleted) return res.status(404).json({ message: 'Account not found' });
-    res.json({ message: 'Account deleted' });
+    // Cascade: remove login sessions for this account
+    await loginSession.deleteMany({ target_id: req.params.id });
+    res.json({ message: 'Account and associated sessions deleted' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Could not delete account.' });
@@ -397,7 +398,7 @@ app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const remember = true;
   const ip = req.ip;
-  const user = await accounts.findOne({ username });
+  const user = await accounts.findOne({ username: username.toLowerCase() });
   if (!user) return res.status(401).send({ message: "Invalid credentials" });
 
   const ok = await bcrypt.compare(password, user.password);
@@ -1052,7 +1053,7 @@ app.post('/updateAccount', async (req, res) => {
   
   let account = await accounts.findOne({ id: accountData.id })
   if (!account) return res.status(404).json({ message: "No account found" });
-  account.username = formData.username
+  account.username = formData.username.toLowerCase()
   
   if (!formData.password) {
     await account.save()

@@ -60,9 +60,12 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   showSection("inventory");
   
-  if (currentAdmin.userLevel < 2) {
+  if (currentAdmin.userLevel < 3) {
+    
+  }
+  else if (currentAdmin.userLevel < 2) {
     const productCreationNav = document.getElementById("product_registration_nav");
-    const accsNav = document.getElementById("account_management_nav");
+    
     productCreationNav.style.display = "none";
     accsNav.style.display = "none";
   }

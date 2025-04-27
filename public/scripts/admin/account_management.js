@@ -7,7 +7,7 @@ async function loadAccounts() {
   accounts.forEach(acc => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td class="align-middle text-center">${acc.id}</td>
+      <td class="align-middle">${acc.id}</td>
       <td class="align-middle">${acc.username}</td>
       <td class="align-middle text-center">
         <select class="form-control level-select" data-id="${acc.id}">
