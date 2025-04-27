@@ -62,7 +62,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   
   if (currentAdmin.userLevel < 2) {
     const productCreationNav = document.getElementById("product_registration_nav");
+    const accsNav = document.getElementById("account_management_nav");
     productCreationNav.style.display = "none";
+    accsNav.style.display = "none";
   }
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.addEventListener("click", function () {
