@@ -15,27 +15,38 @@
 .separator {
   display: flex;
   flex-direction: row;
-  justify-content: end;
+  justify-content: flex-end; /* same as end, but standard */
+  
   width: 100%;
-  height: 100%;
+  height: auto;    /* grow based on content */
+  min-height: 100%;
+
+  box-sizing: border-box; /* optional but safer */
 }
 .register-card {
   width: 75%;
-  min-height: 100%;
+  height: auto;       /* grow based on content */
+  min-height: auto;   /* override the forced min-height */
+  
   padding: 1.5rem;
   border: 5px solid var(--red);
-  border-radius: 16px 0px 0px 16px;
+  border-radius: 16px 0 0 16px;
   background-color: transparent;
+
   display: flex;
   flex-direction: column;
+  box-sizing: border-box; /* make padding count inside width */
 }
 .categories-card {
   width: 20%;
-  height: 100%;
-  border-radius: 16px;
+  height: auto;
+  min-height: auto;  
+  display: flex;
+  flex-direction: column;
   padding: 5px;
-  border-radius: 0px 16px 16px 0px;
+  border-radius: 0 16px 16px 0;
   background-color: var(--red);
+  box-sizing: border-box;
 }
 
 .product-form {

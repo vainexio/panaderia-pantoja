@@ -10,7 +10,10 @@
 .account_management {
   padding: 2rem 0;
   display: flex;
-  justify-content: center;
+  justify-content: end;
+}
+.container {
+  width: 90%;
 }
 .admin-settings-card {
   width: 90%;
