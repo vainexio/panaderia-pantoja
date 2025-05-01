@@ -102,14 +102,14 @@ function renderInventory() {
         product.min > product.quantity
           ? '<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>'
           : product.max < product.quantity
-          ? '<i class="bi bi-exclamation-circle-fill" title="High stocks" style="color:#6d03c5;"></i>'
+          ? '<i class="bi bi-exclamation-circle-fill" title="High stocks" style="color:#00136f;"></i>'
           : '<i class="bi bi-check-circle-fill" title="Good" style="color:#007c02;"></i>';
 
       const card = document.createElement("div");
       card.className = "product-card";
       card.style.color =
         product.min > product.quantity ? "var(--red)"
-      : product.max < product.quantity ? "#6d03c5"
+      : product.max < product.quantity ? "#00136f"
       : "var(--black)";
       card.innerHTML = `
         <div>
