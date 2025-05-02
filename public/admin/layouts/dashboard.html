@@ -15,13 +15,20 @@
     <button id="refreshBtn" class="action-button black-loading stock-record-btn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
   </form>
   <div class="stat-grid"></div>
-  <div class="form-group mb-4">
-    <label for="chartCategoryFilter" style="color:white;margin-right:8px;">Filter (7-day IN vs OUT):</label>
-    <select id="chartCategoryFilter">
-      <option value="all">All categories</option>
-      <!-- JS will populate the rest -->
-    </select>
-  </div>
+  <div class="form-group mb-4" style="display: flex; align-items: center; gap: 12px;">
+  <label for="chartCategoryFilter" style="color:white;">Category Filter:</label>
+  <select id="chartCategoryFilter">
+    <option value="all">All categories</option>
+    <!-- JS will populate -->
+  </select>
+
+  <label for="chartDateRangeFilter" style="color:white;margin-right:8px;">Date Range:</label>
+<select id="chartDateRangeFilter">
+  <option value="7">Last 7 Days</option>
+  <option value="14">Last 14 Days</option>
+  <option value="30">Last 30 Days</option>
+</select>
+</div>
 
 <div class="chart-grid">
 </div>
