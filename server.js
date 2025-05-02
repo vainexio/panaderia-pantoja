@@ -516,7 +516,7 @@ app.delete("/removeSession", async (req, res) => {
 });
 
 // Collect/Get
-app.get("/rawInventory2", async (req, res) => {
+app.get("/rawInventory", async (req, res) => {
   try {
     const since = new Date();
     since.setDate(since.getDate() - 30);
@@ -524,19 +524,6 @@ app.get("/rawInventory2", async (req, res) => {
     const [foundProducts, foundStockRecords] = await Promise.all([
       products.find().lean(),
       stockRecords.find({ date: { $gte: since } }).lean(),
-    ]);
-
-    res.json({ products: foundProducts, stockRecords: foundStockRecords });
-  } catch (err) {
-    console.error("💥 Error in /rawInventory:", err);
-    res.status(500).json({ error: "Server error", message: err.message });
-  }
-});
-app.get("/rawInventory", async (req, res) => {
-  try {
-    const [foundProducts, foundStockRecords] = await Promise.all([
-      products.find().lean(),
-      stockRecords.find().lean(),  // Removed date filter to get all stock records
     ]);
 
     res.json({ products: foundProducts, stockRecords: foundStockRecords });
@@ -597,8 +584,8 @@ app.post("/getStockRecord", async (req, res) => {
 
   // Format fromNow as "3m ago", "3h ago", "1d ago"
   const fromNow = m.fromNow().replace(' minutes', 'm').replace(' minute', 'm')
-                                  .replace(' hours', 'h').replace(' hour', 'h')
-                                  .replace(' days', 'd').replace(' day', 'd');
+                                  .replace(' hours', 'h').replace('an hour', '1h')
+                                  .replace(' days', 'd').replace('a day', 'd');
 
   return {
     ...obj,

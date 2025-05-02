@@ -119,7 +119,7 @@ function renderInventory() {
           <div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>
         </div>
       `;
-      card.addEventListener("click", () => showProductDetails(product,intro));
+      card.addEventListener("click", () => showProductDetails(product));
       scroll.appendChild(card);
     });
 
@@ -158,7 +158,7 @@ function renderInventory() {
   });
 }
 //
-async function showProductDetails(product, intro) {
+async function showProductDetails(product) {
   if (currentAdmin.userLevel < 2) return;
   currentProduct = product
   separator.style.display = "none";
@@ -304,7 +304,6 @@ async function showProductDetails(product, intro) {
       }),
     }).then((r) => r.json());
     if (success) {
-      await fetchAndRenderStockRecords(product.product_id);
       inForm.reset();
       setLoading(btn, false);
       notify("Added incoming record", { type: "success", duration: 5000 });
@@ -333,7 +332,6 @@ async function showProductDetails(product, intro) {
       }),
     }).then((r) => r.json());
     if (success) {
-      await fetchAndRenderStockRecords(product.product_id);
       outForm.reset();
       setLoading(btn, false);
       notify("Added outgoing record", { type: "success", duration: 5000 });
@@ -453,7 +451,7 @@ async function showProductDetails(product, intro) {
     }
   });
 
-  await fetchAndRenderStockRecords(product.product_id, intro);
+  await fetchAndRenderStockRecords(product.product_id, true);
 }
 async function fetchAndRenderStockRecords(productId, intro) {
   const recordHolder = detailCard.querySelector(".record-holder");
