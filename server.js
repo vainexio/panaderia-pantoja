@@ -516,7 +516,7 @@ app.delete("/removeSession", async (req, res) => {
 });
 
 // Collect/Get
-app.get("/rawInventory", async (req, res) => {
+app.get("/rawInventory2", async (req, res) => {
   try {
     const since = new Date();
     since.setDate(since.getDate() - 30);
@@ -524,6 +524,19 @@ app.get("/rawInventory", async (req, res) => {
     const [foundProducts, foundStockRecords] = await Promise.all([
       products.find().lean(),
       stockRecords.find({ date: { $gte: since } }).lean(),
+    ]);
+
+    res.json({ products: foundProducts, stockRecords: foundStockRecords });
+  } catch (err) {
+    console.error("💥 Error in /rawInventory:", err);
+    res.status(500).json({ error: "Server error", message: err.message });
+  }
+});
+app.get("/rawInventory", async (req, res) => {
+  try {
+    const [foundProducts, foundStockRecords] = await Promise.all([
+      products.find().lean(),
+      stockRecords.find().lean(),  // Removed date filter to get all stock records
     ]);
 
     res.json({ products: foundProducts, stockRecords: foundStockRecords });
