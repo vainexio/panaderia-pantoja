@@ -210,13 +210,12 @@
 .stockRecordForm {
   margin-top: 10px;
   padding: 10px;
-  width: 50%;
   height: 60px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  width: 50%;
 }
-
 .stockRecordForm .form-group label {
   color: white;
   margin-right: 1rem;

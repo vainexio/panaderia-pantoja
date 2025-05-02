@@ -576,19 +576,25 @@ app.post("/getStockRecord", async (req, res) => {
 
     const records = await findQuery;
     const data = records.map((r) => {
-      const obj = r.toObject();
-      const m = moment(r.date);
+  const obj = r.toObject();
+  const m = moment(r.date);
 
-      const fromNow = m.fromNow().replace(' minutes', 'm').replace(' minute', 'm').replace(' hours', 'h').replace(' hour', 'h').replace(' days', 'd').replace(' day', 'd');
+  // Check if the date is today
+  const isToday = m.isSame(new Date(), 'day');
 
-      return {
-        ...obj,
-        fromNow,
-        formattedDate: m.format("MM/DD/YY hh:mm A"), // 12-hour format with AM/PM
-        formattedTime: m.format("hh:mm A"), // 12-hour format with AM/PM
-        formattedDateTime: m.format("MM/DD/YY hh:mm A"), // "04/23/25 02:07 PM"
+  // Format fromNow as "3m ago", "3h ago", "1d ago"
+  const fromNow = m.fromNow().replace(' minutes', 'm').replace(' minute', 'm')
+                                  .replace(' hours', 'h').replace(' hour', 'h')
+                                  .replace(' days', 'd').replace(' day', 'd');
+
+  return {
+    ...obj,
+    fromNow, // "3m ago", "3h ago", "1d ago"
+    formattedDate: isToday ? m.format("hh:mm A") : m.format("MM/DD/YY hh:mm A"), // Show only time if today
+    formattedTime: m.format("hh:mm A"), // 12-hour format with AM/PM
+    formattedDateTime: isToday ? m.format("hh:mm A") : m.format("MM/DD/YY hh:mm A"), // Only show time if today, else full date & time
   };
-    });
+});
 
     res.json(data);
   } catch (err) {

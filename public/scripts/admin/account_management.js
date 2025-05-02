@@ -78,7 +78,7 @@ async function loadAccounts() {
           body: JSON.stringify(payload)
         });
         if (res.ok) {
-          notify(`Account ${id} updated`, { type: 'success', duration: 5000 });
+          notify(`Account ID: [${usernameInput}] updated`, { type: 'success', duration: 5000 });
           loadAccounts();
         } else {
           const err = await res.json();
