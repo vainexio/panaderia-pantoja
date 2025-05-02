@@ -267,13 +267,13 @@ async function showProductDetails(product) {
   `;
 
   const outForm = document.createElement("form");
-  outForm.className = "stockRecordForm";
+  outForm.className = "stockRecordForm2";
   outForm.innerHTML = `
     <div class="form-group">
       <label for="out_amount">OUT</label>
       <div style="display: flex; gap: 3px;">
       <input type="number" id="out_amount" name="out_amount" placeholder="100" required />
-      <input type="text" id="remarks" name="remarks" placeholder="Remarks (optional)" required />
+      <input type="text" id="remarks" name="remarks" placeholder="Remarks (optional)" />
       </div>
     </div>
     <div class="submit-container">
@@ -537,7 +537,7 @@ function buildRecordsColumn(title, records, type, icon) {
           <h4 class="qty ${cls}">${sign}${r.amount}</h4>
           <div class="date">${r.formattedDateTime} • <b>${r.fromNow}</b></div>
           <div>By: <b>${username}</b></div>
-          ${r.remarks ? `<div>Remarks: ${r.remarks}</div>` : ``}
+          ${r.remarks ? `<br><div><i class="bi bi-info-circle-fill"></i> Remarks: <i>${r.remarks}</i></div>` : ``}
         </div>
         ${currentAdmin.userLevel >= 3 ? `<button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
           <i class="bi bi-trash3-fill"></i>

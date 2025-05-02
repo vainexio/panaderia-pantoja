@@ -575,18 +575,19 @@ app.post("/getStockRecord", async (req, res) => {
     }
 
     const records = await findQuery;
-
     const data = records.map((r) => {
       const obj = r.toObject();
       const m = moment(r.date);
 
+      const fromNow = m.fromNow().replace(' minutes', 'm').replace(' minute', 'm').replace(' hours', 'h').replace(' hour', 'h').replace(' days', 'd').replace(' day', 'd');
+
       return {
         ...obj,
-        fromNow: m.fromNow(), // “3 hours ago”
-        formattedDate: m.format("DD/MM/YY"), // “23/04/25”
-        formattedTime: m.format("HH:mm"), // “14:07”
-        formattedDateTime: m.format("DD/MM/YY HH:mm"), // “23/04/25 14:07”
-      };
+        fromNow,
+        formattedDate: m.format("MM/DD/YY hh:mm A"), // 12-hour format with AM/PM
+        formattedTime: m.format("hh:mm A"), // 12-hour format with AM/PM
+        formattedDateTime: m.format("MM/DD/YY hh:mm A"), // "04/23/25 02:07 PM"
+  };
     });
 
     res.json(data);
@@ -745,10 +746,7 @@ app.post("/createStockRecord", async (req, res) => {
       // try atomic decrement only if enough stock
       updatedProduct = await products.findOneAndUpdate(
         { product_id, quantity: { $gte: amount } },
-        { $inc: { quantity: delta }, 
-          $set: { remarks: remarks ? remarks : null }
-        },
-        
+        { $inc: { quantity: delta } },
         { new: true }
       );
 
@@ -781,9 +779,10 @@ app.post("/createStockRecord", async (req, res) => {
 
     // now record the transaction
     const newRecord = new stockRecords({
-      product_id,
-      type,
-      amount,
+      product_id: product_id,
+      type: type,
+      amount: amount,
+      remarks: remarks,
       author_id: Number(author_id),
     });
     await newRecord.save();
