@@ -42,14 +42,10 @@ async function dashboard() {
     }
 
     const totalProducts = products.length;
-    const totalIn = stockRecords
-      .filter((r) => r.type === "IN")
-      .reduce((s, r) => s + r.amount, 0);
-    const totalOut = stockRecords
-      .filter((r) => r.type === "OUT")
-      .reduce((s, r) => s + r.amount, 0);
-    const totalStock = totalIn - totalOut;
 
+    // Option A: Use actual product quantities instead of calculating from IN/OUT
+    const totalStock = products.reduce((sum, p) => sum + (p.quantity || 0), 0);
+    // Render cards
     makeStatCard(
       "Total Products",
       `<p style="font-size:3rem; font-weight:bold; color:white; margin:0;">${totalProducts}</p>`,
