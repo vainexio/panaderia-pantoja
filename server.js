@@ -71,6 +71,10 @@ const stockRecordsSchema = new mongoose.Schema({
   product_id: String,
   type: String,
   amount: Number,
+  remarks: {
+    type: String,
+    default: null,
+  },
   date: { type: Date, default: Date.now },
   author_id: Number,
 });
@@ -730,9 +734,9 @@ app.post("/generateCategoryQr", async (req, res) => {
   }
 });
 app.post("/createStockRecord", async (req, res) => {
-  const { product_id, type, amount, author_id } = req.body;
+  const { product_id, type, amount, author_id, remarks } = req.body;
   // … your existing validation here …
-
+  console.log(req.body)
   const delta = type === "IN" ? amount : -amount;
   let updatedProduct;
 
@@ -741,7 +745,10 @@ app.post("/createStockRecord", async (req, res) => {
       // try atomic decrement only if enough stock
       updatedProduct = await products.findOneAndUpdate(
         { product_id, quantity: { $gte: amount } },
-        { $inc: { quantity: delta } },
+        { $inc: { quantity: delta }, 
+          $set: { remarks: remarks ? remarks : null }
+        },
+        
         { new: true }
       );
 

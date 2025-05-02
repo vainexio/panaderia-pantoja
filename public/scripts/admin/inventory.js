@@ -271,7 +271,10 @@ async function showProductDetails(product) {
   outForm.innerHTML = `
     <div class="form-group">
       <label for="out_amount">OUT</label>
+      <div style="display: flex; gap: 3px;">
       <input type="number" id="out_amount" name="out_amount" placeholder="100" required />
+      <input type="text" id="remarks" name="remarks" placeholder="Remarks (optional)" required />
+      </div>
     </div>
     <div class="submit-container">
       <button type="submit" class="action-button black-loading stock-record-btn"><i class="bi bi-box-arrow-up"></i> Save Record</button>
@@ -324,6 +327,7 @@ async function showProductDetails(product) {
         product_id: product.product_id,
         type: "OUT",
         amount: amount,
+        remarks: outForm.remarks.value,
         author_id: currentAdmin.id,
       }),
     }).then((r) => r.json());
@@ -378,7 +382,7 @@ async function showProductDetails(product) {
   });
   //
   const deleteBtn = editForm.querySelector(".delete-product-btn");
-  deleteBtn.addEventListener("click", async (e) => {
+  deleteBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
 
     const confirmed = confirm(
@@ -485,7 +489,7 @@ async function fetchAndRenderStockRecords(productId, intro) {
   recordHolder.append(inCol, outCol);
 
   // wire up delete buttons for each record
-  detailCard.querySelectorAll(".delete-record-btn").forEach((btn) => {
+  detailCard.querySelectorAll(".delete-record-btn")?.forEach((btn) => {
     btn.addEventListener("click", async () => {
       const confirmed = confirm("Are you sure you want to delete this record?");
       if (!confirmed) return;
@@ -533,6 +537,7 @@ function buildRecordsColumn(title, records, type, icon) {
           <h4 class="qty ${cls}">${sign}${r.amount}</h4>
           <div class="date">${r.formattedDateTime} • <b>${r.fromNow}</b></div>
           <div>By: <b>${username}</b></div>
+          ${r.remarks ? `<div>Remarks: ${r.remarks}</div>` : ``}
         </div>
         ${currentAdmin.userLevel >= 3 ? `<button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
           <i class="bi bi-trash3-fill"></i>
