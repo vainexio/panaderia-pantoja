@@ -235,7 +235,7 @@ async function showProductDetails(product) {
         </div>
 
     <div class="submit-container">
-    <button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill" title="Delete Product"></i></button>
+    ${currentAdmin.userLevel >= 3 ? `<button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill" title="Delete Product"></i></button>` : ``}
     <button class="action-button me-1 qr-gen-btn"><i class="bi bi-qr-code-scan"></i> QR</button>
     <button type="submit" class="action-button" title="Save Changes"><i class="bi bi-floppy-fill"></i> Save</button>
       </div>
@@ -534,9 +534,9 @@ function buildRecordsColumn(title, records, type, icon) {
           <div class="date">${r.formattedDateTime} • <b>${r.fromNow}</b></div>
           <div>By: <b>${username}</b></div>
         </div>
-        <button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
+        ${currentAdmin.userLevel >= 3 ? `<button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
           <i class="bi bi-trash3-fill"></i>
-        </button>
+        </button>` : ``}
       </div>
     `;
   })

@@ -512,10 +512,10 @@ app.delete("/removeSession", async (req, res) => {
 });
 
 // Collect/Get
-app.get("/api/raw-inventory", async (req, res) => {
+app.get("/rawInventory", async (req, res) => {
   try {
     const since = new Date();
-    since.setDate(since.getDate() - 7);
+    since.setDate(since.getDate() - 30);
 
     const [foundProducts, foundStockRecords] = await Promise.all([
       products.find().lean(),
@@ -524,7 +524,7 @@ app.get("/api/raw-inventory", async (req, res) => {
 
     res.json({ products: foundProducts, stockRecords: foundStockRecords });
   } catch (err) {
-    console.error("💥 Error in /api/raw-inventory:", err);
+    console.error("💥 Error in /rawInventory:", err);
     res.status(500).json({ error: "Server error", message: err.message });
   }
 });
