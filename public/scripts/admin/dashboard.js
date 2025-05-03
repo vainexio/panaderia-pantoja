@@ -16,12 +16,12 @@ async function dashboard() {
   const prodMap = Object.fromEntries(products.map((p) => [p.product_id, p]));
 
   dashboardElement.innerHTML = innerHTML;
-
   const refresh = document.getElementById("refreshBtn");
 
   // STAT SUMMARY
   (function () {
     const statGrid = document.querySelector(".stat-grid");
+    statGrid.innerHTML = '';
 
     function makeStatCard(
       title,
@@ -42,10 +42,8 @@ async function dashboard() {
     }
 
     const totalProducts = products.length;
-
-    // Option A: Use actual product quantities instead of calculating from IN/OUT
     const totalStock = products.reduce((sum, p) => sum + (p.quantity || 0), 0);
-    // Render cards
+
     makeStatCard(
       "Total Products",
       `<p style="font-size:3rem; font-weight:bold; color:white; margin:0;">${totalProducts}</p>`,
@@ -61,32 +59,27 @@ async function dashboard() {
 
     const lowStockProducts = products
       .filter((p) => p.min !== undefined && p.quantity <= p.min)
-      .sort((a, b) => a.quantity - b.quantity); // lowest to highest
-
+      .sort((a, b) => a.quantity - b.quantity);
     const highStockProducts = products
       .filter((p) => p.max !== undefined && p.quantity >= p.max)
-      .sort((a, b) => a.quantity - b.quantity); // lowest to highest
+      .sort((a, b) => a.quantity - b.quantity);
 
     makeStatCard(
       "Understock Products",
       lowStockProducts.length
-        ? `<ul>${lowStockProducts
-            .map((p) => `<li>${p.name} (${p.quantity})</li>`)
-            .join("")}</ul>`
+        ? `<ul>${lowStockProducts.map((p) => `<li>${p.name} (${p.quantity})</li>`).join("")}</ul>`
         : `<p>None</p>`
     );
 
     makeStatCard(
       "Overstock Products",
       highStockProducts.length
-        ? `<ul>${highStockProducts
-            .map((p) => `<li>${p.name} (${p.quantity})</li>`)
-            .join("")}</ul>`
+        ? `<ul>${highStockProducts.map((p) => `<li>${p.name} (${p.quantity})</li>`).join("")}</ul>`
         : `<p>None</p>`
     );
   })();
 
-  // CHARTS SECTION
+  // CHARTS SECTION with lazy loading
   (function () {
     if (typeof Chart === "undefined") {
       console.error("Chart.js not found");
@@ -97,23 +90,12 @@ async function dashboard() {
     const catFilterElem = document.getElementById("chartCategoryFilter");
     const dateFilterElem = document.getElementById("chartDateRangeFilter");
     const chartPerRowFilterElem = document.getElementById("chartPerRowFilter");
-    chartGrid.style.gridTemplateColumns = 'repeat('+chartPerRowFilterElem.value+', 1fr)';
-
-    function makeChartCard(title, id) {
-      const card = document.createElement("div");
-      card.className = "chart-card";
-      card.innerHTML = `<h5>${title}</h5><canvas id="${id}"></canvas>`;
-      chartGrid.appendChild(card);
-      return document.getElementById(id).getContext("2d");
-    }
+    chartGrid.style.gridTemplateColumns = 'repeat(' + chartPerRowFilterElem.value + ', 1fr)';
 
     catFilterElem.innerHTML =
       `<option value="all">ALL CATEGORIES</option>` +
       categories
-        .map(
-          (c) =>
-            `<option value="${c.category_id}">${c.name.toUpperCase()}</option>`
-        )
+        .map((c) => `<option value="${c.category_id}">${c.name.toUpperCase()}</option>`)  
         .join("");
 
     function getDateRangeLabels(range) {
@@ -142,53 +124,67 @@ async function dashboard() {
     }
 
     function clearProductCharts() {
-      document
-        .querySelectorAll('[id^="chart-inout-"]')
-        .forEach((c) => c.closest(".chart-card").remove());
+      document.querySelectorAll('.chart-card').forEach(c => c.remove());
+    }
+
+    function makeChartPlaceholder(title, id) {
+      const card = document.createElement('div');
+      card.className = 'chart-card';
+      card.innerHTML = `
+        <h5>${title}</h5>
+        <div class="chart-placeholder" data-canvas-id="${id}">
+          <p style="color:#ccc; font-style:italic;">Scroll to load chart…</p>
+        </div>`;
+      chartGrid.appendChild(card);
+    }
+
+    function observePlaceholders(dateRange) {
+      const labels = getDateRangeLabels(dateRange);
+      const recent = getRecentStockRecords(dateRange);
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const ph = entry.target;
+          const id = ph.dataset.canvasId;
+          const pid = id.replace('chart-inout-', '');
+          const canvas = document.createElement('canvas');
+          canvas.id = id;
+          ph.replaceWith(canvas);
+          const ctx = canvas.getContext('2d');
+
+          // prepare data
+          const ins = {}, outs = {};
+          labels.forEach(d => { ins[d] = 0; outs[d] = 0; });
+          recent.forEach(r => {
+            if (String(r.product_id) !== pid) return;
+            const day = new Date(r.date).toISOString().slice(0, 10);
+            (r.type === 'IN' ? ins : outs)[day] += r.amount;
+          });
+
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [
+                { label: 'IN', data: labels.map(d => ins[d]), fill: false },
+                { label: 'OUT', data: labels.map(d => outs[d]), fill: false }
+              ]
+            },
+            options: { responsive: true }
+          });
+          observer.unobserve(entry.target);
+        });
+      }, { rootMargin: '200px' });
+
+      document.querySelectorAll('.chart-placeholder').forEach(ph => observer.observe(ph));
     }
 
     function renderProductCharts(catId, dateRange) {
       clearProductCharts();
-      const labels = getDateRangeLabels(dateRange);
-      const recent = getRecentStockRecords(dateRange);
       products
         .filter((p) => catId === "all" || p.category_id === catId)
-        .forEach((p) => {
-          const pid = p.product_id;
-          const ctx = makeChartCard(`${p.name}`, `chart-inout-${pid}`);
-          const ins = {},
-            outs = {};
-          labels.forEach((d) => {
-            ins[d] = 0;
-            outs[d] = 0;
-          });
-          recent.forEach((r) => {
-            if (r.product_id !== pid) return;
-            const day = new Date(r.date).toISOString().slice(0, 10);
-            (r.type === "IN" ? ins : outs)[day] += r.amount;
-          });
-          new Chart(ctx, {
-            type: "line",
-            data: {
-              labels: labels,
-              datasets: [
-                {
-                  label: "IN",
-                  data: labels.map((d) => ins[d]),
-                  fill: false,
-                  borderColor: "green",
-                },
-                {
-                  label: "OUT",
-                  data: labels.map((d) => outs[d]),
-                  fill: false,
-                  borderColor: "red",
-                },
-              ],
-            },
-            options: { responsive: true },
-          });
-        });
+        .forEach((p) => makeChartPlaceholder(p.name, `chart-inout-${p.product_id}`));
+      observePlaceholders(dateRange);
     }
 
     function updateCharts() {
@@ -198,9 +194,9 @@ async function dashboard() {
     catFilterElem.addEventListener("change", updateCharts);
     dateFilterElem.addEventListener("change", updateCharts);
     chartPerRowFilterElem.addEventListener("change", function() {
-      chartGrid.style.gridTemplateColumns = 'repeat('+chartPerRowFilterElem.value+', 1fr)';
+      chartGrid.style.gridTemplateColumns = 'repeat(' + this.value + ', 1fr)';
     });
-    updateCharts(); // initial render
+    updateCharts();
   })();
 
   refresh.addEventListener("click", async () => {

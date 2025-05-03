@@ -108,7 +108,7 @@ app.use(async (req, res, next) => {
 
   const publicPaths = ["/login"];
   if (!req.user && !publicPaths.some(path => req.path.startsWith(path))) {
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
+    return res.status(401).send({ message: "Not logged in", error: "Not logged in", redirect: "/" });
   }
 
   next();
