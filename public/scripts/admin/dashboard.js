@@ -220,7 +220,7 @@ async function dashboard() {
     setLoading(btn, true);
     const filter = document.getElementById("filter_download").value;
     if (!filter) return;
-    window.location = `/download-inventory?filter=${encodeURIComponent(
+    window.location = `/downloadInventory?filter=${encodeURIComponent(
       filter
     )}`;
     setLoading(btn, false);

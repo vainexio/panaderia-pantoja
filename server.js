@@ -12,31 +12,17 @@ const moment = require("moment");
 const path = require("path");
 const http = require("http");
 const ExcelJS = require('exceljs');
-const {
-  Document,
-  Packer,
-  Paragraph,
-  TextRun,
-  AlignmentType,
-  ImageRun,
-  Table,
-  TableRow,
-  TableCell,
-  WidthType,
-} = require("docx");
-const app = express();
-const { Server } = require("socket.io");
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: { origin: "*" }, 
-});
-//
 const cookieParser = require("cookie-parser");
 const { v4: uuidv4 } = require("uuid");
+const { Server } = require("socket.io");
+const { Document, Packer, Paragraph, TextRun, AlignmentType, ImageRun, Table, TableRow, TableCell, WidthType } = require("docx");
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
 //
 const method = require("./data/functions.js");
 const settings = require("./data/settings.js");
-app.use(cors());
 const JWT_SECRET = process.env.JWT_SECRET;
 // Connect to MongoDB
 if (process.env.MONGOOSE) mongoose.connect(process.env.MONGOOSE);
@@ -84,9 +70,17 @@ let products = mongoose.model("Products", productsSchema);
 let stockRecords = mongoose.model("Stock Records", stockRecordsSchema);
 let loginSession = mongoose.model("LoginSession", loginSessionSchema);
 // Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.set("trust proxy", true);
+app.use(cors());
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(express.static("public", {
+    setHeaders: (res, path) => {
+      if (path.endsWith(".js")) {
+        res.setHeader("Content-Type", "text/javascript");
+      }
+    },
+  }));
 app.use(async (req, res, next) => {
   const token = req.cookies.token;
   if (!token) return next();
@@ -105,13 +99,6 @@ app.use(async (req, res, next) => {
   }
   next();
 });
-app.use(express.static("public", {
-    setHeaders: (res, path) => {
-      if (path.endsWith(".js")) {
-        res.setHeader("Content-Type", "text/javascript");
-      }
-    },
-  }));
 app.use(async (req, res, next) => {
   const token = req.headers["authorization"]?.split(" ")[1]; // "Bearer <token>"
 
@@ -130,30 +117,59 @@ app.use((req, res, next) => {
   req.clientIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   next();
 });
-
-app.set("trust proxy", true);
-//
+app.use(bodyParser.urlencoded({ extended: true }));
+// Public
 app.get("/ping", (req, res) => {
   return res.json({ pong: true, ts: Date.now() });
 });
 app.get("/admin-dashboard", async (req, res) => {
   res.sendFile(__dirname + "/public/admin.html");
 });
-function setOuterBorder(sheet, startRow, endRow, startCol, endCol) {
-  for (let r = startRow; r <= endRow; r++) {
-    for (let c = startCol; c <= endCol; c++) {
-      const cell = sheet.getCell(r, c);
-      const outer = {};
-      if (r === startRow) outer.top = { style: 'thick' };
-      if (r === endRow)   outer.bottom = { style: 'thick' };
-      if (c === startCol) outer.left = { style: 'thick' };
-      if (c === endCol)   outer.right = { style: 'thick' };
-      cell.border = { ...cell.border, ...outer };
-    }
-  }
-}
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  const remember = true;
+  const ip = req.ip;
+  const user = await accounts.findOne({ username: username.toLowerCase() });
+  if (!user) return res.status(401).send({ message: "Invalid credentials" });
 
-app.get('/download-inventory', async (req, res) => {
+  const ok = await bcrypt.compare(password, user.password);
+  if (!ok) return res.status(401).send({ message: "Invalid credentials" });
+
+  const expiresIn = remember ? 30 * 24 * 60 * 60 : 60 * 60;
+
+  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn });
+
+  const existingSession = await loginSession.findOne({ device_id: token });
+  if (!existingSession) {
+    const session = new loginSession({
+      session_id: method.genId(),
+      ip_address: ip,
+      target_id: user.id,
+      device_id: token,
+    });
+    console.log("new session");
+    await session.save();
+  } else if (existingSession) {
+    existingSession.target_id = user.id;
+    existingSession.ip_address = ip;
+    existingSession.device_id = token;
+    existingSession.session_id = method.genId();
+    console.log("old session");
+    await existingSession.save();
+  }
+  res.cookie("token", token, {
+    httpOnly: true,
+    maxAge: expiresIn * 1000,
+    sameSite: "strict",
+  });
+  return res.json({
+    redirect: "/admin-dashboard",
+    message: "Login successful",
+  });
+});
+
+// Collections/Fetch
+app.get('/downloadInventory', async (req, res) => {
   try {
     const filter = req.query.filter?.toLowerCase() || 'last 7 days';
     const now = new Date();
@@ -323,7 +339,7 @@ app.get('/download-inventory', async (req, res) => {
         // Outer thick border
         const blockEndRow = recHeaderRow + 1 + Math.max(ins.length, outs.length);
         const blockEndCol = startCol + 5;
-        setOuterBorder(sheet, blockStartRow, blockEndRow, blockStartCol, blockEndCol);
+        method.setOuterBorder(sheet, blockStartRow, blockEndRow, blockStartCol, blockEndCol);
 
         startCol += 6 + gap;
       });
@@ -341,7 +357,6 @@ app.get('/download-inventory', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
-
 app.get('/accounts', async (req, res) => {
   try {
     const foundAccounts = await accounts.find().sort({ id: 1 }).select('-_id id username userLevel');
@@ -349,42 +364,6 @@ app.get('/accounts', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Could not retrieve accounts.' });
-  }
-});
-
-// Update account level
-app.put('/accounts/:id', async (req, res) => {
-  try {
-    const accId = Number(req.params.id);
-    const update = { username: req.body.username, userLevel: req.body.userLevel };
-
-    if (req.body.password) {
-      update.password = await bcrypt.hash(req.body.password, 10);
-    }
-
-    const updated = await accounts.findOneAndUpdate({ id: accId }, update, { new: true });
-    if (!updated) return res.status(404).json({ message: 'Account not found' });
-    res.json({ message: 'Account updated' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Internal error updating account.' });
-  }
-});
-app.delete('/accounts/:id', async (req, res) => {
-  try {
-    const accId = Number(req.params.id);
-    if (accId === 1 || accId === 2) return res.status(403).json({ message: 'Cannot delete: this account is set by default.' });
-
-    const deleted = await accounts.findOneAndDelete({ id: accId });
-    if (!deleted) return res.status(404).json({ message: 'Account not found' });
-
-    // Cascade delete login sessions
-    await loginSession.deleteMany({ target_id: req.params.id });
-
-    res.json({ message: 'Account deleted' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Could not delete account.' });
   }
 });
 app.get("/currentAccount", async (req, res) => {
@@ -409,49 +388,6 @@ app.get("/currentAccount", async (req, res) => {
       .json({ message: "Invalid or expired token", redirect: "/" });
   }
 });
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const remember = true;
-  const ip = req.ip;
-  const user = await accounts.findOne({ username: username.toLowerCase() });
-  if (!user) return res.status(401).send({ message: "Invalid credentials" });
-
-  const ok = await bcrypt.compare(password, user.password);
-  if (!ok) return res.status(401).send({ message: "Invalid credentials" });
-
-  const expiresIn = remember ? 30 * 24 * 60 * 60 : 60 * 60;
-
-  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn });
-
-  const existingSession = await loginSession.findOne({ device_id: token });
-  if (!existingSession) {
-    const session = new loginSession({
-      session_id: method.genId(),
-      ip_address: ip,
-      target_id: user.id,
-      device_id: token,
-    });
-    console.log("new session");
-    await session.save();
-  } else if (existingSession) {
-    existingSession.target_id = user.id;
-    existingSession.ip_address = ip;
-    existingSession.device_id = token;
-    existingSession.session_id = method.genId();
-    console.log("old session");
-    await existingSession.save();
-  }
-  res.cookie("token", token, {
-    httpOnly: true,
-    maxAge: expiresIn * 1000,
-    sameSite: "strict",
-  });
-  return res.json({
-    redirect: "/admin-dashboard",
-    message: "Login successful",
-  });
-});
-
 app.post("/getAllSessions", async (req, res) => {
   try {
     let deviceId = req.session.device_id;
@@ -500,25 +436,6 @@ app.post("/getAllSessions", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-app.delete("/removeSession", async (req, res) => {
-  try {
-    const { sessionId } = req.body;
-    if (!sessionId) {
-      return res.status(400).json({ error: "sessionId is required" });
-    }
-    const result = await loginSession.deleteOne({ session_id: sessionId });
-    if (result.deletedCount > 0) {
-      return res.json({ message: "Session removed" });
-    } else {
-      return res.status(404).json({ error: "Session not found" });
-    }
-  } catch (error) {
-    console.error("Error in /removeSession:", error);
-    res.status(500).json({ error: "Server error" });
-  }
-});
-
-// Collect/Get
 app.get("/rawInventory", async (req, res) => {
   try {
     const since = new Date();
@@ -843,6 +760,7 @@ app.post('/createAccount', async (req, res) => {
   }
 });
 
+// Creations
 app.post("/createProduct", async (req, res) => {
   try {
     let {
@@ -945,6 +863,40 @@ app.post("/generateQr", async (req, res) => {
 });
 
 // Deletions
+app.delete("/removeSession", async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+    if (!sessionId) {
+      return res.status(400).json({ error: "sessionId is required" });
+    }
+    const result = await loginSession.deleteOne({ session_id: sessionId });
+    if (result.deletedCount > 0) {
+      return res.json({ message: "Session removed" });
+    } else {
+      return res.status(404).json({ error: "Session not found" });
+    }
+  } catch (error) {
+    console.error("Error in /removeSession:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+app.delete('/accounts/:id', async (req, res) => {
+  try {
+    const accId = Number(req.params.id);
+    if (accId === 1 || accId === 2) return res.status(403).json({ message: 'Cannot delete: this account is set by default.' });
+
+    const deleted = await accounts.findOneAndDelete({ id: accId });
+    if (!deleted) return res.status(404).json({ message: 'Account not found' });
+
+    // Cascade delete login sessions
+    await loginSession.deleteMany({ target_id: req.params.id });
+
+    res.json({ message: 'Account deleted' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Could not delete account.' });
+  }
+});
 app.post("/deleteProduct", async (req, res) => {  
   const { product_id } = req.body;
   if (!product_id)
@@ -1049,6 +1001,23 @@ app.delete("/deleteProduct/:id", async (req, res) => {
 });
 
 // Updates
+app.put('/accounts/:id', async (req, res) => {
+  try {
+    const accId = Number(req.params.id);
+    const update = { username: req.body.username, userLevel: req.body.userLevel };
+
+    if (req.body.password) {
+      update.password = await bcrypt.hash(req.body.password, 10);
+    }
+
+    const updated = await accounts.findOneAndUpdate({ id: accId }, update, { new: true });
+    if (!updated) return res.status(404).json({ message: 'Account not found' });
+    res.json({ message: 'Account updated' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal error updating account.' });
+  }
+});
 app.post('/updateAccount', async (req, res) => {
   const { accountData, formData } = req.body;
   
@@ -1182,12 +1151,8 @@ app.get("/test", async (req, res) => {
   }
 });
 
-// Start the server
+// Server Connection
 const PORT = process.env.PORT || 3000;
-/*app.listen(PORT, async () => {
-  console.log(`Server is running on port ${PORT}`);
-});*/
-//
 
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);

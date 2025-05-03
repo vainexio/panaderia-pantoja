@@ -1,5 +1,18 @@
 const fetch = require('node-fetch')
 //
+function setOuterBorder(sheet, startRow, endRow, startCol, endCol) {
+  for (let r = startRow; r <= endRow; r++) {
+    for (let c = startCol; c <= endCol; c++) {
+      const cell = sheet.getCell(r, c);
+      const outer = {};
+      if (r === startRow) outer.top = { style: 'thick' };
+      if (r === endRow)   outer.bottom = { style: 'thick' };
+      if (c === startCol) outer.left = { style: 'thick' };
+      if (c === endCol)   outer.right = { style: 'thick' };
+      cell.border = { ...cell.border, ...outer };
+    }
+  }
+}
 function sleep(miliseconds) {
     var currentTime = new Date().getTime();
     while (currentTime + miliseconds >= new Date().getTime()) { }
@@ -109,6 +122,7 @@ module.exports = {
   checkIfOnDuty,
   computeCalendarWeeks,
   convertTo12Hour,
+  setOuterBorder,
   generateQr: async function(text) {
     
     let data = {
