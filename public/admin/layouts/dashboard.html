@@ -15,7 +15,7 @@
     <button id="refreshBtn" class="action-button black-loading stock-record-btn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
   </form>
   <div class="stat-grid"></div>
-  <div class="form-group" style="display: flex; width: 100%; max-width: 600px; align-items: center; gap: 12px; margin-bottom: 10px;">
+  <div class="form-group" style="display: flex; width: 100%; max-width: 900px; align-items: center; gap: 12px; margin-bottom: 10px;">
   <label for="chartCategoryFilter" style="color:white;">Category Filter:</label>
   <select id="chartCategoryFilter">
     <option value="all">All categories</option>
@@ -28,6 +28,13 @@
   <option value="14">Last 14 Days</option>
   <option value="30">Last 30 Days</option>
 </select>
+    
+    <label for="chartPerRowFilter" style="color:white;margin-right:8px;width:400px;">Charts per Row:</label>
+    <select id="chartPerRowFilter">
+      <option value="1">1 chart</option>
+      <option value="2">2 charts</option>
+      <option value="3" selected>3 charts</option>
+    </select>
 </div>
 
 <div class="chart-grid">

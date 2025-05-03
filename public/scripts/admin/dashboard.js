@@ -96,6 +96,8 @@ async function dashboard() {
     const chartGrid = document.querySelector(".chart-grid");
     const catFilterElem = document.getElementById("chartCategoryFilter");
     const dateFilterElem = document.getElementById("chartDateRangeFilter");
+    const chartPerRowFilterElem = document.getElementById("chartPerRowFilter");
+    chartGrid.style.gridTemplateColumns = 'repeat('+chartPerRowFilterElem.value+', 1fr)';
 
     function makeChartCard(title, id) {
       const card = document.createElement("div");
@@ -149,7 +151,6 @@ async function dashboard() {
       clearProductCharts();
       const labels = getDateRangeLabels(dateRange);
       const recent = getRecentStockRecords(dateRange);
-
       products
         .filter((p) => catId === "all" || p.category_id === catId)
         .forEach((p) => {
@@ -196,7 +197,9 @@ async function dashboard() {
 
     catFilterElem.addEventListener("change", updateCharts);
     dateFilterElem.addEventListener("change", updateCharts);
-
+    chartPerRowFilterElem.addEventListener("change", function() {
+      chartGrid.style.gridTemplateColumns = 'repeat('+chartPerRowFilterElem.value+', 1fr)';
+    });
     updateCharts(); // initial render
   })();
 
