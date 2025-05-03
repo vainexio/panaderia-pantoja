@@ -106,7 +106,7 @@ app.use(async (req, res, next) => {
     req.user = await accounts.findOne({ id: 2 });
   }
 
-  const publicPaths = ["/login"];
+  const publicPaths = ["/login","/admin-dashboard"];
   if (!req.user && !publicPaths.some(path => req.path.startsWith(path))) {
     return res.status(401).send({ message: "Not logged in", error: "Not logged in", redirect: "/" });
   }
