@@ -129,7 +129,6 @@ app.get("/ping", (req, res) => {
 app.get("/admin-dashboard", async (req, res) => {
   res.sendFile(__dirname + "/public/admin.html");
 });
-/* Global Backend */
 function setOuterBorder(sheet, startRow, endRow, startCol, endCol) {
   for (let r = startRow; r <= endRow; r++) {
     for (let c = startCol; c <= endCol; c++) {
@@ -139,15 +138,14 @@ function setOuterBorder(sheet, startRow, endRow, startCol, endCol) {
       if (r === endRow)   outer.bottom = { style: 'thick' };
       if (c === startCol) outer.left = { style: 'thick' };
       if (c === endCol)   outer.right = { style: 'thick' };
-      // merge with any existing borders
       cell.border = { ...cell.border, ...outer };
     }
   }
 }
 
 app.get('/download-inventory', async (req, res) => {
+  if (!req.user) return res.status(401).send({ message: "Login session expired", redirect: "/" });
   try {
-    // parse filter
     const filter = req.query.filter?.toLowerCase() || 'last 7 days';
     const now = new Date();
     let since;
