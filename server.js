@@ -582,7 +582,7 @@ app.post("/getStockRecord", async (req, res) => {
   // Format fromNow as "3m ago", "3h ago", "1d ago"
   const fromNow = m.fromNow().replace(' minutes', 'm').replace(' minute', 'm')
                                   .replace(' hours', 'h').replace('an hour', '1h')
-                                  .replace(' days', 'd').replace('a day', 'd');
+                                  .replace(' days', 'd').replace('a day', '1d');
 
   return {
     ...obj,
@@ -755,7 +755,7 @@ app.post("/createStockRecord", async (req, res) => {
         } else {
           return res
             .status(400)
-            .json({ success: false, error: "Insufficient stock" });
+            .json({ success: false, error: "You don't have enough stocks" });
         }
       }
     } else {

@@ -466,7 +466,6 @@ async function fetchAndRenderStockRecords(productId, intro) {
 
   const inRecs = records.filter((r) => r.type === "IN");
   const outRecs = records.filter((r) => r.type === "OUT");
-  recordHolder.innerHTML = ``;
 
   const inCol = document.createElement("div");
   inCol.className = "in-records";
@@ -486,6 +485,7 @@ async function fetchAndRenderStockRecords(productId, intro) {
     '<i class="bi bi-box-arrow-up"></i>'
   );
 
+  recordHolder.innerHTML = ``;
   recordHolder.append(inCol, outCol);
 
   // wire up delete buttons for each record

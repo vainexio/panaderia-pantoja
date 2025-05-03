@@ -76,7 +76,7 @@ socket.on("reload", (data) => {
   else if (target == "product") {
     let product = data.product
     if (currentProduct.product_id == product.product_id) {
-      showProductDetails(product,false)
+      showProductDetails(product,true)
     }
   }
 });
