@@ -105,25 +105,28 @@ app.use(async (req, res, next) => {
   }
   next();
 });
-
-app.use(
-  express.static("public", {
+app.use(express.static("public", {
     setHeaders: (res, path) => {
       if (path.endsWith(".js")) {
         res.setHeader("Content-Type", "text/javascript");
       }
     },
-  })
-);
+  }));
+app.use((req, res, next) => {
+  const publicPaths = ["/", "/login"];
+  if (!req.user && !publicPaths.some(path => req.path.startsWith(path))) {
+    return res.status(401).send({ message: "Not logged in", redirect: "/" });
+  }
+  next();
+});
 app.use((req, res, next) => {
   req.clientIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   next();
 });
+
 app.set("trust proxy", true);
-app.use(cookieParser());
 //
 app.get("/ping", (req, res) => {
-  if (!req.user) return res.status(401).send({ message: "Login session expired", redirect: "/" });
   return res.json({ pong: true, ts: Date.now() });
 });
 app.get("/admin-dashboard", async (req, res) => {
@@ -144,7 +147,6 @@ function setOuterBorder(sheet, startRow, endRow, startCol, endCol) {
 }
 
 app.get('/download-inventory', async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: "Login session expired", redirect: "/" });
   try {
     const filter = req.query.filter?.toLowerCase() || 'last 7 days';
     const now = new Date();
@@ -361,8 +363,6 @@ app.put('/accounts/:id', async (req, res) => {
     res.status(500).json({ message: 'Internal error updating account.' });
   }
 });
-
-// Delete Account (with cascade and protected ID=1)
 app.delete('/accounts/:id', async (req, res) => {
   try {
     const accId = Number(req.params.id);
@@ -381,7 +381,6 @@ app.delete('/accounts/:id', async (req, res) => {
   }
 });
 app.get("/currentAccount", async (req, res) => {
-  if (!req.user) return res.status(401).send({ message: "Not logged in", redirect: "/" });
   let user = req.user;
   try {
     const account = await accounts.findOne({ id: user.id });
@@ -444,7 +443,6 @@ app.post("/login", async (req, res) => {
     redirect: "/admin-dashboard",
     message: "Login successful",
   });
-  //res.send({ success: true });
 });
 
 app.post("/getAllSessions", async (req, res) => {
@@ -531,9 +529,6 @@ app.get("/rawInventory", async (req, res) => {
   }
 });
 app.post("/getAccounts", async (req, res) => {
-  if (!req.user) 
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
-
   try {
     // projection: only _id and username
     const list = await accounts.find({}, "id username").lean();
@@ -548,9 +543,6 @@ app.post("/getAccounts", async (req, res) => {
   }
 });
 app.post("/getStockRecord", async (req, res) => {
-  if (!req.user)
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
-
   try {
     const { type } = req.query;
     const { id, days, limit } = req.body;
@@ -600,7 +592,6 @@ app.post("/getStockRecord", async (req, res) => {
   }
 });
 app.post("/getProduct", async (req, res) => {
-  console.log(req.query,req.body)
   try {
     let type = req.query.type;
     if (type == "all") {
@@ -616,8 +607,6 @@ app.post("/getProduct", async (req, res) => {
   }
 });
 app.post("/getCategory", async (req, res) => {
-  if (!req.user)
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
   try {
     let type = req.query.type;
     if (type == "all") {
@@ -632,8 +621,7 @@ app.post("/getCategory", async (req, res) => {
   }
 });
 app.get("/getCategories", async (req, res) => {
-  if (!req.user)
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
+  if (!req.user) return res.status(401).send({ message: "Not logged in", redirect: "/" });
   try {
     const foundCtg = await categories.find();
     res.json(foundCtg);
@@ -641,8 +629,6 @@ app.get("/getCategories", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-// Create
 app.post("/generateCategoryQr", async (req, res) => {
   try {
     const { category_id } = req.body;
@@ -740,8 +726,6 @@ app.post("/generateCategoryQr", async (req, res) => {
 });
 app.post("/createStockRecord", async (req, res) => {
   const { product_id, type, amount, author_id, remarks } = req.body;
-  // … your existing validation here …
-  console.log(req.body)
   const delta = type === "IN" ? amount : -amount;
   let updatedProduct;
 
@@ -853,9 +837,6 @@ app.post('/createAccount', async (req, res) => {
 });
 
 app.post("/createProduct", async (req, res) => {
-  if (!req.user)
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
-
   try {
     let {
       product_name,
@@ -924,8 +905,6 @@ app.post("/createProduct", async (req, res) => {
   }
 });
 app.post("/createCategory", async (req, res) => {
-  if (!req.user)
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
   try {
     const { ctg_name } = req.body;
 
@@ -948,8 +927,6 @@ app.post("/createCategory", async (req, res) => {
   }
 });
 app.post("/generateQr", async (req, res) => {
-  if (!req.user)
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
   try {
     const { product_id } = req.body;
     let generatedQr = await method.generateQr(product_id);
@@ -961,7 +938,7 @@ app.post("/generateQr", async (req, res) => {
 });
 
 // Deletions
-app.post("/deleteProduct", async (req, res) => {
+app.post("/deleteProduct", async (req, res) => {  
   const { product_id } = req.body;
   if (!product_id)
     return res.json({ success: false, error: "No product ID provided" });
@@ -1042,7 +1019,7 @@ app.delete("/deleteCategory", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-app.post("/updateProduct", async (req, res) => {
+app.post("/updateProduct", async (req, res) => {  
   const { id, name, category, min, max, expiry, expiry_unit } = req.body;
   try {
     const updated = await products.findByIdAndUpdate(
@@ -1132,10 +1109,6 @@ app.get("/test2", async (req, res) => {
   return doc;
 });
 app.get("/test3", async (req, res) => {
-  // optional: ensure only logged-in users can trigger this
-  if (!req.user) 
-    return res.status(401).send({ message: "Not logged in", redirect: "/" });
-
   try {
     const result = await stockRecords.updateMany(
       // match docs where author_id is either undefined or null
