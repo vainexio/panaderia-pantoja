@@ -119,7 +119,7 @@ function renderInventory() {
           <div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>
         </div>
       `;
-      card.addEventListener("click", () => showProductDetails(product));
+      card.addEventListener("click", () => showProductDetails(product,true));
       scroll.appendChild(card);
     });
 
@@ -158,7 +158,7 @@ function renderInventory() {
   });
 }
 //
-async function showProductDetails(product) {
+async function showProductDetails(product,intro) {
   if (currentAdmin.userLevel < 2) return;
   currentProduct = product
   separator.style.display = "none";
@@ -451,7 +451,7 @@ async function showProductDetails(product) {
     }
   });
 
-  await fetchAndRenderStockRecords(product.product_id, true);
+  await fetchAndRenderStockRecords(product.product_id, intro);
 }
 async function fetchAndRenderStockRecords(productId, intro) {
   const recordHolder = detailCard.querySelector(".record-holder");
