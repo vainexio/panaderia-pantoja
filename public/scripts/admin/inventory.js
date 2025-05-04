@@ -178,7 +178,13 @@ async function showProductDetails(product,intro) {
 
   const detailWrapper = document.createElement("div");
   detailWrapper.className = "detail-wrapper";
-
+  
+  const colorIndicator = product.quantity > product.max ? `style="border: 1px solid #00136f;"` 
+  : product.min > product.quantity ? `style="border: 1px solid var(--red);"` : ``
+  
+  const iconIndicator = product.quantity > product.max ? ` <i class="bi bi-arrow-up"></i>` 
+  : product.min > product.quantity ? ` <i class="bi bi-arrow-down"></i>` : ``
+  
   const left = document.createElement("div");
   left.className = "detail-left";
   left.innerHTML = `
@@ -190,7 +196,7 @@ async function showProductDetails(product,intro) {
 
     <div class="form-group">
       <label for="product_qty">Current Quantity</label>
-      <input ter" id="product_qty" name="product_qty" value="${product.quantity}" readonly />
+      <input ter" id="product_qty" name="product_qty" value="${product.quantity}" ${iconIndicator} ${colorIndicator} readonly />
     </div>
 
     <div class="form-group">
