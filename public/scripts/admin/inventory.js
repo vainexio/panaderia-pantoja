@@ -180,10 +180,10 @@ async function showProductDetails(product,intro) {
   detailWrapper.className = "detail-wrapper";
   
   const status = product.quantity > product.max ? "overstock"
-  : product.min > product.quantity ? "understock" : "balance"
+  : product.min > product.quantity ? "understock" : ""
   
-  const colorIndicator = product.quantity > product.max ? `style="color: #00136f; border-color: #00136f;"` 
-  : product.min > product.quantity ? `style="color: var(--red); border-color: var(--red);"` : `style="color: var(--green); border-color: var(--green);`
+  const colorIndicator = product.quantity > product.max ? `style="color: #00136f;"` 
+  : product.min > product.quantity ? `style="color: var(--red);"` : ``
   
   const iconIndicator = product.quantity > product.max ? `<i class="bi bi-graph-up-arrow" ${colorIndicator} title=${status}></i>` 
   : product.min > product.quantity ? `<i class="bi bi-graph-down-arrow" ${colorIndicator} title=${status}></i>` : `<i class="bi bi-check-circle"></i>`
@@ -198,7 +198,7 @@ async function showProductDetails(product,intro) {
     </div>
 
     <div class="form-group">
-  <label for="product_qty" ${colorIndicator}>Current Quantity</label>
+  <label for="product_qty" ${colorIndicator}>Quantity${status.length>0 ? ` (${status})` :""}</label>
   <div class="input-group">
     <span class="input-group-text" style="border: 1px solid black; background-color: transparent; border-right: none !important; border-radius: 8px 0 0 8px;" ${colorIndicator}>${iconIndicator}</span>
     <input
@@ -207,7 +207,7 @@ async function showProductDetails(product,intro) {
       id="product_qty"
       name="product_qty"
       value="${product.quantity}"
-      ${colorIndicator}
+      style="border-left: none;"
       readonly
     />
   </div>
@@ -215,12 +215,12 @@ async function showProductDetails(product,intro) {
 
     <div class="form-group">
       <label for="product_min" ${status == "understock" ? colorIndicator : ""}>Required Min. Quantity</label>
-      <input type="number" id="product_min" name="product_min" value="${product.min}" ${status == "understock" ? colorIndicator : ""} required />
+      <input type="number" id="product_min" name="product_min" value="${product.min}" required />
     </div>
 
     <div class="form-group">
       <label for="product_max" ${status == "overstock" ? colorIndicator : ""}>Required Max. Quantity</label>
-      <input type="number" id="product_max" name="product_max" value="${product.max}" ${status == "overstock" ? colorIndicator : ""} required />
+      <input type="number" id="product_max" name="product_max" value="${product.max}" required />
     </div>
     
     <div class="form-group">
@@ -517,7 +517,7 @@ async function fetchAndRenderStockRecords(productId, intro) {
       const recItem = btn.closest(".record-item");
       if (!recItem) return;
       const recId = recItem.getAttribute("data-id");
-      const { success } = await fetch("/deleteStockRecord", {
+      const { success, error } = await fetch("/deleteStockRecord", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: recId }),
@@ -529,6 +529,7 @@ async function fetchAndRenderStockRecords(productId, intro) {
         setLoading(btn, false);
         await loadInventory(false,true);
       } else {
+        console.log(error)
         alert("Error deleting record");
       }
     });
