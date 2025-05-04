@@ -191,13 +191,11 @@ app.get('/downloadInventory', async (req, res) => {
       stockRecords.find(dateQuery).lean(),
     ]);
 
-    // group products by category
     const prodsByCat = allCats.reduce((acc, c) => {
       acc[c.category_id] = allProds.filter(p => p.category_id === c.category_id);
       return acc;
     }, {});
 
-    // group records by product
     const recsByProd = allRecs.reduce((acc, r) => {
       acc[r.product_id] = acc[r.product_id] || [];
       acc[r.product_id].push(r);
@@ -208,65 +206,58 @@ app.get('/downloadInventory', async (req, res) => {
     wb.creator = 'YourApp';
     wb.created = new Date();
 
-    // build one sheet per category
     allCats.forEach(cat => {
       const sheet = wb.addWorksheet(cat.name.toUpperCase() || cat.category_id);
       const prods = prodsByCat[cat.category_id] || [];
 
-      // error trap: no products
       if (prods.length === 0) {
         sheet.getCell(1,1).value = 'No products in this category';
         sheet.getCell(1,1).font = { italic: true, color: { argb: 'FF888888' } };
-        return; // skip to next category
+        return;
       }
 
       let startCol = 1;
       const gap = 2;
 
-      // determine max records for layout
-      const allProductsList = prods;
-      const maxRecs = Math.max(0, ...allProductsList.map(p => (recsByProd[p.product_id]||[]).length));
-
       prods.forEach(p => {
-        const blockStartRow = 1;
-        const blockStartCol = startCol;
+        const ins = (recsByProd[p.product_id]||[]).filter(r => r.type === 'IN');
+        const outs = (recsByProd[p.product_id]||[]).filter(r => r.type === 'OUT');
 
-        // Title
+        // Product title header (no fill/color)
         sheet.mergeCells(1, startCol, 1, startCol + 5);
         const title = sheet.getCell(1, startCol);
         title.value = p.name;
-        title.font = { bold: true, size: 12 };
+        title.font = { bold: true, size: 14 };
 
-        // Details
-        const details = [
-          ['Quantity', p.quantity],
-          ['Min', p.min],
-          ['Max', p.max],
-          ['Expiry', `${p.expiry} ${p.expiry_unit}`]
-        ];
-        details.forEach(([f, v], i) => {
-          const lbl = sheet.getCell(2 + i, startCol);
-          const val = sheet.getCell(2 + i, startCol + 1);
-          lbl.value = f;
-          val.value = v;
-          [lbl, val].forEach(c => c.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } });
+        // Product details labels & values
+        const details = [ ['Quantity', p.quantity], ['Min', p.min], ['Max', p.max], ['Expiry', `${p.expiry} ${p.expiry_unit}`] ];
+        details.forEach(([lbl, val], i) => {
+          const cellLabel = sheet.getCell(2 + i, startCol);
+          const cellVal   = sheet.getCell(2 + i, startCol + 1);
+          cellLabel.value = lbl;
+          cellVal.value   = val;
+          [cellLabel, cellVal].forEach(c => {
+            c.font = { color: { argb: 'FF000000' } };
+            c.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+          });
         });
 
-        // Records header
         const recHeaderRow = 2 + details.length + 1;
+        // IN header
         sheet.mergeCells(recHeaderRow, startCol, recHeaderRow, startCol + 2);
         const inHdr = sheet.getCell(recHeaderRow, startCol);
         inHdr.value = 'IN';
-        inHdr.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFC6EFCE' } };
         inHdr.font = { bold: true };
+        inHdr.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFC6EFCE' } };
 
-        sheet.mergeCells(recHeaderRow, startCol + 4, recHeaderRow, startCol + 5);
+        // OUT header
+        sheet.mergeCells(recHeaderRow, startCol + 4, recHeaderRow, startCol + 6);
         const outHdr = sheet.getCell(recHeaderRow, startCol + 4);
         outHdr.value = 'OUT';
-        outHdr.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2DCDB' } };
         outHdr.font = { bold: true };
+        outHdr.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2DCDB' } };
 
-        // Subheaders
+        // Subheaders IN
         const subRow = recHeaderRow + 1;
         ['Date','Amount','Expiry'].forEach((h, i) => {
           const cell = sheet.getCell(subRow, startCol + i);
@@ -274,82 +265,54 @@ app.get('/downloadInventory', async (req, res) => {
           cell.font = { bold: true };
           cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
         });
-        ['Date','Amount'].forEach((h, i) => {
+        // Subheaders OUT including Remarks
+        ['Date','Amount','Remarks'].forEach((h, i) => {
           const cell = sheet.getCell(subRow, startCol + 4 + i);
           cell.value = h;
           cell.font = { bold: true };
           cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
         });
 
-        // FIFO logic
-        const ins = (recsByProd[p.product_id]||[]).filter(r => r.type === 'IN');
-        const outs = (recsByProd[p.product_id]||[]).filter(r => r.type === 'OUT');
-        let queue = ins.map(r => ({ date: new Date(r.date), amount: r.amount }));
-        outs.forEach(o => {
-          let amt = o.amount;
-          while (amt > 0 && queue.length) {
-            if (queue[0].amount > amt) { queue[0].amount -= amt; amt = 0; }
-            else { amt -= queue[0].amount; queue.shift(); }
-          }
-        });
-
         // Fill IN rows
         ins.forEach((r, i) => {
-  const rowIdx = subRow + 1 + i;
-  const cDate = sheet.getCell(rowIdx, startCol);
-  const cAmt  = sheet.getCell(rowIdx, startCol + 1);
-  const cExp  = sheet.getCell(rowIdx, startCol + 2);
-
-  cDate.value = new Date(r.date).toISOString().slice(0, 10);
-  cAmt.value  = r.amount;
-
-  const expDate = new Date(r.date);
-  if (p.expiry_unit === 'months') expDate.setMonth(expDate.getMonth() + p.expiry);
-  else if (p.expiry_unit === 'years') expDate.setFullYear(expDate.getFullYear() + p.expiry);
-  else expDate.setDate(expDate.getDate() + p.expiry);
-
-  const foundInQueue = queue.find(q => q.date.getTime() === new Date(r.date).getTime());
-
-  if (foundInQueue) {
-    cExp.value = expDate.toISOString().slice(0, 10);
-  } else {
-    if (filter === "all") {
-      cExp.value = 'No longer on stock';
-      [cDate, cAmt, cExp].forEach(c => c.font = { color: { argb: 'FFFF0000' } });
-    } else {
-      cExp.value = expDate.toISOString().slice(0, 10);
-    }
-  }
-
-  [cDate, cAmt, cExp].forEach(c => 
-    c.border = { ...c.border, top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } }
-  );
-});
+          const rowIdx = subRow + 1 + i;
+          const cDate = sheet.getCell(rowIdx, startCol);
+          const cAmt  = sheet.getCell(rowIdx, startCol + 1);
+          const cExp  = sheet.getCell(rowIdx, startCol + 2);
+          cDate.value = new Date(r.date).toISOString().slice(0,10);
+          cAmt.value  = r.amount;
+          const expDate = new Date(r.date);
+          if (p.expiry_unit==='months') expDate.setMonth(expDate.getMonth()+p.expiry);
+          else if (p.expiry_unit==='years') expDate.setFullYear(expDate.getFullYear()+p.expiry);
+          else expDate.setDate(expDate.getDate()+p.expiry);
+          cExp.value = expDate.toISOString().slice(0,10);
+          [cDate, cAmt, cExp].forEach(c=>c.border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
+        });
 
         // Fill OUT rows
         outs.forEach((r, i) => {
           const rowIdx = subRow + 1 + i;
-          const oDate = sheet.getCell(rowIdx, startCol + 4);
-          const oAmt  = sheet.getCell(rowIdx, startCol + 5);
-          oDate.value = new Date(r.date).toISOString().slice(0,10);
-          oAmt.value  = r.amount;
-          [oDate,oAmt].forEach(c=>c.border={ ...c.border, top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
+          const oDate    = sheet.getCell(rowIdx, startCol + 4);
+          const oAmt     = sheet.getCell(rowIdx, startCol + 5);
+          const oRemarks = sheet.getCell(rowIdx, startCol + 6);
+          oDate.value    = new Date(r.date).toISOString().slice(0,10);
+          oAmt.value     = r.amount;
+          oRemarks.value = r.remarks ?? null;
+          [oDate,oAmt,oRemarks].forEach(c=>c.border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
         });
 
-        // Outer thick border
         const blockEndRow = recHeaderRow + 1 + Math.max(ins.length, outs.length);
-        const blockEndCol = startCol + 5;
-        method.setOuterBorder(sheet, blockStartRow, blockEndRow, blockStartCol, blockEndCol);
+        const blockEndCol = startCol + 6;
+        method.setOuterBorder(sheet, 1, blockEndRow, startCol, blockEndCol);
 
-        startCol += 6 + gap;
+        startCol += 7 + gap;
       });
 
-      // auto-width
-      sheet.columns.forEach(col => { let m=10; col.eachCell(cell => { m = Math.max(m, (cell.value||'').toString().length); }); col.width = m + 2; });
+      sheet.columns.forEach(col => { let m=10; col.eachCell(cell => { m=Math.max(m,(cell.value||'').toString().length); }); col.width=m+2; });
     });
 
-    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', `attachment; filename=inventory_${new Date().toISOString().slice(0,10)} (${filter}).xlsx`);
+    res.setHeader('Content-Type','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=inventory_${new Date().toISOString().slice(0,10)}_${filter}.xlsx`);
     await wb.xlsx.write(res);
     res.end();
   } catch (err) {
@@ -357,6 +320,7 @@ app.get('/downloadInventory', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 app.get('/accounts', async (req, res) => {
   try {
     const foundAccounts = await accounts.find().sort({ id: 1 }).select('-_id id username userLevel');
