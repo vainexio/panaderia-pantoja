@@ -368,13 +368,16 @@ app.get("/currentAccount", async (req, res) => {
         .status(404)
         .json({ message: "Account not found", redirect: "/" });
 
-    const ok = user.password == account.password;
+    const ok = user.password === account.password;
     if (!ok)
       return res
         .status(401)
         .send({ message: "Invalid credentials", redirect: "/" });
 
-    res.status(200).json(account);
+    // Destructure to exclude password
+    const { password, ...accountWithoutPassword } = account._doc;
+
+    res.status(200).json(accountWithoutPassword);
   } catch (err) {
     return res
       .status(404)
@@ -857,11 +860,14 @@ app.post("/generateQr", async (req, res) => {
 
 // Deletions
 app.delete("/removeSession", async (req, res) => {
+  console.log(req.user)
   try {
     const { sessionId } = req.body;
     if (!sessionId) {
       return res.status(400).json({ error: "sessionId is required" });
     }
+    const currentSession = await loginSession.findOne({ session_id: sessionId });
+    console.log(currentSession)
     const result = await loginSession.deleteOne({ session_id: sessionId });
     if (result.deletedCount > 0) {
       return res.json({ message: "Session removed" });
