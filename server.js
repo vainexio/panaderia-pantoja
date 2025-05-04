@@ -454,7 +454,6 @@ app.post("/getAccounts", async (req, res) => {
     // projection: only _id and username
     const list = await accounts.find({}, "id username").lean();
     // list will be an array of objects like [{ _id: "...", username: "..." }, …]
-    console.log(list)
     res.status(200).json(list);
   } catch (err) {
     console.error(err);
