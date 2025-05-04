@@ -121,9 +121,9 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/memory", async (req, res) => {
   try {
-    const mem  = getContainerMemory();
-    const cpu  = getContainerCpuPercent();
-    const disk = getDiskUsage();
+    const mem  = method.getContainerMemory();
+    const cpu  = method.getContainerCpuPercent();
+    const disk = method.getDiskUsage();
 
     // JSON response
     res.json({
@@ -149,6 +149,9 @@ app.get("/memory", async (req, res) => {
 // Public
 app.get("/ping", (req, res) => {
   return res.json({ pong: true, ts: Date.now() });
+});
+app.get("/testing", async (req, res) => {
+  res.sendFile(__dirname + "/public/memory.html");
 });
 app.get("/admin-dashboard", async (req, res) => {
   res.sendFile(__dirname + "/public/admin.html");

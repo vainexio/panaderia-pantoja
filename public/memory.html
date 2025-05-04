@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Container Stats</title>
+  <style>
+    body { font-family: sans-serif; background:#222; color:#eee; }
+    .panel { display:inline-block; padding:1em; margin:.5em;
+             border:1px solid #444; border-radius:8px; width:200px; }
+    .label { font-size:.9em; color:#0f0; }
+    .value { font-size:1.2em; margin-top:.2em; }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <div class="label">CPU</div>
+    <div class="value"><span id="cpu">–</span>%</div>
+  </div>
+  <div class="panel">
+    <div class="label">Memory</div>
+    <div class="value"><span id="memPct">–</span>% (<span id="memUsed">–</span> / 512 MB)</div>
+  </div>
+  <div class="panel">
+    <div class="label">Disk</div>
+    <div class="value"><span id="diskPct">–</span>% (<span id="diskUsed">–</span> / <span id="diskTotal">–</span> MB)</div>
+  </div>
+
+  <script>
+    async function fmtBytes(b) {
+      return (b/1024/1024).toFixed(0);
+    }
+    async function update() {
+      const d = await fetch("/memory").then(r=>r.json());
+      document.getElementById("cpu").textContent = d.cpu.percent;
+      document.getElementById("memPct").textContent = d.memory.usagePercent;
+      document.getElementById("memUsed").textContent = (d.memory.usageBytes/1024/1024).toFixed(0);
+      document.getElementById("diskPct").textContent = d.disk.usagePercent;
+      document.getElementById("diskUsed").textContent = (d.disk.usedBytes/1024/1024).toFixed(0);
+      document.getElementById("diskTotal").textContent = (d.disk.totalBytes/1024/1024).toFixed(0);
+    }
+    setInterval(update, 1000);
+    update();
+  </script>
+</body>
+</html>
