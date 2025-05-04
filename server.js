@@ -223,6 +223,16 @@ app.get('/downloadInventory', async (req, res) => {
         const ins = (recsByProd[p.product_id]||[]).filter(r => r.type === 'IN');
         const outs = (recsByProd[p.product_id]||[]).filter(r => r.type === 'OUT');
 
+        // build FIFO queue for expiry status
+        let queue = ins.map(r => ({ date: new Date(r.date).toISOString().slice(0,10), amount: r.amount }));
+        outs.forEach(o => {
+          let amt = o.amount;
+          while (amt > 0 && queue.length) {
+            if (queue[0].amount > amt) { queue[0].amount -= amt; amt = 0; }
+            else { amt -= queue[0].amount; queue.shift(); }
+          }
+        });
+
         // Product title header (no fill/color)
         sheet.mergeCells(1, startCol, 1, startCol + 5);
         const title = sheet.getCell(1, startCol);
@@ -230,7 +240,7 @@ app.get('/downloadInventory', async (req, res) => {
         title.font = { bold: true, size: 14 };
 
         // Product details labels & values
-        const details = [ ['Quantity', p.quantity], ['Min', p.min], ['Max', p.max], ['Expiry', `${p.expiry} ${p.expiry_unit}`] ];
+        const details = [ ['Quantity', p.quantity], ['Min', p.min], ['Max', p.max], ['Expiry', `${p.expiry} ${p.expiry_unit.replace('s','(s)')}`] ];
         details.forEach(([lbl, val], i) => {
           const cellLabel = sheet.getCell(2 + i, startCol);
           const cellVal   = sheet.getCell(2 + i, startCol + 1);
@@ -279,13 +289,27 @@ app.get('/downloadInventory', async (req, res) => {
           const cDate = sheet.getCell(rowIdx, startCol);
           const cAmt  = sheet.getCell(rowIdx, startCol + 1);
           const cExp  = sheet.getCell(rowIdx, startCol + 2);
-          cDate.value = new Date(r.date).toISOString().slice(0,10);
+          const day   = new Date(r.date).toISOString().slice(0,10);
+          cDate.value = day;
           cAmt.value  = r.amount;
+
           const expDate = new Date(r.date);
           if (p.expiry_unit==='months') expDate.setMonth(expDate.getMonth()+p.expiry);
           else if (p.expiry_unit==='years') expDate.setFullYear(expDate.getFullYear()+p.expiry);
           else expDate.setDate(expDate.getDate()+p.expiry);
-          cExp.value = expDate.toISOString().slice(0,10);
+          const expDay = expDate.toISOString().slice(0,10);
+
+          // if this batch still in queue, show expiry, else if 'all' filter show 'No longer on stock'
+          const inQueue = queue.some(q=>q.date===day);
+          if (inQueue) {
+            cExp.value = expDay;
+          } else if (filter==='all') {
+            cExp.value = 'No longer on stock';
+            cDate.font = cAmt.font = cExp.font = { color: { argb: 'FFFF0000' } };
+          } else {
+            cExp.value = expDay;
+          }
+
           [cDate, cAmt, cExp].forEach(c=>c.border={ top:{style:'thin'},left:{style:'thin'},bottom:{style:'thin'},right:{style:'thin'} });
         });
 

@@ -532,18 +532,29 @@ function buildRecordsColumn(title, records, type, icon) {
   .map(r => {
     const username = usernameById[r.author_id] || "Unknown";
     return `
-      <div class="record-item" data-id="${r._id}">
-        <div class="record-content">
-          <h4 class="qty ${cls}">${sign}${r.amount}</h4>
-          <div class="date">${r.formattedDateTime} • <b>${r.fromNow}</b></div>
-          <div>By: <b>${username}</b></div>
-          ${r.remarks ? `<div><i class="bi bi-info-circle-fill"></i> Remarks: <i>${r.remarks}</i></div>` : ``}
+  <div class="record-item">
+    <div class="record-content">
+      <div class="record-main">
+        <h4 class="qty ${cls}">${sign}${r.amount}</h4>
+        <div class="date">
+          ${r.formattedDateTime} • <b>${r.fromNow}</b>
         </div>
-        ${currentAdmin.userLevel >= 3 ? `<button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
-          <i class="bi bi-trash3-fill"></i>
-        </button>` : ``}
       </div>
-    `;
+      <div class="meta">By: <b>${username}</b></div>
+      ${r.remarks ? `
+        <div class="remarks">
+          <i class="bi bi-info-circle"></i>
+          <span style="font-size: 13px;">${r.remarks}</span>
+        </div>
+      ` : ``}
+    </div>
+    ${currentAdmin.userLevel >= 3 ? `
+      <button type="button" class="action-button delete-record-btn" title="Delete record">
+        <i class="bi bi-trash3-fill"></i>
+      </button>
+    ` : ``}
+  </div>
+`;
   })
   .join("\n");
 
