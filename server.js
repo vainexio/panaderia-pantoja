@@ -16,6 +16,7 @@ const cookieParser = require("cookie-parser");
 const { v4: uuidv4 } = require("uuid");
 const { Server } = require("socket.io");
 const { Document, Packer, Paragraph, TextRun, AlignmentType, ImageRun, Table, TableRow, TableCell, WidthType } = require("docx");
+var pidusage = require('pidusage')
 
 const app = express();
 const server = http.createServer(app);
@@ -120,9 +121,9 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/memory", async (req, res) => {
   try {
-    const mem  = method.getContainerMemory();
-    const cpu  = method.getContainerCpuPercent();
-    const disk = method.getDiskUsage();
+    const mem  = getContainerMemory();
+    const cpu  = getContainerCpuPercent();
+    const disk = getDiskUsage();
 
     // JSON response
     res.json({
