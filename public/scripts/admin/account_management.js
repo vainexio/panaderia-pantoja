@@ -24,9 +24,9 @@ async function loadAccounts() {
       </td>
       <td class="align-middle text-center">
         <select class="form-control level-select" data-id="${acc.id}" ${isProtected? 'disabled': ''}>
-          <option value="1" ${acc.userLevel==1?'selected':''}>1</option>
-          <option value="2" ${acc.userLevel==2?'selected':''}>2</option>
-          <option value="3" ${acc.userLevel==3?'selected':''}>3</option>
+          <option value="3" ${acc.userLevel==3?'selected':''}>Level 3</option>
+          <option value="2" ${acc.userLevel==2?'selected':''}>Level 2</option>
+          <option value="1" ${acc.userLevel==1?'selected':''}>Level 1</option>
         </select>
       </td>
       ${actionCell}
