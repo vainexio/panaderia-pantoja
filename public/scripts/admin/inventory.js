@@ -1,23 +1,23 @@
 let separator, detailCard, currentProduct, accounts;
 async function inventoryStart() {
-  loadInventory(true,true);
+  loadInventory(true, true);
 }
 window._INV_DATA = { products: [], categories: [], accounts: [] };
 
-async function loadInventory(intro,newData) {
+async function loadInventory(intro, newData) {
   separator = document.getElementById("stock-separator");
-  const searchInput  = document.getElementById("inventory-search");
+  const searchInput = document.getElementById("inventory-search");
   const filterSelect = document.getElementById("inventory-filter");
-  const refreshBtn   = document.getElementById("inventory-refresh");
+  const refreshBtn = document.getElementById("inventory-refresh");
 
   // bind controls only once
   if (searchInput && !searchInput.dataset.bound) {
     searchInput.addEventListener("input", () => loadInventory(false));
     filterSelect.addEventListener("change", () => loadInventory(false));
     refreshBtn.addEventListener("click", async () => {
-      setLoading(refreshBtn,true)
-      await loadInventory(true,true)
-      setLoading(refreshBtn,false)
+      setLoading(refreshBtn, true);
+      await loadInventory(true, true);
+      setLoading(refreshBtn, false);
     });
     searchInput.dataset.bound = "1";
   }
@@ -27,13 +27,26 @@ async function loadInventory(intro,newData) {
   }
   if (newData) {
     const [prodRes, ctgRes, accs] = await Promise.all([
-      fetch("/getProduct?type=all", { method: "POST", headers: {"Content-Type":"application/json"} }),
-      fetch("/getCategory?type=all", { method: "POST", headers: {"Content-Type":"application/json"} }),
-      fetch("/getAccounts", { method: "POST", headers: { "Content-Type": "application/json" } })
+      fetch("/getProduct?type=all", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      }),
+      fetch("/getCategory?type=all", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      }),
+      fetch("/getAccounts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      }),
     ]);
-    const [products, categories, foundAccs] = await Promise.all([ prodRes.json(), ctgRes.json(), accs.json() ]);
+    const [products, categories, foundAccs] = await Promise.all([
+      prodRes.json(),
+      ctgRes.json(),
+      accs.json(),
+    ]);
 
-    window._INV_DATA.products   = products;
+    window._INV_DATA.products = products;
     window._INV_DATA.categories = categories;
     accounts = foundAccs;
   }
@@ -44,21 +57,26 @@ async function loadInventory(intro,newData) {
 function renderInventory() {
   const { products, categories } = window._INV_DATA;
   const inventoryCard = document.getElementById("inventory-card");
-  const filterText = document.getElementById("inventory-search").value.trim().toLowerCase();
+  const filterText = document
+    .getElementById("inventory-search")
+    .value.trim()
+    .toLowerCase();
   const filterMode = document.getElementById("inventory-filter").value;
 
   // apply filters
-  let filtered = products.filter(p => {
+  let filtered = products.filter((p) => {
     if (filterText && !p.name.toLowerCase().includes(filterText)) return false;
-    if (filterMode === "low"  && p.quantity >= p.min) return false;
+    if (filterMode === "low" && p.quantity >= p.min) return false;
     if (filterMode === "high" && p.quantity <= p.max) return false;
     return true;
   });
 
   // group by category
   const grouped = {};
-  filtered.forEach(item => {
-    let ctg = categories.find(c => c.category_id == item.category_id) || { name: "Unknown Category" };
+  filtered.forEach((item) => {
+    let ctg = categories.find((c) => c.category_id == item.category_id) || {
+      name: "Unknown Category",
+    };
     const ctgName = ctg.name.toUpperCase();
     if (!grouped[ctgName]) grouped[ctgName] = [];
     grouped[ctgName].push(item);
@@ -74,7 +92,7 @@ function renderInventory() {
 
     const heading = document.createElement("div");
     heading.className = "category-heading";
-    heading.innerHTML = category
+    heading.innerHTML = category;
     if (currentAdmin.userLevel >= 2) {
       heading.innerHTML += `
       <button class="action-button me-1 category-qr-gen-btn">
@@ -84,7 +102,7 @@ function renderInventory() {
 
     const scroll = document.createElement("div");
     scroll.className = "scroll-container";
-    scroll.addEventListener("wheel", e => {
+    scroll.addEventListener("wheel", (e) => {
       if (scroll.scrollWidth > scroll.clientWidth) {
         e.preventDefault();
         scroll.scrollLeft += e.deltaY;
@@ -97,7 +115,7 @@ function renderInventory() {
           ? '<i class="bi bi-arrow-down"></i>'
           : product.max < product.quantity
           ? '<i class="bi bi-arrow-up"></i>'
-          : '';
+          : "";
       const status =
         product.min > product.quantity
           ? '<i class="bi bi-exclamation-circle-fill" title="Low stocks" style="color:var(--red);"></i>'
@@ -108,9 +126,11 @@ function renderInventory() {
       const card = document.createElement("div");
       card.className = "product-card";
       card.style.color =
-        product.min > product.quantity ? "var(--red)"
-      : product.max < product.quantity ? "#00136f"
-      : "var(--black)";
+        product.min > product.quantity
+          ? "var(--red)"
+          : product.max < product.quantity
+          ? "#00136f"
+          : "var(--black)";
       card.innerHTML = `
         <div>
           <h5>${iconStatus} ${product.name}</h5>
@@ -119,36 +139,50 @@ function renderInventory() {
           <div>Min: <b>${product.min}</b> Max: <b>${product.max}</b></div>
         </div>
       `;
-      card.addEventListener("click", () => showProductDetails(product,true));
+      card.addEventListener("click", () => showProductDetails(product, true));
       scroll.appendChild(card);
     });
 
     // QR button logic unchanged
-    const originalCategory = categories.find(ctg => ctg.name.toUpperCase() === category);
+    const originalCategory = categories.find(
+      (ctg) => ctg.name.toUpperCase() === category
+    );
     const qrBtn = heading.querySelector(".category-qr-gen-btn");
     qrBtn?.addEventListener("click", async () => {
       setLoading(qrBtn, true);
       if (!originalCategory) {
-        notify("Unable to find the category ID for: " + category, { type: "error", duration: 5000 });
+        notify("Unable to find the category ID for: " + category, {
+          type: "error",
+          duration: 5000,
+        });
         setLoading(qrBtn, false);
         return;
       }
-      notify("Generating QR file for " + originalCategory.name, { type: "success", duration: 10000 });
+      notify("Generating QR file for " + originalCategory.name, {
+        type: "success",
+        duration: 10000,
+      });
       const res = await fetch("/generateCategoryQr", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category_id: originalCategory.category_id })
+        body: JSON.stringify({ category_id: originalCategory.category_id }),
       });
       if (res.ok) {
         notify("Initiating Download", { type: "success", duration: 5000 });
         const blob = await res.blob();
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `${originalCategory.name.replace(/\s+/g, "_")}_qr_codes.docx`;
+        link.download = `${originalCategory.name.replace(
+          /\s+/g,
+          "_"
+        )}_qr_codes.docx`;
         link.click();
       } else {
         const error = await res.json();
-        notify("QR Download Failed: " + (error.message || "unknown error"), { type: "error", duration: 5000 });
+        notify("QR Download Failed: " + (error.message || "unknown error"), {
+          type: "error",
+          duration: 5000,
+        });
       }
       setLoading(qrBtn, false);
     });
@@ -158,9 +192,9 @@ function renderInventory() {
   });
 }
 //
-async function showProductDetails(product,intro) {
+async function showProductDetails(product, intro) {
   if (currentAdmin.userLevel < 2) return;
-  currentProduct = product
+  currentProduct = product;
   separator.style.display = "none";
   detailCard = document.querySelector(".product-details-card");
   detailCard.innerHTML = "";
@@ -172,33 +206,49 @@ async function showProductDetails(product,intro) {
   backBtn.addEventListener("click", () => {
     detailCard.style.display = "none";
     separator.style.display = "";
-    currentProduct = null
+    currentProduct = null;
   });
   detailCard.appendChild(backBtn);
 
   const detailWrapper = document.createElement("div");
   detailWrapper.className = "detail-wrapper";
-  
-  const status = product.quantity > product.max ? "overstock"
-  : product.min > product.quantity ? "understock" : ""
-  
-  const colorIndicator = product.quantity > product.max ? `style="color: #00136f;"` 
-  : product.min > product.quantity ? `style="color: var(--red);"` : ``
-  
-  const iconIndicator = product.quantity > product.max ? `<i class="bi bi-graph-up-arrow" ${colorIndicator} title=${status}></i>` 
-  : product.min > product.quantity ? `<i class="bi bi-graph-down-arrow" ${colorIndicator} title=${status}></i>` : `<i class="bi bi-check-circle"></i>`
-  
+
+  const status =
+    product.quantity > product.max
+      ? "overstock"
+      : product.min > product.quantity
+      ? "understock"
+      : "";
+
+  const colorIndicator =
+    product.quantity > product.max
+      ? `style="color: #00136f;"`
+      : product.min > product.quantity
+      ? `style="color: var(--red);"`
+      : ``;
+
+  const iconIndicator =
+    product.quantity > product.max
+      ? `<i class="bi bi-graph-up-arrow" ${colorIndicator} title=${status}></i>`
+      : product.min > product.quantity
+      ? `<i class="bi bi-graph-down-arrow" ${colorIndicator} title=${status}></i>`
+      : `<i class="bi bi-check-circle"></i>`;
+
   const left = document.createElement("div");
   left.className = "detail-left";
   left.innerHTML = `
   <form id="editProductForm" class="product-form">
     <div class="form-group">
       <label for="product_name">Product Name</label>
-      <input type="text" id="product_name" name="product_name" value="${product.name}" required />
+      <input type="text" id="product_name" name="product_name" value="${
+        product.name
+      }" required />
     </div>
 
     <div class="form-group">
-  <label for="product_qty" ${colorIndicator}>Quantity${status.length>0 ? ` (${status})` :""}</label>
+  <label for="product_qty" ${colorIndicator}>Quantity${
+    status.length > 0 ? ` (${status})` : ""
+  }</label>
   <div class="input-group">
     <span class="input-group-text" style="border: 1px solid black; background-color: transparent; border-right: none !important; border-radius: 8px 0 0 8px;" ${colorIndicator}>${iconIndicator}</span>
     <input
@@ -214,18 +264,28 @@ async function showProductDetails(product,intro) {
 </div>
 
     <div class="form-group">
-      <label for="product_min" ${status == "understock" ? colorIndicator : ""}>Required Min. Quantity</label>
-      <input type="number" id="product_min" name="product_min" value="${product.min}" required />
+      <label for="product_min" ${
+        status == "understock" ? colorIndicator : ""
+      }>Required Min. Quantity</label>
+      <input type="number" id="product_min" name="product_min" value="${
+        product.min
+      }" required />
     </div>
 
     <div class="form-group">
-      <label for="product_max" ${status == "overstock" ? colorIndicator : ""}>Required Max. Quantity</label>
-      <input type="number" id="product_max" name="product_max" value="${product.max}" required />
+      <label for="product_max" ${
+        status == "overstock" ? colorIndicator : ""
+      }>Required Max. Quantity</label>
+      <input type="number" id="product_max" name="product_max" value="${
+        product.max
+      }" required />
     </div>
     
     <div class="form-group">
       <label for="product_id">Product ID</label>
-      <input type="text" id="product_id" name="product_id" value="${product.product_id}" readonly />
+      <input type="text" id="product_id" name="product_id" value="${
+        product.product_id
+      }" readonly />
     </div>
     
     <div class="form-group">
@@ -247,15 +307,25 @@ async function showProductDetails(product,intro) {
               name="product_expiry_unit"
               required
             >
-              <option value="days" ${(product.expiry_unit == "days" ? "selected" : "")}>Day(s)</option>
-              <option value="months" ${(product.expiry_unit == "months" ? "selected" : "")}>Month(s)</option>
-              <option value="years" ${(product.expiry_unit == "years" ? "selected" : "")}>Year(s)</option>
+              <option value="days" ${
+                product.expiry_unit == "days" ? "selected" : ""
+              }>Day(s)</option>
+              <option value="months" ${
+                product.expiry_unit == "months" ? "selected" : ""
+              }>Month(s)</option>
+              <option value="years" ${
+                product.expiry_unit == "years" ? "selected" : ""
+              }>Year(s)</option>
             </select>
           </div>
         </div>
 
     <div class="submit-container">
-    ${currentAdmin.userLevel >= 3 ? `<button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill" title="Delete Product"></i></button>` : ``}
+    ${
+      currentAdmin.userLevel >= 3
+        ? `<button class="action-button me-1 delete-product-btn"><i class="bi bi-trash3-fill" title="Delete Product"></i></button>`
+        : ``
+    }
     <button class="action-button me-1 qr-gen-btn"><i class="bi bi-qr-code-scan"></i> QR</button>
     <button type="submit" class="action-button" title="Save Changes"><i class="bi bi-floppy-fill"></i> Save</button>
       </div>
@@ -327,10 +397,13 @@ async function showProductDetails(product,intro) {
       inForm.reset();
       setLoading(btn, false);
       notify("Added incoming record", { type: "success", duration: 5000 });
-      await loadInventory(false,true);
+      await loadInventory(false, true);
     } else {
       setLoading(btn, false);
-      notify(error || "Failed to add record", { type: "error", duration: 5000 });
+      notify(error || "Failed to add record", {
+        type: "error",
+        duration: 5000,
+      });
     }
   });
   //
@@ -355,10 +428,13 @@ async function showProductDetails(product,intro) {
       outForm.reset();
       setLoading(btn, false);
       notify("Added outgoing record", { type: "success", duration: 5000 });
-      await loadInventory(false,true);
+      await loadInventory(false, true);
     } else {
       setLoading(btn, false);
-      notify(error || "Failed to add record", { type: "error", duration: 5000 });
+      notify(error || "Failed to add record", {
+        type: "error",
+        duration: 5000,
+      });
     }
   });
   //
@@ -390,7 +466,7 @@ async function showProductDetails(product,intro) {
         duration: 5000,
       });
       setLoading(btn, false);
-      await loadInventory(false,true);
+      await loadInventory(false, true);
     } else {
       setLoading(btn, false);
       console.log(error);
@@ -418,7 +494,7 @@ async function showProductDetails(product,intro) {
     const { success, error } = await res.json();
 
     if (success) {
-      await loadInventory(false,true);
+      await loadInventory(false, true);
       setLoading(deleteBtn, false);
       notify("Product deleted successfully", {
         type: "success",
@@ -527,9 +603,9 @@ async function fetchAndRenderStockRecords(productId, intro) {
         await fetchAndRenderStockRecords(productId);
         notify("Record deleted", { type: "success", duration: 5000 });
         setLoading(btn, false);
-        await loadInventory(false,true);
+        await loadInventory(false, true);
       } else {
-        console.log(error)
+        console.log(error);
         alert("Error deleting record");
       }
     });
@@ -542,17 +618,17 @@ function buildRecordsColumn(title, records, type, icon) {
   if (!records.length) {
     return `<h3>${icon} ${title}</h3><p>No record yet.</p>`;
   }
-  
+
   const usernameById = accounts.reduce((map, a) => {
-  // if your account objects come back with `_id` instead of `id`, use a._id here
-  map[a.id] = a.username;
-  return map;
-}, {});
-  
+    // if your account objects come back with `_id` instead of `id`, use a._id here
+    map[a.id] = a.username;
+    return map;
+  }, {});
+
   const items = records
-  .map(r => {
-    const username = usernameById[r.author_id] || "Unknown";
-    return `
+    .map((r) => {
+      const username = usernameById[r.author_id] || "Unknown";
+      return `
   <div class="record-item" data-id="${r._id}">
     <div class="record-content">
       <div class="record-main">
@@ -562,27 +638,35 @@ function buildRecordsColumn(title, records, type, icon) {
         </div>
       </div>
       <div class="meta">By: <b>${username}</b></div>
-      ${r.remarks ? `
+      ${
+        r.remarks
+          ? `
         <div class="remarks">
           <i class="bi bi-info-circle"></i>
           <span style="font-size: 13px;">${r.remarks}</span>
         </div>
-      ` : ``}
+      `
+          : ``
+      }
     </div>
-    ${currentAdmin.userLevel >= 3 ? `
+    ${
+      currentAdmin.userLevel >= 3
+        ? `
       <button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
         <i class="bi bi-trash3-fill"></i>
       </button>
-    ` : ``}
+    `
+        : ``
+    }
   </div>
 `;
-  })
-  .join("\n");
+    })
+    .join("\n");
 
   return `<h3>${icon} ${title}</h3><div class="records-list">${items}</div>`;
 }
 
-// 
+//
 document.addEventListener("DOMContentLoaded", async function () {
   waitUntilReady(inventoryStart);
 });

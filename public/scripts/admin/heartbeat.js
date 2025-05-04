@@ -1,6 +1,5 @@
-// threshold (ms) above which we consider it “slow”
-const PING_INTERVAL = 10000; // every 10s
-const SLOW_THRESHOLD = 3000;  // 3s
+const PING_INTERVAL = 10000;
+const SLOW_THRESHOLD = 3000;
 
 let lastPingSuccess = true;
 
@@ -13,7 +12,7 @@ async function pingServer() {
 
     const res = await fetch("/ping", { signal: controller.signal });
     clearTimeout(timeoutId);
-    
+
     if (res.status === 401) {
       const error = await res.json();
       notify(error.message || "Session expired", { type: "error" });
@@ -29,10 +28,10 @@ async function pingServer() {
     }
 
     if (duration > SLOW_THRESHOLD) {
-      notify(
-        `Warning: slow connection detected (${Math.round(duration)}ms)`,
-        { type: "warn", duration: 5000 }
-      );
+      notify(`Warning: slow connection detected (${Math.round(duration)}ms)`, {
+        type: "warn",
+        duration: 5000,
+      });
     } else if (!lastPingSuccess || !navigator.onLine) {
       // recovered from failure/offline
       notify("Connection restored", { type: "success", duration: 3000 });
@@ -56,7 +55,6 @@ async function pingServer() {
 // start polling
 setInterval(pingServer, PING_INTERVAL);
 
-// optional: react to browser offline/online events
 window.addEventListener("offline", () =>
   notify("You are offline", { type: "warn", duration: 10000 })
 );
@@ -66,17 +64,16 @@ window.addEventListener("online", () =>
 //
 const socket = io("https://panaderiapantoja.glitch.me");
 
-
 socket.on("notify", (data) => {
   notify(data.message, { type: data.type, duration: data.duration });
 });
 socket.on("reload", (data) => {
-  let target = data.target
-  if (target == "inventory") loadInventory(false,true);
+  let target = data.target;
+  if (target == "inventory") loadInventory(false, true);
   else if (target == "product") {
-    let product = data.product
+    let product = data.product;
     if (currentProduct.product_id == product.product_id) {
-      showProductDetails(product,true)
+      showProductDetails(product, true);
     }
   }
 });
