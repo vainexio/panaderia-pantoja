@@ -107,8 +107,8 @@ app.use(async (req, res, next) => {
     req.user = await accounts.findOne({ id: 2 });
   }
 
-  const publicPaths = ["/","/admin-dashboard"];
-  if (!req.user && !publicPaths.some(path => req.path = path)) {
+  const publicPaths = ["/admin-dashboard"];
+  if (!req.user && !publicPaths.some(path => req.path.startsWith(path))) {
     return res.status(401).send({ message: "Not logged in", error: "Not logged in", redirect: "/" });
   }
 
@@ -119,7 +119,6 @@ app.use((req, res, next) => {
   next();
 });
 app.use(bodyParser.urlencoded({ extended: true }));
-
 // Public
 app.get("/ping", (req, res) => {
   return res.json({ pong: true, ts: Date.now() });
@@ -361,7 +360,6 @@ app.get('/accounts', async (req, res) => {
 });
 app.get("/currentAccount", async (req, res) => {
   let user = req.user;
-  console.log('this',user)
   try {
     const account = await accounts.findOne({ id: user.id });
     if (!account)

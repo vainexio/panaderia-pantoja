@@ -15,7 +15,7 @@ function setLoading(button, isLoading) {
   }
 }
 document.addEventListener("DOMContentLoaded", async function () {
-  let currentAdmin = await fetch("/currentAccount" );
+  let currentAdmin = await fetch("/currentAccount");
   if (currentAdmin.ok) {
     currentAdmin = await currentAdmin.json();
     window.location.href = "/admin-dashboard";
