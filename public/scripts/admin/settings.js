@@ -6,7 +6,7 @@ async function adminSettings() {
       document.getElementById("saveChangesButton").disabled = true;
     }
     document.getElementById("admin_settings_username").value = currentAdmin.username;
-    document.getElementById("admin_settings_id").value = currentAdmin.id;
+    document.getElementById("admin_settings_id").value = "ACC-"+currentAdmin.id;
     document.getElementById("admin_settings_acc_level").value = currentAdmin.userLevel;
 
     const sessionResponse = await fetch("/getAllSessions", {
@@ -98,6 +98,9 @@ async function adminSettings() {
         });
 
         if (response.ok) {
+          document.getElementById("admin_settings_old_password").value = ""
+          document.getElementById("admin_settings_new_password").value = ""
+          document.getElementById("admin_settings_confirm_password").value = ""
           notify("Account details updated", { type: "success", duration: 5000 });
         } else {
           const error = await response.json();

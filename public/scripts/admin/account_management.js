@@ -15,7 +15,7 @@ async function loadAccounts() {
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td class="align-middle">${acc.id}</td>
+      <td class="align-middle">ACC-${acc.id}</td>
       <td class="align-middle">
         <input type="text" class="form-control username-input" data-id="${acc.id}" value="${acc.username}" ${isProtected? 'disabled': ''} />
       </td>
@@ -78,7 +78,7 @@ async function loadAccounts() {
           body: JSON.stringify(payload)
         });
         if (res.ok) {
-          notify(`Updated Account ID: [${id}]`, { type: 'success', duration: 5000 });
+          notify(`Successfully Updated ACC-${id}]`, { type: 'success', duration: 5000 });
           loadAccounts();
         } else {
           const err = await res.json();

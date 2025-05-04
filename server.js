@@ -92,11 +92,13 @@ app.use(async (req, res, next) => {
     const existingSession = await loginSession.findOne({ device_id: token });
     if (!existingSession) {
       res.clearCookie("token");
+      req.user = null
     } else {
       req.session = existingSession;
     }
   } catch (err) {
     res.clearCookie("token");
+    req.user = null
   }
   next();
 });
@@ -107,7 +109,7 @@ app.use(async (req, res, next) => {
     req.user = await accounts.findOne({ id: 2 });
   }
 
-  const publicPaths = ["/admin-dashboard"];
+  const publicPaths = ["/login","/admin-dashboard"];
   if (!req.user && !publicPaths.some(path => req.path.startsWith(path))) {
     return res.status(401).send({ message: "Not logged in", error: "Not logged in", redirect: "/" });
   }
