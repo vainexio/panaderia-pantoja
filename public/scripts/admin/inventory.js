@@ -553,7 +553,7 @@ function buildRecordsColumn(title, records, type, icon) {
   .map(r => {
     const username = usernameById[r.author_id] || "Unknown";
     return `
-  <div class="record-item">
+  <div class="record-item" data-id="${r._id}">
     <div class="record-content">
       <div class="record-main">
         <h4 class="qty ${cls}">${sign}${r.amount}</h4>
@@ -570,7 +570,7 @@ function buildRecordsColumn(title, records, type, icon) {
       ` : ``}
     </div>
     ${currentAdmin.userLevel >= 3 ? `
-      <button type="button" class="action-button delete-record-btn" title="Delete record">
+      <button type="button" class="action-button delete-record-btn black-loading" title="Delete record">
         <i class="bi bi-trash3-fill"></i>
       </button>
     ` : ``}
