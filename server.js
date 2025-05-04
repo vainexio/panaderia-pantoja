@@ -494,7 +494,7 @@ app.post("/getStockRecord", async (req, res) => {
   const isToday = m.isSame(new Date(), 'day');
 
   // Format fromNow as "3m ago", "3h ago", "1d ago"
-  const fromNow = m.fromNow().replace(' minutes', 'm').replace(' minute', 'm')
+  const fromNow = m.fromNow().replace(' minutes', 'm').replace('a minute', '1m')
                                   .replace(' hours', 'h').replace('an hour', '1h')
                                   .replace(' days', 'd').replace('a day', '1d');
 

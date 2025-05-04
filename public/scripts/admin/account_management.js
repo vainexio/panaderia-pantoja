@@ -78,7 +78,7 @@ async function loadAccounts() {
           body: JSON.stringify(payload)
         });
         if (res.ok) {
-          notify(`Successfully Updated ACC-${id}]`, { type: 'success', duration: 5000 });
+          notify(`Successfully Updated ACC-${id}`, { type: 'success', duration: 5000 });
           loadAccounts();
         } else {
           const err = await res.json();
