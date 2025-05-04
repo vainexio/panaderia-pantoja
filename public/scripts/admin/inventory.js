@@ -183,10 +183,10 @@ async function showProductDetails(product,intro) {
   : product.min > product.quantity ? "understock" : "balance"
   
   const colorIndicator = product.quantity > product.max ? `style="color: #00136f; border-color: #00136f;"` 
-  : product.min > product.quantity ? `style="color: var(--red); border-color:"` : ``
+  : product.min > product.quantity ? `style="color: var(--red); border-color: var(--red);"` : `style="color: var(--green); border-color: var(--green);`
   
-  const iconIndicator = product.quantity > product.max ? `<i class="bi bi-graph-up-arrow"></i>` 
-  : product.min > product.quantity ? `<i class="bi bi-graph-down-arrow"></i>` : `<i class="bi bi-check-circle"></i>`
+  const iconIndicator = product.quantity > product.max ? `<i class="bi bi-graph-up-arrow" ${colorIndicator} title=${status}></i>` 
+  : product.min > product.quantity ? `<i class="bi bi-graph-down-arrow" ${colorIndicator} title=${status}></i>` : `<i class="bi bi-check-circle"></i>`
   
   const left = document.createElement("div");
   left.className = "detail-left";
@@ -198,9 +198,9 @@ async function showProductDetails(product,intro) {
     </div>
 
     <div class="form-group">
-  <label for="product_qty">Current Quantity</label>
+  <label for="product_qty" ${colorIndicator}>Current Quantity</label>
   <div class="input-group">
-    <span class="input-group-text" style="border: 1px solid black; background-color: transparent; border-right: none !important; border-radius: 8px 0 0 8px;">${iconIndicator}</span>
+    <span class="input-group-text" style="border: 1px solid black; background-color: transparent; border-right: none !important; border-radius: 8px 0 0 8px;" ${colorIndicator}>${iconIndicator}</span>
     <input
       type="text"
       class="form-control"
@@ -214,12 +214,12 @@ async function showProductDetails(product,intro) {
 </div>
 
     <div class="form-group">
-      <label for="product_min">Required Min. Quantity</label>
+      <label for="product_min" ${status == "understock" ? colorIndicator : ""}>Required Min. Quantity</label>
       <input type="number" id="product_min" name="product_min" value="${product.min}" ${status == "understock" ? colorIndicator : ""} required />
     </div>
 
     <div class="form-group">
-      <label for="product_max">Required Max. Quantity</label>
+      <label for="product_max" ${status == "overstock" ? colorIndicator : ""}>Required Max. Quantity</label>
       <input type="number" id="product_max" name="product_max" value="${product.max}" ${status == "overstock" ? colorIndicator : ""} required />
     </div>
     
