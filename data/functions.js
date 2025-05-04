@@ -1,5 +1,56 @@
 const fetch = require('node-fetch')
-//
+const fs = require('fs')
+const { execSync } = require("child_process");
+// — Memory from cgroup (512 MB cap) —  
+function getContainerMemory() {
+  const usage = Number(
+    fs.readFileSync("/sys/fs/cgroup/memory/memory.usage_in_bytes", "utf8")
+  );
+  const limit = Number(
+    fs.readFileSync("/sys/fs/cgroup/memory/memory.limit_in_bytes", "utf8")
+  );
+  return {
+    usageBytes: usage,
+    limitBytes: limit,
+    usagePercent: (usage / limit * 100).toFixed(0),
+  };
+}
+
+// — CPU % by sampling cgroup cpuacct.usage —  
+let prevCpu = Number(
+  fs.readFileSync("/sys/fs/cgroup/cpu/cpuacct.usage", "utf8")
+);
+let prevTs = Date.now();
+function getContainerCpuPercent() {
+  const currCpu = Number(
+    fs.readFileSync("/sys/fs/cgroup/cpu/cpuacct.usage", "utf8")
+  );
+  const currTs = Date.now();
+
+  const deltaCpu = currCpu - prevCpu;              // ns
+  const deltaTimeNs = (currTs - prevTs) * 1e6;     // ms→ns
+
+  prevCpu = currCpu;
+  prevTs = currTs;
+
+  return (deltaCpu / deltaTimeNs * 100).toFixed(1);
+}
+
+// — Disk usage by calling `df -B1 /` so sizes are in bytes —  
+function getDiskUsage() {
+  const out = execSync("df -B1 /").toString().trim().split("\n")[1];
+  // fields: Filesystem,     1B-blocks, Used, Available, Use%, Mounted on
+  const parts = out.split(/\s+/);
+  const total = Number(parts[1]);
+  const used  = Number(parts[2]);
+  const avail = Number(parts[3]);
+  return {
+    usedBytes: used,
+    totalBytes: total,
+    usagePercent: (used / total * 100).toFixed(0),
+  };
+}
+//////
 function setOuterBorder(sheet, startRow, endRow, startCol, endCol) {
   for (let r = startRow; r <= endRow; r++) {
     for (let c = startCol; c <= endCol; c++) {
@@ -123,6 +174,9 @@ module.exports = {
   computeCalendarWeeks,
   convertTo12Hour,
   setOuterBorder,
+  getContainerMemory,
+  getContainerCpuPercent,
+  getDiskUsage,
   generateQr: async function(text) {
     
     let data = {

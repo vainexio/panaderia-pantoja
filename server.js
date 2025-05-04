@@ -118,6 +118,33 @@ app.use((req, res, next) => {
   next();
 });
 app.use(bodyParser.urlencoded({ extended: true }));
+app.get("/memory", async (req, res) => {
+  try {
+    const mem  = method.getContainerMemory();
+    const cpu  = method.getContainerCpuPercent();
+    const disk = method.getDiskUsage();
+
+    // JSON response
+    res.json({
+      cpu: {
+        percent: cpu
+      },
+      memory: {
+        usageBytes: mem.usageBytes,
+        limitBytes: mem.limitBytes,
+        usagePercent: mem.usagePercent
+      },
+      disk: {
+        usedBytes: disk.usedBytes,
+        totalBytes: disk.totalBytes,
+        usagePercent: disk.usagePercent
+      }
+    });
+  } catch (err) {
+    console.error("Error reading metrics:", err);
+    res.status(500).send("Cannot read metrics");
+  }
+});
 // Public
 app.get("/ping", (req, res) => {
   return res.json({ pong: true, ts: Date.now() });
