@@ -38,12 +38,12 @@ async function loadAccounts() {
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
-      if (!confirm('Delete account ' + id + '?')) return;
+      if (!confirm('Delete ACC-' + id + '?')) return;
       setLoading(btn, true);
       try {
         const res = await fetch(`/accounts/${id}`, { method: 'DELETE' });
         if (res.ok) {
-          notify(`Account ${id} deleted`, { type: 'success', duration: 5000 });
+          notify(`ACC-${id} deleted`, { type: 'success', duration: 5000 });
           loadAccounts();
         } else {
           const err = await res.json();

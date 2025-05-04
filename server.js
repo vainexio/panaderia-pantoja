@@ -1002,7 +1002,7 @@ app.put('/accounts/:id', async (req, res) => {
     const accId = Number(req.params.id);
     const update = { username: req.body.username, userLevel: req.body.userLevel };
     
-    const existing = await accounts.findOne({ username: req.body.username.toLowerCase() });
+    const existing = await accounts.findOne({ username: req.body.username.toLowerCase(),  id: { $ne: accId } });
     if (existing) return res.status(400).json({ message: "An account with same username already exists" });
     
     if (req.body.password) {
@@ -1020,12 +1020,13 @@ app.put('/accounts/:id', async (req, res) => {
 app.post('/updateAccount', async (req, res) => {
   const { accountData, formData } = req.body;
   
+  const existing = await accounts.findOne({ username: formData.username.toLowerCase(),  id: { $ne: accountData.id } });
+  if (existing) return res.status(400).json({ message: "An account with same username already exists" });
+  
   let account = await accounts.findOne({ id: accountData.id })
   if (!account) return res.status(404).json({ message: "No account found" });
   account.username = formData.username.toLowerCase()
   
-  const existing = await accounts.findOne({ username: formData.username.toLowerCase() });
-  if (existing) return res.status(400).json({ message: "An account with same username already exists" });
   
   if (!formData.password) {
     await account.save()
