@@ -107,8 +107,8 @@ app.use(async (req, res, next) => {
     req.user = await accounts.findOne({ id: 2 });
   }
 
-  const publicPaths = ["/login","/admin-dashboard"];
-  if (!req.user && !publicPaths.some(path => req.path.startsWith(path))) {
+  const publicPaths = ["/","/admin-dashboard"];
+  if (!req.user && !publicPaths.some(path => req.path = path)) {
     return res.status(401).send({ message: "Not logged in", error: "Not logged in", redirect: "/" });
   }
 
@@ -361,6 +361,7 @@ app.get('/accounts', async (req, res) => {
 });
 app.get("/currentAccount", async (req, res) => {
   let user = req.user;
+  console.log('this',user)
   try {
     const account = await accounts.findOne({ id: user.id });
     if (!account)
@@ -860,14 +861,11 @@ app.post("/generateQr", async (req, res) => {
 
 // Deletions
 app.delete("/removeSession", async (req, res) => {
-  console.log(req.user)
   try {
     const { sessionId } = req.body;
     if (!sessionId) {
       return res.status(400).json({ error: "sessionId is required" });
     }
-    const currentSession = await loginSession.findOne({ session_id: sessionId });
-    console.log(currentSession)
     const result = await loginSession.deleteOne({ session_id: sessionId });
     if (result.deletedCount > 0) {
       return res.json({ message: "Session removed" });
