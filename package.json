@@ -30,7 +30,8 @@
     "socket.io": "^4.8.1",
     "http": "^0.0.0",
     "pidusage": "^4.0.1",
-    "moment-timezone": "^0.5.48"
+    "moment-timezone": "^0.5.48",
+    "fs-promise": "^2.0.3"
   },
   "engines": {
     "node": "16.x"

@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const json2xls = require("json2xls");
 const XLSX = require("xlsx");
 const bcrypt = require("bcrypt");
-const fs = require("fs");
+const fs = require("fs/promises");
 const cors = require("cors");
 const fetch = require("node-fetch");
 const moment = require("moment");
@@ -17,6 +17,7 @@ const { v4: uuidv4 } = require("uuid");
 const { Server } = require("socket.io");
 const { Document, Packer, Paragraph, TextRun, AlignmentType, ImageRun, Table, TableRow, TableCell, WidthType } = require("docx");
 var pidusage = require('pidusage')
+const { exec } = require('child_process');
 
 const app = express();
 const server = http.createServer(app);
@@ -1182,7 +1183,6 @@ function readCgroupInt(filePath) {
 // Server Connection
 const PORT = process.env.PORT || 3000;
 const MAX_BYTES = 512 * 1024 * 1024;
-
 app.get('/api/storage/usage', async (req, res) => {
   try {
     const stats = await req.app.locals.db.stats();
@@ -1220,6 +1220,8 @@ app.get('/api/storage/usage', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch storage stats', detail: err.message });
   }
 });
+
+
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
 });
