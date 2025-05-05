@@ -26,7 +26,16 @@ const method = require("./data/functions.js");
 const settings = require("./data/settings.js");
 const JWT_SECRET = process.env.JWT_SECRET;
 // Connect to MongoDB
-if (process.env.MONGOOSE) mongoose.connect(process.env.MONGOOSE);
+if (process.env.MONGOOSE) mongoose.connect(process.env.MONGOOSE, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('MongoDB connected');
+  app.locals.db = mongoose.connection.db; // expose native driver
+
+}).catch(err => {
+  console.error('MongoDB connection failed:', err);
+});
 
 const accountsSchema = new mongoose.Schema({
   id: Number,
@@ -1172,7 +1181,24 @@ function readCgroupInt(filePath) {
 }
 // Server Connection
 const PORT = process.env.PORT || 3000;
+const MAX_BYTES = 512 * 1024 * 1024; // 512 MB
 
+app.get('/api/storage/logical', async (req, res) => {
+  try {
+    const stats = await req.app.locals.db.stats();
+    const logicalBytes = stats.dataSize;
+
+    res.json({
+      logicalSizeBytes: logicalBytes,
+      logicalSizeKB: (logicalBytes / 1024).toFixed(2),
+      logicalSizeMB: (logicalBytes / 1024 ** 2).toFixed(2),
+      objects: stats.objects,
+      collections: stats.collections
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch logical storage size', detail: err.message });
+  }
+});
 io.on("connection", (socket) => {
   console.log("Client connected:", socket.id);
 });
