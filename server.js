@@ -1181,22 +1181,43 @@ function readCgroupInt(filePath) {
 }
 // Server Connection
 const PORT = process.env.PORT || 3000;
-const MAX_BYTES = 512 * 1024 * 1024; // 512 MB
+const MAX_BYTES = 512 * 1024 * 1024;
 
-app.get('/api/storage/logical', async (req, res) => {
+app.get('/api/storage/usage', async (req, res) => {
   try {
     const stats = await req.app.locals.db.stats();
-    const logicalBytes = stats.dataSize;
+    const used = stats.storageSize;
+    const percentUsed = ((used / MAX_BYTES) * 100).toFixed(2);
 
     res.json({
-      logicalSizeBytes: logicalBytes,
-      logicalSizeKB: (logicalBytes / 1024).toFixed(2),
-      logicalSizeMB: (logicalBytes / 1024 ** 2).toFixed(2),
-      objects: stats.objects,
-      collections: stats.collections
+      storageUsed: {
+        bytes: used,
+        kilobytes: (used / 1024).toFixed(2),
+        megabytes: (used / 1024 ** 2).toFixed(2),
+        gigabytes: (used / 1024 ** 3).toFixed(4)
+      },
+      percentUsed: `${percentUsed}%`,
+      maxLimit: {
+        bytes: MAX_BYTES,
+        megabytes: MAX_BYTES / 1024 ** 2
+      },
+      details: {
+        dataSize: {
+          bytes: stats.dataSize,
+          kilobytes: (stats.dataSize / 1024).toFixed(2),
+          megabytes: (stats.dataSize / 1024 ** 2).toFixed(2)
+        },
+        indexSize: {
+          bytes: stats.indexSize,
+          kilobytes: (stats.indexSize / 1024).toFixed(2),
+          megabytes: (stats.indexSize / 1024 ** 2).toFixed(2)
+        },
+        collections: stats.collections,
+        objects: stats.objects
+      }
     });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch logical storage size', detail: err.message });
+    res.status(500).json({ error: 'Failed to fetch storage stats', detail: err.message });
   }
 });
 io.on("connection", (socket) => {
