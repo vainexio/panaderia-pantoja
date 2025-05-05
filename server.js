@@ -467,48 +467,89 @@ app.post("/getStockRecord", async (req, res) => {
     const { type } = req.query;
     const { id, days, limit } = req.body;
 
+    // helper: turn any Date into a Date object whose fields reflect Asia/Manila
+    function toManilaDate(d) {
+      // first render a locale string in Manila‑zone, then parse back into a Date
+      return new Date(
+        d.toLocaleString("en-US", { timeZone: "Asia/Manila" })
+      );
+    }
+
+    // get “now” in Manila
+    const nowManila = toManilaDate(new Date());
+
+    // build Mongo query
     const query = {};
     if (type === "single" && id) query.product_id = id;
 
-    // If `days` is provided (e.g., last 30 days)
     if (days) {
-      const since = moment().subtract(parseInt(days), "days").startOf("day");
-      query.date = { $gte: since.toDate() };
+      // subtract days in Manila then zero‑out hours→midnight Manila
+      const since = new Date(nowManila);
+      since.setDate(since.getDate() - parseInt(days, 10));
+      since.setHours(0, 0, 0, 0);
+      query.date = { $gte: since };
     }
 
-    // Fetch data based on query
     let findQuery = stockRecords.find(query).sort({ date: -1 });
-
-    // If `limit` is provided
-    if (limit) {
-      findQuery = findQuery.limit(parseInt(limit));
-    }
+    if (limit) findQuery = findQuery.limit(parseInt(limit, 10));
 
     const records = await findQuery;
+
+    // Intl.RelativeTimeFormat for “x ago”
+    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
     const data = records.map((r) => {
-  const obj = r.toObject();
-  const m = moment(r.date);
+      const obj = r.toObject();
 
-  // Check if the date is today
-  const isToday = m.isSame(new Date(), 'day');
+      // record’s timestamp expressed in Manila
+      const recManila = toManilaDate(r.date);
 
-  // Format fromNow as "3m ago", "3h ago", "1d ago"
-  const fromNow = m.fromNow().replace(' minutes', 'm').replace('a minute', '1m')
-                                  .replace(' hours', 'h').replace('an hour', '1h')
-                                  .replace(' days', 'd').replace('a day', '1d');
+      // is it the same Manila‑date as “nowManila”?
+      const isToday =
+        recManila.getFullYear() === nowManila.getFullYear() &&
+        recManila.getMonth() === nowManila.getMonth() &&
+        recManila.getDate() === nowManila.getDate();
 
-  return {
-    ...obj,
-    fromNow, // "3m ago", "3h ago", "1d ago"
-    formattedDate: isToday ? m.format("hh:mm A") : m.format("MM/DD/YY hh:mm A"), // Show only time if today
-    formattedTime: m.format("hh:mm A"), // 12-hour format with AM/PM
-    formattedDateTime: isToday ? m.format("hh:mm A") : m.format("MM/DD/YY hh:mm A"), // Only show time if today, else full date & time
-  };
-});
+      // compute diff in minutes/hours/days
+      const diffMs = nowManila.getTime() - recManila.getTime();
+      const diffMins = Math.floor(diffMs / 60000);
+      let fromNow;
+      if (diffMins < 60) {
+        fromNow = `${diffMins}m ago`;
+      } else {
+        const diffHrs = Math.floor(diffMins / 60);
+        if (diffHrs < 24) {
+          fromNow = `${diffHrs}h ago`;
+        } else {
+          const diffDays = Math.floor(diffHrs / 24);
+          fromNow = `${diffDays}d ago`;
+        }
+      }
 
-    res.json(data);
+      // formatting options
+      const timeOpts = { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: "Asia/Manila" };
+      const dateTimeOpts = {
+        month: "2-digit", day: "2-digit", year: "2-digit",
+        hour: "2-digit", minute: "2-digit", hour12: true,
+        timeZone: "Asia/Manila"
+      };
+
+      return {
+        ...obj,
+        fromNow,
+        formattedTime: recManila.toLocaleTimeString("en-US", timeOpts),
+        formattedDate: isToday
+          ? recManila.toLocaleTimeString("en-US", timeOpts)
+          : recManila.toLocaleString("en-US", dateTimeOpts),
+        formattedDateTime: isToday
+          ? recManila.toLocaleTimeString("en-US", timeOpts)
+          : recManila.toLocaleString("en-US", dateTimeOpts),
+      };
+    });
+
+    res.json({ success: true, data });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 app.post("/getProduct", async (req, res) => {
