@@ -467,89 +467,56 @@ app.post("/getStockRecord", async (req, res) => {
     const { type } = req.query;
     const { id, days, limit } = req.body;
 
-    // helper: turn any Date into a Date object whose fields reflect Asia/Manila
-    function toManilaDate(d) {
-      // first render a locale string in Manila‑zone, then parse back into a Date
-      return new Date(
-        d.toLocaleString("en-US", { timeZone: "Asia/Manila" })
-      );
-    }
-
-    // get “now” in Manila
-    const nowManila = toManilaDate(new Date());
-
-    // build Mongo query
     const query = {};
     if (type === "single" && id) query.product_id = id;
 
+    // use utcOffset(8) instead of moment‑timezone
     if (days) {
-      // subtract days in Manila then zero‑out hours→midnight Manila
-      const since = new Date(nowManila);
-      since.setDate(since.getDate() - parseInt(days, 10));
-      since.setHours(0, 0, 0, 0);
-      query.date = { $gte: since };
+      const since = moment()
+        .utcOffset(8)                      // treat “now” as Asia/Shanghai (UTC+8)
+        .subtract(parseInt(days), "days")
+        .startOf("day");
+      query.date = { $gte: since.toDate() };
     }
 
     let findQuery = stockRecords.find(query).sort({ date: -1 });
-    if (limit) findQuery = findQuery.limit(parseInt(limit, 10));
+    if (limit) findQuery = findQuery.limit(parseInt(limit));
 
     const records = await findQuery;
-
-    // Intl.RelativeTimeFormat for “x ago”
-    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-
     const data = records.map((r) => {
       const obj = r.toObject();
 
-      // record’s timestamp expressed in Manila
-      const recManila = toManilaDate(r.date);
+      // interpret stored timestamp at UTC+8
+      const m = moment(r.date).utcOffset(8);
 
-      // is it the same Manila‑date as “nowManila”?
-      const isToday =
-        recManila.getFullYear() === nowManila.getFullYear() &&
-        recManila.getMonth() === nowManila.getMonth() &&
-        recManila.getDate() === nowManila.getDate();
+      // compare against “today” at UTC+8
+      const isToday = m.isSame(moment().utcOffset(8), "day");
 
-      // compute diff in minutes/hours/days
-      const diffMs = nowManila.getTime() - recManila.getTime();
-      const diffMins = Math.floor(diffMs / 60000);
-      let fromNow;
-      if (diffMins < 60) {
-        fromNow = `${diffMins}m ago`;
-      } else {
-        const diffHrs = Math.floor(diffMins / 60);
-        if (diffHrs < 24) {
-          fromNow = `${diffHrs}h ago`;
-        } else {
-          const diffDays = Math.floor(diffHrs / 24);
-          fromNow = `${diffDays}d ago`;
-        }
-      }
-
-      // formatting options
-      const timeOpts = { hour: "2-digit", minute: "2-digit", hour12: true, timeZone: "Asia/Manila" };
-      const dateTimeOpts = {
-        month: "2-digit", day: "2-digit", year: "2-digit",
-        hour: "2-digit", minute: "2-digit", hour12: true,
-        timeZone: "Asia/Manila"
-      };
+      const fromNow = m
+        .fromNow()
+        .replace(" minutes", "m")
+        .replace("a minute", "1m")
+        .replace(" hours", "h")
+        .replace("an hour", "1h")
+        .replace(" days", "d")
+        .replace("a day", "1d");
 
       return {
         ...obj,
         fromNow,
-        formattedTime: recManila.toLocaleTimeString("en-US", timeOpts),
         formattedDate: isToday
-          ? recManila.toLocaleTimeString("en-US", timeOpts)
-          : recManila.toLocaleString("en-US", dateTimeOpts),
+          ? m.format("hh:mm A")
+          : m.format("MM/DD/YY hh:mm A"),
+        formattedTime: m.format("hh:mm A"),
         formattedDateTime: isToday
-          ? recManila.toLocaleTimeString("en-US", timeOpts)
-          : recManila.toLocaleString("en-US", dateTimeOpts),
+          ? m.format("hh:mm A")
+          : m.format("MM/DD/YY hh:mm A"),
       };
     });
 
-    res.json({ success: true, data });
+    res.json(data);
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 app.post("/getProduct", async (req, res) => {
