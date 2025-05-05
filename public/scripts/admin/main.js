@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     return;
   }
 
-  let layouts = ["dashboard", "inventory", "product_registration", "account_management", "settings"];
+  let layouts = ["dashboard", "inventory", "product_registration", "account_management", "metrics", "settings"];
   for (let i in layouts) {
     console.log(layouts[i]);
     let response = await fetch("../admin/layouts/" + layouts[i] + ".html");
