@@ -936,7 +936,7 @@ app.post("/deleteStockRecord", async (req, res) => {
     if (!rec) {
       return res
         .status(404)
-        .json({ success: false, error: "Record not found" });
+        .json({ success: false, error: "Record no longer exists" });
     }
     // Reverse the quantity change
     const delta = rec.type === "IN" ? -rec.amount : rec.amount;

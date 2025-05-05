@@ -605,8 +605,10 @@ async function fetchAndRenderStockRecords(productId, intro) {
         setLoading(btn, false);
         await loadInventory(false, true);
       } else {
+        await fetchAndRenderStockRecords(productId);
+        setLoading(btn, false);
         console.log(error);
-        alert("Error deleting record");
+        notify(error || "Error deleting record", { type: "error", duration: 5000 });
       }
     });
   });
