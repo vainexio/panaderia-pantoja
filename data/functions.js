@@ -127,15 +127,24 @@ module.exports = {
   setOuterBorder,
   generateQr: async function(text) {
     
-    let data = {
+    let data2 = {
       method: 'POST',
       body: JSON.stringify({"data":text,"config":{"body":"square","eye":"frame0","eyeBall":"ball0","erf1":[],"erf2":[],"erf3":[],"brf1":[],"brf2":[],"brf3":[],"bodyColor":"#000000","bgColor":null,"eye1Color":"#000000","eye2Color":"#000000","eye3Color":"#000000","eyeBall1Color":"#000000","eyeBall2Color":"#000000","eyeBall3Color":"#000000","gradientColor1":"","gradientColor2":"","gradientType":"linear","gradientOnEyes":"true","logo":"","logoMode":"default"},"size":800,"download":"imageUrl","file":"png"}),
       headers: {
         'Content-Type': 'application/json'
       }
     }
+    let data = {
+      method: 'POST',
+      body: JSON.stringify({"data":text,"config":{"body":"square","eye":"frame0","eyeBall":"ball0","erf1":[],"erf2":[],"erf3":[],"brf1":[],"brf2":[],"brf3":[],"bodyColor":"#000000","bgColor":"#FFFFFF","eye1Color":"#000000","eye2Color":"#000000","eye3Color":"#000000","eyeBall1Color":"#000000","eyeBall2Color":"#000000","eyeBall3Color":"#000000","gradientColor1":null,"gradientColor2":null,"gradientType":"linear","gradientOnEyes":false,"logo":"","logoMode":"default"},"size":800,"download":"imageUrl","file":"png"}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
     let qrCode = await fetch("https://api.qrcode-monkey.com//qr/custom", data);
+    console.log(qrCode.status,qrCode.statusText)
     qrCode = await qrCode.json();
+    console.log(qrCode)
     let imageUrl = "https:" + qrCode.imageUrl;
     
     return {imageUrl, raw: text};
